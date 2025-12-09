@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Send, MessageSquare, Image as ImageIcon, X, History, Plus, Trash2, ChevronRight } from 'lucide-react';
+import { Send, MessageSquare, Image as ImageIcon, X, History, Plus, Trash2, ChevronRight, Zap } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { base44 } from '@/api/base44Client';
@@ -447,21 +447,38 @@ export default function Chat() {
         stack: error.stack
       });
       
+      // Check if it's an image analysis feature not available error
+      if (error.code === 'FEATURE_NOT_AVAILABLE') {
+        setMessages(prev => [...prev, { 
+          role: 'assistant', 
+          content: t('chat.imageAnalysisNotAvailable'),
+          timestamp: new Date(),
+          showUpgradeButton: true
+        }]);
+      }
       // Check if it's a screenshot limit error
-      if (error.code === 'SCREENSHOT_LIMIT_REACHED') {
+      else if (error.code === 'SCREENSHOT_LIMIT_REACHED') {
         setShowScreenshotLimitModal(true);
-        const errorMessage = '📸 Ke përdorur 2 analiza screenshot falas! Përmirëso planin për analiza të pakufizuara. Me çmimin e një kafeje në muaj, unë analizoj çdo screenshot për ty! ☕💕';
-        setMessages(prev => [...prev, { role: 'assistant', content: errorMessage, timestamp: new Date() }]);
+        setMessages(prev => [...prev, { 
+          role: 'assistant', 
+          content: t('chat.screenshotLimitReached'),
+          timestamp: new Date(),
+          showUpgradeButton: true
+        }]);
       }
       // Check if it's a limit error
       else if (error.code === 'LIMIT_EXCEEDED') {
         setIsLimitReached(true);
         await checkUsage();
         setShowLimitModal(true);
-        const errorMessage = '☕ Hej! E ke përfunduar dozën ditore të dashurisë! Me çmimin e një kafeje në muaj, mund të bisedosh me mua 24/7. Çfarë thua - love over latte? 💕';
-        setMessages(prev => [...prev, { role: 'assistant', content: errorMessage, timestamp: new Date() }]);
+        setMessages(prev => [...prev, { 
+          role: 'assistant', 
+          content: t('chat.dailyLimitReached'),
+          timestamp: new Date(),
+          showUpgradeButton: true
+        }]);
       } else {
-        const errorMessage = error.message || 'Më vjen keq, pati një gabim. Mund të provosh përsëri?';
+        const errorMessage = error.message || t('common.error');
         setMessages(prev => [...prev, { role: 'assistant', content: errorMessage, timestamp: new Date() }]);
       }
     } finally {
@@ -661,6 +678,16 @@ export default function Chat() {
                   <p>{msg.content}</p>
                 )}
               </div>
+              {/* Show Upgrade Button when needed */}
+              {msg.showUpgradeButton && (
+                <button
+                  onClick={() => setShowUpgradeModal(true)}
+                  className="mt-3 w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold py-2.5 px-4 rounded-xl text-sm shadow-lg shadow-purple-500/30 transition-all duration-300 flex items-center justify-center gap-2"
+                >
+                  <Zap className="w-4 h-4" />
+                  {t('home.upgrade')}
+                </button>
+              )}
               <p className="text-xs opacity-70 mt-1">
                 {msg.timestamp.toLocaleTimeString()}
               </p>

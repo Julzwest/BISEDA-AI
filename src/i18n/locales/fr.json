@@ -98,7 +98,10 @@
     "history": "Historique des discussions",
     "newChat": "Nouvelle discussion",
     "welcome": "Salut! Je suis ton AI Coach pour les rencontres et les conversations. Comment puis-je t'aider aujourd'hui?",
-    "upgradeForScreenshot": "Améliore pour l'analyse de captures d'écran"
+    "upgradeForScreenshot": "Améliore pour l'analyse de captures d'écran",
+    "imageAnalysisNotAvailable": "📸 L'analyse d'images n'est pas disponible dans ton plan actuel. Améliore pour débloquer cette fonctionnalité!",
+    "screenshotLimitReached": "📸 Tu as utilisé tes analyses de captures gratuites! Améliore pour des analyses illimitées. ☕💕",
+    "dailyLimitReached": "☕ Salut! Tu as fini ta dose quotidienne! Pour le prix d'un café par mois, tu peux discuter avec moi 24/7. 💕"
   },
   "tips": {
     "title": "Conseils & Astuces",

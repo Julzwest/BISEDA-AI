@@ -98,7 +98,10 @@
     "history": "Historia e bisedave",
     "newChat": "Bisedë e re",
     "welcome": "Ç'kemi! Unë jam AI Coach-i yt për dating dhe biseda. Si mund të të ndihmoj sot?",
-    "upgradeForScreenshot": "Përmirëso për analiza screenshot"
+    "upgradeForScreenshot": "Përmirëso për analiza screenshot",
+    "imageAnalysisNotAvailable": "📸 Analiza e imazheve nuk është e disponueshme në planin tënd aktual. Përmirëso për të zhbllokuar këtë veçori!",
+    "screenshotLimitReached": "📸 Ke përdorur analizat e screenshot falas! Përmirëso planin për analiza të pakufizuara. ☕💕",
+    "dailyLimitReached": "☕ Hej! E ke përfunduar dozën ditore! Me çmimin e një kafeje në muaj, mund të bisedosh me mua 24/7. 💕"
   },
   "tips": {
     "title": "Këshilla & Tips",

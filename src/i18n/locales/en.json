@@ -98,7 +98,10 @@
     "history": "Chat history",
     "newChat": "New chat",
     "welcome": "Hey! I'm your AI Coach for dating and conversations. How can I help you today?",
-    "upgradeForScreenshot": "Upgrade for screenshot analysis"
+    "upgradeForScreenshot": "Upgrade for screenshot analysis",
+    "imageAnalysisNotAvailable": "📸 Image analysis is not available on your current plan. Upgrade to unlock this feature!",
+    "screenshotLimitReached": "📸 You've used your free screenshot analyses! Upgrade for unlimited analyses. ☕💕",
+    "dailyLimitReached": "☕ Hey! You've finished your daily dose! For the price of a coffee per month, you can chat with me 24/7. 💕"
   },
   "tips": {
     "title": "Tips & Advice",

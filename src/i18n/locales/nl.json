@@ -98,7 +98,10 @@
     "history": "Chat geschiedenis",
     "newChat": "Nieuwe chat",
     "welcome": "Hoi! Ik ben je AI Coach voor dating en gesprekken. Hoe kan ik je vandaag helpen?",
-    "upgradeForScreenshot": "Upgrade voor screenshot analyse"
+    "upgradeForScreenshot": "Upgrade voor screenshot analyse",
+    "imageAnalysisNotAvailable": "📸 Beeldanalyse is niet beschikbaar in je huidige plan. Upgrade om deze functie te ontgrendelen!",
+    "screenshotLimitReached": "📸 Je hebt je gratis screenshot-analyses opgebruikt! Upgrade voor onbeperkte analyses. ☕💕",
+    "dailyLimitReached": "☕ Hey! Je hebt je dagelijkse dosis opgebruikt! Voor de prijs van een koffie per maand kun je 24/7 met mij chatten. 💕"
   },
   "tips": {
     "title": "Tips & Adviezen",

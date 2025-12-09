@@ -98,7 +98,10 @@
     "history": "Chat-Verlauf",
     "newChat": "Neuer Chat",
     "welcome": "Hey! Ich bin dein AI Coach für Dating und Gespräche. Wie kann ich dir heute helfen?",
-    "upgradeForScreenshot": "Upgrade für Screenshot-Analyse"
+    "upgradeForScreenshot": "Upgrade für Screenshot-Analyse",
+    "imageAnalysisNotAvailable": "📸 Bildanalyse ist in deinem aktuellen Plan nicht verfügbar. Upgrade um diese Funktion freizuschalten!",
+    "screenshotLimitReached": "📸 Du hast deine kostenlosen Screenshot-Analysen aufgebraucht! Upgrade für unbegrenzte Analysen. ☕💕",
+    "dailyLimitReached": "☕ Hey! Du hast deine tägliche Dosis aufgebraucht! Für den Preis eines Kaffees pro Monat kannst du 24/7 mit mir chatten. 💕"
   },
   "tips": {
     "title": "Tipps & Tricks",
