@@ -184,12 +184,20 @@ export default function Admin() {
       (user.username?.toLowerCase().includes(searchQuery.toLowerCase()));
     
     const matchesTier = filterTier === 'all' || user.subscriptionTier === filterTier;
-    const matchesStatus = filterStatus === 'all' || 
-      (filterStatus === 'blocked' && user.isBlocked) ||
-      (filterStatus === 'active' && !user.isBlocked);
+    
+    let matchesStatus = true;
+    if (filterStatus === 'blocked') matchesStatus = user.isBlocked;
+    else if (filterStatus === 'active') matchesStatus = !user.isBlocked;
+    else if (filterStatus === 'online') matchesStatus = user.onlineStatus === 'online';
+    else if (filterStatus === 'away') matchesStatus = user.onlineStatus === 'away';
+    else if (filterStatus === 'offline') matchesStatus = user.onlineStatus === 'offline' || !user.onlineStatus;
     
     return matchesSearch && matchesTier && matchesStatus;
   });
+
+  // Online counts
+  const onlineCount = registeredUsers.filter(u => u.onlineStatus === 'online').length;
+  const awayCount = registeredUsers.filter(u => u.onlineStatus === 'away').length;
 
   // Login Screen
   if (!isAuthenticated) {
@@ -320,12 +328,13 @@ export default function Admin() {
 
             <Card className="bg-gradient-to-br from-green-900/40 to-emerald-900/40 border-green-500/30 p-4">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg">
+                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg relative">
                   <Activity className="w-6 h-6 text-white" />
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-slate-900 animate-pulse"></span>
                 </div>
                 <div>
-                  <p className="text-slate-400 text-xs">Aktivë Sot</p>
-                  <p className="text-white text-2xl font-bold">{stats?.overview?.activeToday || 0}</p>
+                  <p className="text-slate-400 text-xs">Online Tani</p>
+                  <p className="text-white text-2xl font-bold">{registeredUsers.filter(u => u.onlineStatus === 'online').length}</p>
                 </div>
               </div>
             </Card>
@@ -410,11 +419,23 @@ export default function Admin() {
               {registeredUsers.slice(0, 5).map((user, i) => (
                 <div key={i} className="flex items-center justify-between p-3 bg-slate-700/30 rounded-xl">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">
-                      {(user.firstName?.[0] || user.email?.[0] || '?').toUpperCase()}
+                    <div className="relative">
+                      <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">
+                        {(user.firstName?.[0] || user.email?.[0] || '?').toUpperCase()}
+                      </div>
+                      <span className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-slate-700 ${
+                        user.onlineStatus === 'online' ? 'bg-green-500' :
+                        user.onlineStatus === 'away' ? 'bg-yellow-500' :
+                        'bg-slate-500'
+                      }`}></span>
                     </div>
                     <div>
-                      <p className="text-white font-medium">{user.firstName} {user.lastName}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-white font-medium">{user.firstName} {user.lastName}</p>
+                        {user.onlineStatus === 'online' && (
+                          <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                        )}
+                      </div>
                       <p className="text-slate-400 text-xs">{user.email}</p>
                     </div>
                   </div>
@@ -470,9 +491,34 @@ export default function Admin() {
               className="px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white focus:outline-none focus:border-purple-500/50"
             >
               <option value="all">Të gjithë</option>
-              <option value="active">Aktivë</option>
-              <option value="blocked">Të bllokuar</option>
+              <option value="online">🟢 Online tani</option>
+              <option value="away">🟡 Larg</option>
+              <option value="offline">⚫ Offline</option>
+              <option value="active">✅ Jo të bllokuar</option>
+              <option value="blocked">🚫 Të bllokuar</option>
             </select>
+          </div>
+
+          {/* Online Status Summary */}
+          <div className="flex flex-wrap items-center gap-4 mb-4 p-3 bg-slate-700/30 rounded-xl">
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
+              <span className="text-green-400 font-semibold">{onlineCount}</span>
+              <span className="text-slate-400 text-sm">Online</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 bg-yellow-500 rounded-full"></span>
+              <span className="text-yellow-400 font-semibold">{awayCount}</span>
+              <span className="text-slate-400 text-sm">Larg</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 bg-slate-500 rounded-full"></span>
+              <span className="text-slate-400 font-semibold">{registeredUsers.length - onlineCount - awayCount}</span>
+              <span className="text-slate-400 text-sm">Offline</span>
+            </div>
+            <div className="ml-auto text-slate-500 text-xs">
+              Total: {registeredUsers.length} përdorues
+            </div>
           </div>
 
           <div className="flex items-center justify-between mb-4">
@@ -493,13 +539,41 @@ export default function Admin() {
                   <div className="flex flex-col md:flex-row md:items-start justify-between gap-3">
                     <div className="flex-1">
                       <div className="flex flex-wrap items-center gap-2 mb-2">
-                        <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">
-                          {(user.firstName?.[0] || user.email?.[0] || '?').toUpperCase()}
+                        <div className="relative">
+                          <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">
+                            {(user.firstName?.[0] || user.email?.[0] || '?').toUpperCase()}
+                          </div>
+                          {/* Online Status Indicator */}
+                          <span className={`absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-slate-800 ${
+                            user.onlineStatus === 'online' ? 'bg-green-500 animate-pulse' :
+                            user.onlineStatus === 'away' ? 'bg-yellow-500' :
+                            'bg-slate-500'
+                          }`} title={
+                            user.onlineStatus === 'online' ? 'Online tani' :
+                            user.onlineStatus === 'away' ? 'Larg' :
+                            'Offline'
+                          }></span>
                         </div>
                         <div>
-                          <span className="text-white font-semibold">
-                            {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.username || user.email?.split('@')[0]}
-                          </span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-white font-semibold">
+                              {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.username || user.email?.split('@')[0]}
+                            </span>
+                            {/* Online Status Badge */}
+                            {user.onlineStatus === 'online' && (
+                              <span className="px-2 py-0.5 bg-green-500/20 text-green-300 rounded-lg text-xs font-semibold flex items-center gap-1">
+                                <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span> Online
+                              </span>
+                            )}
+                            {user.onlineStatus === 'away' && (
+                              <span className="px-2 py-0.5 bg-yellow-500/20 text-yellow-300 rounded-lg text-xs font-semibold">
+                                Larg
+                              </span>
+                            )}
+                          </div>
+                          {user.lastSeenText && user.onlineStatus !== 'online' && (
+                            <span className="text-slate-500 text-xs">{user.lastSeenText}</span>
+                          )}
                           {user.isBlocked && (
                             <span className="ml-2 px-2 py-0.5 bg-red-500/20 text-red-300 rounded-lg text-xs font-semibold">
                               <Ban className="w-3 h-3 inline mr-1" /> BLLOKUAR
@@ -663,12 +737,29 @@ export default function Admin() {
             
             <div className="space-y-4">
               <div className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-xl">
-                <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                  {(selectedUser.firstName?.[0] || selectedUser.email?.[0] || '?').toUpperCase()}
+                <div className="relative">
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                    {(selectedUser.firstName?.[0] || selectedUser.email?.[0] || '?').toUpperCase()}
+                  </div>
+                  <span className={`absolute bottom-0 right-0 w-5 h-5 rounded-full border-3 border-slate-900 ${
+                    selectedUser.onlineStatus === 'online' ? 'bg-green-500 animate-pulse' :
+                    selectedUser.onlineStatus === 'away' ? 'bg-yellow-500' :
+                    'bg-slate-500'
+                  }`}></span>
                 </div>
                 <div>
-                  <h3 className="text-white text-lg font-bold">{selectedUser.firstName} {selectedUser.lastName}</h3>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-white text-lg font-bold">{selectedUser.firstName} {selectedUser.lastName}</h3>
+                    {selectedUser.onlineStatus === 'online' && (
+                      <span className="px-2 py-0.5 bg-green-500/20 text-green-300 rounded-lg text-xs font-semibold flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span> Online
+                      </span>
+                    )}
+                  </div>
                   <p className="text-slate-400">{selectedUser.email}</p>
+                  {selectedUser.lastSeenText && selectedUser.onlineStatus !== 'online' && (
+                    <p className="text-slate-500 text-xs mt-1">Parë: {selectedUser.lastSeenText}</p>
+                  )}
                 </div>
               </div>
 

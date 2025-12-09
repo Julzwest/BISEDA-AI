@@ -1581,10 +1581,26 @@ app.post('/api/admin/users/:userId/block', checkAdminAuth, (req, res) => {
 app.get('/api/admin/registered-users', checkAdminAuth, async (req, res) => {
   try {
     const registeredUsers = await UserAccountModel.find({}).sort({ createdAt: -1 }).lean();
+    const now = new Date();
+    const fiveMinutesAgo = new Date(now - 5 * 60 * 1000); // 5 minutes
+    const fifteenMinutesAgo = new Date(now - 15 * 60 * 1000); // 15 minutes
     
     // Merge with usage data from in-memory users map
     const enrichedUsers = registeredUsers.map(regUser => {
       const usageData = getAllUsers().get(regUser.odId);
+      const lastActiveAt = usageData?.lastActiveAt || regUser.lastLogin;
+      const lastActiveDate = lastActiveAt ? new Date(lastActiveAt) : null;
+      
+      // Calculate online status
+      let onlineStatus = 'offline';
+      if (lastActiveDate) {
+        if (lastActiveDate >= fiveMinutesAgo) {
+          onlineStatus = 'online'; // Active in last 5 minutes
+        } else if (lastActiveDate >= fifteenMinutesAgo) {
+          onlineStatus = 'away'; // Active in last 15 minutes
+        }
+      }
+      
       return {
         ...regUser,
         subscriptionTier: usageData?.subscriptionTier || 'free_trial',
@@ -1593,13 +1609,17 @@ app.get('/api/admin/registered-users', checkAdminAuth, async (req, res) => {
         monthlyUsage: usageData?.monthlyUsage || { totalMessages: 0 },
         costTracking: usageData?.costTracking || { totalSpent: 0 },
         credits: usageData?.credits || 0,
-        lastActiveAt: usageData?.lastActiveAt
+        lastActiveAt: lastActiveAt,
+        onlineStatus: onlineStatus,
+        lastSeenText: lastActiveDate ? getLastSeenText(lastActiveDate, now) : 'Kurrë'
       };
     });
     
     res.json({
       users: enrichedUsers,
       total: enrichedUsers.length,
+      onlineCount: enrichedUsers.filter(u => u.onlineStatus === 'online').length,
+      awayCount: enrichedUsers.filter(u => u.onlineStatus === 'away').length,
       timestamp: new Date().toISOString()
     });
   } catch (error) {
@@ -1607,6 +1627,22 @@ app.get('/api/admin/registered-users', checkAdminAuth, async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch registered users' });
   }
 });
+
+// Helper function to get "last seen" text
+function getLastSeenText(lastActiveDate, now) {
+  const diffMs = now - lastActiveDate;
+  const diffMinutes = Math.floor(diffMs / (1000 * 60));
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  
+  if (diffMinutes < 1) return 'Tani online';
+  if (diffMinutes < 5) return 'Online';
+  if (diffMinutes < 60) return `${diffMinutes} min më parë`;
+  if (diffHours < 24) return `${diffHours} orë më parë`;
+  if (diffDays === 1) return 'Dje';
+  if (diffDays < 7) return `${diffDays} ditë më parë`;
+  return lastActiveDate.toLocaleDateString('sq-AL');
+}
 
 // Delete user (admin only)
 app.delete('/api/admin/users/:odId', checkAdminAuth, async (req, res) => {
