@@ -441,5 +441,10 @@ function saveUser(user) {
   // TODO: Save to database
 }
 
-export { User, getUser, saveUser };
+// Export users map for admin access
+function getAllUsers() {
+  return users;
+}
+
+export { User, getUser, saveUser, getAllUsers };
 

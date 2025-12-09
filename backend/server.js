@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import nodemailer from 'nodemailer';
 import mongoose from 'mongoose';
-import { getUser, saveUser } from './models/User.js';
+import { getUser, saveUser, getAllUsers } from './models/User.js';
 import stripeRoutes from './routes/stripe.js';
 import businessRoutes from './routes/businesses.js';
 import creditRoutes from './routes/credits.js';
@@ -1442,7 +1442,7 @@ app.post('/api/admin/auth', (req, res) => {
 // Get all users and admin stats
 app.get('/api/admin/stats', checkAdminAuth, (req, res) => {
   try {
-    const allUsers = Array.from(users.values());
+    const allUsers = Array.from(getAllUsers().values());
     
     // Calculate overall stats
     const totalUsers = allUsers.length;
@@ -1519,7 +1519,7 @@ app.get('/api/admin/stats', checkAdminAuth, (req, res) => {
 // Get all users list
 app.get('/api/admin/users', checkAdminAuth, (req, res) => {
   try {
-    const allUsers = Array.from(users.values());
+    const allUsers = Array.from(getAllUsers().values());
     
     const usersList = allUsers.map(u => ({
       userId: u.userId,
@@ -1557,7 +1557,7 @@ app.post('/api/admin/users/:userId/block', checkAdminAuth, (req, res) => {
     const { userId } = req.params;
     const { blocked } = req.body;
     
-    const user = users.get(userId);
+    const user = getAllUsers().get(userId);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
@@ -1574,6 +1574,96 @@ app.post('/api/admin/users/:userId/block', checkAdminAuth, (req, res) => {
   } catch (error) {
     console.error('Block user error:', error);
     res.status(500).json({ error: 'Failed to update user status' });
+  }
+});
+
+// Get registered users (from MongoDB UserAccount)
+app.get('/api/admin/registered-users', checkAdminAuth, async (req, res) => {
+  try {
+    const registeredUsers = await UserAccountModel.find({}).sort({ createdAt: -1 }).lean();
+    
+    // Merge with usage data from in-memory users map
+    const enrichedUsers = registeredUsers.map(regUser => {
+      const usageData = getAllUsers().get(regUser.odId);
+      return {
+        ...regUser,
+        subscriptionTier: usageData?.subscriptionTier || 'free_trial',
+        subscriptionStatus: usageData?.subscriptionStatus || 'active',
+        dailyUsage: usageData?.dailyUsage || { messages: 0 },
+        monthlyUsage: usageData?.monthlyUsage || { totalMessages: 0 },
+        costTracking: usageData?.costTracking || { totalSpent: 0 },
+        credits: usageData?.credits || 0,
+        lastActiveAt: usageData?.lastActiveAt
+      };
+    });
+    
+    res.json({
+      users: enrichedUsers,
+      total: enrichedUsers.length,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Admin registered users error:', error);
+    res.status(500).json({ error: 'Failed to fetch registered users' });
+  }
+});
+
+// Create test user (admin only)
+app.post('/api/admin/create-test-user', checkAdminAuth, async (req, res) => {
+  try {
+    const timestamp = Date.now();
+    const testUserId = `test_${timestamp}`;
+    const testUsername = `testuser_${timestamp}`;
+    
+    // Create account in MongoDB
+    const testAccount = new UserAccountModel({
+      odId: testUserId,
+      username: testUsername,
+      firstName: 'Test',
+      lastName: 'Përdorues',
+      email: `${testUsername}@biseda.ai`,
+      password: 'testpassword123',
+      country: 'AL',
+      isVerified: true,
+      createdAt: new Date(),
+      lastLogin: new Date()
+    });
+    
+    await testAccount.save();
+    
+    // Create usage profile using getUser (which creates a proper User instance)
+    const user = getUser(testUserId);
+    user.subscriptionTier = 'pro';
+    user.subscriptionStatus = 'active';
+    user.subscriptionExpiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days
+    user.dailyUsage = { messages: 5, date: new Date().toDateString(), imageAnalyses: 0 };
+    user.monthlyUsage = { 
+      month: new Date().getMonth(), 
+      year: new Date().getFullYear(),
+      totalMessages: 45, 
+      totalImageAnalyses: 0,
+      totalCost: 0.0135,
+      totalTokens: 500,
+      totalOpenAICalls: 45
+    };
+    user.costTracking = { totalSpent: 0.0135, lastResetDate: new Date().toDateString(), dailyCost: 0.003 };
+    user.credits = 10;
+    user.lastActiveAt = new Date();
+    saveUser(user);
+    
+    res.json({
+      success: true,
+      message: 'Test user created successfully',
+      user: {
+        odId: testUserId,
+        email: testAccount.email,
+        name: `${testAccount.firstName} ${testAccount.lastName}`,
+        username: testUsername
+      }
+    });
+  } catch (error) {
+    console.error('Create test user error:', error);
+    res.status(500).json({ error: 'Failed to create test user', details: error.message });
   }
 });
 

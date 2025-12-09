@@ -77,12 +77,25 @@ function App() {
     );
   }
 
-  // Check if current URL is privacy policy (allow access without auth)
+  // Check if current URL is privacy policy or admin (allow access without main app auth)
   const isPrivacyPage = window.location.hash.includes('privacy');
+  const isAdminPage = window.location.hash.includes('admin');
   
-  // Show auth page if not authenticated (except for privacy policy)
-  if (!isAuthenticated && !isPrivacyPage) {
+  // Show auth page if not authenticated (except for privacy policy and admin)
+  if (!isAuthenticated && !isPrivacyPage && !isAdminPage) {
     return <Auth onAuthSuccess={handleAuthSuccess} />;
+  }
+  
+  // Show admin dashboard without main app auth (admin has its own authentication)
+  if (!isAuthenticated && isAdminPage) {
+    return (
+      <Router>
+        <Routes>
+          <Route path="/admin" element={<Admin />} />
+          <Route path="*" element={<Navigate to="/admin" replace />} />
+        </Routes>
+      </Router>
+    );
   }
   
   // Show privacy policy without auth
