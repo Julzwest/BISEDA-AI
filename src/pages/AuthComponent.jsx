@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { MessageSquare, Mail, Lock, Eye, EyeOff, Sparkles, ArrowRight, Heart, Zap, Star, Crown, ArrowLeft, KeyRound } from 'lucide-react';
 import { getBackendUrl } from '@/utils/getBackendUrl';
 import { Capacitor } from '@capacitor/core';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 // Free trial constants (exported for use elsewhere)
 export const FREE_TRIAL_DAYS = 3;
@@ -33,7 +34,7 @@ export const clearAllUserData = () => {
 };
 
 export default function Auth({ onAuthSuccess }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isLogin, setIsLogin] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -53,14 +54,80 @@ export default function Auth({ onAuthSuccess }) {
   const [newPassword, setNewPassword] = useState('');
 
   const backendUrl = getBackendUrl();
+  
+  // Check if running on iOS native app
+  const isNativeIOS = Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'ios';
+
+  // Handle Apple Sign In
+  const handleAppleSignIn = async () => {
+    if (isNativeIOS) {
+      // Native iOS Apple Sign In
+      try {
+        const { SignInWithApple } = await import('@capacitor-community/apple-sign-in');
+        const result = await SignInWithApple.authorize({
+          clientId: 'com.bisedaai.app',
+          redirectURI: 'https://bisedaai.com/auth/callback',
+          scopes: 'email name',
+          state: 'auth',
+          nonce: Math.random().toString(36).substring(2, 15)
+        });
+        
+        if (result.response) {
+          // Send to backend for verification
+          const response = await fetch(`${backendUrl}/api/auth/apple`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              identityToken: result.response.identityToken,
+              user: result.response.user,
+              email: result.response.email,
+              fullName: result.response.givenName ? {
+                givenName: result.response.givenName,
+                familyName: result.response.familyName
+              } : null
+            })
+          });
+          
+          const data = await response.json();
+          
+          if (response.ok && data.user) {
+            localStorage.setItem('userId', data.user.odId || data.user.userId);
+            localStorage.setItem('userEmail', data.user.email);
+            localStorage.setItem('userName', data.user.firstName || data.user.email?.split('@')[0]);
+            localStorage.setItem('isAuthenticated', 'true');
+            localStorage.setItem('userCountry', data.user.country || 'AL');
+            
+            if (onAuthSuccess) {
+              onAuthSuccess({
+                userId: data.user.odId || data.user.userId,
+                email: data.user.email,
+                userName: data.user.firstName || data.user.email?.split('@')[0],
+                country: data.user.country || 'AL'
+              });
+            }
+          } else {
+            setError(t('authErrors.appleFailed'));
+          }
+        }
+      } catch (err) {
+        console.error('Apple Sign In error:', err);
+        if (err.message !== 'The user canceled the authorization attempt.') {
+          setError(t('authErrors.appleFailed'));
+        }
+      }
+    } else {
+      // Web - show message that Apple Sign In is only available on iOS
+      setError(t('authErrors.appleIOSOnly'));
+    }
+  };
 
   // Rotating tagline state
   const [taglineIndex, setTaglineIndex] = useState(0);
   const taglines = [
-    '✨ AI që të kupton vërtetë',
-    '✨ AI që të bën irresistible',
-    '✨ Fillo biseda që lënë përshtypje',
-    '✨ Takime që fillojnë me mesazhe perfekte'
+    t('auth.tagline1'),
+    t('auth.tagline2'),
+    t('auth.tagline3'),
+    t('auth.tagline4')
   ];
 
   useEffect(() => {
@@ -86,22 +153,22 @@ export default function Auth({ onAuthSuccess }) {
     setError('');
 
     if (!isLogin && !firstName.trim()) {
-      setError('Shkruaj emrin tënd ✏️');
+      setError(t('authErrors.enterFirstName'));
       return;
     }
     
     if (!isLogin && !lastName.trim()) {
-      setError('Shkruaj mbiemrin tënd ✏️');
+      setError(t('authErrors.enterLastName'));
       return;
     }
 
     if (!email.trim()) {
-      setError('Shkruaj email-in tënd 📧');
+      setError(t('authErrors.enterEmail'));
       return;
     }
     
     if (!password || password.length < 6) {
-      setError('Fjalëkalimi duhet 6+ karaktere 🔐');
+      setError(t('authErrors.passwordLength'));
       return;
     }
 
@@ -160,11 +227,11 @@ export default function Auth({ onAuthSuccess }) {
           });
         }
       } else {
-        setError(data.error || 'Diçka shkoi keq 😅');
+        setError(data.error || t('authErrors.somethingWrong'));
       }
     } catch (err) {
       console.error('Auth error:', err);
-      setError('Gabim lidhje. Provo përsëri! 🔄');
+      setError(t('authErrors.connectionError'));
     } finally {
       setLoading(false);
     }
@@ -173,6 +240,11 @@ export default function Auth({ onAuthSuccess }) {
   if (forgotPasswordMode) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        {/* Language Switcher */}
+        <div className="fixed top-4 right-4 z-50">
+          <LanguageSwitcher />
+        </div>
+        
         <Card className="bg-slate-900/80 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20 max-w-md w-full">
           <button
             onClick={() => {
@@ -186,12 +258,12 @@ export default function Auth({ onAuthSuccess }) {
             className="mb-6 flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span>Kthehu</span>
+            <span>{t('tips.back')}</span>
           </button>
 
           <h2 className="text-2xl font-bold text-white mb-6 text-center">
             <KeyRound className="w-8 h-8 inline-block mr-2" />
-            Rivendos Fjalëkalimin
+            {t('auth.resetPassword')}
           </h2>
 
           {resetStep === 1 && (
@@ -200,13 +272,13 @@ export default function Auth({ onAuthSuccess }) {
                 type="email"
                 value={resetEmail}
                 onChange={(e) => setResetEmail(e.target.value)}
-                placeholder="Email 📧"
+                placeholder={t('auth.email') + " 📧"}
                 className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all"
               />
               <Button
                 onClick={async () => {
                   if (!resetEmail.trim()) {
-                    setError('Shkruaj email-in tënd 📧');
+                    setError(t('authErrors.enterEmail'));
                     return;
                   }
                   setLoading(true);
@@ -219,13 +291,13 @@ export default function Auth({ onAuthSuccess }) {
                     const data = await response.json();
                     if (response.ok) {
                       setResetStep(2);
-                      setSuccessMessage('Kodi u dërgua në email! 📧');
+                      setSuccessMessage(t('auth.codeSent'));
                       setError('');
                     } else {
-                      setError(data.error || 'Diçka shkoi keq 😅');
+                      setError(data.error || t('authErrors.somethingWrong'));
                     }
                   } catch (err) {
-                    setError('Gabim lidhje. Provo përsëri! 🔄');
+                    setError(t('authErrors.connectionError'));
                   } finally {
                     setLoading(false);
                   }
@@ -233,7 +305,7 @@ export default function Auth({ onAuthSuccess }) {
                 disabled={loading}
                 className="w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl"
               >
-                {loading ? 'Duke dërguar...' : 'Dërgo Kodin'}
+                {loading ? t('common.loading') : t('auth.sendCode')}
               </Button>
             </div>
           )}
@@ -244,14 +316,14 @@ export default function Auth({ onAuthSuccess }) {
                 type="text"
                 value={resetCode}
                 onChange={(e) => setResetCode(e.target.value)}
-                placeholder="Kodi 6-shifror"
+                placeholder={t('auth.sixDigitCode')}
                 maxLength={6}
                 className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-center text-2xl tracking-widest"
               />
               <Button
                 onClick={async () => {
                   if (!resetCode || resetCode.length !== 6) {
-                    setError('Shkruaj kodin 6-shifror 🔢');
+                    setError(t('authErrors.enterCode'));
                     return;
                   }
                   setLoading(true);
@@ -266,10 +338,10 @@ export default function Auth({ onAuthSuccess }) {
                       setResetStep(3);
                       setError('');
                     } else {
-                      setError(data.error || 'Kodi është i gabuar ❌');
+                      setError(data.error || t('authErrors.wrongCode'));
                     }
                   } catch (err) {
-                    setError('Gabim lidhje. Provo përsëri! 🔄');
+                    setError(t('authErrors.connectionError'));
                   } finally {
                     setLoading(false);
                   }
@@ -277,7 +349,7 @@ export default function Auth({ onAuthSuccess }) {
                 disabled={loading}
                 className="w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl"
               >
-                {loading ? 'Duke verifikuar...' : 'Verifiko Kodin'}
+                {loading ? t('common.loading') : t('auth.verifyCode')}
               </Button>
             </div>
           )}
@@ -288,13 +360,13 @@ export default function Auth({ onAuthSuccess }) {
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="Fjalëkalim i ri 🔐"
+                placeholder={t('auth.newPassword') + " 🔐"}
                 className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all"
               />
               <Button
                 onClick={async () => {
                   if (!newPassword || newPassword.length < 6) {
-                    setError('Fjalëkalimi duhet 6+ karaktere 🔐');
+                    setError(t('authErrors.passwordLength'));
                     return;
                   }
                   setLoading(true);
@@ -310,7 +382,7 @@ export default function Auth({ onAuthSuccess }) {
                     });
                     const data = await response.json();
                     if (response.ok) {
-                      setSuccessMessage('Fjalëkalimi u ndryshua! ✅');
+                      setSuccessMessage(t('auth.passwordChanged'));
                       setTimeout(() => {
                         setForgotPasswordMode(false);
                         setIsLogin(true);
@@ -322,10 +394,10 @@ export default function Auth({ onAuthSuccess }) {
                         setSuccessMessage('');
                       }, 2000);
                     } else {
-                      setError(data.error || 'Diçka shkoi keq 😅');
+                      setError(data.error || t('authErrors.somethingWrong'));
                     }
                   } catch (err) {
-                    setError('Gabim lidhje. Provo përsëri! 🔄');
+                    setError(t('authErrors.connectionError'));
                   } finally {
                     setLoading(false);
                   }
@@ -333,7 +405,7 @@ export default function Auth({ onAuthSuccess }) {
                 disabled={loading}
                 className="w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl"
               >
-                {loading ? 'Duke ndryshuar...' : 'Ndrysho Fjalëkalimin'}
+                {loading ? t('common.loading') : t('auth.changePassword')}
               </Button>
             </div>
           )}
@@ -356,6 +428,11 @@ export default function Auth({ onAuthSuccess }) {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      {/* Language Switcher - Fixed position */}
+      <div className="fixed top-4 right-4 z-50">
+        <LanguageSwitcher />
+      </div>
+      
       <div className="w-full max-w-md">
         {/* Logo & Header - Same as Homepage */}
         <div className="text-center mb-8">
@@ -408,7 +485,7 @@ export default function Auth({ onAuthSuccess }) {
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              Regjistrohu
+              {t('auth.register')}
             </button>
             <button
               onClick={() => { setIsLogin(true); setError(''); }}
@@ -418,7 +495,7 @@ export default function Auth({ onAuthSuccess }) {
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              Hyr
+              {t('auth.login')}
             </button>
           </div>
 
@@ -434,7 +511,7 @@ export default function Auth({ onAuthSuccess }) {
                       value={firstName}
                       onChange={(e) => { setFirstName(e.target.value); setError(''); }}
                       className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
-                      placeholder="Emri ✏️"
+                      placeholder={t('auth.firstName') + " ✏️"}
                       style={{ fontSize: '16px' }}
                       required
                     />
@@ -445,7 +522,7 @@ export default function Auth({ onAuthSuccess }) {
                       value={lastName}
                       onChange={(e) => { setLastName(e.target.value); setError(''); }}
                       className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
-                      placeholder="Mbiemri ✏️"
+                      placeholder={t('auth.lastName') + " ✏️"}
                       style={{ fontSize: '16px' }}
                       required
                     />
@@ -461,7 +538,7 @@ export default function Auth({ onAuthSuccess }) {
                 value={email}
                 onChange={(e) => { setEmail(e.target.value); setError(''); }}
                 className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
-                placeholder="Email 📧"
+                placeholder={t('auth.email') + " 📧"}
                 style={{ fontSize: '16px' }}
                 required
               />
@@ -474,7 +551,7 @@ export default function Auth({ onAuthSuccess }) {
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); setError(''); }}
                 className="w-full px-4 py-4 pr-12 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
-                placeholder="Fjalëkalimi 🔐"
+                placeholder={t('auth.password') + " 🔐"}
                 style={{ fontSize: '16px' }}
                 required
               />
@@ -506,7 +583,7 @@ export default function Auth({ onAuthSuccess }) {
                     <div className="w-4 h-4 border-3 border-white/30 border-t-white rounded-full animate-spin"></div>
                   </div>
                 ) : (
-                  <span>{isLogin ? '🚀 Hyr' : '✨ Krijo Llogari'}</span>
+                  <span>{isLogin ? ('🚀 ' + t('auth.login')) : ('✨ ' + t('auth.createAccount'))}</span>
                 )}
               </Button>
 
@@ -516,19 +593,20 @@ export default function Auth({ onAuthSuccess }) {
                 disabled={loading}
                 className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-bold h-14 rounded-xl text-base shadow-lg shadow-cyan-500/20 transition-all duration-300 inline-flex items-center justify-center disabled:opacity-50"
               >
-                👤 Vazhdo si Guest
+                👤 {t('auth.guest')}
               </button>
             </div>
 
             {/* Apple Sign In Button */}
             <button
               type="button"
+              onClick={handleAppleSignIn}
               className="w-full bg-white hover:bg-gray-100 text-black font-semibold h-14 rounded-xl text-base shadow-lg transition-all duration-300 flex items-center justify-center gap-3"
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="black">
                 <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
               </svg>
-              Vazhdo me Apple
+              {t('auth.continueWithApple')}
             </button>
           </form>
 
@@ -539,7 +617,7 @@ export default function Auth({ onAuthSuccess }) {
                 onClick={() => setForgotPasswordMode(true)}
                 className="text-sm text-purple-400 hover:text-purple-300 transition-colors w-full text-center"
               >
-                🔑 Harruat fjalëkalimin?
+                🔑 {t('auth.forgotPassword')}
               </button>
             </div>
           )}
@@ -547,8 +625,8 @@ export default function Auth({ onAuthSuccess }) {
           {/* Terms */}
           <div className="mt-6 text-center">
             <p className="text-slate-500 text-xs">
-              Duke vazhduar, pranoni{' '}
-              <span className="text-purple-400 font-medium">Kushtet & Privacine</span>
+              {t('auth.termsAgree')}{' '}
+              <span className="text-purple-400 font-medium">{t('auth.terms')} & {t('auth.privacy')}</span>
             </p>
           </div>
         </Card>
