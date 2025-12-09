@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { createPageUrl } from '../utils';
 import { Lightbulb, TrendingUp, Zap, Star, Sparkles, Heart, MessageSquare, Calendar, Bot, Gift, PartyPopper } from 'lucide-react';
 import { Card } from '@/components/ui/card';
@@ -10,6 +10,33 @@ import UpgradeModal from '@/components/UpgradeModal';
 export default function Home() {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [userName, setUserName] = useState(null);
+  const navigate = useNavigate();
+  
+  // Secret admin access - tap logo 6 times
+  const [logoTapCount, setLogoTapCount] = useState(0);
+  const tapTimeoutRef = useRef(null);
+  
+  const handleLogoTap = () => {
+    // Clear existing timeout
+    if (tapTimeoutRef.current) {
+      clearTimeout(tapTimeoutRef.current);
+    }
+    
+    const newCount = logoTapCount + 1;
+    setLogoTapCount(newCount);
+    
+    // Check if reached 6 taps
+    if (newCount >= 6) {
+      setLogoTapCount(0);
+      navigate('/admin');
+      return;
+    }
+    
+    // Reset count after 2 seconds of no taps
+    tapTimeoutRef.current = setTimeout(() => {
+      setLogoTapCount(0);
+    }, 2000);
+  };
 
   useEffect(() => {
     // Get user name if exists
@@ -17,6 +44,13 @@ export default function Home() {
     if (name) {
       setUserName(name);
     }
+    
+    // Cleanup timeout on unmount
+    return () => {
+      if (tapTimeoutRef.current) {
+        clearTimeout(tapTimeoutRef.current);
+      }
+    };
   }, []);
 
   const features = [
@@ -70,10 +104,14 @@ export default function Home() {
       <div className="px-4 pt-6 pb-6 w-full max-w-full">
         <div className="text-center mb-6">
           {/* Logo - Speech bubbles representing conversation */}
-          <div className="inline-block mb-5 relative">
+          {/* Secret: Tap 6 times to access admin dashboard */}
+          <div 
+            className="inline-block mb-5 relative cursor-pointer select-none"
+            onClick={handleLogoTap}
+          >
             <div className="relative">
               {/* Main speech bubble */}
-              <div className="w-24 h-24 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/50 relative overflow-hidden">
+              <div className={`w-24 h-24 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/50 relative overflow-hidden transition-transform ${logoTapCount > 0 ? 'scale-95' : ''}`}>
                 {/* Animated background effect */}
                 <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
                 {/* Speech bubble icon */}
@@ -86,6 +124,17 @@ export default function Home() {
                 <div className="w-3 h-3 bg-white rounded-full"></div>
               </div>
             </div>
+            {/* Hidden tap counter indicator (only shows when tapping) */}
+            {logoTapCount > 0 && logoTapCount < 6 && (
+              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 flex gap-1">
+                {[...Array(6)].map((_, i) => (
+                  <div 
+                    key={i} 
+                    className={`w-1.5 h-1.5 rounded-full transition-all ${i < logoTapCount ? 'bg-purple-400' : 'bg-slate-600'}`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
           
           {/* App Name with proper .ai styling */}
