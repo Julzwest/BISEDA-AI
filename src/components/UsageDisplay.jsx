@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Zap, TrendingUp, Image as ImageIcon } from 'lucide-react';
@@ -6,6 +7,7 @@ import CreditsModal from './CreditsModal';
 import { getBackendUrl } from '@/utils/getBackendUrl';
 
 export default function UsageDisplay({ onUpgrade, onLimitReached }) {
+  const { t } = useTranslation();
   const [usage, setUsage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showCreditsModal, setShowCreditsModal] = useState(false);
@@ -56,12 +58,12 @@ export default function UsageDisplay({ onUpgrade, onLimitReached }) {
         <div className="flex items-center gap-2">
           <Zap className="w-5 h-5 text-amber-400" />
           <h3 className="text-sm font-semibold text-white">
-            {tier === 'free_trial' ? 'Provë Falas' : 
-             tier === 'free' ? 'Plan Falas' : 
-             tier === 'starter' ? 'Plan Starter (€6.99)' : 
-             tier === 'pro' ? 'Plan Pro (€12.99)' : 
-             tier === 'elite' ? 'Plan Elite (€19.99)' : 
-             tier === 'premium' ? 'Plan Elite' : 'Plan Bazë'}
+            {tier === 'free_trial' ? t('usage.freeTrial') : 
+             tier === 'free' ? t('usage.freePlan') : 
+             tier === 'starter' ? t('usage.starterPlan') : 
+             tier === 'pro' ? t('usage.proPlan') : 
+             tier === 'elite' ? t('usage.elitePlan') : 
+             tier === 'premium' ? t('usage.elitePlan') : t('usage.basePlan')}
           </h3>
         </div>
         <div className="flex gap-2">
@@ -71,7 +73,7 @@ export default function UsageDisplay({ onUpgrade, onLimitReached }) {
               size="sm"
               className="bg-purple-600 hover:bg-purple-700 text-white text-xs h-7 px-3"
             >
-              Bli Kredite
+              {t('usage.buyCredits')}
             </Button>
           )}
           {(tier === 'free_trial' || tier === 'free' || tier === 'starter' || tier === 'pro') && (
@@ -80,7 +82,7 @@ export default function UsageDisplay({ onUpgrade, onLimitReached }) {
               size="sm"
               className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white text-xs h-7 px-3"
             >
-              {(tier === 'free_trial' || tier === 'free') ? 'Përmirëso' : 'Përmirëso Më Shumë'}
+              {(tier === 'free_trial' || tier === 'free') ? t('home.upgrade') : t('usage.upgradeMore')}
             </Button>
           )}
         </div>
@@ -90,14 +92,14 @@ export default function UsageDisplay({ onUpgrade, onLimitReached }) {
         {credits !== undefined && credits > 0 && (
           <div className="mb-2 p-2 bg-purple-500/10 border border-purple-500/30 rounded-lg">
             <div className="flex items-center justify-between">
-              <span className="text-xs text-purple-300">Kredite</span>
+              <span className="text-xs text-purple-300">{t('usage.credits')}</span>
               <span className="text-sm font-semibold text-purple-300">{credits}</span>
             </div>
           </div>
         )}
         <div>
           <div className="flex justify-between text-xs text-slate-400 mb-1">
-            <span>Mesazhe Sot</span>
+            <span>{t('home.messagesRemaining')}</span>
             <span className={isNearLimit ? 'text-red-400 font-semibold' : ''}>
               {dailyUsage.messages} / {dailyUsage.messagesLimit}
             </span>
@@ -119,7 +121,7 @@ export default function UsageDisplay({ onUpgrade, onLimitReached }) {
         {dailyUsage.remainingMessages === 0 && (
           <div className="mt-3 p-2 bg-red-500/10 border border-red-500/30 rounded-lg">
             <p className="text-xs text-red-400 text-center">
-              Limiti ditor u arrit! {tier === 'free' && 'Përmirëso për të vazhduar bisedën.'}
+              {t('usage.limitReached')} {tier === 'free' && t('usage.upgradeToChat')}
             </p>
           </div>
         )}
@@ -127,7 +129,7 @@ export default function UsageDisplay({ onUpgrade, onLimitReached }) {
         {isNearLimit && !isAtLimit && (tier === 'free' || tier === 'free_trial') && (
           <div className="mt-2 p-2 bg-amber-500/10 border border-amber-500/30 rounded-lg">
             <p className="text-xs text-amber-400 text-center">
-              Pothuajse në limitin tënd! Përmirëso për mesazhe të pakufizuara.
+              {t('home.limitWarning')}
             </p>
           </div>
         )}

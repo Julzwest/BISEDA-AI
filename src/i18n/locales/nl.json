@@ -178,6 +178,20 @@
     "yearly": "Jaarlijks",
     "choosePlan": "Kies Plan"
   },
+  "usage": {
+    "freeTrial": "Gratis Proefperiode",
+    "freePlan": "Gratis Plan",
+    "starterPlan": "Starter Plan (€6.99)",
+    "proPlan": "Pro Plan (€12.99)",
+    "elitePlan": "Elite Plan (€19.99)",
+    "basePlan": "Basis Plan",
+    "buyCredits": "Credits Kopen",
+    "upgradeMore": "Meer Upgraden",
+    "credits": "Credits",
+    "limitReached": "Dagelijkse limiet bereikt!",
+    "upgradeToChat": "Upgrade om verder te chatten.",
+    "screenshotAnalysis": "gratis analyses over"
+  },
   "country": {
     "selectCountry": "Selecteer Land",
     "hint": "Selecteer land om lokale evenementen en dates te zien"
@@ -185,6 +199,34 @@
   "language": {
     "selectLanguage": "Selecteer Taal",
     "hint": "Selecteer app taal"
+  },
+  "plans": {
+    "mostPopular": "Meest Populair",
+    "select": "Selecteer",
+    "subscribeWeb": "Abonneer op Web",
+    "webSubscription": "Om te abonneren, bezoek bisedaai.com vanuit je browser.",
+    "securePayment": "Veilige betaling met Stripe. Annuleer wanneer je wilt.",
+    "starter": {
+      "messages": "75 berichten per dag",
+      "categories": "Alle categorieën",
+      "adultContent": "Volwassen content",
+      "aiCoach": "AI Coach chat",
+      "tips": "Dating tips"
+    },
+    "pro": {
+      "messages": "200 berichten per dag",
+      "starterFeatures": "Alles van Starter",
+      "imageAnalysis": "30 beeldanalyses/dag",
+      "advancedAI": "Geavanceerde AI-antwoorden",
+      "prioritySupport": "Prioriteit support"
+    },
+    "elite": {
+      "messages": "500 berichten per dag",
+      "proFeatures": "Alles van Pro",
+      "imageAnalysis": "100 beeldanalyses/dag",
+      "vipSupport": "VIP-support 24/7",
+      "earlyAccess": "Vroege toegang tot nieuwe functies"
+    }
   }
 }
 

@@ -178,6 +178,20 @@
     "yearly": "Vjetor",
     "choosePlan": "Zgjidh Planin"
   },
+  "usage": {
+    "freeTrial": "Provë Falas",
+    "freePlan": "Plan Falas",
+    "starterPlan": "Plan Starter (€6.99)",
+    "proPlan": "Plan Pro (€12.99)",
+    "elitePlan": "Plan Elite (€19.99)",
+    "basePlan": "Plan Bazë",
+    "buyCredits": "Bli Kredite",
+    "upgradeMore": "Përmirëso Më Shumë",
+    "credits": "Kredite",
+    "limitReached": "Limiti ditor u arrit!",
+    "upgradeToChat": "Përmirëso për të vazhduar bisedën.",
+    "screenshotAnalysis": "analiza falas mbetur"
+  },
   "country": {
     "selectCountry": "Zgjidh Vendin",
     "hint": "Zgjidh vendin për të parë evente dhe takime lokale"
@@ -185,6 +199,34 @@
   "language": {
     "selectLanguage": "Zgjidh Gjuhën",
     "hint": "Zgjidh gjuhën e aplikacionit"
+  },
+  "plans": {
+    "mostPopular": "Më Popullor",
+    "select": "Zgjidh",
+    "subscribeWeb": "Abonohu në Web",
+    "webSubscription": "Për të abonuar, vizito bisedaai.com nga browseri yt.",
+    "securePayment": "Pagesë e sigurt me Stripe. Anulo kur të duash.",
+    "starter": {
+      "messages": "75 mesazhe në ditë",
+      "categories": "Të gjitha kategoritë",
+      "adultContent": "Përmbajtje për të rritur",
+      "aiCoach": "Biseda AI Coach",
+      "tips": "Këshilla & tips dating"
+    },
+    "pro": {
+      "messages": "200 mesazhe në ditë",
+      "starterFeatures": "Gjithçka nga Starter",
+      "imageAnalysis": "30 analiza imazhesh/ditë",
+      "advancedAI": "Përgjigje AI të avancuara",
+      "prioritySupport": "Mbështetje prioritare"
+    },
+    "elite": {
+      "messages": "500 mesazhe në ditë",
+      "proFeatures": "Gjithçka nga Pro",
+      "imageAnalysis": "100 analiza imazhesh/ditë",
+      "vipSupport": "Mbështetje VIP 24/7",
+      "earlyAccess": "Akses i hershëm në veçori të reja"
+    }
   }
 }
 

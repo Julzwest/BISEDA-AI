@@ -178,6 +178,20 @@
     "yearly": "Annuel",
     "choosePlan": "Choisir un plan"
   },
+  "usage": {
+    "freeTrial": "Essai Gratuit",
+    "freePlan": "Plan Gratuit",
+    "starterPlan": "Plan Starter (€6.99)",
+    "proPlan": "Plan Pro (€12.99)",
+    "elitePlan": "Plan Elite (€19.99)",
+    "basePlan": "Plan de Base",
+    "buyCredits": "Acheter des Crédits",
+    "upgradeMore": "Améliorer Plus",
+    "credits": "Crédits",
+    "limitReached": "Limite quotidienne atteinte!",
+    "upgradeToChat": "Améliorez pour continuer à discuter.",
+    "screenshotAnalysis": "analyses gratuites restantes"
+  },
   "country": {
     "selectCountry": "Sélectionner le pays",
     "hint": "Sélectionne le pays pour voir les événements et rendez-vous locaux"
@@ -185,6 +199,34 @@
   "language": {
     "selectLanguage": "Sélectionner la langue",
     "hint": "Sélectionne la langue de l'application"
+  },
+  "plans": {
+    "mostPopular": "Plus Populaire",
+    "select": "Sélectionner",
+    "subscribeWeb": "S'abonner sur le Web",
+    "webSubscription": "Pour vous abonner, visitez bisedaai.com depuis votre navigateur.",
+    "securePayment": "Paiement sécurisé avec Stripe. Annulez quand vous voulez.",
+    "starter": {
+      "messages": "75 messages par jour",
+      "categories": "Toutes les catégories",
+      "adultContent": "Contenu pour adultes",
+      "aiCoach": "Chat AI Coach",
+      "tips": "Conseils de rencontres"
+    },
+    "pro": {
+      "messages": "200 messages par jour",
+      "starterFeatures": "Tout de Starter",
+      "imageAnalysis": "30 analyses d'images/jour",
+      "advancedAI": "Réponses AI avancées",
+      "prioritySupport": "Support prioritaire"
+    },
+    "elite": {
+      "messages": "500 messages par jour",
+      "proFeatures": "Tout de Pro",
+      "imageAnalysis": "100 analyses d'images/jour",
+      "vipSupport": "Support VIP 24/7",
+      "earlyAccess": "Accès anticipé aux nouvelles fonctionnalités"
+    }
   }
 }
 

@@ -178,6 +178,20 @@
     "yearly": "Ετήσια",
     "choosePlan": "Επίλεξε Πλάνο"
   },
+  "usage": {
+    "freeTrial": "Δωρεάν Δοκιμή",
+    "freePlan": "Δωρεάν Πλάνο",
+    "starterPlan": "Starter Πλάνο (€6.99)",
+    "proPlan": "Pro Πλάνο (€12.99)",
+    "elitePlan": "Elite Πλάνο (€19.99)",
+    "basePlan": "Βασικό Πλάνο",
+    "buyCredits": "Αγορά Πιστώσεων",
+    "upgradeMore": "Αναβάθμισε Περισσότερο",
+    "credits": "Πιστώσεις",
+    "limitReached": "Το ημερήσιο όριο επιτεύχθηκε!",
+    "upgradeToChat": "Αναβάθμισε για να συνεχίσεις τη συνομιλία.",
+    "screenshotAnalysis": "δωρεάν αναλύσεις απομένουν"
+  },
   "country": {
     "selectCountry": "Επίλεξε Χώρα",
     "hint": "Επίλεξε χώρα για να δεις τοπικές εκδηλώσεις και ραντεβού"
@@ -185,6 +199,34 @@
   "language": {
     "selectLanguage": "Επίλεξε Γλώσσα",
     "hint": "Επίλεξε τη γλώσσα της εφαρμογής"
+  },
+  "plans": {
+    "mostPopular": "Πιο Δημοφιλές",
+    "select": "Επίλεξε",
+    "subscribeWeb": "Εγγραφή στο Web",
+    "webSubscription": "Για εγγραφή, επισκεφθείτε το bisedaai.com από τον browser σας.",
+    "securePayment": "Ασφαλής πληρωμή με Stripe. Ακύρωση οποτεδήποτε.",
+    "starter": {
+      "messages": "75 μηνύματα την ημέρα",
+      "categories": "Όλες οι κατηγορίες",
+      "adultContent": "Περιεχόμενο για ενήλικες",
+      "aiCoach": "AI Coach chat",
+      "tips": "Συμβουλές γνωριμιών"
+    },
+    "pro": {
+      "messages": "200 μηνύματα την ημέρα",
+      "starterFeatures": "Όλα από το Starter",
+      "imageAnalysis": "30 αναλύσεις εικόνων/ημέρα",
+      "advancedAI": "Προχωρημένες απαντήσεις AI",
+      "prioritySupport": "Υποστήριξη προτεραιότητας"
+    },
+    "elite": {
+      "messages": "500 μηνύματα την ημέρα",
+      "proFeatures": "Όλα από το Pro",
+      "imageAnalysis": "100 αναλύσεις εικόνων/ημέρα",
+      "vipSupport": "VIP υποστήριξη 24/7",
+      "earlyAccess": "Πρόωρη πρόσβαση σε νέες λειτουργίες"
+    }
   }
 }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { X, Check, Zap, Sparkles, ExternalLink } from 'lucide-react';
@@ -6,6 +7,8 @@ import { getBackendUrl } from '@/utils/getBackendUrl';
 import { Capacitor } from '@capacitor/core';
 
 export default function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
+  const { t } = useTranslation();
+  
   if (!isOpen) return null;
   
   // Check if running on iOS native app
@@ -19,11 +22,11 @@ export default function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
       period: 'month',
       priceId: import.meta.env.VITE_STRIPE_STARTER_PRICE_ID,
       features: [
-        '75 mesazhe në ditë',
-        'Të gjitha kategoritë',
-        'Përmbajtje për të rritur',
-        'Biseda AI Coach',
-        'Këshilla & tips dating'
+        t('plans.starter.messages'),
+        t('plans.starter.categories'),
+        t('plans.starter.adultContent'),
+        t('plans.starter.aiCoach'),
+        t('plans.starter.tips')
       ],
       color: 'from-blue-500 to-cyan-600',
       popular: false
@@ -35,11 +38,11 @@ export default function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
       period: 'month',
       priceId: import.meta.env.VITE_STRIPE_PRO_PRICE_ID,
       features: [
-        '200 mesazhe në ditë',
-        'Gjithçka nga Starter',
-        '30 analiza imazhesh/ditë',
-        'Përgjigje AI të avancuara',
-        'Mbështetje prioritare'
+        t('plans.pro.messages'),
+        t('plans.pro.starterFeatures'),
+        t('plans.pro.imageAnalysis'),
+        t('plans.pro.advancedAI'),
+        t('plans.pro.prioritySupport')
       ],
       color: 'from-purple-500 to-pink-600',
       popular: true
@@ -51,11 +54,11 @@ export default function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
       period: 'month',
       priceId: import.meta.env.VITE_STRIPE_ELITE_PRICE_ID,
       features: [
-        '500 mesazhe në ditë',
-        'Gjithçka nga Pro',
-        '100 analiza imazhesh/ditë',
-        'Mbështetje VIP 24/7',
-        'Akses i hershëm në veçori të reja'
+        t('plans.elite.messages'),
+        t('plans.elite.proFeatures'),
+        t('plans.elite.imageAnalysis'),
+        t('plans.elite.vipSupport'),
+        t('plans.elite.earlyAccess')
       ],
       color: 'from-amber-500 to-orange-600',
       popular: false
@@ -89,15 +92,11 @@ export default function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
       } else {
         const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
         console.error('Failed to create checkout session:', errorData);
-        console.error('Response status:', response.status);
-        console.error('Price ID:', plan.priceId);
-        console.error('Backend URL:', backendUrl);
-        alert(`Dështoi fillimi i pagesës: ${errorData.error || 'Unknown error'}. Kontrollo konsolën për më shumë detaje.`);
+        alert(t('common.error'));
       }
     } catch (error) {
       console.error('Error:', error);
-      console.error('Price ID:', plan.priceId);
-      alert(`Ndodhi një gabim: ${error.message}. Kontrollo konsolën për më shumë detaje.`);
+      alert(t('common.error'));
     }
   };
 
@@ -107,8 +106,8 @@ export default function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-2xl font-bold text-white mb-1">Përmirëso Planin Tënd</h2>
-              <p className="text-slate-400 text-sm">Zgjidh planin që të përshtatet</p>
+              <h2 className="text-2xl font-bold text-white mb-1">{t('upgrade.title')}</h2>
+              <p className="text-slate-400 text-sm">{t('upgrade.choosePlan')}</p>
             </div>
             <button
               onClick={onClose}
@@ -131,7 +130,7 @@ export default function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
                 {plan.popular && (
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                     <span className="bg-gradient-to-r from-purple-500 to-pink-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                      Më Popullor
+                      {t('plans.mostPopular')}
                     </span>
                   </div>
                 )}
@@ -148,7 +147,7 @@ export default function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
                       <h3 className="text-xl font-bold text-white">{plan.name}</h3>
                       <div className="flex items-baseline gap-1">
                         <span className="text-2xl font-bold text-white">{plan.price}</span>
-                        <span className="text-slate-400 text-sm">/muaj</span>
+                        <span className="text-slate-400 text-sm">/{t('upgrade.monthly').toLowerCase()}</span>
                       </div>
                     </div>
                   </div>
@@ -172,10 +171,10 @@ export default function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
                   >
                     {isNativeIOS ? (
                       <span className="flex items-center gap-2">
-                        Abonohu në Web <ExternalLink className="w-4 h-4" />
+                        {t('plans.subscribeWeb')} <ExternalLink className="w-4 h-4" />
                       </span>
                     ) : (
-                      `Zgjidh ${plan.name}`
+                      `${t('plans.select')} ${plan.name}`
                     )}
                   </Button>
                 </div>
@@ -186,8 +185,8 @@ export default function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
           <div className="text-center">
             <p className="text-xs text-slate-500">
               {isNativeIOS 
-                ? 'Për të abonuar, vizito bisedaai.com nga browseri yt.'
-                : 'Pagesë e sigurt me Stripe. Anulo kur të duash.'
+                ? t('plans.webSubscription')
+                : t('plans.securePayment')
               }
             </p>
           </div>
@@ -196,4 +195,3 @@ export default function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
     </div>
   );
 }
-

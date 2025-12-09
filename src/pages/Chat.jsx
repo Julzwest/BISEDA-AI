@@ -20,12 +20,12 @@ import {
   deleteConversation 
 } from '@/utils/chatHistory';
 
-const CATEGORIES = {
+// Categories with system prompt only - greeting is handled separately with translations
+const getCategoriesConfig = () => ({
   'chat': {
     name: 'AI Coach',
     icon: MessageSquare,
     color: 'from-blue-500 to-cyan-600',
-    greeting: 'Ç\'kemi! Unë jam AI Coach-i yt për dating dhe biseda. Si mund të të ndihmoj sot? 💬',
     systemPrompt: UNIFIED_AI_SYSTEM_PROMPT + `
 
 MODO I FUNKSIONIMIT - AI COACH (BISEDA):
@@ -36,10 +36,11 @@ Ti je në modalitetin "AI Coach" ku përdoruesi bisedon me ty për të praktikua
 - Ti je një partner bisede që ndihmon përdoruesin të përmirësojë aftësitë e komunikimit
 - Përgjigjet e tua duhet të jenë natyrale, si një bisedë reale me një coach ekspert`
   }
-};
+});
 
 export default function Chat() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const CATEGORIES = getCategoriesConfig();
   const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -94,7 +95,7 @@ export default function Chat() {
 
   // Reset and initialize when category changes
   React.useEffect(() => {
-    const greeting = category.greeting;
+    const greeting = t('chat.welcome');
     const greetingMessage = { role: 'assistant', content: greeting, timestamp: new Date() };
     setMessages([greetingMessage]);
     // Initialize conversation history with greeting
@@ -102,7 +103,7 @@ export default function Chat() {
     setIsInitialized(true);
     
     // Start a new conversation for chat history
-    const convId = startNewConversation('AI Coach Bisedë');
+    const convId = startNewConversation('AI Coach');
     setCurrentConversationId(convId);
     addMessageToConversation(convId, { role: 'assistant', content: greeting });
     
@@ -129,12 +130,12 @@ export default function Chat() {
 
   // Start a new chat
   const startNewChat = () => {
-    const greeting = category.greeting;
+    const greeting = t('chat.welcome');
     const greetingMessage = { role: 'assistant', content: greeting, timestamp: new Date() };
     setMessages([greetingMessage]);
     setConversationHistory([{ role: 'assistant', content: greeting }]);
     
-    const convId = startNewConversation('AI Coach Bisedë');
+    const convId = startNewConversation('AI Coach');
     setCurrentConversationId(convId);
     addMessageToConversation(convId, { role: 'assistant', content: greeting });
     setChatHistoryList(getRecentConversations(10));
@@ -487,7 +488,7 @@ export default function Chat() {
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-bold text-white flex items-center gap-2">
                 <History className="w-5 h-5 text-purple-400" />
-                Historia e Bisedave
+                {t('chat.history')}
               </h2>
               <button
                 onClick={() => setShowHistory(false)}
@@ -567,7 +568,7 @@ export default function Chat() {
                 setShowHistory(true);
               }}
               className="p-2 rounded-xl bg-slate-800/50 hover:bg-slate-700/50 text-slate-400 hover:text-white transition-all"
-              title="Historia e bisedave"
+              title={t('chat.history')}
             >
               <History className="w-5 h-5" />
             </button>
@@ -739,7 +740,7 @@ export default function Chat() {
                       : 'bg-slate-700 hover:bg-slate-600'
                   } text-white`}
                   disabled={isLoading || selectedImages.length >= 4}
-                  title={screenshotUsage.remaining > 0 ? `${screenshotUsage.remaining} analiza falas mbetur` : 'Përmirëso për analiza screenshot'}
+                  title={screenshotUsage.remaining > 0 ? `${screenshotUsage.remaining} ${t('usage.screenshotAnalysis')}` : t('chat.upgradeForScreenshot')}
                 >
                   <ImageIcon className="w-5 h-5" />
                 </Button>
@@ -759,7 +760,7 @@ export default function Chat() {
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder={isLimitReached ? "☕ Skip the coffee, get unlimited love! Tap upgrade 💕" : "Shkruaj mesazhin tënd këtu..."}
+                placeholder={isLimitReached ? t('upgrade.limitReached') : t('chat.placeholder')}
                 className={`flex-1 bg-slate-700 text-white px-4 py-3 rounded-lg border resize-none min-h-[60px] max-h-[120px] ${isLimitReached ? 'border-red-500/50 opacity-60' : 'border-slate-600 focus:outline-none focus:border-blue-500'}`}
                 rows={2}
                 disabled={isLoading || isLimitReached}
