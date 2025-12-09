@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { createPageUrl } from '../utils';
 import { Lightbulb, TrendingUp, Zap, Star, Sparkles, Heart, MessageSquare, Calendar, Bot, Gift, PartyPopper } from 'lucide-react';
 import { Card } from '@/components/ui/card';
@@ -8,6 +9,7 @@ import UsageDisplay from '@/components/UsageDisplay';
 import UpgradeModal from '@/components/UpgradeModal';
 
 export default function Home() {
+  const { t } = useTranslation();
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [userName, setUserName] = useState(null);
   const navigate = useNavigate();
@@ -56,45 +58,45 @@ export default function Home() {
   const features = [
     {
       icon: Bot,
-      title: 'AI Coach',
-      description: 'Bisedo me AI për të praktikuar biseda, mësuar teknikat e picking up, dhe përmirësuar aftësitë e tua',
+      title: t('home.features.aiCoach.title'),
+      description: t('home.features.aiCoach.desc'),
       color: 'from-purple-500 to-pink-500',
       page: 'Chat'
     },
     {
       icon: Calendar,
-      title: 'Takime të Para',
-      description: 'Gjej ide perfekte për takimin e parë me sugjerime lokal biznesesh në qytetet shqiptare',
+      title: t('home.features.dates.title'),
+      description: t('home.features.dates.desc'),
       color: 'from-pink-500 to-rose-500',
       page: 'FirstDates'
     },
     {
       icon: Lightbulb,
-      title: 'Këshilla & Tips',
-      description: 'Mëso si të flasësh me djem/vajza në WhatsApp, Instagram, Messenger, Tinder dhe të përmirësosh lojën tënde',
+      title: t('home.features.tips.title'),
+      description: t('home.features.tips.desc'),
       color: 'from-amber-500 to-orange-600',
       page: 'Tips'
     },
     {
       icon: PartyPopper,
-      title: 'Evente Lokale',
-      description: 'Gjej vende eventesh, koncerte, klube dhe argëtim në qytetin tënd',
+      title: t('home.features.events.title'),
+      description: t('home.features.events.desc'),
       color: 'from-yellow-500 to-orange-500',
       page: 'Events'
     },
     {
       icon: Gift,
-      title: 'Sugjerime Dhuratash',
-      description: 'Gjej dhuratën perfekte bazuar në interesat e partnerit me lidhje për blerje',
+      title: t('home.features.gifts.title'),
+      description: t('home.features.gifts.desc'),
       color: 'from-rose-500 to-red-500',
       page: 'Gifts'
     }
   ];
 
   const stats = [
-    { icon: TrendingUp, label: 'Përmirëso lojën', value: '10x' },
-    { icon: Heart, label: 'Më shumë takime', value: '99%' },
-    { icon: Zap, label: 'Rezultate të shpejta', value: '24h' }
+    { icon: TrendingUp, label: t('home.stats.improve'), value: '10x' },
+    { icon: Heart, label: t('home.stats.moreDates'), value: '99%' },
+    { icon: Zap, label: t('home.stats.fastResults'), value: '24h' }
   ];
 
 
@@ -139,14 +141,11 @@ export default function Home() {
           {/* Personalized Greeting */}
           {userName && (
             <p className="text-xl font-semibold text-purple-300 mb-3">
-              Ç'kemi {userName}! 👋
+              👋 {userName}!
             </p>
           )}
           <p className="text-slate-300 text-base leading-relaxed max-w-md mx-auto mb-6">
-            {userName 
-              ? 'Gati për të përmirësuar lojën tënde në dating?'
-              : 'Mëso si të flasësh me djem/vajza, përmirëso chat-et në WhatsApp, Instagram, Facebook Messenger, Tinder dhe aplikacione të tjera dating'
-            }
+            {t('app.tagline')}
           </p>
         </div>
 
@@ -174,7 +173,7 @@ export default function Home() {
       <div className="px-6 pb-24">
         <h2 className="text-2xl font-bold mb-4 text-white flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-purple-400" />
-          Fillo tani
+          {t('home.getStarted')}
         </h2>
         <div className="space-y-3">
           {features.map((feature, index) => {

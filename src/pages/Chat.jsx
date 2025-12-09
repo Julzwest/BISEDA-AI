@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Send, MessageSquare, Image as ImageIcon, X, History, Plus, Trash2, ChevronRight } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,7 +9,7 @@ import UsageDisplay from '@/components/UsageDisplay';
 import UpgradeModal from '@/components/UpgradeModal';
 import LimitReachedModal from '@/components/LimitReachedModal';
 import CrisisHelplineModal from '@/components/CrisisHelplineModal';
-import { UNIFIED_AI_SYSTEM_PROMPT } from '@/utils/unifiedAIPrompt';
+import { UNIFIED_AI_SYSTEM_PROMPT, getLanguageInstruction } from '@/utils/unifiedAIPrompt';
 import { getBackendUrl } from '@/utils/getBackendUrl';
 import { trackFeatureUse } from '@/utils/analytics';
 import { 
@@ -38,6 +39,7 @@ Ti je në modalitetin "AI Coach" ku përdoruesi bisedon me ty për të praktikua
 };
 
 export default function Chat() {
+  const { i18n } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -335,6 +337,10 @@ export default function Chat() {
     
     // Build clean system prompt
     let systemPrompt = category.systemPrompt;
+    
+    // Add language instruction based on selected language
+    const currentLang = i18n.language || 'sq';
+    systemPrompt += getLanguageInstruction(currentLang);
     
     // Add gender context if detected
     if (userGender || detectedGender) {

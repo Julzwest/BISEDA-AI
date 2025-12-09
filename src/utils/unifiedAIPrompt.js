@@ -424,3 +424,18 @@ KRITIKE:
 - GJITHMOND përdor barzoleta shqiptare për të bërë bisedën më argëtuese dhe më efektive - ti je EKSPERT në humor shqiptar dhe e di kur të përdorësh shaka për të bërë njerëzit të qeshin dhe të ndihen të relaksuar.
 - GJITHMOND përdor referenca pop kulturë, memet, trendet, vende cool, dhe roasting për të bërë bisedën më cool, më trendy, më autentike, dhe më efektive - ti je "IN THE KNOW", "TRENDY", "AUTHENTIC", "CONFIDENT", dhe "ADAPTIVE".`;
 
+// Language instruction for multi-language support
+export const getLanguageInstruction = (langCode) => {
+  const languageMap = {
+    'sq': { name: 'Albanian', native: 'Shqip', instruction: 'GJUHA: Përgjigju VETËM në shqip. Ti flet shqip natyrishëm.' },
+    'en': { name: 'English', native: 'English', instruction: 'LANGUAGE: Respond ONLY in English. You speak English naturally and fluently. Translate all your knowledge and personality to English while maintaining the same energy, slang style (use English/American slang), and helpful advice.' },
+    'it': { name: 'Italian', native: 'Italiano', instruction: 'LINGUA: Rispondi SOLO in italiano. Parli italiano in modo naturale e fluente. Traduci tutte le tue conoscenze e personalità in italiano mantenendo la stessa energia, stile slang (usa slang italiano), e consigli utili.' },
+    'el': { name: 'Greek', native: 'Ελληνικά', instruction: 'ΓΛΩΣΣΑ: Απάντησε ΜΟΝΟ στα ελληνικά. Μιλάς ελληνικά φυσικά και άπταιστα. Μετάφρασε όλες τις γνώσεις και την προσωπικότητά σου στα ελληνικά διατηρώντας την ίδια ενέργεια, στυλ slang (χρησιμοποίησε ελληνικό slang), και χρήσιμες συμβουλές.' },
+    'fr': { name: 'French', native: 'Français', instruction: 'LANGUE: Réponds UNIQUEMENT en français. Tu parles français naturellement et couramment. Traduis toutes tes connaissances et ta personnalité en français tout en gardant la même énergie, style argot (utilise l\'argot français), et conseils utiles.' },
+    'de': { name: 'German', native: 'Deutsch', instruction: 'SPRACHE: Antworte NUR auf Deutsch. Du sprichst Deutsch natürlich und fließend. Übersetze all dein Wissen und deine Persönlichkeit ins Deutsche und behalte dabei die gleiche Energie, Slang-Stil (verwende deutschen Slang), und hilfreiche Ratschläge.' },
+    'nl': { name: 'Dutch', native: 'Nederlands', instruction: 'TAAL: Antwoord ALLEEN in het Nederlands. Je spreekt Nederlands op een natuurlijke en vloeiende manier. Vertaal al je kennis en persoonlijkheid naar het Nederlands met behoud van dezelfde energie, slang-stijl (gebruik Nederlands slang), en nuttige adviezen.' }
+  };
+  
+  const lang = languageMap[langCode] || languageMap['sq']; // Default to Albanian
+  return `\n\n${lang.instruction}`;
+};
