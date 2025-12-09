@@ -1608,6 +1608,71 @@ app.get('/api/admin/registered-users', checkAdminAuth, async (req, res) => {
   }
 });
 
+// Delete user (admin only)
+app.delete('/api/admin/users/:odId', checkAdminAuth, async (req, res) => {
+  try {
+    const { odId } = req.params;
+    
+    // Delete from MongoDB
+    await UserAccountModel.findOneAndDelete({ odId });
+    
+    // Delete from in-memory store
+    getAllUsers().delete(odId);
+    
+    console.log(`🗑️ User deleted: ${odId}`);
+    
+    res.json({
+      success: true,
+      message: 'User deleted successfully',
+      odId
+    });
+  } catch (error) {
+    console.error('Delete user error:', error);
+    res.status(500).json({ error: 'Failed to delete user' });
+  }
+});
+
+// Gift credits to user (admin only)
+app.post('/api/admin/users/:odId/gift-credits', checkAdminAuth, async (req, res) => {
+  try {
+    const { odId } = req.params;
+    const { amount } = req.body;
+    
+    if (!amount || amount < 1) {
+      return res.status(400).json({ error: 'Invalid credit amount' });
+    }
+    
+    // Get user and add credits
+    const user = getUser(odId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    user.credits = (user.credits || 0) + amount;
+    user.creditHistory = user.creditHistory || [];
+    user.creditHistory.push({
+      date: new Date(),
+      type: 'gift',
+      amount: amount,
+      source: 'admin_gift'
+    });
+    
+    saveUser(user);
+    
+    console.log(`🎁 Gifted ${amount} credits to user: ${odId}`);
+    
+    res.json({
+      success: true,
+      message: `${amount} credits gifted successfully`,
+      odId,
+      newBalance: user.credits
+    });
+  } catch (error) {
+    console.error('Gift credits error:', error);
+    res.status(500).json({ error: 'Failed to gift credits' });
+  }
+});
+
 // Create test user (admin only)
 app.post('/api/admin/create-test-user', checkAdminAuth, async (req, res) => {
   try {
