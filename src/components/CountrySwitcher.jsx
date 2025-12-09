@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Check, ChevronDown } from 'lucide-react';
+import { Check, ChevronDown, X, Globe } from 'lucide-react';
 import { countries, getCountryByCode } from '@/config/countries';
 
 export default function CountrySwitcher() {
@@ -41,6 +41,18 @@ export default function CountrySwitcher() {
     return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen]);
 
+  // Prevent body scroll when modal is open on mobile
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
   const handleSelectCountry = (countryCode) => {
     setSelectedCountry(countryCode);
     localStorage.setItem('userCountry', countryCode);
@@ -70,48 +82,76 @@ export default function CountrySwitcher() {
         />
       </button>
 
-      {/* Dropdown Menu */}
+      {/* Modal Overlay - Full screen on mobile */}
       {isOpen && (
-        <div 
-          className="absolute right-0 top-full mt-2 w-56 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl shadow-black/50 overflow-hidden z-[9999]"
-          style={{ maxHeight: '320px' }}
-        >
-          {/* Header */}
-          <div className="px-3 py-2 border-b border-slate-700/50 bg-slate-800/50">
-            <p className="text-xs font-medium text-slate-400">Zgjidh Vendin</p>
-          </div>
+        <>
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998]"
+            onClick={() => setIsOpen(false)}
+          />
+          
+          {/* Dropdown/Modal Container */}
+          <div 
+            className="fixed inset-x-4 bottom-4 md:absolute md:inset-auto md:right-0 md:top-full md:mt-2 md:w-72 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-[9999]"
+            style={{ maxHeight: 'calc(100vh - 120px)' }}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700/50 bg-gradient-to-r from-slate-800 to-slate-800/50">
+              <div className="flex items-center gap-2">
+                <Globe className="w-4 h-4 text-purple-400" />
+                <p className="text-sm font-semibold text-white">Zgjidh Vendin</p>
+              </div>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="p-1.5 hover:bg-slate-700 rounded-lg transition-colors md:hidden"
+              >
+                <X className="w-5 h-5 text-slate-400" />
+              </button>
+            </div>
 
-          {/* Countries List - Scrollable */}
-          <div className="overflow-y-auto" style={{ maxHeight: '260px' }}>
-            {countries.map((country) => {
-              const isSelected = selectedCountry === country.code;
-              
-              return (
-                <button
-                  key={country.code}
-                  onClick={() => handleSelectCountry(country.code)}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 text-left transition-all duration-150 ${
-                    isSelected
-                      ? 'bg-purple-500/20 text-white'
-                      : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="text-xl">{country.flag}</span>
-                    <div>
-                      <div className="text-sm font-medium">{country.name}</div>
-                      <div className="text-[10px] text-slate-500">{country.cities?.length || 0} qytete</div>
+            {/* Countries List - Scrollable */}
+            <div className="overflow-y-auto" style={{ maxHeight: 'calc(100vh - 200px)', maxHeight: 'min(400px, calc(100vh - 200px))' }}>
+              {countries.map((country) => {
+                const isSelected = selectedCountry === country.code;
+                
+                return (
+                  <button
+                    key={country.code}
+                    onClick={() => handleSelectCountry(country.code)}
+                    className={`w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-150 border-b border-slate-800/50 last:border-b-0 ${
+                      isSelected
+                        ? 'bg-purple-500/20 text-white'
+                        : 'text-slate-300 hover:bg-slate-800 hover:text-white active:bg-slate-700'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">{country.flag}</span>
+                      <div>
+                        <div className="text-sm font-medium">{country.name}</div>
+                        <div className="text-xs text-slate-500">{country.cities?.length || 0} qytete</div>
+                      </div>
                     </div>
-                  </div>
-                  
-                  {isSelected && (
-                    <Check className="w-4 h-4 text-purple-400 flex-shrink-0" />
-                  )}
-                </button>
-              );
-            })}
+                    
+                    {isSelected && (
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-purple-400 font-medium">Aktiv</span>
+                        <Check className="w-5 h-5 text-purple-400 flex-shrink-0" />
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Footer hint */}
+            <div className="px-4 py-2 border-t border-slate-700/50 bg-slate-800/30">
+              <p className="text-[10px] text-slate-500 text-center">
+                Zgjidh vendin për të parë evente dhe takime lokale
+              </p>
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
