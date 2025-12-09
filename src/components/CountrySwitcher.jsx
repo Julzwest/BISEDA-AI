@@ -66,7 +66,7 @@ export default function CountrySwitcher() {
   };
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative z-50" ref={dropdownRef}>
       {/* Trigger Button */}
       <button
         onClick={(e) => {
@@ -102,7 +102,7 @@ export default function CountrySwitcher() {
           
           {/* Dropdown/Modal Container */}
           <div 
-            className="fixed inset-x-4 bottom-4 md:absolute md:inset-auto md:right-0 md:top-full md:mt-2 md:w-72 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-[9999]"
+            className="fixed inset-x-4 bottom-4 md:absolute md:inset-auto md:left-auto md:right-0 md:top-[calc(100%+0.5rem)] md:bottom-auto md:w-72 md:max-h-[400px] bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-[9999]"
             style={{ maxHeight: 'calc(100vh - 120px)' }}
             onClick={(e) => e.stopPropagation()}
           >
