@@ -7,7 +7,6 @@ export default function LanguageSwitcher() {
   const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const buttonRef = useRef(null);
 
   const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
 
@@ -65,34 +64,31 @@ export default function LanguageSwitcher() {
   };
 
   return (
-    <>
+    <div className="relative" ref={dropdownRef}>
       {/* Trigger Button */}
-      <div className="relative" ref={dropdownRef}>
-        <button
-          ref={buttonRef}
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            setIsOpen(!isOpen);
-          }}
-          className="group flex items-center gap-1.5 px-3 py-2 bg-slate-800/90 border border-slate-700/60 rounded-xl hover:bg-slate-700/90 hover:border-purple-500/50 transition-all duration-200"
-          aria-label="Change language"
-          aria-expanded={isOpen}
-          type="button"
-        >
-          <span className="text-lg">{currentLanguage?.flag}</span>
-          <ChevronDown 
-            className={`w-3.5 h-3.5 text-slate-400 group-hover:text-purple-400 transition-all duration-200 ${
-              isOpen ? 'rotate-180' : ''
-            }`} 
-          />
-        </button>
-      </div>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsOpen(!isOpen);
+        }}
+        className="group flex items-center gap-1.5 px-3 py-2 bg-slate-800/90 border border-slate-700/60 rounded-xl hover:bg-slate-700/90 hover:border-purple-500/50 transition-all duration-200"
+        aria-label="Change language"
+        aria-expanded={isOpen}
+        type="button"
+      >
+        <span className="text-lg">{currentLanguage?.flag}</span>
+        <ChevronDown 
+          className={`w-3.5 h-3.5 text-slate-400 group-hover:text-purple-400 transition-all duration-200 ${
+            isOpen ? 'rotate-180' : ''
+          }`} 
+        />
+      </button>
 
-      {/* Portal-style Modal for dropdown */}
+      {/* Modal Overlay - Full screen on mobile, dropdown on desktop */}
       {isOpen && (
         <>
-          {/* Backdrop - only on mobile */}
+          {/* Backdrop - only visible on mobile */}
           <div 
             className="md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[10000]"
             onClick={(e) => {
@@ -102,13 +98,10 @@ export default function LanguageSwitcher() {
             }}
           />
           
-          {/* Dropdown Container */}
+          {/* Dropdown/Modal Container */}
           <div 
-            className="fixed left-4 right-4 bottom-4 md:absolute md:left-auto md:right-4 md:bottom-auto md:w-64 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-[10001]"
-            style={{
-              top: buttonRef.current ? `${buttonRef.current.getBoundingClientRect().bottom + 8}px` : 'auto',
-              maxHeight: 'calc(100vh - 120px)'
-            }}
+            className="fixed left-4 right-4 bottom-4 md:absolute md:left-auto md:right-0 md:bottom-auto md:top-full md:mt-2 md:w-64 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-[10001]"
+            style={{ maxHeight: 'calc(100vh - 120px)' }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -178,6 +171,6 @@ export default function LanguageSwitcher() {
           </div>
         </>
       )}
-    </>
+    </div>
   );
 }
