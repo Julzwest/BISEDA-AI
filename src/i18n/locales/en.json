@@ -226,6 +226,15 @@
     "selectLanguage": "Select Language",
     "hint": "Select app language"
   },
+  "ageVerification": {
+    "title": "Age Verification",
+    "subtitle": "This app is for adults only (18+)",
+    "selectAge": "How old are you?",
+    "chooseAge": "Select age...",
+    "yearsOld": "years old",
+    "confirm": "Confirm & Continue",
+    "disclaimer": "By continuing, you confirm that you are 18 or older."
+  },
   "plans": {
     "mostPopular": "Most Popular",
     "select": "Select",

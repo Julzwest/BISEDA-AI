@@ -226,6 +226,15 @@
     "selectLanguage": "Sprache auswählen",
     "hint": "App-Sprache auswählen"
   },
+  "ageVerification": {
+    "title": "Altersüberprüfung",
+    "subtitle": "Diese App ist nur für Erwachsene (18+)",
+    "selectAge": "Wie alt bist du?",
+    "chooseAge": "Alter auswählen...",
+    "yearsOld": "Jahre alt",
+    "confirm": "Bestätigen & Fortfahren",
+    "disclaimer": "Durch Fortfahren bestätigst du, dass du 18 Jahre oder älter bist."
+  },
   "plans": {
     "mostPopular": "Beliebteste",
     "select": "Auswählen",

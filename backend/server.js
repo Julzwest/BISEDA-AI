@@ -1861,18 +1861,19 @@ app.post('/api/admin/users/:odId/gift-credits', checkAdminAuth, async (req, res)
 // Create test user (admin only)
 app.post('/api/admin/create-test-user', checkAdminAuth, async (req, res) => {
   try {
+    const { firstName, lastName, email, password, tier } = req.body;
     const timestamp = Date.now();
     const testUserId = `test_${timestamp}`;
-    const testUsername = `testuser_${timestamp}`;
+    const testUsername = email ? email.split('@')[0] : `testuser_${timestamp}`;
     
     // Create account in MongoDB
     const testAccount = new UserAccountModel({
       odId: testUserId,
       username: testUsername,
-      firstName: 'Test',
-      lastName: 'Përdorues',
-      email: `${testUsername}@biseda.ai`,
-      password: 'testpassword123',
+      firstName: firstName || 'Test',
+      lastName: lastName || 'User',
+      email: email || `${testUsername}@biseda.ai`,
+      password: password || 'testpassword123',
       country: 'AL',
       isVerified: true,
       createdAt: new Date(),
@@ -1882,33 +1883,36 @@ app.post('/api/admin/create-test-user', checkAdminAuth, async (req, res) => {
     await testAccount.save();
     
     // Create usage profile using getUser (which creates a proper User instance)
+    const subscriptionTier = tier || 'pro';
     const user = getUser(testUserId);
-    user.subscriptionTier = 'pro';
+    user.subscriptionTier = subscriptionTier;
     user.subscriptionStatus = 'active';
-    user.subscriptionExpiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // 30 days
-    user.dailyUsage = { messages: 5, date: new Date().toDateString(), imageAnalyses: 0 };
+    user.subscriptionExpiresAt = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000); // 1 year
+    user.dailyUsage = { messages: 0, date: new Date().toDateString(), imageAnalyses: 0 };
     user.monthlyUsage = { 
       month: new Date().getMonth(), 
       year: new Date().getFullYear(),
-      totalMessages: 45, 
+      totalMessages: 0, 
       totalImageAnalyses: 0,
-      totalCost: 0.0135,
-      totalTokens: 500,
-      totalOpenAICalls: 45
+      totalCost: 0,
+      totalTokens: 0,
+      totalOpenAICalls: 0
     };
-    user.costTracking = { totalSpent: 0.0135, lastResetDate: new Date().toDateString(), dailyCost: 0.003 };
-    user.credits = 10;
+    user.costTracking = { totalSpent: 0, lastResetDate: new Date().toDateString(), dailyCost: 0 };
+    user.credits = 100;
     user.lastActiveAt = new Date();
     saveUser(user);
     
     res.json({
       success: true,
-      message: 'Test user created successfully',
+      message: `${subscriptionTier.toUpperCase()} test user created successfully`,
       user: {
         odId: testUserId,
         email: testAccount.email,
+        password: password || 'testpassword123',
         name: `${testAccount.firstName} ${testAccount.lastName}`,
-        username: testUsername
+        username: testUsername,
+        tier: subscriptionTier
       }
     });
   } catch (error) {

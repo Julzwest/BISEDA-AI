@@ -226,6 +226,15 @@
     "selectLanguage": "Seleziona Lingua",
     "hint": "Seleziona la lingua dell'app"
   },
+  "ageVerification": {
+    "title": "Verifica dell'Età",
+    "subtitle": "Questa app è solo per adulti (18+)",
+    "selectAge": "Quanti anni hai?",
+    "chooseAge": "Seleziona età...",
+    "yearsOld": "anni",
+    "confirm": "Conferma & Continua",
+    "disclaimer": "Continuando, confermi di avere 18 anni o più."
+  },
   "plans": {
     "mostPopular": "Più Popolare",
     "select": "Seleziona",

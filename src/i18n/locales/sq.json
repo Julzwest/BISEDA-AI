@@ -226,6 +226,15 @@
     "selectLanguage": "Zgjidh Gjuhën",
     "hint": "Zgjidh gjuhën e aplikacionit"
   },
+  "ageVerification": {
+    "title": "Verifikimi i Moshës",
+    "subtitle": "Ky aplikacion është vetëm për të rritur (18+)",
+    "selectAge": "Sa vjeç jeni?",
+    "chooseAge": "Zgjidh moshën...",
+    "yearsOld": "vjeç",
+    "confirm": "Konfirmo & Vazhdo",
+    "disclaimer": "Duke vazhduar, konfirmoni që jeni mbi 18 vjeç."
+  },
   "plans": {
     "mostPopular": "Më Popullor",
     "select": "Zgjidh",

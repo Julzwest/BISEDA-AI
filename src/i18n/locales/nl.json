@@ -226,6 +226,15 @@
     "selectLanguage": "Selecteer Taal",
     "hint": "Selecteer app taal"
   },
+  "ageVerification": {
+    "title": "Leeftijdsverificatie",
+    "subtitle": "Deze app is alleen voor volwassenen (18+)",
+    "selectAge": "Hoe oud ben je?",
+    "chooseAge": "Selecteer leeftijd...",
+    "yearsOld": "jaar oud",
+    "confirm": "Bevestigen & Doorgaan",
+    "disclaimer": "Door verder te gaan bevestig je dat je 18 jaar of ouder bent."
+  },
   "plans": {
     "mostPopular": "Meest Populair",
     "select": "Selecteer",
