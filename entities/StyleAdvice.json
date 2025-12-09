@@ -1,0 +1,24 @@
+{
+  "name": "StyleAdvice",
+  "type": "object",
+  "properties": {
+    "occasion": {
+      "type": "string",
+      "description": "Rasti (darkë, kafe, klubb, etj)"
+    },
+    "description": {
+      "type": "string",
+      "description": "Përshkrimi i situatës"
+    },
+    "advice": {
+      "type": "string",
+      "description": "Këshilla për veshje"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "URL e fotos së ngarkuar"
+    }
+  },
+  "required": []
+}
+

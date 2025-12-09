@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Force Update - Biseda.ai</title>
+    <script>
+        // NUCLEAR cache clearing
+        console.log('🔥 FORCE UPDATE INITIATED');
+        
+        // 1. Clear all caches
+        if ('caches' in window) {
+            caches.keys().then(function(names) {
+                console.log('Clearing', names.length, 'caches');
+                for (let name of names) {
+                    caches.delete(name);
+                    console.log('✅ Deleted cache:', name);
+                }
+            });
+        }
+        
+        // 2. Clear localStorage
+        const userId = localStorage.getItem('userId');
+        const userEmail = localStorage.getItem('userEmail');
+        const userName = localStorage.getItem('userName');
+        const userToken = localStorage.getItem('token');
+        
+        localStorage.clear();
+        sessionStorage.clear();
+        
+        // Restore auth
+        if (userId) localStorage.setItem('userId', userId);
+        if (userEmail) localStorage.setItem('userEmail', userEmail);
+        if (userName) localStorage.setItem('userName', userName);
+        if (userToken) localStorage.setItem('token', userToken);
+        
+        console.log('✅ Cleared storage (auth preserved)');
+        
+        // 3. Add unique timestamp to EVERY request
+        const timestamp = Date.now();
+        const buildHash = 'yJE5BWJ';
+        
+        // 4. Redirect with cache busters
+        setTimeout(function() {
+            const url = `/index.html?v=AppStore&build=${buildHash}&t=${timestamp}&force=true`;
+            console.log('🚀 Redirecting to:', url);
+            window.location.href = url;
+        }, 500);
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e293b 0%, #7c3aed 100%);
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 500px;
+            padding: 40px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            border: 2px solid rgba(168, 85, 247, 0.5);
+        }
+        .loader {
+            border: 8px solid rgba(255, 255, 255, 0.1);
+            border-top: 8px solid #a855f7;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 30px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        h1 { font-size: 2.5em; margin: 20px 0; }
+        .status { 
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+        .version {
+            color: #94a3b8;
+            font-size: 0.8em;
+            margin-top: 20px;
+        }
+        ul {
+            text-align: left;
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            padding: 5px 0;
+        }
+        li:before {
+            content: "✅ ";
+            color: #22c55e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="loader"></div>
+        <h1>🔥 Force Update</h1>
+        <p>Clearing all caches and loading fresh version...</p>
+        
+        <div class="status">
+            <strong>Clean Auth Design - NO DOB:</strong>
+            <ul>
+                <li>Tinder-style modern design</li>
+                <li>First Name + Last Name fields</li>
+                <li>NO Date of Birth dropdowns!</li>
+                <li>Apple Sign In button</li>
+                <li>Clean & simple registration</li>
+            </ul>
+        </div>
+        
+        <p class="version">Build: index-yJE5BWJ-.js</p>
+        <p class="version">Redirecting in 0.5 seconds...</p>
+    </div>
+</body>
+</html>

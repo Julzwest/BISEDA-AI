@@ -1,0 +1,8 @@
+🚀 Backend server running on http://localhost:3001
+🤖 OpenAI: ✅ Active - Using gpt-4o-mini
+💰 Pricing: $0.15/1M input tokens, $0.60/1M output tokens
+💡 Cost per message: ~$0.0003-0.0004 (0.03-0.04 cents)
+📊 Cost tracking enabled per user
+✅ OpenAI integration active - All requests use OpenAI API
+🌐 Frontend URL: http://localhost:5173
+✅ Connected to MongoDB Atlas

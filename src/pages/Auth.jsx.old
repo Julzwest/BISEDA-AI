@@ -1,0 +1,791 @@
+import React, { useState, useEffect } from 'react';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { MessageSquare, Mail, Lock, Eye, EyeOff, Sparkles, ArrowRight, Heart, Zap, Star, Crown, ArrowLeft, KeyRound } from 'lucide-react';
+import { getBackendUrl } from '@/utils/getBackendUrl';
+import { Capacitor } from '@capacitor/core';
+// import { useLanguage } from '@/contexts/LanguageContext';
+// import LanguageSwitcher from '@/components/LanguageSwitcher';
+
+// Free trial constants (exported for use elsewhere)
+export const FREE_TRIAL_DAYS = 3;
+export const FREE_TRIAL_MESSAGES_PER_DAY = 10;
+
+// Clear ALL session data (for logout functionality)
+export const clearGuestSession = () => {
+  localStorage.removeItem('guestSession');
+  localStorage.removeItem('isGuest');
+  localStorage.removeItem('guestId');
+};
+
+// Complete logout - clears everything
+export const clearAllUserData = () => {
+  localStorage.removeItem('userId');
+  localStorage.removeItem('userEmail');
+  localStorage.removeItem('userName');
+  localStorage.removeItem('userCountry');
+  localStorage.removeItem('isAuthenticated');
+  localStorage.removeItem('isGuest');
+  localStorage.removeItem('guestSession');
+  localStorage.removeItem('guestId');
+  localStorage.removeItem('conversationHistory');
+  localStorage.removeItem('onboardingCompleted');
+  console.log('🔓 User logged out - all data cleared');
+};
+
+export default function Auth({ onAuthSuccess }) {
+  const [isLogin, setIsLogin] = useState(false); // Start on signup by default
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [birthDay, setBirthDay] = useState('');
+  const [birthMonth, setBirthMonth] = useState('');
+  const [birthYear, setBirthYear] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [focusedField, setFocusedField] = useState(null);
+  
+  // Forgot password state
+  const [forgotPasswordMode, setForgotPasswordMode] = useState(false);
+  const [resetStep, setResetStep] = useState(1); // 1: email, 2: code, 3: new password
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetCode, setResetCode] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+
+  const backendUrl = getBackendUrl();
+
+  // Rotating tagline state
+  const [taglineIndex, setTaglineIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTaglineIndex((prev) => (prev + 1) % 4);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (!isLogin && !firstName.trim()) {
+      setError('Shkruaj emrin tënd ✏️');
+      return;
+    }
+    
+    if (!isLogin && !lastName.trim()) {
+      setError('Shkruaj mbiemrin tënd ✏️');
+      return;
+    }
+
+    if (!isLogin && (!birthDay || !birthMonth || !birthYear)) {
+      setError('Zgjidh datën e lindjes 📅');
+      return;
+    }
+
+    // Validate age (18+)
+    if (!isLogin) {
+      const birthDate = new Date(parseInt(birthYear), parseInt(birthMonth) - 1, parseInt(birthDay));
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      if (age < 18) {
+        setError('Duhet të jesh 18+ vjeç 🔞');
+        return;
+      }
+    }
+
+    if (!email.trim()) {
+      setError('Shkruaj email-in tënd 📧');
+      return;
+    }
+    
+    if (!password || password.length < 6) {
+      setError('Fjalëkalimi duhet 6+ karaktere 🔐');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
+      
+      const body = isLogin 
+        ? { email: email.trim(), password }
+        : { 
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
+            birthDate: `${birthYear}-${birthMonth.padStart(2, '0')}-${birthDay.padStart(2, '0')}`,
+            email: email.trim(), 
+            password,
+            country: 'AL' // Default, can change in settings
+          };
+
+      const response = await fetch(`${backendUrl}${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Clear ALL previous session data first to prevent profile confusion
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userCountry');
+        localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('isGuest');
+        localStorage.removeItem('guestSession');
+        localStorage.removeItem('guestId');
+        localStorage.removeItem('conversationHistory');
+        
+        // Now set the NEW user's data
+        const userId = data.user.odId || data.user.userId;
+        const userName = data.user.firstName 
+          ? `${data.user.firstName} ${data.user.lastName || ''}`.trim()
+          : data.user.username || email.split('@')[0];
+        localStorage.setItem('userId', userId);
+        localStorage.setItem('userEmail', data.user.email);
+        localStorage.setItem('userName', userName);
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('userCountry', data.user.country || 'AL');
+        
+        console.log('✅ Logged in as:', userName, '(', userId, ')');
+        
+        if (onAuthSuccess) onAuthSuccess({ ...data.user, userId });
+      } else {
+        setError(data.error || 'Diçka shkoi keq 😅');
+      }
+    } catch (err) {
+      console.error('Auth error:', err);
+      setError('Gabim lidhje. Provo përsëri! 🔄');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGuestLogin = () => {
+    // Generate a unique guest ID
+    const guestId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    
+    // Clear any existing auth data
+    clearAllUserData();
+    
+    // Set guest session
+    localStorage.setItem('isGuest', 'true');
+    localStorage.setItem('guestId', guestId);
+    localStorage.setItem('isAuthenticated', 'true');
+    localStorage.setItem('userCountry', 'AL');
+    
+    console.log('👤 Guest session started:', guestId);
+    
+    if (onAuthSuccess) onAuthSuccess({ isGuest: true, guestId });
+  };
+
+  // Forgot password handlers
+  const handleRequestResetCode = async () => {
+    if (!resetEmail.trim()) {
+      setError('Shkruaj email-in tënd 📧');
+      return;
+    }
+    
+    setLoading(true);
+    setError('');
+    
+    try {
+      const response = await fetch(`${backendUrl}/api/auth/forgot-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: resetEmail.trim() })
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setSuccessMessage('📧 Kodi u dërgua në email!');
+        setResetStep(2);
+      } else {
+        setError(data.error || 'Gabim. Provo përsëri.');
+      }
+    } catch (err) {
+      setError('Gabim lidhje. Provo përsëri! 🔄');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyCode = async () => {
+    if (!resetCode.trim() || resetCode.length !== 6) {
+      setError('Shkruaj kodin 6-shifror');
+      return;
+    }
+    
+    setLoading(true);
+    setError('');
+    
+    try {
+      const response = await fetch(`${backendUrl}/api/auth/verify-reset-code`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: resetEmail.trim(), code: resetCode.trim() })
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setSuccessMessage('✅ Kodi u verifikua!');
+        setResetStep(3);
+      } else {
+        setError(data.error || 'Kodi i gabuar.');
+      }
+    } catch (err) {
+      setError('Gabim lidhje. Provo përsëri! 🔄');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResetPassword = async () => {
+    if (!newPassword || newPassword.length < 6) {
+      setError('Fjalëkalimi duhet 6+ karaktere 🔐');
+      return;
+    }
+    
+    setLoading(true);
+    setError('');
+    
+    try {
+      const response = await fetch(`${backendUrl}/api/auth/reset-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          email: resetEmail.trim(), 
+          code: resetCode.trim(),
+          newPassword 
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setSuccessMessage('🎉 Fjalëkalimi u ndryshua!');
+        setTimeout(() => {
+          setForgotPasswordMode(false);
+          setResetStep(1);
+          setResetEmail('');
+          setResetCode('');
+          setNewPassword('');
+          setSuccessMessage('');
+          setIsLogin(true);
+        }, 2000);
+      } else {
+        setError(data.error || 'Gabim. Provo përsëri.');
+      }
+    } catch (err) {
+      setError('Gabim lidhje. Provo përsëri! 🔄');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const exitForgotPassword = () => {
+    setForgotPasswordMode(false);
+    setResetStep(1);
+    setResetEmail('');
+    setResetCode('');
+    setNewPassword('');
+    setError('');
+    setSuccessMessage('');
+  };
+
+  // ============ FORGOT PASSWORD UI ============
+  if (forgotPasswordMode) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950/30 to-slate-950 flex items-center justify-center p-4">
+        <div className="w-full max-w-sm relative z-10">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <div className="relative inline-block mb-6">
+              <div className="w-20 h-20 bg-gradient-to-br from-purple-500 via-pink-500 to-orange-400 rounded-[1.5rem] flex items-center justify-center shadow-2xl shadow-purple-500/40">
+                <KeyRound className="w-10 h-10 text-white" />
+              </div>
+            </div>
+            <h1 className="text-3xl font-black mb-2">
+              <span className="bg-gradient-to-r from-white via-purple-200 to-pink-200 bg-clip-text text-transparent">
+                Rivendos Fjalëkalimin
+              </span>
+            </h1>
+            <p className="text-slate-400 text-sm">
+              {resetStep === 1 && '📧 Shkruaj email-in tënd'}
+              {resetStep === 2 && '🔢 Shkruaj kodin 6-shifror'}
+              {resetStep === 3 && '🔐 Krijo fjalëkalim të ri'}
+            </p>
+          </div>
+
+          <Card className="bg-slate-900/80 border-purple-500/30 backdrop-blur-xl p-6 rounded-3xl shadow-2xl">
+            {/* Back button */}
+            <button
+              onClick={exitForgotPassword}
+              className="flex items-center gap-2 text-slate-400 hover:text-white mb-6 transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span className="text-sm">Kthehu te kyçja</span>
+            </button>
+
+            {/* Step indicators */}
+            <div className="flex items-center justify-center gap-3 mb-6">
+              {[1, 2, 3].map((step) => (
+                <div
+                  key={step}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
+                    resetStep >= step
+                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                      : 'bg-slate-800 text-slate-500'
+                  }`}
+                >
+                  {step}
+                </div>
+              ))}
+            </div>
+
+            {/* Step 1: Enter Email */}
+            {resetStep === 1 && (
+              <div className="space-y-4">
+                <div className="relative">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
+                  <input
+                    type="email"
+                    value={resetEmail}
+                    onChange={(e) => { setResetEmail(e.target.value); setError(''); }}
+                    className="w-full pl-12 pr-4 py-4 bg-slate-800/80 border-2 border-slate-700/50 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:border-purple-500/50"
+                    placeholder="Email yt 📧"
+                    style={{ fontSize: '16px' }}
+                  />
+                </div>
+                
+                <Button
+                  onClick={handleRequestResetCode}
+                  disabled={loading}
+                  className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 text-white font-bold h-14 rounded-2xl text-lg"
+                >
+                  {loading ? '⏳ Duke dërguar...' : '📧 Dërgo Kodin'}
+                </Button>
+              </div>
+            )}
+
+            {/* Step 2: Enter Code */}
+            {resetStep === 2 && (
+              <div className="space-y-4">
+                <input
+                  type="text"
+                  value={resetCode}
+                  onChange={(e) => { 
+                    const val = e.target.value.replace(/\D/g, '').slice(0, 6);
+                    setResetCode(val); 
+                    setError(''); 
+                  }}
+                  className="w-full px-4 py-4 bg-slate-800/80 border-2 border-slate-700/50 rounded-2xl text-white text-center text-3xl tracking-[0.5em] placeholder-slate-500 focus:outline-none focus:border-purple-500/50"
+                  placeholder="000000"
+                  maxLength={6}
+                  style={{ fontSize: '24px' }}
+                />
+                <p className="text-xs text-slate-500 text-center">
+                  Kontrolloni email-in tuaj për kodin
+                </p>
+                
+                <Button
+                  onClick={handleVerifyCode}
+                  disabled={loading || resetCode.length !== 6}
+                  className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 text-white font-bold h-14 rounded-2xl text-lg"
+                >
+                  {loading ? '⏳ Duke verifikuar...' : '✅ Verifiko Kodin'}
+                </Button>
+
+                <button
+                  onClick={() => { setResetStep(1); setResetCode(''); setError(''); }}
+                  className="w-full text-sm text-purple-400 hover:text-purple-300"
+                >
+                  Nuk e morët kodin? Provo përsëri
+                </button>
+              </div>
+            )}
+
+            {/* Step 3: New Password */}
+            {resetStep === 3 && (
+              <div className="space-y-4">
+                <div className="relative">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={newPassword}
+                    onChange={(e) => { setNewPassword(e.target.value); setError(''); }}
+                    className="w-full pl-12 pr-12 py-4 bg-slate-800/80 border-2 border-slate-700/50 rounded-2xl text-white placeholder-slate-500 focus:outline-none focus:border-purple-500/50"
+                    placeholder="Fjalëkalimi i ri 🔐"
+                    style={{ fontSize: '16px' }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-purple-400"
+                  >
+                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
+                </div>
+                
+                <Button
+                  onClick={handleResetPassword}
+                  disabled={loading}
+                  className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 text-white font-bold h-14 rounded-2xl text-lg"
+                >
+                  {loading ? '⏳ Duke ndryshuar...' : '🔐 Ndrysho Fjalëkalimin'}
+                </Button>
+              </div>
+            )}
+
+            {/* Error Message */}
+            {error && (
+              <div className="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-xl">
+                <p className="text-red-400 text-sm text-center">{error}</p>
+              </div>
+            )}
+
+            {/* Success Message */}
+            {successMessage && (
+              <div className="mt-4 p-3 bg-green-500/10 border border-green-500/30 rounded-xl">
+                <p className="text-green-400 text-sm text-center">{successMessage}</p>
+              </div>
+            )}
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
+  // ============ MAIN AUTH UI ============
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950/30 to-slate-950 flex items-center justify-center p-4">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="w-full max-w-sm relative z-10">
+        {/* Logo & Header - Official Biseda.ai Branding */}
+        <div className="text-center mb-8">
+          {/* Official Logo */}
+          <div className="relative inline-block mb-6">
+            {/* Main Logo Container */}
+            <div className="w-28 h-28 bg-gradient-to-br from-purple-500 via-fuchsia-500 to-pink-400 rounded-[1.75rem] flex items-center justify-center shadow-2xl shadow-purple-500/50 animate-bounce-slow">
+              {/* White Speech Bubble */}
+              <div className="w-14 h-12 bg-white rounded-xl rounded-bl-sm flex items-center justify-center">
+                {/* Empty inside - just the bubble shape */}
+              </div>
+            </div>
+            
+            {/* Yellow Sparkles - Top Right */}
+            <div className="absolute top-0 right-0 flex flex-col items-end">
+              <div className="text-yellow-400 text-sm font-bold" style={{ marginTop: '-2px', marginRight: '-4px' }}>✦</div>
+              <div className="text-yellow-400 text-[10px] font-bold" style={{ marginTop: '-6px', marginRight: '2px' }}>✦</div>
+            </div>
+            
+            {/* Blue Circle - Bottom Right */}
+            <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-cyan-400 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-400/50">
+              <div className="w-3 h-3 bg-white rounded-full"></div>
+            </div>
+          </div>
+          
+          {/* Brand Name */}
+          <h1 className="text-4xl font-black mb-3">
+            <span className="text-white">Biseda</span>
+            <span className="bg-gradient-to-r from-fuchsia-400 to-pink-400 bg-clip-text text-transparent">.ai</span>
+          </h1>
+          
+          {/* Rotating tagline */}
+          <div className="h-8 flex items-center justify-center">
+            <p className="text-slate-300 text-base font-medium animate-fade-in">
+              ✨ AI që të kupton vërtetë
+            </p>
+          </div>
+        </div>
+
+        {/* Main Card */}
+        <Card className="bg-slate-900/80 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20">
+          {/* Toggle Buttons - Tinder Style */}
+          <div className="flex gap-2 mb-8 bg-slate-800/50 p-1.5 rounded-2xl border border-slate-700/50">
+            <button
+              onClick={() => { setIsLogin(false); setError(''); }}
+              className={`flex-1 py-3.5 rounded-xl font-semibold text-base transition-all duration-300 ${
+                !isLogin
+                  ? 'bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white shadow-md shadow-purple-500/30'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              Regjistrohu
+            </button>
+            <button
+              onClick={() => { setIsLogin(true); setError(''); }}
+              className={`flex-1 py-3.5 rounded-xl font-semibold text-base transition-all duration-300 ${
+                isLogin
+                  ? 'bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white shadow-md shadow-purple-500/30'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              Hyr
+            </button>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* First Name & Last Name - Side by side for signup */}
+            {!isLogin && (
+              <>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <input
+                      type="text"
+                      value={firstName}
+                      onChange={(e) => { setFirstName(e.target.value); setError(''); }}
+                      className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
+                      placeholder="Emri ✏️"
+                      style={{ fontSize: '16px' }}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="text"
+                      value={lastName}
+                      onChange={(e) => { setLastName(e.target.value); setError(''); }}
+                      className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
+                      placeholder="Mbiemri ✏️"
+                      style={{ fontSize: '16px' }}
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Date of Birth */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 text-slate-400 text-sm">
+                    <span className="text-lg">📅</span>
+                    <span>Data e Lindjes (18+)</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-3">
+                    {/* Day */}
+                    <select
+                      value={birthDay}
+                      onChange={(e) => { setBirthDay(e.target.value); setError(''); }}
+                      className="w-full px-3 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white focus:outline-none focus:border-pink-500/50 transition-all text-base appearance-none cursor-pointer"
+                      style={{ fontSize: '16px' }}
+                      required
+                    >
+                      <option value="" className="bg-slate-800">Dita</option>
+                      {Array.from({ length: 31 }, (_, i) => i + 1).map(day => (
+                        <option key={day} value={day} className="bg-slate-800">{day}</option>
+                      ))}
+                    </select>
+
+                    {/* Month */}
+                    <select
+                      value={birthMonth}
+                      onChange={(e) => { setBirthMonth(e.target.value); setError(''); }}
+                      className="w-full px-3 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white focus:outline-none focus:border-pink-500/50 transition-all text-base appearance-none cursor-pointer"
+                      style={{ fontSize: '16px' }}
+                      required
+                    >
+                      <option value="" className="bg-slate-800">Muaji</option>
+                      {Array.from({ length: 12 }, (_, i) => i + 1).map(month => (
+                        <option key={month} value={month} className="bg-slate-800">{month}</option>
+                      ))}
+                    </select>
+
+                    {/* Year */}
+                    <select
+                      value={birthYear}
+                      onChange={(e) => { setBirthYear(e.target.value); setError(''); }}
+                      className="w-full px-3 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white focus:outline-none focus:border-pink-500/50 transition-all text-base appearance-none cursor-pointer"
+                      style={{ fontSize: '16px' }}
+                      required
+                    >
+                      <option value="" className="bg-slate-800">Viti</option>
+                      {Array.from({ length: 83 }, (_, i) => new Date().getFullYear() - 18 - i).map(year => (
+                        <option key={year} value={year} className="bg-slate-800">{year}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Email */}
+            <div>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); setError(''); }}
+                className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
+                placeholder="Email 📧"
+                style={{ fontSize: '16px' }}
+                required
+              />
+            </div>
+
+            {/* Password */}
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => { setPassword(e.target.value); setError(''); }}
+                className="w-full px-4 py-4 pr-12 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
+                placeholder="Fjalëkalimi 🔐"
+                style={{ fontSize: '16px' }}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-purple-400 transition-colors"
+              >
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
+            </div>
+
+            {/* Error */}
+            {error && (
+              <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-xl animate-shake">
+                <p className="text-red-400 text-sm text-center">{error}</p>
+              </div>
+            )}
+
+            {/* Submit Buttons */}
+            <div className="grid grid-cols-2 gap-3">
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl text-base shadow-lg transition-all duration-300"
+              >
+                {loading ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-4 h-4 border-3 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  </div>
+                ) : (
+                  <span>{isLogin ? '🚀 Hyr' : '✨ Krijo Llogari'}</span>
+                )}
+              </Button>
+
+              <Button
+                type="button"
+                onClick={() => {
+                  const guestId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                  clearAllUserData();
+                  localStorage.setItem('isGuest', 'true');
+                  localStorage.setItem('guestId', guestId);
+                  localStorage.setItem('isAuthenticated', 'true');
+                  localStorage.setItem('userCountry', 'AL');
+                  if (onAuthSuccess) onAuthSuccess({ isGuest: true, guestId });
+                }}
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800 text-white font-bold h-14 rounded-xl text-base shadow-lg transition-all duration-300"
+              >
+                👤 Vazhdo si Guest
+              </Button>
+            </div>
+          </form>
+
+          {/* Forgot Password Link - Only on login */}
+          {isLogin && (
+            <div className="mt-4">
+              <button
+                onClick={() => setForgotPasswordMode(true)}
+                className="text-sm text-purple-400 hover:text-purple-300 transition-colors w-full text-center"
+              >
+                🔑 Harruat fjalëkalimin?
+              </button>
+            </div>
+          )}
+        </Card>
+
+        {/* Bottom Section */}
+        <div className="mt-6 text-center space-y-3">
+          <p className="text-slate-500 text-xs">
+            Duke vazhduar, pranoni{' '}
+            <span className="text-purple-400 font-medium">Kushtet & Privacine</span>
+          </p>
+          <p className="text-slate-600 text-xs">
+            OSE
+          </p>
+        </div>
+
+        {/* Apple Sign In Button */}
+        <Card className="bg-white mt-4 p-4 rounded-2xl border-0 shadow-lg hover:shadow-xl transition-all cursor-pointer">
+          <div className="flex items-center justify-center gap-3">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="black">
+              <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+            </svg>
+            <span className="text-black font-semibold text-base">Vazhdo me Apple</span>
+          </div>
+        </Card>
+
+        {/* Language Switcher */}
+        {/* <div className="mt-6 flex justify-center">
+          <LanguageSwitcher compact />
+        </div> */}
+      </div>
+
+      {/* Custom animations */}
+      <style>{`
+        @keyframes bounce-slow {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        @keyframes fade-in {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-5px); }
+          75% { transform: translateX(5px); }
+        }
+        .animate-bounce-slow {
+          animation: bounce-slow 3s ease-in-out infinite;
+        }
+        .animate-spin-slow {
+          animation: spin-slow 8s linear infinite;
+        }
+        .animate-fade-in {
+          animation: fade-in 0.5s ease-out;
+        }
+        .animate-shake {
+          animation: shake 0.3s ease-in-out;
+        }
+        .delay-1000 {
+          animation-delay: 1s;
+        }
+        
+        /* Custom dropdown arrow */
+        select {
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='rgb(148, 163, 184)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 12px center;
+          background-size: 20px;
+          padding-right: 40px;
+        }
+      `}</style>
+    </div>
+  );
+}

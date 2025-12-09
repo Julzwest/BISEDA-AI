@@ -1,0 +1,582 @@
+import React, { useState, useEffect } from 'react';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { MessageSquare, Mail, Lock, Eye, EyeOff, Sparkles, ArrowRight, Heart, Zap, Star, Crown, ArrowLeft, KeyRound } from 'lucide-react';
+import { getBackendUrl } from '@/utils/getBackendUrl';
+import { Capacitor } from '@capacitor/core';
+
+// Free trial constants (exported for use elsewhere)
+export const FREE_TRIAL_DAYS = 3;
+export const FREE_TRIAL_MESSAGES_PER_DAY = 10;
+
+// Clear ALL session data (for logout functionality)
+export const clearGuestSession = () => {
+  localStorage.removeItem('guestSession');
+  localStorage.removeItem('isGuest');
+  localStorage.removeItem('guestId');
+};
+
+// Complete logout - clears everything
+export const clearAllUserData = () => {
+  localStorage.removeItem('userId');
+  localStorage.removeItem('userEmail');
+  localStorage.removeItem('userName');
+  localStorage.removeItem('userCountry');
+  localStorage.removeItem('isAuthenticated');
+  localStorage.removeItem('isGuest');
+  localStorage.removeItem('guestSession');
+  localStorage.removeItem('guestId');
+  localStorage.removeItem('conversationHistory');
+  localStorage.removeItem('onboardingCompleted');
+  console.log('🔓 User logged out - all data cleared');
+};
+
+export default function Auth({ onAuthSuccess }) {
+  const [isLogin, setIsLogin] = useState(false);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [focusedField, setFocusedField] = useState(null);
+  
+  // Forgot password state
+  const [forgotPasswordMode, setForgotPasswordMode] = useState(false);
+  const [resetStep, setResetStep] = useState(1);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetCode, setResetCode] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+
+  const backendUrl = getBackendUrl();
+
+  // Rotating tagline state
+  const [taglineIndex, setTaglineIndex] = useState(0);
+  const taglines = [
+    '✨ AI që të kupton vërtetë',
+    '✨ AI që të bën irresistible',
+    '✨ Fillo biseda që lënë përshtypje',
+    '✨ Takime që fillojnë me mesazhe perfekte'
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTaglineIndex((prev) => (prev + 1) % 4);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleGuestLogin = () => {
+    const guestId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    clearAllUserData();
+    localStorage.setItem('isGuest', 'true');
+    localStorage.setItem('guestId', guestId);
+    localStorage.setItem('isAuthenticated', 'true');
+    localStorage.setItem('userCountry', 'AL');
+    console.log('👤 Guest session started:', guestId);
+    if (onAuthSuccess) onAuthSuccess({ isGuest: true, guestId });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (!isLogin && !firstName.trim()) {
+      setError('Shkruaj emrin tënd ✏️');
+      return;
+    }
+    
+    if (!isLogin && !lastName.trim()) {
+      setError('Shkruaj mbiemrin tënd ✏️');
+      return;
+    }
+
+    if (!email.trim()) {
+      setError('Shkruaj email-in tënd 📧');
+      return;
+    }
+    
+    if (!password || password.length < 6) {
+      setError('Fjalëkalimi duhet 6+ karaktere 🔐');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
+      const payload = isLogin
+        ? { email: email.trim(), password }
+        : {
+            firstName: firstName.trim(),
+            lastName: lastName.trim(),
+            email: email.trim(),
+            password,
+            country: 'AL'
+          };
+
+      const response = await fetch(`${backendUrl}${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userCountry');
+        localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('isGuest');
+        localStorage.removeItem('guestSession');
+        localStorage.removeItem('guestId');
+        localStorage.removeItem('conversationHistory');
+
+        const userId = data.user.odId || data.user.userId;
+        const userName = data.user.firstName
+          ? `${data.user.firstName} ${data.user.lastName || ''}`.trim()
+          : data.user.username || email.split('@')[0];
+
+        localStorage.setItem('userId', userId);
+        localStorage.setItem('userEmail', data.user.email);
+        localStorage.setItem('userName', userName);
+        localStorage.setItem('isAuthenticated', 'true');
+        localStorage.setItem('userCountry', data.user.country || 'AL');
+
+        console.log('✅ Auth successful:', { userId, userName, email: data.user.email });
+
+        if (onAuthSuccess) {
+          onAuthSuccess({
+            userId,
+            email: data.user.email,
+            userName,
+            country: data.user.country || 'AL',
+          });
+        }
+      } else {
+        setError(data.error || 'Diçka shkoi keq 😅');
+      }
+    } catch (err) {
+      console.error('Auth error:', err);
+      setError('Gabim lidhje. Provo përsëri! 🔄');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (forgotPasswordMode) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+        <Card className="bg-slate-900/80 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20 max-w-md w-full">
+          <button
+            onClick={() => {
+              setForgotPasswordMode(false);
+              setResetStep(1);
+              setResetEmail('');
+              setResetCode('');
+              setNewPassword('');
+              setError('');
+            }}
+            className="mb-6 flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span>Kthehu</span>
+          </button>
+
+          <h2 className="text-2xl font-bold text-white mb-6 text-center">
+            <KeyRound className="w-8 h-8 inline-block mr-2" />
+            Rivendos Fjalëkalimin
+          </h2>
+
+          {resetStep === 1 && (
+            <div className="space-y-4">
+              <input
+                type="email"
+                value={resetEmail}
+                onChange={(e) => setResetEmail(e.target.value)}
+                placeholder="Email 📧"
+                className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all"
+              />
+              <Button
+                onClick={async () => {
+                  if (!resetEmail.trim()) {
+                    setError('Shkruaj email-in tënd 📧');
+                    return;
+                  }
+                  setLoading(true);
+                  try {
+                    const response = await fetch(`${backendUrl}/api/auth/forgot-password`, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ email: resetEmail.trim() }),
+                    });
+                    const data = await response.json();
+                    if (response.ok) {
+                      setResetStep(2);
+                      setSuccessMessage('Kodi u dërgua në email! 📧');
+                      setError('');
+                    } else {
+                      setError(data.error || 'Diçka shkoi keq 😅');
+                    }
+                  } catch (err) {
+                    setError('Gabim lidhje. Provo përsëri! 🔄');
+                  } finally {
+                    setLoading(false);
+                  }
+                }}
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl"
+              >
+                {loading ? 'Duke dërguar...' : 'Dërgo Kodin'}
+              </Button>
+            </div>
+          )}
+
+          {resetStep === 2 && (
+            <div className="space-y-4">
+              <input
+                type="text"
+                value={resetCode}
+                onChange={(e) => setResetCode(e.target.value)}
+                placeholder="Kodi 6-shifror"
+                maxLength={6}
+                className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-center text-2xl tracking-widest"
+              />
+              <Button
+                onClick={async () => {
+                  if (!resetCode || resetCode.length !== 6) {
+                    setError('Shkruaj kodin 6-shifror 🔢');
+                    return;
+                  }
+                  setLoading(true);
+                  try {
+                    const response = await fetch(`${backendUrl}/api/auth/verify-reset-code`, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ email: resetEmail.trim(), code: resetCode }),
+                    });
+                    const data = await response.json();
+                    if (response.ok) {
+                      setResetStep(3);
+                      setError('');
+                    } else {
+                      setError(data.error || 'Kodi është i gabuar ❌');
+                    }
+                  } catch (err) {
+                    setError('Gabim lidhje. Provo përsëri! 🔄');
+                  } finally {
+                    setLoading(false);
+                  }
+                }}
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl"
+              >
+                {loading ? 'Duke verifikuar...' : 'Verifiko Kodin'}
+              </Button>
+            </div>
+          )}
+
+          {resetStep === 3 && (
+            <div className="space-y-4">
+              <input
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="Fjalëkalim i ri 🔐"
+                className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all"
+              />
+              <Button
+                onClick={async () => {
+                  if (!newPassword || newPassword.length < 6) {
+                    setError('Fjalëkalimi duhet 6+ karaktere 🔐');
+                    return;
+                  }
+                  setLoading(true);
+                  try {
+                    const response = await fetch(`${backendUrl}/api/auth/reset-password`, {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        email: resetEmail.trim(),
+                        code: resetCode,
+                        newPassword,
+                      }),
+                    });
+                    const data = await response.json();
+                    if (response.ok) {
+                      setSuccessMessage('Fjalëkalimi u ndryshua! ✅');
+                      setTimeout(() => {
+                        setForgotPasswordMode(false);
+                        setIsLogin(true);
+                        setResetStep(1);
+                        setResetEmail('');
+                        setResetCode('');
+                        setNewPassword('');
+                        setError('');
+                        setSuccessMessage('');
+                      }, 2000);
+                    } else {
+                      setError(data.error || 'Diçka shkoi keq 😅');
+                    }
+                  } catch (err) {
+                    setError('Gabim lidhje. Provo përsëri! 🔄');
+                  } finally {
+                    setLoading(false);
+                  }
+                }}
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl"
+              >
+                {loading ? 'Duke ndryshuar...' : 'Ndrysho Fjalëkalimin'}
+              </Button>
+            </div>
+          )}
+
+          {error && (
+            <div className="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-xl">
+              <p className="text-red-400 text-sm text-center">{error}</p>
+            </div>
+          )}
+
+          {successMessage && (
+            <div className="mt-4 p-3 bg-green-500/10 border border-green-500/30 rounded-xl">
+              <p className="text-green-400 text-sm text-center">{successMessage}</p>
+            </div>
+          )}
+        </Card>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <div className="w-full max-w-md">
+        {/* Logo & Header - Same as Homepage */}
+        <div className="text-center mb-8">
+          {/* Logo - Speech bubbles representing conversation */}
+          <div className="inline-block mb-5 relative">
+            <div className="relative">
+              {/* Main speech bubble */}
+              <div className="w-24 h-24 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/50 relative overflow-hidden animate-bounce-slow">
+                {/* Animated background effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
+                {/* Speech bubble icon */}
+                <MessageSquare className="w-12 h-12 text-white relative z-10" fill="currentColor" strokeWidth={1.5} />
+                {/* Small sparkle effect */}
+                <Sparkles className="w-4 h-4 text-yellow-300 absolute top-2 right-2 animate-pulse" />
+              </div>
+              {/* Small secondary speech bubble */}
+              <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center shadow-lg border-2 border-slate-900">
+                <div className="w-3 h-3 bg-white rounded-full"></div>
+              </div>
+            </div>
+          </div>
+          
+          {/* App Name with proper .ai styling */}
+          <h1 className="text-5xl font-extrabold mb-3">
+            <span className="bg-gradient-to-r from-white via-indigo-100 to-purple-100 bg-clip-text text-transparent">
+              Biseda
+            </span>
+            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent text-4xl">
+              .ai
+            </span>
+          </h1>
+          
+          {/* Rotating tagline */}
+          <div className="h-8 flex items-center justify-center">
+            <p className="text-slate-300 text-base font-medium animate-fade-in">
+              {taglines[taglineIndex]}
+            </p>
+          </div>
+        </div>
+
+        {/* Main Card */}
+        <Card className="bg-slate-900/80 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20">
+          {/* Toggle Buttons */}
+          <div className="flex gap-2 mb-8 bg-slate-800/50 p-1.5 rounded-2xl border border-slate-700/50">
+            <button
+              onClick={() => { setIsLogin(false); setError(''); }}
+              className={`flex-1 py-3.5 rounded-xl font-semibold text-base transition-all duration-300 ${
+                !isLogin
+                  ? 'bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white shadow-md shadow-purple-500/30'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              Regjistrohu
+            </button>
+            <button
+              onClick={() => { setIsLogin(true); setError(''); }}
+              className={`flex-1 py-3.5 rounded-xl font-semibold text-base transition-all duration-300 ${
+                isLogin
+                  ? 'bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white shadow-md shadow-purple-500/30'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              Hyr
+            </button>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* First Name & Last Name */}
+            {!isLogin && (
+              <>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <input
+                      type="text"
+                      value={firstName}
+                      onChange={(e) => { setFirstName(e.target.value); setError(''); }}
+                      className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
+                      placeholder="Emri ✏️"
+                      style={{ fontSize: '16px' }}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="text"
+                      value={lastName}
+                      onChange={(e) => { setLastName(e.target.value); setError(''); }}
+                      className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
+                      placeholder="Mbiemri ✏️"
+                      style={{ fontSize: '16px' }}
+                      required
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
+            {/* Email */}
+            <div>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value); setError(''); }}
+                className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
+                placeholder="Email 📧"
+                style={{ fontSize: '16px' }}
+                required
+              />
+            </div>
+
+            {/* Password */}
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => { setPassword(e.target.value); setError(''); }}
+                className="w-full px-4 py-4 pr-12 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
+                placeholder="Fjalëkalimi 🔐"
+                style={{ fontSize: '16px' }}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
+              >
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
+            </div>
+
+            {/* Error */}
+            {error && (
+              <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-xl animate-shake">
+                <p className="text-red-400 text-sm text-center">{error}</p>
+              </div>
+            )}
+
+            {/* Submit Buttons - TWO BUTTONS SIDE BY SIDE */}
+            <div className="grid grid-cols-2 gap-3">
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl text-base shadow-lg transition-all duration-300"
+              >
+                {loading ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-4 h-4 border-3 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  </div>
+                ) : (
+                  <span>{isLogin ? '🚀 Hyr' : '✨ Krijo Llogari'}</span>
+                )}
+              </Button>
+
+              <button
+                type="button"
+                onClick={handleGuestLogin}
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-bold h-14 rounded-xl text-base shadow-lg shadow-cyan-500/20 transition-all duration-300 inline-flex items-center justify-center disabled:opacity-50"
+              >
+                👤 Vazhdo si Guest
+              </button>
+            </div>
+
+            {/* Apple Sign In Button */}
+            <button
+              type="button"
+              className="w-full bg-white hover:bg-gray-100 text-black font-semibold h-14 rounded-xl text-base shadow-lg transition-all duration-300 flex items-center justify-center gap-3"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="black">
+                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+              </svg>
+              Vazhdo me Apple
+            </button>
+          </form>
+
+          {/* Forgot Password Link */}
+          {isLogin && (
+            <div className="mt-4">
+              <button
+                onClick={() => setForgotPasswordMode(true)}
+                className="text-sm text-purple-400 hover:text-purple-300 transition-colors w-full text-center"
+              >
+                🔑 Harruat fjalëkalimin?
+              </button>
+            </div>
+          )}
+
+          {/* Terms */}
+          <div className="mt-6 text-center">
+            <p className="text-slate-500 text-xs">
+              Duke vazhduar, pranoni{' '}
+              <span className="text-purple-400 font-medium">Kushtet & Privacine</span>
+            </p>
+          </div>
+        </Card>
+      </div>
+
+      {/* Custom animations */}
+      <style>{`
+        @keyframes bounce-slow {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+        .animate-bounce-slow {
+          animation: bounce-slow 3s ease-in-out infinite;
+        }
+        @keyframes fade-in {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.5s ease-out;
+        }
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-10px); }
+          75% { transform: translateX(10px); }
+        }
+        .animate-shake {
+          animation: shake 0.5s ease-in-out;
+        }
+      `}</style>
+    </div>
+  );
+}
