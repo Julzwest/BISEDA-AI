@@ -111,7 +111,7 @@ export default function Home() {
           >
             <div className="relative">
               {/* Main speech bubble */}
-              <div className={`w-24 h-24 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/50 relative overflow-hidden transition-transform ${logoTapCount > 0 ? 'scale-95' : ''}`}>
+              <div className="w-24 h-24 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/50 relative overflow-hidden">
                 {/* Animated background effect */}
                 <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
                 {/* Speech bubble icon */}
@@ -124,17 +124,6 @@ export default function Home() {
                 <div className="w-3 h-3 bg-white rounded-full"></div>
               </div>
             </div>
-            {/* Hidden tap counter indicator (only shows when tapping) */}
-            {logoTapCount > 0 && logoTapCount < 6 && (
-              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 flex gap-1">
-                {[...Array(6)].map((_, i) => (
-                  <div 
-                    key={i} 
-                    className={`w-1.5 h-1.5 rounded-full transition-all ${i < logoTapCount ? 'bg-purple-400' : 'bg-slate-600'}`}
-                  />
-                ))}
-              </div>
-            )}
           </div>
           
           {/* App Name with proper .ai styling */}
