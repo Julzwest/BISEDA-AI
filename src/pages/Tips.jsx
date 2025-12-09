@@ -19,7 +19,7 @@ export default function Tips() {
   const [followUpQuestion, setFollowUpQuestion] = useState('');
   const [isLimitReached, setIsLimitReached] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
-  const [visibleCount, setVisibleCount] = useState(10); // Initially show 10 tips
+  const [visibleCount, setVisibleCount] = useState(5); // Initially show 5 tips for faster loading
   const backendUrl = getBackendUrl();
 
   const categories = [
@@ -28,7 +28,7 @@ export default function Tips() {
       icon: MessageSquare,
       title: 'Mesazhi i parë',
       color: 'from-blue-500 to-cyan-600',
-      prompt: 'Jep 10 ide për mesazhe të para në dating apps në shqip. Bëji krijuese dhe interesante, që tërheqin vëmendjen pa qenë cringe.'
+      prompt: 'Jep 25 ide të ndryshme për mesazhe të para në dating apps në shqip. Bëji krijuese, interesante dhe të ndryshme nga njëra-tjetra. Disa flirty, disa funny, disa smooth. Që tërheqin vëmendjen pa qenë cringe. Formato secilën në një rresht të veçantë.'
     },
     {
       id: 'conversation',
@@ -42,7 +42,7 @@ export default function Tips() {
       icon: Heart,
       title: 'Komplimente',
       color: 'from-pink-500 to-rose-600',
-      prompt: 'Jep 15 komplimente krijuese dhe autentike në shqip që mund të përdoren në biseda. Jo të zakonshmet, por diçka që vërtetë bën përshtypje.'
+      prompt: 'Jep 20 komplimente krijuese dhe autentike në shqip që mund të përdoren në biseda. Jo të zakonshmet, por diçka që vërtetë bën përshtypje. Formato secilën në një rresht të veçantë.'
     },
     {
       id: 'red_flags',
@@ -83,7 +83,7 @@ export default function Tips() {
     setSelectedCategory(category);
     setAnswer(null);
     setConversation([]);
-    setVisibleCount(10); // Reset visible count
+    setVisibleCount(5); // Reset visible count
     setIsLoading(true);
 
     try {
@@ -129,7 +129,7 @@ export default function Tips() {
 
     setIsLoading(true);
     setConversation([]);
-    setVisibleCount(10); // Reset visible count
+    setVisibleCount(5); // Reset visible count
     try {
       const response = await base44.integrations.Core.InvokeLLM({
         prompt: `Analizo këtë screenshot të një bisede. Jep feedback të detajuar në shqip:
@@ -191,7 +191,7 @@ ${customQuestion ? `\nPyetje specifike: ${customQuestion}` : ''}`,
     setIsLoading(true);
     setAnswer(null);
     setConversation([]);
-    setVisibleCount(10); // Reset visible count
+    setVisibleCount(5); // Reset visible count
 
     try {
       const response = await base44.integrations.Core.InvokeLLM({
@@ -408,7 +408,7 @@ Përgjigju në shqip duke u bazuar në kontekstin e mëparshëm. Jep këshilla t
                 setScreenshot(null);
                 setConversation([]);
                 setFollowUpQuestion('');
-                setVisibleCount(10); // Reset visible count
+                setVisibleCount(5); // Reset visible count
               }}
               className="text-slate-400 hover:text-white"
             >
@@ -440,7 +440,20 @@ Përgjigju në shqip duke u bazuar në kontekstin e mëparshëm. Jep këshilla t
 
                   {/* Answer with visual formatting */}
                   <div className="ml-10 space-y-3">
-                    {item.answer.split('\n\n').slice(0, visibleCount).map((section, sIndex) => {
+                    {(() => {
+                      // Better parsing: split by numbered items or double newlines
+                      let sections = item.answer.split('\n\n');
+                      
+                      // If only one section, try to split by numbered items
+                      if (sections.length <= 2) {
+                        const numberedSplit = item.answer.split(/(?=\d+[\.\)]\s)/);
+                        if (numberedSplit.length > 2) {
+                          sections = numberedSplit.filter(s => s.trim());
+                        }
+                      }
+                      
+                      return sections;
+                    })().slice(0, visibleCount).map((section, sIndex) => {
                       const colorSchemes = [
                         { bg: 'from-blue-500/20 to-cyan-500/10', border: 'border-blue-500/40', dot: 'from-blue-400 to-cyan-500', text: 'text-blue-100' },
                         { bg: 'from-purple-500/20 to-pink-500/10', border: 'border-purple-500/40', dot: 'from-purple-400 to-pink-500', text: 'text-purple-100' },
@@ -490,12 +503,23 @@ Përgjigju në shqip duke u bazuar në kontekstin e mëparshëm. Jep këshilla t
                         );
                       }
 
-                      // Regular paragraph
+                      // Regular paragraph or numbered item
                       if (section.trim()) {
                         const colors = colorSchemes[sIndex % colorSchemes.length];
+                        // Clean up the text - remove number prefix if present
+                        const cleanText = section.trim().replace(/^\d+[\.\)]\s*/, '').replace(/^[""]|[""]$/g, '').trim();
+                        const itemNumber = section.trim().match(/^(\d+)[\.\)]/)?.[1];
+                        
                         return (
-                          <Card key={sIndex} className={`bg-gradient-to-br ${colors.bg} ${colors.border} p-4`}>
-                            <p className="text-white leading-relaxed">{section.trim()}</p>
+                          <Card key={sIndex} className={`bg-gradient-to-br ${colors.bg} ${colors.border} backdrop-blur-sm p-4 hover:scale-[1.01] transition-transform`}>
+                            <div className="flex items-start gap-3">
+                              {itemNumber && (
+                                <div className={`w-8 h-8 bg-gradient-to-br ${colors.dot} rounded-full flex items-center justify-center shrink-0`}>
+                                  <span className="text-white font-bold text-sm">{itemNumber}</span>
+                                </div>
+                              )}
+                              <p className="text-white leading-relaxed flex-1">{cleanText || section.trim()}</p>
+                            </div>
                           </Card>
                         );
                       }
@@ -504,16 +528,33 @@ Përgjigju në shqip duke u bazuar në kontekstin e mëparshëm. Jep këshilla t
                     })}
 
                     {/* Load More Button */}
-                    {item.answer.split('\n\n').length > visibleCount && (
-                      <div className="mt-6">
-                        <Button
-                          onClick={() => setVisibleCount(prev => prev + 10)}
-                          className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-semibold py-3"
-                        >
-                          Shiko më shumë ✨
-                        </Button>
-                      </div>
-                    )}
+                    {(() => {
+                      let sections = item.answer.split('\n\n');
+                      if (sections.length <= 2) {
+                        const numberedSplit = item.answer.split(/(?=\d+[\.\)]\s)/);
+                        if (numberedSplit.length > 2) {
+                          sections = numberedSplit.filter(s => s.trim());
+                        }
+                      }
+                      const totalSections = sections.filter(s => s.trim()).length;
+                      
+                      if (totalSections > visibleCount) {
+                        return (
+                          <div className="mt-6 mb-4">
+                            <Button
+                              onClick={() => setVisibleCount(prev => prev + 5)}
+                              className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-500/30 text-base"
+                            >
+                              Më shumë 👇
+                            </Button>
+                            <p className="text-center text-slate-400 text-xs mt-2">
+                              {Math.min(visibleCount, totalSections)} nga {totalSections} rezultate
+                            </p>
+                          </div>
+                        );
+                      }
+                      return null;
+                    })()}
                     
                     {/* Save Button */}
                     <div className="mt-4">
