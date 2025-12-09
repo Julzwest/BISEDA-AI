@@ -69,10 +69,15 @@ export default function CountrySwitcher() {
     <div className="relative" ref={dropdownRef}>
       {/* Trigger Button */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsOpen(!isOpen);
+        }}
         className="group flex items-center gap-1.5 px-3 py-2 bg-slate-800/90 border border-slate-700/60 rounded-xl hover:bg-slate-700/90 hover:border-purple-500/50 transition-all duration-200"
         aria-label="Change country"
         aria-expanded={isOpen}
+        type="button"
       >
         <span className="text-lg">{currentCountry?.flag}</span>
         <ChevronDown 
@@ -88,13 +93,18 @@ export default function CountrySwitcher() {
           {/* Backdrop */}
           <div 
             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998]"
-            onClick={() => setIsOpen(false)}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsOpen(false);
+            }}
           />
           
           {/* Dropdown/Modal Container */}
           <div 
             className="fixed inset-x-4 bottom-4 md:absolute md:inset-auto md:right-0 md:top-full md:mt-2 md:w-72 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-[9999]"
             style={{ maxHeight: 'calc(100vh - 120px)' }}
+            onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700/50 bg-gradient-to-r from-slate-800 to-slate-800/50">
@@ -103,8 +113,13 @@ export default function CountrySwitcher() {
                 <p className="text-sm font-semibold text-white">Zgjidh Vendin</p>
               </div>
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setIsOpen(false);
+                }}
                 className="p-1.5 hover:bg-slate-700 rounded-lg transition-colors md:hidden"
+                type="button"
               >
                 <X className="w-5 h-5 text-slate-400" />
               </button>
@@ -118,12 +133,17 @@ export default function CountrySwitcher() {
                 return (
                   <button
                     key={country.code}
-                    onClick={() => handleSelectCountry(country.code)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleSelectCountry(country.code);
+                    }}
                     className={`w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-150 border-b border-slate-800/50 last:border-b-0 ${
                       isSelected
                         ? 'bg-purple-500/20 text-white'
                         : 'text-slate-300 hover:bg-slate-800 hover:text-white active:bg-slate-700'
                     }`}
+                    type="button"
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">{country.flag}</span>
