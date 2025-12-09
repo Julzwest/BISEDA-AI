@@ -8,6 +8,7 @@ export default function CountrySwitcher() {
     localStorage.getItem('userCountry') || 'AL'
   );
   const dropdownRef = useRef(null);
+  const buttonRef = useRef(null);
 
   const currentCountry = getCountryByCode(selectedCountry);
 
@@ -66,33 +67,36 @@ export default function CountrySwitcher() {
   };
 
   return (
-    <div className="relative z-50" ref={dropdownRef}>
+    <>
       {/* Trigger Button */}
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setIsOpen(!isOpen);
-        }}
-        className="group flex items-center gap-1.5 px-3 py-2 bg-slate-800/90 border border-slate-700/60 rounded-xl hover:bg-slate-700/90 hover:border-purple-500/50 transition-all duration-200"
-        aria-label="Change country"
-        aria-expanded={isOpen}
-        type="button"
-      >
-        <span className="text-lg">{currentCountry?.flag}</span>
-        <ChevronDown 
-          className={`w-3.5 h-3.5 text-slate-400 group-hover:text-purple-400 transition-all duration-200 ${
-            isOpen ? 'rotate-180' : ''
-          }`} 
-        />
-      </button>
+      <div className="relative" ref={dropdownRef}>
+        <button
+          ref={buttonRef}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setIsOpen(!isOpen);
+          }}
+          className="group flex items-center gap-1.5 px-3 py-2 bg-slate-800/90 border border-slate-700/60 rounded-xl hover:bg-slate-700/90 hover:border-purple-500/50 transition-all duration-200"
+          aria-label="Change country"
+          aria-expanded={isOpen}
+          type="button"
+        >
+          <span className="text-lg">{currentCountry?.flag}</span>
+          <ChevronDown 
+            className={`w-3.5 h-3.5 text-slate-400 group-hover:text-purple-400 transition-all duration-200 ${
+              isOpen ? 'rotate-180' : ''
+            }`} 
+          />
+        </button>
+      </div>
 
-      {/* Modal Overlay - Full screen on mobile */}
+      {/* Portal-style Modal for dropdown */}
       {isOpen && (
         <>
-          {/* Backdrop */}
+          {/* Backdrop - only on mobile */}
           <div 
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998]"
+            className="md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[10000]"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -100,10 +104,13 @@ export default function CountrySwitcher() {
             }}
           />
           
-          {/* Dropdown/Modal Container */}
+          {/* Dropdown Container */}
           <div 
-            className="fixed inset-x-4 bottom-4 md:absolute md:inset-auto md:left-auto md:right-0 md:top-[calc(100%+0.5rem)] md:bottom-auto md:w-72 md:max-h-[400px] bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-[9999]"
-            style={{ maxHeight: 'calc(100vh - 120px)' }}
+            className="fixed left-4 right-4 bottom-4 md:absolute md:left-auto md:right-4 md:bottom-auto md:w-72 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-[10001]"
+            style={{
+              top: buttonRef.current ? `${buttonRef.current.getBoundingClientRect().bottom + 8}px` : 'auto',
+              maxHeight: 'calc(100vh - 120px)'
+            }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -126,7 +133,7 @@ export default function CountrySwitcher() {
             </div>
 
             {/* Countries List - Scrollable */}
-            <div className="overflow-y-auto" style={{ maxHeight: 'calc(100vh - 200px)', maxHeight: 'min(400px, calc(100vh - 200px))' }}>
+            <div className="overflow-y-auto max-h-[400px]">
               {countries.map((country) => {
                 const isSelected = selectedCountry === country.code;
                 
@@ -173,6 +180,6 @@ export default function CountrySwitcher() {
           </div>
         </>
       )}
-    </div>
+    </>
   );
 }
