@@ -1,0 +1,190 @@
+{
+  "app": {
+    "name": "Biseda.ai",
+    "tagline": "Mëso si të flasësh me djem/vajza, përmirëso chat-et në WhatsApp, Instagram, Facebook Messenger, Tinder dhe aplikacione të tjera dating"
+  },
+  "nav": {
+    "home": "Home",
+    "aiCoach": "AI Coach",
+    "dates": "Takime",
+    "events": "Evente",
+    "tips": "Këshilla"
+  },
+  "home": {
+    "getStarted": "Fillo tani",
+    "stats": {
+      "improve": "Përmirëso lojën",
+      "moreDates": "Më shumë takime",
+      "fastResults": "Rezultate të shpejta"
+    },
+    "features": {
+      "aiCoach": {
+        "title": "AI Coach",
+        "desc": "Bisedo me AI për të praktikuar biseda, mësuar teknikat e picking up, dhe përmirësuar aftësitë e tua"
+      },
+      "dates": {
+        "title": "Takime të Para",
+        "desc": "Gjej ide perfekte për takimin e parë me sugjerime lokale biznese në qytetet shqiptare"
+      },
+      "tips": {
+        "title": "Këshilla & Tips",
+        "desc": "Mëso si të flasësh me djem/vajza në WhatsApp, Instagram, Messenger, Tinder dhe të përmirësosh lojën tënde"
+      },
+      "events": {
+        "title": "Evente Lokale",
+        "desc": "Gjej vende eventesh, koncerte, klube dhe argëtim në qytetin tënd"
+      },
+      "gifts": {
+        "title": "Sugjerime Dhuratash",
+        "desc": "Gjej dhuratën perfekte bazuar në interesat e partnerit me lidhje për blerje"
+      }
+    },
+    "freeTrial": "Provë Falas",
+    "upgrade": "Përmirëso",
+    "messagesRemaining": "Mesazhe Sot",
+    "limitWarning": "Pothuajse në limitin tënd! Përmirëso për mesazhe të pakufizuara."
+  },
+  "auth": {
+    "register": "Regjistrohu",
+    "login": "Hyr",
+    "logout": "Dil",
+    "guest": "Vazhdo si Guest",
+    "createAccount": "Krijo Llogari",
+    "forgotPassword": "Harrove fjalëkalimin?",
+    "email": "Email",
+    "password": "Fjalëkalimi",
+    "confirmPassword": "Konfirmo Fjalëkalimin",
+    "name": "Emri",
+    "username": "Username",
+    "continueWithApple": "Vazhdo me Apple",
+    "or": "OSE",
+    "alreadyHaveAccount": "Ke llogari?",
+    "dontHaveAccount": "Nuk ke llogari?",
+    "termsAgree": "Duke vazhduar, pranon",
+    "terms": "Kushtet e Shërbimit",
+    "and": "dhe",
+    "privacy": "Politikën e Privatësisë"
+  },
+  "chat": {
+    "placeholder": "Shkruaj mesazhin tënd këtu...",
+    "send": "Dërgo",
+    "typing": "Duke shkruar...",
+    "history": "Historia e bisedave",
+    "newChat": "Bisedë e re",
+    "welcome": "Ç'kemi! Unë jam AI Coach-i yt për dating dhe biseda. Si mund të të ndihmoj sot?",
+    "upgradeForScreenshot": "Përmirëso për analiza screenshot"
+  },
+  "tips": {
+    "title": "Këshilla & Tips",
+    "subtitle": "Përmirëso lojën tënde",
+    "categories": "Kategorite",
+    "firstMessage": "Mesazhi i parë",
+    "keepConversation": "Ruajtja e bisedës",
+    "compliments": "Komplimente",
+    "redFlags": "Red flags",
+    "confidence": "Konfidenca",
+    "analyzeChat": "Analizo bisedë",
+    "askQuestion": "Bëj një pyetje",
+    "questionPlaceholder": "Shkruaj pyetjen tënde këtu...",
+    "getAnswer": "Merr përgjigje",
+    "preparing": "Duke përgatitur...",
+    "followUp": "Pyetje shtesë?",
+    "askMore": "Pyet më shumë...",
+    "showMore": "Më shumë",
+    "generateMore": "Gjenero më shumë",
+    "generateNewTip": "Kliko për të marrë mesazhe të reja",
+    "save": "Ruaj",
+    "back": "Kthehu",
+    "resultsCount": "nga",
+    "results": "rezultate"
+  },
+  "events": {
+    "title": "Evente Lokale",
+    "subtitle": "Gjej ngjarje në qytetin tënd",
+    "selectCity": "Zgjidh Qytetin",
+    "findEvents": "Gjej Evente",
+    "allEvents": "Të gjitha",
+    "concerts": "Koncerte",
+    "clubs": "Klube",
+    "festivals": "Festivale",
+    "sports": "Sporte",
+    "loading": "Duke kërkuar...",
+    "noEvents": "Nuk u gjetën evente",
+    "upcoming": "Datat Festive",
+    "loadMore": "Shiko më shumë"
+  },
+  "dates": {
+    "title": "Takime të Para",
+    "subtitle": "Ide perfekte për datën tënde",
+    "selectCity": "Zgjidh qytetin",
+    "restaurants": "Restorante",
+    "cafes": "Kafene",
+    "outdoor": "Jashtë",
+    "activities": "Aktivitete",
+    "romantic": "Romantike",
+    "getSuggestions": "Merr Sugjerime",
+    "loading": "Duke kërkuar..."
+  },
+  "gifts": {
+    "title": "Sugjerime Dhuratash",
+    "subtitle": "Gjej dhuratën perfekte",
+    "forWho": "Për kë është dhurata?",
+    "interests": "Interesat",
+    "budget": "Buxheti",
+    "getSuggestions": "Merr Sugjerime",
+    "buyNow": "Bli Tani"
+  },
+  "settings": {
+    "title": "Cilësimet",
+    "language": "Gjuha",
+    "region": "Rajoni",
+    "notifications": "Njoftimet",
+    "darkMode": "Modi i errët",
+    "about": "Rreth",
+    "help": "Ndihmë",
+    "privacy": "Privatësia",
+    "terms": "Kushtet"
+  },
+  "common": {
+    "loading": "Duke ngarkuar...",
+    "error": "Gabim",
+    "success": "Sukses",
+    "cancel": "Anulo",
+    "confirm": "Konfirmo",
+    "save": "Ruaj",
+    "delete": "Fshi",
+    "edit": "Ndrysho",
+    "close": "Mbyll",
+    "search": "Kërko",
+    "filter": "Filtro",
+    "sort": "Rendit",
+    "refresh": "Rifresko",
+    "tryAgain": "Provo përsëri",
+    "seeAll": "Shiko të gjitha",
+    "more": "Më shumë",
+    "less": "Më pak",
+    "yes": "Po",
+    "no": "Jo",
+    "active": "Aktiv",
+    "cities": "qytete"
+  },
+  "upgrade": {
+    "title": "Përmirëso Planin",
+    "limitReached": "Limiti u arrit!",
+    "unlimitedMessages": "Mesazhe të pakufizuara",
+    "allFeatures": "Të gjitha veçoritë",
+    "priority": "Mbështetje prioritare",
+    "monthly": "Mujor",
+    "yearly": "Vjetor",
+    "choosePlan": "Zgjidh Planin"
+  },
+  "country": {
+    "selectCountry": "Zgjidh Vendin",
+    "hint": "Zgjidh vendin për të parë evente dhe takime lokale"
+  },
+  "language": {
+    "selectLanguage": "Zgjidh Gjuhën",
+    "hint": "Zgjidh gjuhën e aplikacionit"
+  }
+}
+

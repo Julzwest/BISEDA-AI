@@ -2,9 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import { ThemeProvider } from './contexts/ThemeContext.jsx';
-// import { LanguageProvider } from './contexts/LanguageContext.jsx';
 import { trackSessionStart, trackSessionEnd } from './utils/analytics.js';
 import './index.css';
+
+// Initialize i18n
+import './i18n';
 
 // Track session start
 trackSessionStart();

@@ -1,0 +1,190 @@
+{
+  "app": {
+    "name": "Biseda.ai",
+    "tagline": "Impara a parlare con ragazzi/ragazze, migliora le tue chat su WhatsApp, Instagram, Facebook Messenger, Tinder e altre app di dating"
+  },
+  "nav": {
+    "home": "Home",
+    "aiCoach": "AI Coach",
+    "dates": "Appuntamenti",
+    "events": "Eventi",
+    "tips": "Consigli"
+  },
+  "home": {
+    "getStarted": "Inizia ora",
+    "stats": {
+      "improve": "Migliora il tuo gioco",
+      "moreDates": "Più appuntamenti",
+      "fastResults": "Risultati veloci"
+    },
+    "features": {
+      "aiCoach": {
+        "title": "AI Coach",
+        "desc": "Chatta con l'AI per praticare conversazioni, imparare tecniche di rimorchio e migliorare le tue abilità"
+      },
+      "dates": {
+        "title": "Primi Appuntamenti",
+        "desc": "Trova idee perfette per il tuo primo appuntamento con suggerimenti di attività locali nella tua città"
+      },
+      "tips": {
+        "title": "Consigli & Tips",
+        "desc": "Impara a parlare con ragazzi/ragazze su WhatsApp, Instagram, Messenger, Tinder e migliora il tuo gioco"
+      },
+      "events": {
+        "title": "Eventi Locali",
+        "desc": "Trova luoghi per eventi, concerti, club e intrattenimento nella tua città"
+      },
+      "gifts": {
+        "title": "Suggerimenti Regalo",
+        "desc": "Trova il regalo perfetto basato sugli interessi del tuo partner con link per l'acquisto"
+      }
+    },
+    "freeTrial": "Prova Gratuita",
+    "upgrade": "Aggiorna",
+    "messagesRemaining": "Messaggi Oggi",
+    "limitWarning": "Quasi al limite! Aggiorna per messaggi illimitati."
+  },
+  "auth": {
+    "register": "Registrati",
+    "login": "Accedi",
+    "logout": "Esci",
+    "guest": "Continua come Ospite",
+    "createAccount": "Crea Account",
+    "forgotPassword": "Password dimenticata?",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Conferma Password",
+    "name": "Nome",
+    "username": "Username",
+    "continueWithApple": "Continua con Apple",
+    "or": "OPPURE",
+    "alreadyHaveAccount": "Hai un account?",
+    "dontHaveAccount": "Non hai un account?",
+    "termsAgree": "Continuando, accetti i nostri",
+    "terms": "Termini di Servizio",
+    "and": "e",
+    "privacy": "Privacy Policy"
+  },
+  "chat": {
+    "placeholder": "Scrivi il tuo messaggio qui...",
+    "send": "Invia",
+    "typing": "Sta scrivendo...",
+    "history": "Cronologia chat",
+    "newChat": "Nuova chat",
+    "welcome": "Ciao! Sono il tuo AI Coach per dating e conversazioni. Come posso aiutarti oggi?",
+    "upgradeForScreenshot": "Aggiorna per analisi screenshot"
+  },
+  "tips": {
+    "title": "Consigli & Tips",
+    "subtitle": "Migliora il tuo gioco",
+    "categories": "Categorie",
+    "firstMessage": "Primo messaggio",
+    "keepConversation": "Mantieni la conversazione",
+    "compliments": "Complimenti",
+    "redFlags": "Red flags",
+    "confidence": "Sicurezza",
+    "analyzeChat": "Analizza chat",
+    "askQuestion": "Fai una domanda",
+    "questionPlaceholder": "Scrivi la tua domanda qui...",
+    "getAnswer": "Ottieni risposta",
+    "preparing": "Preparando...",
+    "followUp": "Domanda successiva?",
+    "askMore": "Chiedi altro...",
+    "showMore": "Mostra altro",
+    "generateMore": "Genera altro",
+    "generateNewTip": "Clicca per nuovi messaggi",
+    "save": "Salva",
+    "back": "Indietro",
+    "resultsCount": "di",
+    "results": "risultati"
+  },
+  "events": {
+    "title": "Eventi Locali",
+    "subtitle": "Trova eventi nella tua città",
+    "selectCity": "Seleziona Città",
+    "findEvents": "Trova Eventi",
+    "allEvents": "Tutti",
+    "concerts": "Concerti",
+    "clubs": "Club",
+    "festivals": "Festival",
+    "sports": "Sport",
+    "loading": "Cercando...",
+    "noEvents": "Nessun evento trovato",
+    "upcoming": "Prossime Festività",
+    "loadMore": "Carica altro"
+  },
+  "dates": {
+    "title": "Primi Appuntamenti",
+    "subtitle": "Idee perfette per il tuo appuntamento",
+    "selectCity": "Seleziona città",
+    "restaurants": "Ristoranti",
+    "cafes": "Caffè",
+    "outdoor": "All'aperto",
+    "activities": "Attività",
+    "romantic": "Romantici",
+    "getSuggestions": "Ottieni Suggerimenti",
+    "loading": "Cercando..."
+  },
+  "gifts": {
+    "title": "Suggerimenti Regalo",
+    "subtitle": "Trova il regalo perfetto",
+    "forWho": "Per chi è il regalo?",
+    "interests": "Interessi",
+    "budget": "Budget",
+    "getSuggestions": "Ottieni Suggerimenti",
+    "buyNow": "Compra Ora"
+  },
+  "settings": {
+    "title": "Impostazioni",
+    "language": "Lingua",
+    "region": "Regione",
+    "notifications": "Notifiche",
+    "darkMode": "Modalità scura",
+    "about": "Info",
+    "help": "Aiuto",
+    "privacy": "Privacy",
+    "terms": "Termini"
+  },
+  "common": {
+    "loading": "Caricamento...",
+    "error": "Errore",
+    "success": "Successo",
+    "cancel": "Annulla",
+    "confirm": "Conferma",
+    "save": "Salva",
+    "delete": "Elimina",
+    "edit": "Modifica",
+    "close": "Chiudi",
+    "search": "Cerca",
+    "filter": "Filtra",
+    "sort": "Ordina",
+    "refresh": "Aggiorna",
+    "tryAgain": "Riprova",
+    "seeAll": "Vedi tutto",
+    "more": "Altro",
+    "less": "Meno",
+    "yes": "Sì",
+    "no": "No",
+    "active": "Attivo",
+    "cities": "città"
+  },
+  "upgrade": {
+    "title": "Aggiorna Piano",
+    "limitReached": "Limite raggiunto!",
+    "unlimitedMessages": "Messaggi illimitati",
+    "allFeatures": "Tutte le funzionalità",
+    "priority": "Supporto prioritario",
+    "monthly": "Mensile",
+    "yearly": "Annuale",
+    "choosePlan": "Scegli Piano"
+  },
+  "country": {
+    "selectCountry": "Seleziona Paese",
+    "hint": "Seleziona paese per vedere eventi e appuntamenti locali"
+  },
+  "language": {
+    "selectLanguage": "Seleziona Lingua",
+    "hint": "Seleziona la lingua dell'app"
+  }
+}
+

@@ -1,0 +1,190 @@
+{
+  "app": {
+    "name": "Biseda.ai",
+    "tagline": "Apprends à parler aux garçons/filles, améliore tes discussions sur WhatsApp, Instagram, Facebook Messenger, Tinder et autres apps de rencontres"
+  },
+  "nav": {
+    "home": "Accueil",
+    "aiCoach": "AI Coach",
+    "dates": "Rendez-vous",
+    "events": "Événements",
+    "tips": "Conseils"
+  },
+  "home": {
+    "getStarted": "Commencer",
+    "stats": {
+      "improve": "Améliore ton jeu",
+      "moreDates": "Plus de rendez-vous",
+      "fastResults": "Résultats rapides"
+    },
+    "features": {
+      "aiCoach": {
+        "title": "AI Coach",
+        "desc": "Discute avec l'IA pour pratiquer les conversations, apprendre les techniques de drague et améliorer tes compétences"
+      },
+      "dates": {
+        "title": "Premiers Rendez-vous",
+        "desc": "Trouve des idées parfaites pour ton premier rendez-vous avec des suggestions locales dans ta ville"
+      },
+      "tips": {
+        "title": "Conseils & Astuces",
+        "desc": "Apprends à parler aux garçons/filles sur WhatsApp, Instagram, Messenger, Tinder et améliore ton jeu"
+      },
+      "events": {
+        "title": "Événements Locaux",
+        "desc": "Trouve des lieux d'événements, concerts, clubs et divertissements dans ta ville"
+      },
+      "gifts": {
+        "title": "Suggestions Cadeaux",
+        "desc": "Trouve le cadeau parfait basé sur les intérêts de ton partenaire avec des liens d'achat"
+      }
+    },
+    "freeTrial": "Essai Gratuit",
+    "upgrade": "Améliorer",
+    "messagesRemaining": "Messages Aujourd'hui",
+    "limitWarning": "Presque à ta limite! Améliore pour des messages illimités."
+  },
+  "auth": {
+    "register": "S'inscrire",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "guest": "Continuer en tant qu'invité",
+    "createAccount": "Créer un compte",
+    "forgotPassword": "Mot de passe oublié?",
+    "email": "Email",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "name": "Nom",
+    "username": "Nom d'utilisateur",
+    "continueWithApple": "Continuer avec Apple",
+    "or": "OU",
+    "alreadyHaveAccount": "Tu as un compte?",
+    "dontHaveAccount": "Tu n'as pas de compte?",
+    "termsAgree": "En continuant, tu acceptes nos",
+    "terms": "Conditions d'utilisation",
+    "and": "et",
+    "privacy": "Politique de confidentialité"
+  },
+  "chat": {
+    "placeholder": "Écris ton message ici...",
+    "send": "Envoyer",
+    "typing": "Écrit...",
+    "history": "Historique des discussions",
+    "newChat": "Nouvelle discussion",
+    "welcome": "Salut! Je suis ton AI Coach pour les rencontres et les conversations. Comment puis-je t'aider aujourd'hui?",
+    "upgradeForScreenshot": "Améliore pour l'analyse de captures d'écran"
+  },
+  "tips": {
+    "title": "Conseils & Astuces",
+    "subtitle": "Améliore ton jeu",
+    "categories": "Catégories",
+    "firstMessage": "Premier message",
+    "keepConversation": "Maintenir la conversation",
+    "compliments": "Compliments",
+    "redFlags": "Red flags",
+    "confidence": "Confiance",
+    "analyzeChat": "Analyser la discussion",
+    "askQuestion": "Poser une question",
+    "questionPlaceholder": "Écris ta question ici...",
+    "getAnswer": "Obtenir une réponse",
+    "preparing": "Préparation...",
+    "followUp": "Question suivante?",
+    "askMore": "Demander plus...",
+    "showMore": "Afficher plus",
+    "generateMore": "Générer plus",
+    "generateNewTip": "Clique pour de nouveaux messages",
+    "save": "Sauvegarder",
+    "back": "Retour",
+    "resultsCount": "sur",
+    "results": "résultats"
+  },
+  "events": {
+    "title": "Événements Locaux",
+    "subtitle": "Trouve des événements dans ta ville",
+    "selectCity": "Sélectionner la ville",
+    "findEvents": "Trouver des événements",
+    "allEvents": "Tous",
+    "concerts": "Concerts",
+    "clubs": "Clubs",
+    "festivals": "Festivals",
+    "sports": "Sports",
+    "loading": "Recherche...",
+    "noEvents": "Aucun événement trouvé",
+    "upcoming": "Prochaines fêtes",
+    "loadMore": "Charger plus"
+  },
+  "dates": {
+    "title": "Premiers Rendez-vous",
+    "subtitle": "Idées parfaites pour ton rendez-vous",
+    "selectCity": "Sélectionner la ville",
+    "restaurants": "Restaurants",
+    "cafes": "Cafés",
+    "outdoor": "En plein air",
+    "activities": "Activités",
+    "romantic": "Romantique",
+    "getSuggestions": "Obtenir des suggestions",
+    "loading": "Recherche..."
+  },
+  "gifts": {
+    "title": "Suggestions Cadeaux",
+    "subtitle": "Trouve le cadeau parfait",
+    "forWho": "Pour qui est le cadeau?",
+    "interests": "Intérêts",
+    "budget": "Budget",
+    "getSuggestions": "Obtenir des suggestions",
+    "buyNow": "Acheter maintenant"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "language": "Langue",
+    "region": "Région",
+    "notifications": "Notifications",
+    "darkMode": "Mode sombre",
+    "about": "À propos",
+    "help": "Aide",
+    "privacy": "Confidentialité",
+    "terms": "Conditions"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "save": "Sauvegarder",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "sort": "Trier",
+    "refresh": "Actualiser",
+    "tryAgain": "Réessayer",
+    "seeAll": "Voir tout",
+    "more": "Plus",
+    "less": "Moins",
+    "yes": "Oui",
+    "no": "Non",
+    "active": "Actif",
+    "cities": "villes"
+  },
+  "upgrade": {
+    "title": "Améliorer le plan",
+    "limitReached": "Limite atteinte!",
+    "unlimitedMessages": "Messages illimités",
+    "allFeatures": "Toutes les fonctionnalités",
+    "priority": "Support prioritaire",
+    "monthly": "Mensuel",
+    "yearly": "Annuel",
+    "choosePlan": "Choisir un plan"
+  },
+  "country": {
+    "selectCountry": "Sélectionner le pays",
+    "hint": "Sélectionne le pays pour voir les événements et rendez-vous locaux"
+  },
+  "language": {
+    "selectLanguage": "Sélectionner la langue",
+    "hint": "Sélectionne la langue de l'application"
+  }
+}
+

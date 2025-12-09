@@ -1,0 +1,190 @@
+{
+  "app": {
+    "name": "Biseda.ai",
+    "tagline": "Learn how to talk to guys/girls, improve your chats on WhatsApp, Instagram, Facebook Messenger, Tinder and other dating apps"
+  },
+  "nav": {
+    "home": "Home",
+    "aiCoach": "AI Coach",
+    "dates": "Dates",
+    "events": "Events",
+    "tips": "Tips"
+  },
+  "home": {
+    "getStarted": "Get Started",
+    "stats": {
+      "improve": "Improve your game",
+      "moreDates": "More dates",
+      "fastResults": "Fast results"
+    },
+    "features": {
+      "aiCoach": {
+        "title": "AI Coach",
+        "desc": "Chat with AI to practice conversations, learn pickup techniques, and improve your skills"
+      },
+      "dates": {
+        "title": "First Dates",
+        "desc": "Find perfect ideas for your first date with local business suggestions in your city"
+      },
+      "tips": {
+        "title": "Tips & Advice",
+        "desc": "Learn how to talk to guys/girls on WhatsApp, Instagram, Messenger, Tinder and improve your game"
+      },
+      "events": {
+        "title": "Local Events",
+        "desc": "Find event venues, concerts, clubs and entertainment in your city"
+      },
+      "gifts": {
+        "title": "Gift Suggestions",
+        "desc": "Find the perfect gift based on your partner's interests with purchase links"
+      }
+    },
+    "freeTrial": "Free Trial",
+    "upgrade": "Upgrade",
+    "messagesRemaining": "Messages Today",
+    "limitWarning": "Almost at your limit! Upgrade for unlimited messages."
+  },
+  "auth": {
+    "register": "Register",
+    "login": "Login",
+    "logout": "Logout",
+    "guest": "Continue as Guest",
+    "createAccount": "Create Account",
+    "forgotPassword": "Forgot password?",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "name": "Name",
+    "username": "Username",
+    "continueWithApple": "Continue with Apple",
+    "or": "OR",
+    "alreadyHaveAccount": "Have an account?",
+    "dontHaveAccount": "Don't have an account?",
+    "termsAgree": "By continuing, you agree to our",
+    "terms": "Terms of Service",
+    "and": "and",
+    "privacy": "Privacy Policy"
+  },
+  "chat": {
+    "placeholder": "Type your message here...",
+    "send": "Send",
+    "typing": "Typing...",
+    "history": "Chat history",
+    "newChat": "New chat",
+    "welcome": "Hey! I'm your AI Coach for dating and conversations. How can I help you today?",
+    "upgradeForScreenshot": "Upgrade for screenshot analysis"
+  },
+  "tips": {
+    "title": "Tips & Advice",
+    "subtitle": "Improve your game",
+    "categories": "Categories",
+    "firstMessage": "First message",
+    "keepConversation": "Keep the conversation",
+    "compliments": "Compliments",
+    "redFlags": "Red flags",
+    "confidence": "Confidence",
+    "analyzeChat": "Analyze chat",
+    "askQuestion": "Ask a question",
+    "questionPlaceholder": "Type your question here...",
+    "getAnswer": "Get answer",
+    "preparing": "Preparing...",
+    "followUp": "Follow-up question?",
+    "askMore": "Ask more...",
+    "showMore": "Show more",
+    "generateMore": "Generate more",
+    "generateNewTip": "Click to get new messages",
+    "save": "Save",
+    "back": "Back",
+    "resultsCount": "of",
+    "results": "results"
+  },
+  "events": {
+    "title": "Local Events",
+    "subtitle": "Find events in your city",
+    "selectCity": "Select City",
+    "findEvents": "Find Events",
+    "allEvents": "All",
+    "concerts": "Concerts",
+    "clubs": "Clubs",
+    "festivals": "Festivals",
+    "sports": "Sports",
+    "loading": "Searching...",
+    "noEvents": "No events found",
+    "upcoming": "Upcoming Holidays",
+    "loadMore": "Load more"
+  },
+  "dates": {
+    "title": "First Dates",
+    "subtitle": "Perfect ideas for your date",
+    "selectCity": "Select city",
+    "restaurants": "Restaurants",
+    "cafes": "Cafes",
+    "outdoor": "Outdoor",
+    "activities": "Activities",
+    "romantic": "Romantic",
+    "getSuggestions": "Get Suggestions",
+    "loading": "Searching..."
+  },
+  "gifts": {
+    "title": "Gift Suggestions",
+    "subtitle": "Find the perfect gift",
+    "forWho": "Who is the gift for?",
+    "interests": "Interests",
+    "budget": "Budget",
+    "getSuggestions": "Get Suggestions",
+    "buyNow": "Buy Now"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "region": "Region",
+    "notifications": "Notifications",
+    "darkMode": "Dark mode",
+    "about": "About",
+    "help": "Help",
+    "privacy": "Privacy",
+    "terms": "Terms"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "refresh": "Refresh",
+    "tryAgain": "Try again",
+    "seeAll": "See all",
+    "more": "More",
+    "less": "Less",
+    "yes": "Yes",
+    "no": "No",
+    "active": "Active",
+    "cities": "cities"
+  },
+  "upgrade": {
+    "title": "Upgrade Plan",
+    "limitReached": "Limit reached!",
+    "unlimitedMessages": "Unlimited messages",
+    "allFeatures": "All features",
+    "priority": "Priority support",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "choosePlan": "Choose Plan"
+  },
+  "country": {
+    "selectCountry": "Select Country",
+    "hint": "Select country to see local events and dates"
+  },
+  "language": {
+    "selectLanguage": "Select Language",
+    "hint": "Select app language"
+  }
+}
+

@@ -1,0 +1,190 @@
+{
+  "app": {
+    "name": "Biseda.ai",
+    "tagline": "Leer hoe je met jongens/meisjes praat, verbeter je chats op WhatsApp, Instagram, Facebook Messenger, Tinder en andere dating apps"
+  },
+  "nav": {
+    "home": "Home",
+    "aiCoach": "AI Coach",
+    "dates": "Dates",
+    "events": "Evenementen",
+    "tips": "Tips"
+  },
+  "home": {
+    "getStarted": "Begin nu",
+    "stats": {
+      "improve": "Verbeter je spel",
+      "moreDates": "Meer dates",
+      "fastResults": "Snelle resultaten"
+    },
+    "features": {
+      "aiCoach": {
+        "title": "AI Coach",
+        "desc": "Chat met AI om gesprekken te oefenen, versier technieken te leren en je vaardigheden te verbeteren"
+      },
+      "dates": {
+        "title": "Eerste Dates",
+        "desc": "Vind perfecte ideeën voor je eerste date met lokale suggesties in jouw stad"
+      },
+      "tips": {
+        "title": "Tips & Adviezen",
+        "desc": "Leer hoe je met jongens/meisjes praat op WhatsApp, Instagram, Messenger, Tinder en verbeter je spel"
+      },
+      "events": {
+        "title": "Lokale Evenementen",
+        "desc": "Vind eventlocaties, concerten, clubs en entertainment in jouw stad"
+      },
+      "gifts": {
+        "title": "Cadeau Suggesties",
+        "desc": "Vind het perfecte cadeau gebaseerd op de interesses van je partner met kooplinks"
+      }
+    },
+    "freeTrial": "Gratis Proefperiode",
+    "upgrade": "Upgraden",
+    "messagesRemaining": "Berichten Vandaag",
+    "limitWarning": "Bijna aan je limiet! Upgrade voor onbeperkte berichten."
+  },
+  "auth": {
+    "register": "Registreren",
+    "login": "Inloggen",
+    "logout": "Uitloggen",
+    "guest": "Doorgaan als Gast",
+    "createAccount": "Account Aanmaken",
+    "forgotPassword": "Wachtwoord vergeten?",
+    "email": "E-mail",
+    "password": "Wachtwoord",
+    "confirmPassword": "Bevestig Wachtwoord",
+    "name": "Naam",
+    "username": "Gebruikersnaam",
+    "continueWithApple": "Doorgaan met Apple",
+    "or": "OF",
+    "alreadyHaveAccount": "Heb je een account?",
+    "dontHaveAccount": "Geen account?",
+    "termsAgree": "Door verder te gaan accepteer je onze",
+    "terms": "Gebruiksvoorwaarden",
+    "and": "en",
+    "privacy": "Privacybeleid"
+  },
+  "chat": {
+    "placeholder": "Typ je bericht hier...",
+    "send": "Versturen",
+    "typing": "Typt...",
+    "history": "Chat geschiedenis",
+    "newChat": "Nieuwe chat",
+    "welcome": "Hoi! Ik ben je AI Coach voor dating en gesprekken. Hoe kan ik je vandaag helpen?",
+    "upgradeForScreenshot": "Upgrade voor screenshot analyse"
+  },
+  "tips": {
+    "title": "Tips & Adviezen",
+    "subtitle": "Verbeter je spel",
+    "categories": "Categorieën",
+    "firstMessage": "Eerste bericht",
+    "keepConversation": "Gesprek gaande houden",
+    "compliments": "Complimenten",
+    "redFlags": "Red flags",
+    "confidence": "Zelfvertrouwen",
+    "analyzeChat": "Chat analyseren",
+    "askQuestion": "Stel een vraag",
+    "questionPlaceholder": "Typ je vraag hier...",
+    "getAnswer": "Krijg antwoord",
+    "preparing": "Voorbereiden...",
+    "followUp": "Vervolgvraag?",
+    "askMore": "Vraag meer...",
+    "showMore": "Toon meer",
+    "generateMore": "Genereer meer",
+    "generateNewTip": "Klik voor nieuwe berichten",
+    "save": "Opslaan",
+    "back": "Terug",
+    "resultsCount": "van",
+    "results": "resultaten"
+  },
+  "events": {
+    "title": "Lokale Evenementen",
+    "subtitle": "Vind evenementen in jouw stad",
+    "selectCity": "Selecteer Stad",
+    "findEvents": "Vind Evenementen",
+    "allEvents": "Alle",
+    "concerts": "Concerten",
+    "clubs": "Clubs",
+    "festivals": "Festivals",
+    "sports": "Sport",
+    "loading": "Zoeken...",
+    "noEvents": "Geen evenementen gevonden",
+    "upcoming": "Aankomende Feestdagen",
+    "loadMore": "Meer laden"
+  },
+  "dates": {
+    "title": "Eerste Dates",
+    "subtitle": "Perfecte ideeën voor je date",
+    "selectCity": "Selecteer stad",
+    "restaurants": "Restaurants",
+    "cafes": "Cafés",
+    "outdoor": "Buiten",
+    "activities": "Activiteiten",
+    "romantic": "Romantisch",
+    "getSuggestions": "Krijg Suggesties",
+    "loading": "Zoeken..."
+  },
+  "gifts": {
+    "title": "Cadeau Suggesties",
+    "subtitle": "Vind het perfecte cadeau",
+    "forWho": "Voor wie is het cadeau?",
+    "interests": "Interesses",
+    "budget": "Budget",
+    "getSuggestions": "Krijg Suggesties",
+    "buyNow": "Nu Kopen"
+  },
+  "settings": {
+    "title": "Instellingen",
+    "language": "Taal",
+    "region": "Regio",
+    "notifications": "Meldingen",
+    "darkMode": "Donkere modus",
+    "about": "Over",
+    "help": "Help",
+    "privacy": "Privacy",
+    "terms": "Voorwaarden"
+  },
+  "common": {
+    "loading": "Laden...",
+    "error": "Fout",
+    "success": "Succes",
+    "cancel": "Annuleren",
+    "confirm": "Bevestigen",
+    "save": "Opslaan",
+    "delete": "Verwijderen",
+    "edit": "Bewerken",
+    "close": "Sluiten",
+    "search": "Zoeken",
+    "filter": "Filteren",
+    "sort": "Sorteren",
+    "refresh": "Verversen",
+    "tryAgain": "Opnieuw proberen",
+    "seeAll": "Alles bekijken",
+    "more": "Meer",
+    "less": "Minder",
+    "yes": "Ja",
+    "no": "Nee",
+    "active": "Actief",
+    "cities": "steden"
+  },
+  "upgrade": {
+    "title": "Plan Upgraden",
+    "limitReached": "Limiet bereikt!",
+    "unlimitedMessages": "Onbeperkte berichten",
+    "allFeatures": "Alle functies",
+    "priority": "Prioriteit support",
+    "monthly": "Maandelijks",
+    "yearly": "Jaarlijks",
+    "choosePlan": "Kies Plan"
+  },
+  "country": {
+    "selectCountry": "Selecteer Land",
+    "hint": "Selecteer land om lokale evenementen en dates te zien"
+  },
+  "language": {
+    "selectLanguage": "Selecteer Taal",
+    "hint": "Selecteer app taal"
+  }
+}
+

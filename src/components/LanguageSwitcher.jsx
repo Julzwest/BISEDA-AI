@@ -1,101 +1,152 @@
-import React, { useState } from 'react';
-import { Globe, ChevronDown, Check } from 'lucide-react';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { languages } from '@/config/languages';
+import React, { useState, useEffect, useRef } from 'react';
+import { Check, ChevronDown, X, Languages } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { languages } from '@/i18n';
 
-export default function LanguageSwitcher({ compact = false, className = '' }) {
-  const { language, changeLanguage, t } = useLanguage();
+export default function LanguageSwitcher() {
+  const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
-  const currentLang = languages[language] || languages.en;
+  const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
 
-  const handleLanguageSelect = (langCode) => {
-    changeLanguage(langCode);
+  // Close on outside click
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
+  // Close on escape key
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
+    
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+    }
+    
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isOpen]);
+
+  // Prevent body scroll when modal is open on mobile
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
+  const handleSelectLanguage = (langCode) => {
+    i18n.changeLanguage(langCode);
+    localStorage.setItem('appLanguage', langCode);
     setIsOpen(false);
+    
+    // Dispatch event for components that might need to know
+    window.dispatchEvent(new CustomEvent('languageChanged', { 
+      detail: { langCode } 
+    }));
   };
 
-  if (compact) {
-    return (
-      <div className={`relative ${className}`}>
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-2 px-3 py-2 bg-slate-800/50 hover:bg-slate-700/50 rounded-xl border border-slate-700/50 transition-all"
-        >
-          <span className="text-lg">{currentLang.flag}</span>
-          <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
-        </button>
-
-        {isOpen && (
-          <>
-            <div 
-              className="fixed inset-0 z-40" 
-              onClick={() => setIsOpen(false)}
-            />
-            <div className="absolute right-0 top-full mt-2 w-48 bg-slate-900/95 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-2xl z-50 overflow-hidden">
-              <div className="max-h-64 overflow-y-auto py-2">
-                {Object.values(languages).map((lang) => (
-                  <button
-                    key={lang.code}
-                    onClick={() => handleLanguageSelect(lang.code)}
-                    className={`w-full flex items-center gap-3 px-4 py-2.5 hover:bg-slate-800/50 transition-colors ${
-                      language === lang.code ? 'bg-purple-500/20 text-purple-400' : 'text-white'
-                    }`}
-                  >
-                    <span className="text-lg">{lang.flag}</span>
-                    <span className="flex-1 text-left text-sm">{lang.name}</span>
-                    {language === lang.code && (
-                      <Check className="w-4 h-4 text-purple-400" />
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </>
-        )}
-      </div>
-    );
-  }
-
   return (
-    <div className={`relative ${className}`}>
+    <div className="relative" ref={dropdownRef}>
+      {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-3 w-full px-4 py-3 bg-slate-800/50 hover:bg-slate-700/50 rounded-2xl border border-slate-700/50 transition-all"
+        className="group flex items-center gap-1.5 px-3 py-2 bg-slate-800/90 border border-slate-700/60 rounded-xl hover:bg-slate-700/90 hover:border-purple-500/50 transition-all duration-200"
+        aria-label="Change language"
+        aria-expanded={isOpen}
       >
-        <Globe className="w-5 h-5 text-purple-400" />
-        <span className="text-lg">{currentLang.flag}</span>
-        <span className="flex-1 text-left text-white">{currentLang.name}</span>
-        <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <span className="text-lg">{currentLanguage?.flag}</span>
+        <ChevronDown 
+          className={`w-3.5 h-3.5 text-slate-400 group-hover:text-purple-400 transition-all duration-200 ${
+            isOpen ? 'rotate-180' : ''
+          }`} 
+        />
       </button>
 
+      {/* Modal Overlay - Full screen on mobile */}
       {isOpen && (
         <>
+          {/* Backdrop */}
           <div 
-            className="fixed inset-0 z-40" 
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998]"
             onClick={() => setIsOpen(false)}
           />
-          <div className="absolute left-0 right-0 top-full mt-2 bg-slate-900/95 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-2xl z-50 overflow-hidden">
-            <div className="p-3 border-b border-slate-700/50">
-              <p className="text-xs text-slate-400 uppercase font-semibold">
-                {t('country.changeLanguage') || 'Select Language'}
-              </p>
+          
+          {/* Dropdown/Modal Container */}
+          <div 
+            className="fixed inset-x-4 bottom-4 md:absolute md:inset-auto md:right-0 md:top-full md:mt-2 md:w-64 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-[9999]"
+            style={{ maxHeight: 'calc(100vh - 120px)' }}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700/50 bg-gradient-to-r from-slate-800 to-slate-800/50">
+              <div className="flex items-center gap-2">
+                <Languages className="w-4 h-4 text-purple-400" />
+                <p className="text-sm font-semibold text-white">{t('language.selectLanguage')}</p>
+              </div>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="p-1.5 hover:bg-slate-700 rounded-lg transition-colors md:hidden"
+              >
+                <X className="w-5 h-5 text-slate-400" />
+              </button>
             </div>
-            <div className="max-h-64 overflow-y-auto py-2">
-              {Object.values(languages).map((lang) => (
-                <button
-                  key={lang.code}
-                  onClick={() => handleLanguageSelect(lang.code)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-800/50 transition-colors ${
-                    language === lang.code ? 'bg-purple-500/20 text-purple-400' : 'text-white'
-                  }`}
-                >
-                  <span className="text-xl">{lang.flag}</span>
-                  <span className="flex-1 text-left font-medium">{lang.name}</span>
-                  {language === lang.code && (
-                    <Check className="w-5 h-5 text-purple-400" />
-                  )}
-                </button>
-              ))}
+
+            {/* Languages List - Scrollable */}
+            <div className="overflow-y-auto" style={{ maxHeight: 'min(350px, calc(100vh - 200px))' }}>
+              {languages.map((language) => {
+                const isSelected = i18n.language === language.code;
+                
+                return (
+                  <button
+                    key={language.code}
+                    onClick={() => handleSelectLanguage(language.code)}
+                    className={`w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-150 border-b border-slate-800/50 last:border-b-0 ${
+                      isSelected
+                        ? 'bg-purple-500/20 text-white'
+                        : 'text-slate-300 hover:bg-slate-800 hover:text-white active:bg-slate-700'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">{language.flag}</span>
+                      <div>
+                        <div className="text-sm font-medium">{language.nativeName}</div>
+                        <div className="text-xs text-slate-500">{language.name}</div>
+                      </div>
+                    </div>
+                    
+                    {isSelected && (
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-purple-400 font-medium">{t('common.active')}</span>
+                        <Check className="w-5 h-5 text-purple-400 flex-shrink-0" />
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Footer hint */}
+            <div className="px-4 py-2 border-t border-slate-700/50 bg-slate-800/30">
+              <p className="text-[10px] text-slate-500 text-center">
+                {t('language.hint')}
+              </p>
             </div>
           </div>
         </>
