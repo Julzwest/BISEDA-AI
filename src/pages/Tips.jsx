@@ -28,7 +28,24 @@ export default function Tips() {
       icon: MessageSquare,
       title: 'Mesazhi i parë',
       color: 'from-blue-500 to-cyan-600',
-      prompt: 'Jep 25 ide të ndryshme për mesazhe të para në dating apps në shqip. Bëji krijuese, interesante dhe të ndryshme nga njëra-tjetra. Disa flirty, disa funny, disa smooth. Që tërheqin vëmendjen pa qenë cringe. Formato secilën në një rresht të veçantë.'
+      prompt: `Shkruaj 15 mesazhe të para origjinale për dating apps.
+
+RREGULLA:
+- VETËM shqip, asnjë gjuhë tjetër
+- Çdo mesazh 1-2 fjali maksimum  
+- Krijuese dhe interesante
+- Jo cringe
+
+FORMATI (një mesazh për rresht):
+1. "Mesazhi këtu"
+2. "Mesazhi tjetër"
+
+SHEMBUJ:
+1. "A ke pare filmin e fundit? Doja ta shihja me dikë special..."
+2. "Buzëqeshja jote me beri te ndaloj scrolling!"
+3. "Çfarë do bëje nëse do kishim vetem nje dit së bashku?"
+
+Tani shkruaj 15 mesazhe të reja:`
     },
     {
       id: 'conversation',
@@ -90,8 +107,50 @@ export default function Tips() {
       const response = await base44.integrations.Core.InvokeLLM({
         prompt: category.prompt
       });
-      setAnswer(response);
-      setConversation([{ question: category.title, answer: response }]);
+      
+      // Filter and clean the response for first_message category
+      let cleanedResponse = response;
+      if (category.id === 'first_message') {
+        // Split by numbered items and filter valid Albanian lines
+        const lines = response.split(/\n|(?=\d+[\.\)])/);
+        const validLines = lines.filter(line => {
+          const trimmed = line.trim();
+          if (!trimmed || trimmed.length < 15 || trimmed.length > 200) return false;
+          
+          // Must start with a number or quote
+          if (!trimmed.match(/^\d+[\.\)]/) && !trimmed.startsWith('"')) return false;
+          
+          // Check for gibberish patterns
+          const hasGibberish = /[а-яА-Я\u4e00-\u9fff\u0600-\u06ff\u0590-\u05ff]/.test(trimmed) || // Non-Latin scripts
+                              /\b[a-z]{1,2}\d+\b/i.test(trimmed) || // Code-like patterns (a12, b3, etc)
+                              /[_\{\}\[\]<>\\\/\|@#\$%\^&\*\+=]/.test(trimmed) || // Code symbols
+                              /\.\w+\.\w+/.test(trimmed) || // file.extension patterns
+                              /[A-Z]{3,}/.test(trimmed) || // All caps words (like CE, ABC)
+                              /\b(null|undefined|function|class|const|var|let|import|export|true|false)\b/i.test(trimmed); // Code keywords
+          
+          if (hasGibberish) return false;
+          
+          // Check for gibberish words (very long words, unusual patterns)
+          const words = trimmed.replace(/[^\w\sëËçÇ]/g, '').split(/\s+/);
+          const hasWeirdWords = words.some(word => {
+            if (word.length > 15) return true; // Too long for Albanian
+            if (/[bcdfghjklmnpqrstvwxz]{5,}/i.test(word)) return true; // Too many consonants in a row
+            return false;
+          });
+          
+          if (hasWeirdWords) return false;
+          
+          // Check if line contains mostly Latin/Albanian characters  
+          const albanianChars = trimmed.match(/[a-zA-ZëËçÇ\s\d\.\,\!\?\-\"\']+/g);
+          const albanianRatio = albanianChars ? albanianChars.join('').length / trimmed.length : 0;
+          
+          return albanianRatio > 0.9;
+        });
+        cleanedResponse = validLines.slice(0, 15).join('\n');
+      }
+      
+      setAnswer(cleanedResponse);
+      setConversation([{ question: category.title, answer: cleanedResponse }]);
     } catch (error) {
       console.error('Error:', error);
       if (error.code === 'LIMIT_EXCEEDED' || error.message?.includes('Limiti ditor')) {
@@ -441,14 +500,22 @@ Përgjigju në shqip duke u bazuar në kontekstin e mëparshëm. Jep këshilla t
                   {/* Answer with visual formatting */}
                   <div className="ml-10 space-y-3">
                     {(() => {
-                      // Better parsing: split by numbered items or double newlines
-                      let sections = item.answer.split('\n\n');
+                      // Better parsing: split by single newlines first, then numbered items
+                      let sections = item.answer.split('\n').filter(s => s.trim());
                       
-                      // If only one section, try to split by numbered items
-                      if (sections.length <= 2) {
+                      // If not many sections, try to split by numbered items
+                      if (sections.length <= 3) {
                         const numberedSplit = item.answer.split(/(?=\d+[\.\)]\s)/);
-                        if (numberedSplit.length > 2) {
+                        if (numberedSplit.length > sections.length) {
                           sections = numberedSplit.filter(s => s.trim());
+                        }
+                      }
+                      
+                      // If still not many, try double newlines
+                      if (sections.length <= 3) {
+                        const doubleSplit = item.answer.split('\n\n').filter(s => s.trim());
+                        if (doubleSplit.length > sections.length) {
+                          sections = doubleSplit;
                         }
                       }
                       
@@ -529,11 +596,18 @@ Përgjigju në shqip duke u bazuar në kontekstin e mëparshëm. Jep këshilla t
 
                     {/* Load More Button */}
                     {(() => {
-                      let sections = item.answer.split('\n\n');
-                      if (sections.length <= 2) {
+                      // Same parsing logic as display
+                      let sections = item.answer.split('\n').filter(s => s.trim());
+                      if (sections.length <= 3) {
                         const numberedSplit = item.answer.split(/(?=\d+[\.\)]\s)/);
-                        if (numberedSplit.length > 2) {
+                        if (numberedSplit.length > sections.length) {
                           sections = numberedSplit.filter(s => s.trim());
+                        }
+                      }
+                      if (sections.length <= 3) {
+                        const doubleSplit = item.answer.split('\n\n').filter(s => s.trim());
+                        if (doubleSplit.length > sections.length) {
+                          sections = doubleSplit;
                         }
                       }
                       const totalSections = sections.filter(s => s.trim()).length;
