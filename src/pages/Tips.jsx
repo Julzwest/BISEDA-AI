@@ -315,6 +315,87 @@ Përgjigju në shqip duke u bazuar në kontekstin e mëparshëm. Jep këshilla t
     setIsLoading(false);
   };
 
+  // Generate more first liners
+  const generateMoreFirstLiners = async () => {
+    if (isLoading) return;
+    
+    // Check limit before sending
+    const canProceed = await checkUsage();
+    if (!canProceed || isLimitReached) {
+      setShowUpgradeModal(true);
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await base44.integrations.Core.InvokeLLM({
+        prompt: `Shkruaj 10 mesazhe të reja të para origjinale për dating apps.
+
+RREGULLA:
+- VETËM shqip, asnjë gjuhë tjetër
+- Çdo mesazh 1-2 fjali maksimum  
+- Krijuese, flirty ose funny
+- Jo cringe, jo të zakonshme
+- DUHET të jenë NDRYSHE nga mesazhet e mëparshme
+
+FORMATI (një mesazh për rresht):
+1. "Mesazhi këtu"
+2. "Mesazhi tjetër"
+
+Tani shkruaj 10 mesazhe KREJTËSISHT të reja:`
+      });
+      
+      // Filter the new response
+      const lines = response.split(/\n|(?=\d+[\.\)])/);
+      const validLines = lines.filter(line => {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.length < 15 || trimmed.length > 200) return false;
+        if (!trimmed.match(/^\d+[\.\)]/) && !trimmed.startsWith('"')) return false;
+        
+        const hasGibberish = /[а-яА-Я\u4e00-\u9fff\u0600-\u06ff\u0590-\u05ff]/.test(trimmed) ||
+                            /\b[a-z]{1,2}\d+\b/i.test(trimmed) ||
+                            /[_\{\}\[\]<>\\\/\|@#\$%\^&\*\+=]/.test(trimmed) ||
+                            /\.\w+\.\w+/.test(trimmed) ||
+                            /[A-Z]{3,}/.test(trimmed) ||
+                            /\b(null|undefined|function|class|const|var|let|import|export|true|false)\b/i.test(trimmed);
+        
+        if (hasGibberish) return false;
+        
+        const words = trimmed.replace(/[^\w\sëËçÇ]/g, '').split(/\s+/);
+        const hasWeirdWords = words.some(word => {
+          if (word.length > 15) return true;
+          if (/[bcdfghjklmnpqrstvwxz]{5,}/i.test(word)) return true;
+          return false;
+        });
+        
+        if (hasWeirdWords) return false;
+        
+        const albanianChars = trimmed.match(/[a-zA-ZëËçÇ\s\d\.\,\!\?\-\"\']+/g);
+        const albanianRatio = albanianChars ? albanianChars.join('').length / trimmed.length : 0;
+        
+        return albanianRatio > 0.9;
+      });
+      
+      const cleanedResponse = validLines.slice(0, 10).join('\n');
+      
+      // Append to existing answer
+      if (answer) {
+        const newAnswer = answer + '\n' + cleanedResponse;
+        setAnswer(newAnswer);
+        setConversation([{ question: selectedCategory?.title || 'Mesazhi i parë', answer: newAnswer }]);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      if (error.code === 'LIMIT_EXCEEDED' || error.message?.includes('Limiti ditor')) {
+        setIsLimitReached(true);
+        setShowUpgradeModal(true);
+      }
+    }
+
+    setIsLoading(false);
+  };
+
   return (
     <div className="px-4 pt-6 pb-32 w-full max-w-full overflow-x-hidden">
       {/* Header - Centered like other pages */}
@@ -575,16 +656,15 @@ Përgjigju në shqip duke u bazuar në kontekstin e mëparshëm. Jep këshilla t
                         const colors = colorSchemes[sIndex % colorSchemes.length];
                         // Clean up the text - remove number prefix if present
                         const cleanText = section.trim().replace(/^\d+[\.\)]\s*/, '').replace(/^[""]|[""]$/g, '').trim();
-                        const itemNumber = section.trim().match(/^(\d+)[\.\)]/)?.[1];
+                        // Use sequential numbering (sIndex + 1) instead of extracted number
+                        const displayNumber = sIndex + 1;
                         
                         return (
                           <Card key={sIndex} className={`bg-gradient-to-br ${colors.bg} ${colors.border} backdrop-blur-sm p-4 hover:scale-[1.01] transition-transform`}>
                             <div className="flex items-start gap-3">
-                              {itemNumber && (
-                                <div className={`w-8 h-8 bg-gradient-to-br ${colors.dot} rounded-full flex items-center justify-center shrink-0`}>
-                                  <span className="text-white font-bold text-sm">{itemNumber}</span>
-                                </div>
-                              )}
+                              <div className={`w-8 h-8 bg-gradient-to-br ${colors.dot} rounded-full flex items-center justify-center shrink-0`}>
+                                <span className="text-white font-bold text-xs">{displayNumber}</span>
+                              </div>
                               <p className="text-white leading-relaxed flex-1">{cleanText || section.trim()}</p>
                             </div>
                           </Card>
@@ -642,6 +722,22 @@ Përgjigju në shqip duke u bazuar në kontekstin e mëparshëm. Jep këshilla t
                         className="text-sm"
                       />
                     </div>
+
+                    {/* Generate More Button - Only for first_message category */}
+                    {selectedCategory?.id === 'first_message' && !isLoading && (
+                      <div className="mt-6 pt-4 border-t border-slate-700">
+                        <Button
+                          onClick={generateMoreFirstLiners}
+                          disabled={isLoading}
+                          className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-purple-500/30 text-base"
+                        >
+                          {isLoading ? 'Duke gjeneruar...' : 'Gjenero më shumë 🔄'}
+                        </Button>
+                        <p className="text-center text-slate-400 text-xs mt-2">
+                          Kliko për të marrë mesazhe të reja
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
