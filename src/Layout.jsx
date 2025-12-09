@@ -110,18 +110,21 @@ export default function Layout({ children, onLogout }) {
       
       {/* Fixed Top Header Bar */}
       <header 
-        className="fixed top-0 left-0 right-0 border-b border-slate-700/20"
         style={{ 
+          position: 'fixed', 
+          top: 0, 
+          left: 0, 
+          right: 0, 
           paddingTop: 'env(safe-area-inset-top, 0px)',
           zIndex: 9999,
-          backgroundColor: 'rgba(15, 23, 42, 0.95)',
+          background: 'linear-gradient(to bottom, var(--bg-primary, rgba(15, 23, 42, 0.98)), var(--bg-primary, rgba(15, 23, 42, 0.95)))',
           backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)'
+          borderBottom: '1px solid var(--border-color, rgba(148, 163, 184, 0.1))'
         }}
       >
-        <div className="relative h-14 px-4 flex items-center justify-between max-w-screen-xl mx-auto w-full">
+        <div className="h-14 px-4 flex items-center justify-between max-w-screen-xl mx-auto">
           {/* Left side - Logo/Brand */}
-          <div className="flex items-center flex-shrink-0">
+          <div className="flex items-center">
             <Link to="/home" className="flex items-center gap-2">
               <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
                 <Sparkles className="w-4 h-4 text-white" />
@@ -132,22 +135,20 @@ export default function Layout({ children, onLogout }) {
           
           {/* Center - Guest Banner (if guest) */}
           {isGuest && (
-            <div className="absolute left-1/2 -translate-x-1/2 hidden md:block">
-              <GuestBanner 
-                onExpired={() => {
-                  clearGuestSession();
-                  if (onLogout) onLogout();
-                }}
-                onSignUp={() => {
-                  clearGuestSession();
-                  if (onLogout) onLogout();
-                }}
-              />
-            </div>
+            <GuestBanner 
+              onExpired={() => {
+                clearGuestSession();
+                if (onLogout) onLogout();
+              }}
+              onSignUp={() => {
+                clearGuestSession();
+                if (onLogout) onLogout();
+              }}
+            />
           )}
           
           {/* Right side - Language, Country Switcher & Profile */}
-          <div className="flex items-center gap-2 flex-shrink-0 relative z-50">
+          <div className="flex items-center gap-2">
             <LanguageSwitcher />
             <CountrySwitcher />
             <Link to="/profile">
