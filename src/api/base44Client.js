@@ -10,10 +10,16 @@ const callOpenAI = async (prompt, conversationHistory = [], customSystemPrompt =
   try {
     console.log('🚀 Calling backend API...', { backendUrl, promptLength: prompt?.length });
     
+    // Generate or get session ID for conversation tracking
+    const sessionId = window.chatSessionId || `session_${Date.now()}`;
+    if (!window.chatSessionId) window.chatSessionId = sessionId;
+    
     const response = await fetch(`${backendUrl}/api/chat`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'x-session-id': sessionId,
+        'x-user-id': localStorage.getItem('odId') || localStorage.getItem('guestId') || ''
       },
       body: JSON.stringify({
         prompt,

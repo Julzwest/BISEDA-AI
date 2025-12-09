@@ -9,7 +9,8 @@ import {
   CheckCircle, XCircle, Mail, Globe, Smartphone, Trash2,
   Search, Filter, MoreVertical, X, Send, Key, ChevronDown,
   ChevronUp, AlertTriangle, UserX, CreditCard as CardIcon,
-  History, MessageCircle, Settings, Award, Ban
+  History, MessageCircle, Settings, Award, Ban, MessagesSquare,
+  ChevronRight, User, Image
 } from 'lucide-react';
 import { getBackendUrl } from '@/utils/getBackendUrl';
 
@@ -45,6 +46,12 @@ export default function Admin() {
   const [showGiftCredits, setShowGiftCredits] = useState(false);
   const [giftCreditsAmount, setGiftCreditsAmount] = useState(10);
   const [giftCreditsUser, setGiftCreditsUser] = useState(null);
+  
+  // Conversations
+  const [conversations, setConversations] = useState([]);
+  const [selectedConversation, setSelectedConversation] = useState(null);
+  const [showConversationModal, setShowConversationModal] = useState(false);
+  const [loadingConversations, setLoadingConversations] = useState(false);
   
   const backendUrl = getBackendUrl();
   const adminToken = localStorage.getItem('adminToken');
@@ -175,6 +182,55 @@ export default function Admin() {
     setPassword('');
   };
 
+  const fetchConversations = async () => {
+    const token = localStorage.getItem('adminToken');
+    if (!token) return;
+    
+    setLoadingConversations(true);
+    try {
+      const response = await fetch(`${backendUrl}/api/admin/conversations?limit=100`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setConversations(data.conversations || []);
+      }
+    } catch (error) {
+      console.error('Fetch conversations error:', error);
+    } finally {
+      setLoadingConversations(false);
+    }
+  };
+
+  const fetchUserConversations = async (odId) => {
+    const token = localStorage.getItem('adminToken');
+    if (!token) return [];
+    
+    try {
+      const response = await fetch(`${backendUrl}/api/admin/users/${odId}/conversations`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        return data.conversations || [];
+      }
+    } catch (error) {
+      console.error('Fetch user conversations error:', error);
+    }
+    return [];
+  };
+
+  const viewUserConversations = async (user) => {
+    const userConvs = await fetchUserConversations(user.odId);
+    if (userConvs.length > 0) {
+      setSelectedUser(user);
+      setConversations(userConvs);
+      setActiveTab('conversations');
+    } else {
+      alert('Ky përdorues nuk ka biseda ende.');
+    }
+  };
+
   // Filter users
   const filteredUsers = (registeredUsers.length > 0 ? registeredUsers : users).filter(user => {
     const matchesSearch = searchQuery === '' || 
@@ -292,12 +348,16 @@ export default function Admin() {
         {[
           { id: 'overview', label: '📊 Përmbledhje' },
           { id: 'users', label: '👥 Përdoruesit' },
+          { id: 'conversations', label: '💬 Bisedat' },
           { id: 'subscriptions', label: '💎 Abonimet' },
           { id: 'activity', label: '📈 Aktiviteti' },
         ].map(tab => (
           <button
             key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
+            onClick={() => {
+              setActiveTab(tab.id);
+              if (tab.id === 'conversations') fetchConversations();
+            }}
             className={`px-4 py-2 rounded-xl font-medium text-sm whitespace-nowrap transition-all ${
               activeTab === tab.id
                 ? 'bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-lg'
@@ -610,6 +670,12 @@ export default function Admin() {
                         <Eye className="w-3 h-3 mr-1" /> Shiko
                       </Button>
                       <Button
+                        onClick={() => viewUserConversations(user)}
+                        className="bg-cyan-600 hover:bg-cyan-500 text-white text-xs h-9 px-3"
+                      >
+                        <MessageSquare className="w-3 h-3 mr-1" /> Bisedat
+                      </Button>
+                      <Button
                         onClick={() => { setGiftCreditsUser(user); setShowGiftCredits(true); }}
                         className="bg-purple-600 hover:bg-purple-500 text-white text-xs h-9 px-3"
                       >
@@ -686,6 +752,86 @@ export default function Admin() {
             </div>
           </Card>
         </>
+      )}
+
+      {/* Conversations Tab */}
+      {activeTab === 'conversations' && (
+        <Card className="bg-slate-800/50 border-slate-700/50 p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-bold text-white flex items-center gap-2">
+              <MessagesSquare className="w-5 h-5 text-cyan-400" />
+              {selectedUser ? `Bisedat e ${selectedUser.firstName || selectedUser.email}` : 'Të Gjitha Bisedat'}
+            </h2>
+            {selectedUser && (
+              <Button onClick={() => { setSelectedUser(null); fetchConversations(); }} className="bg-slate-600 hover:bg-slate-500 text-white text-xs">
+                <X className="w-4 h-4 mr-1" /> Pastro filtrin
+              </Button>
+            )}
+          </div>
+          
+          {loadingConversations ? (
+            <div className="text-center py-12">
+              <RefreshCw className="w-8 h-8 text-purple-400 mx-auto mb-4 animate-spin" />
+              <p className="text-slate-400">Duke ngarkuar bisedat...</p>
+            </div>
+          ) : conversations.length > 0 ? (
+            <div className="space-y-3 max-h-[600px] overflow-y-auto">
+              {conversations.map((conv, i) => (
+                <div 
+                  key={conv._id || i} 
+                  className="p-4 bg-slate-700/30 rounded-xl border border-slate-600/30 hover:border-cyan-500/30 cursor-pointer transition-all"
+                  onClick={() => { setSelectedConversation(conv); setShowConversationModal(true); }}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                          {(conv.userName?.[0] || conv.userEmail?.[0] || '?').toUpperCase()}
+                        </div>
+                        <div>
+                          <p className="text-white font-medium text-sm">{conv.userName || 'Unknown'}</p>
+                          <p className="text-slate-500 text-xs">{conv.userEmail}</p>
+                        </div>
+                        <span className={`ml-auto px-2 py-0.5 rounded-lg text-xs font-semibold ${
+                          conv.topic === 'Dating' ? 'bg-pink-500/20 text-pink-300' :
+                          conv.topic === 'Messaging' ? 'bg-blue-500/20 text-blue-300' :
+                          conv.topic === 'Gifts' ? 'bg-rose-500/20 text-rose-300' :
+                          conv.topic === 'Tips' ? 'bg-amber-500/20 text-amber-300' :
+                          'bg-slate-500/20 text-slate-300'
+                        }`}>
+                          {conv.topic}
+                        </span>
+                      </div>
+                      
+                      {/* Preview of last message */}
+                      <div className="bg-slate-800/50 p-2 rounded-lg mb-2">
+                        <p className="text-slate-300 text-xs line-clamp-2">
+                          {conv.messages?.[conv.messages.length - 1]?.content?.substring(0, 150) || 'No messages'}...
+                        </p>
+                      </div>
+                      
+                      <div className="flex items-center gap-4 text-xs text-slate-500">
+                        <span className="flex items-center gap-1">
+                          <MessageSquare className="w-3 h-3" /> {conv.messageCount || conv.messages?.length || 0} mesazhe
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-3 h-3" /> {conv.lastMessageAt ? new Date(conv.lastMessageAt).toLocaleString('sq-AL') : 'N/A'}
+                        </span>
+                      </div>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-slate-500" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <MessagesSquare className="w-16 h-16 text-slate-600 mx-auto mb-4" />
+              <p className="text-slate-400 text-lg mb-2">Asnjë bisedë ende</p>
+              <p className="text-slate-500 text-sm">Bisedat e përdoruesve do të shfaqen këtu</p>
+            </div>
+          )}
+        </Card>
       )}
 
       {/* Activity Tab */}
@@ -885,6 +1031,66 @@ export default function Admin() {
                 className="flex-1 bg-purple-600 hover:bg-purple-500 text-white">
                 <Gift className="w-4 h-4 mr-2" /> Dhuro {giftCreditsAmount} Kredite
               </Button>
+            </div>
+          </Card>
+        </div>
+      )}
+
+      {/* Conversation Detail Modal */}
+      {showConversationModal && selectedConversation && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
+          <Card className="bg-slate-900 border-slate-700 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col">
+            {/* Header */}
+            <div className="p-4 border-b border-slate-700 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold">
+                  {(selectedConversation.userName?.[0] || '?').toUpperCase()}
+                </div>
+                <div>
+                  <h2 className="text-white font-bold">{selectedConversation.userName || 'Unknown'}</h2>
+                  <p className="text-slate-400 text-xs">{selectedConversation.userEmail} • {selectedConversation.topic}</p>
+                </div>
+              </div>
+              <button onClick={() => { setShowConversationModal(false); setSelectedConversation(null); }} className="text-slate-400 hover:text-white">
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              {selectedConversation.messages?.map((msg, i) => (
+                <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`max-w-[80%] p-3 rounded-2xl ${
+                    msg.role === 'user' 
+                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-br-md' 
+                      : 'bg-slate-700 text-slate-200 rounded-bl-md'
+                  }`}>
+                    <div className="flex items-center gap-2 mb-1">
+                      {msg.role === 'user' ? (
+                        <User className="w-4 h-4" />
+                      ) : (
+                        <Bot className="w-4 h-4" />
+                      )}
+                      <span className="text-xs opacity-75">
+                        {msg.role === 'user' ? 'Përdoruesi' : 'AI Coach'}
+                      </span>
+                      {msg.hasImages && <Image className="w-3 h-3" />}
+                    </div>
+                    <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                    <p className="text-xs opacity-50 mt-1 text-right">
+                      {msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString('sq-AL') : ''}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            {/* Footer */}
+            <div className="p-4 border-t border-slate-700 bg-slate-800/50">
+              <div className="flex items-center justify-between text-xs text-slate-400">
+                <span>{selectedConversation.messages?.length || 0} mesazhe total</span>
+                <span>Filloi: {selectedConversation.startedAt ? new Date(selectedConversation.startedAt).toLocaleString('sq-AL') : 'N/A'}</span>
+              </div>
             </div>
           </Card>
         </div>

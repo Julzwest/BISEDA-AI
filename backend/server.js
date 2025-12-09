@@ -52,6 +52,25 @@ const userAccountSchema = new mongoose.Schema({
 
 const UserAccountModel = mongoose.model('UserAccount', userAccountSchema);
 
+// Conversation Schema - Store chat history for admin viewing
+const conversationSchema = new mongoose.Schema({
+  odId: { type: String, required: true, index: true },
+  sessionId: { type: String, required: true },
+  messages: [{
+    role: { type: String, enum: ['user', 'assistant'], required: true },
+    content: { type: String, required: true },
+    timestamp: { type: Date, default: Date.now },
+    hasImages: { type: Boolean, default: false }
+  }],
+  startedAt: { type: Date, default: Date.now },
+  lastMessageAt: { type: Date, default: Date.now },
+  messageCount: { type: Number, default: 0 },
+  topic: { type: String, default: 'General' } // Auto-detected topic
+});
+
+conversationSchema.index({ odId: 1, lastMessageAt: -1 });
+const ConversationModel = mongoose.model('Conversation', conversationSchema);
+
 // Middleware
 app.use(cors({
   origin: [
@@ -534,6 +553,61 @@ app.post('/api/chat', rateLimit, checkSubscriptionLimits, async (req, res) => {
     }
     
     saveUser(user);
+    
+    // Save conversation to database for admin viewing
+    try {
+      const sessionId = req.headers['x-session-id'] || `session_${Date.now()}`;
+      const odId = req.headers['x-user-id'] || user.userId;
+      
+      // Find or create conversation
+      let conversation = await ConversationModel.findOne({ 
+        odId, 
+        sessionId 
+      });
+      
+      if (!conversation) {
+        // Create new conversation
+        conversation = new ConversationModel({
+          odId,
+          sessionId,
+          messages: [],
+          startedAt: new Date()
+        });
+      }
+      
+      // Add user message
+      conversation.messages.push({
+        role: 'user',
+        content: prompt,
+        timestamp: new Date(),
+        hasImages: fileUrls && fileUrls.length > 0
+      });
+      
+      // Add AI response
+      conversation.messages.push({
+        role: 'assistant',
+        content: aiResponse,
+        timestamp: new Date()
+      });
+      
+      conversation.lastMessageAt = new Date();
+      conversation.messageCount = conversation.messages.length;
+      
+      // Auto-detect topic from first message
+      if (conversation.messages.length <= 2) {
+        const firstMsg = prompt.toLowerCase();
+        if (firstMsg.includes('takime') || firstMsg.includes('date')) conversation.topic = 'Dating';
+        else if (firstMsg.includes('mesazh') || firstMsg.includes('chat')) conversation.topic = 'Messaging';
+        else if (firstMsg.includes('dhuratë') || firstMsg.includes('gift')) conversation.topic = 'Gifts';
+        else if (firstMsg.includes('këshillë') || firstMsg.includes('tip')) conversation.topic = 'Tips';
+        else conversation.topic = 'General';
+      }
+      
+      await conversation.save();
+    } catch (convError) {
+      console.error('Failed to save conversation:', convError.message);
+      // Don't fail the request if conversation saving fails
+    }
     
     const costStats = user.getCostStats();
     console.log(`📊 User ${user.userId}: ${user.dailyUsage.messages}/${user.getLimits().messagesPerDay} messages used`);
@@ -1643,6 +1717,81 @@ function getLastSeenText(lastActiveDate, now) {
   if (diffDays < 7) return `${diffDays} ditë më parë`;
   return lastActiveDate.toLocaleDateString('sq-AL');
 }
+
+// Get user conversations (admin only)
+app.get('/api/admin/users/:odId/conversations', checkAdminAuth, async (req, res) => {
+  try {
+    const { odId } = req.params;
+    
+    const conversations = await ConversationModel.find({ odId })
+      .sort({ lastMessageAt: -1 })
+      .limit(50)
+      .lean();
+    
+    res.json({
+      conversations,
+      total: conversations.length,
+      odId
+    });
+  } catch (error) {
+    console.error('Get conversations error:', error);
+    res.status(500).json({ error: 'Failed to fetch conversations' });
+  }
+});
+
+// Get single conversation details (admin only)
+app.get('/api/admin/conversations/:conversationId', checkAdminAuth, async (req, res) => {
+  try {
+    const { conversationId } = req.params;
+    
+    const conversation = await ConversationModel.findById(conversationId).lean();
+    
+    if (!conversation) {
+      return res.status(404).json({ error: 'Conversation not found' });
+    }
+    
+    res.json({ conversation });
+  } catch (error) {
+    console.error('Get conversation error:', error);
+    res.status(500).json({ error: 'Failed to fetch conversation' });
+  }
+});
+
+// Get all recent conversations (admin only)
+app.get('/api/admin/conversations', checkAdminAuth, async (req, res) => {
+  try {
+    const { limit = 50, skip = 0 } = req.query;
+    
+    const conversations = await ConversationModel.find({})
+      .sort({ lastMessageAt: -1 })
+      .skip(parseInt(skip))
+      .limit(parseInt(limit))
+      .lean();
+    
+    const total = await ConversationModel.countDocuments();
+    
+    // Get user info for each conversation
+    const enrichedConversations = await Promise.all(
+      conversations.map(async (conv) => {
+        const user = await UserAccountModel.findOne({ odId: conv.odId }).lean();
+        return {
+          ...conv,
+          userName: user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() : 'Unknown',
+          userEmail: user?.email || 'Unknown'
+        };
+      })
+    );
+    
+    res.json({
+      conversations: enrichedConversations,
+      total,
+      hasMore: skip + conversations.length < total
+    });
+  } catch (error) {
+    console.error('Get all conversations error:', error);
+    res.status(500).json({ error: 'Failed to fetch conversations' });
+  }
+});
 
 // Delete user (admin only)
 app.delete('/api/admin/users/:odId', checkAdminAuth, async (req, res) => {
