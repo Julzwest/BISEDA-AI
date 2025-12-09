@@ -78,7 +78,7 @@ export default function Chat() {
   const [selectedImages, setSelectedImages] = useState([]);
   const [isLimitReached, setIsLimitReached] = useState(false);
   const [usage, setUsage] = useState(null);
-  const [screenshotUsage, setScreenshotUsage] = useState({ used: 0, freeLimit: 2, remaining: 2 });
+  const [screenshotUsage, setScreenshotUsage] = useState({ used: 0, limit: 1, remaining: 1, isPaidUser: false });
   const [showScreenshotLimitModal, setShowScreenshotLimitModal] = useState(false);
   const [currentConversationId, setCurrentConversationId] = useState(null);
   const [showHistory, setShowHistory] = useState(false);
@@ -755,32 +755,32 @@ export default function Chat() {
               <div className="relative">
                 <Button
                   onClick={() => {
-                    if (screenshotUsage.remaining === 0 && usage?.tier === 'free') {
+                    if (screenshotUsage.remaining === 0) {
                       setShowScreenshotLimitModal(true);
                     } else {
                       fileInputRef.current?.click();
                     }
                   }}
                   className={`px-4 py-3 rounded-lg h-auto self-end ${
-                    screenshotUsage.remaining === 0 && usage?.tier === 'free'
+                    screenshotUsage.remaining === 0
                       ? 'bg-orange-600 hover:bg-orange-700'
                       : 'bg-slate-700 hover:bg-slate-600'
                   } text-white`}
                   disabled={isLoading || selectedImages.length >= 4}
-                  title={screenshotUsage.remaining > 0 ? `${screenshotUsage.remaining} ${t('usage.screenshotAnalysis')}` : t('chat.upgradeForScreenshot')}
+                  title={screenshotUsage.remaining > 0 
+                    ? `${screenshotUsage.remaining}/${screenshotUsage.limit} ${screenshotUsage.isPaidUser ? t('chat.thisMonth') : t('chat.remaining')}`
+                    : t('chat.upgradeForScreenshot')}
                 >
                   <ImageIcon className="w-5 h-5" />
                 </Button>
-                {/* Badge showing remaining free analyses */}
-                {usage?.tier === 'free' && screenshotUsage.remaining >= 0 && (
-                  <span className={`absolute -top-2 -right-2 w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center ${
-                    screenshotUsage.remaining === 0 
-                      ? 'bg-red-500 text-white' 
-                      : 'bg-green-500 text-white'
-                  }`}>
-                    {screenshotUsage.remaining}
-                  </span>
-                )}
+                {/* Badge showing remaining analyses - for ALL users */}
+                <span className={`absolute -top-2 -right-2 min-w-5 h-5 px-1 rounded-full text-xs font-bold flex items-center justify-center ${
+                  screenshotUsage.remaining === 0 
+                    ? 'bg-red-500 text-white' 
+                    : 'bg-green-500 text-white'
+                }`}>
+                  {screenshotUsage.remaining}/{screenshotUsage.limit}
+                </span>
               </div>
               
               <textarea

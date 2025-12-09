@@ -406,20 +406,31 @@ app.post('/api/chat', rateLimit, checkSubscriptionLimits, async (req, res) => {
       
       // Add current user message with images if provided
       if (fileUrls && fileUrls.length > 0) {
-        // Check screenshot analysis limit
+        // ⚠️ CRITICAL: Check screenshot analysis limit ⚠️
+        // FREE/GUEST: 1 lifetime, PAID: 3 per month
         if (!user.canAnalyzeScreenshot()) {
+          const isPaidUser = ['starter', 'pro', 'elite', 'basic', 'premium'].includes(user.subscriptionTier);
+          const errorMsg = isPaidUser 
+            ? 'Ke përdorur 3 analizat e screenshot për këtë muaj! Prit muajin tjetër ose bli kredite shtesë 📸'
+            : 'Ke përdorur analizën tënde falas të screenshot! Përmirëso planin për 3 analiza në muaj 📸';
+          
           return res.status(403).json({
-            error: 'Ke përdorur 2 analiza screenshot falas! Përmirëso planin për analiza të pakufizuara 📸',
+            error: errorMsg,
             code: 'SCREENSHOT_LIMIT_REACHED',
-            upgradeRequired: true,
-            screenshotAnalyses: user.screenshotAnalyses
+            upgradeRequired: !isPaidUser,
+            screenshotAnalyses: {
+              used: user.getScreenshotUsed(),
+              limit: user.getScreenshotLimit(),
+              remaining: user.getRemainingScreenshotAnalyses(),
+              isPaidUser: isPaidUser
+            }
           });
         }
         
         // Record screenshot analysis usage
         user.recordScreenshotAnalysis();
         saveUser(user);
-        console.log(`📸 Screenshot analysis ${user.screenshotAnalyses.totalUsed}/${user.screenshotAnalyses.freeLimit} used`);
+        console.log(`📸 Screenshot analysis: Used=${user.getScreenshotUsed()}/${user.getScreenshotLimit()}, Lifetime=${user.screenshotAnalyses.lifetimeUsed}`);
         
         const imageContents = fileUrls.map((url) => ({
           type: 'image_url',

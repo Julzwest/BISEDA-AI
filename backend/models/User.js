@@ -1,6 +1,16 @@
 // User model for subscription and usage tracking
 // Using in-memory storage for MVP (can be migrated to database later)
 
+// ⚠️ CRITICAL SCREENSHOT LIMITS - DO NOT MODIFY WITHOUT APPROVAL ⚠️
+// Free/Guest: 1 LIFETIME screenshot upload
+// Paid Plans (Starter/Pro/Elite): 3 screenshots per MONTH
+// These limits protect revenue - changing them will cause financial loss!
+
+const SCREENSHOT_LIMITS = {
+  FREE_LIFETIME_LIMIT: 1,      // Free users get 1 screenshot TOTAL forever
+  PAID_MONTHLY_LIMIT: 3,       // Paid users get 3 screenshots per month
+};
+
 class User {
   constructor(userId) {
     this.userId = userId;
@@ -32,10 +42,14 @@ class User {
       imageAnalyses: 0
     };
     
-    // Screenshot analysis (lifetime limit for free users)
+    // ⚠️ CRITICAL: Screenshot limits - DO NOT MODIFY ⚠️
+    // FREE USERS: Lifetime limit of 1 screenshot TOTAL
+    // PAID USERS: Monthly limit of 3 screenshots (resets each month)
     this.screenshotAnalyses = {
-      totalUsed: 0,
-      freeLimit: 2 // 2 free analyses, then upgrade required
+      lifetimeUsed: 0,           // Total screenshots used ever (for free users)
+      monthlyUsed: 0,            // Screenshots used this month (for paid users)
+      currentMonth: new Date().getMonth(),
+      currentYear: new Date().getFullYear()
     };
     
     // Monthly usage (for analytics)
@@ -211,34 +225,86 @@ class User {
     };
   }
 
-  // Check if user can analyze image
+  // Check if user can analyze image (general image analysis)
   canAnalyzeImage() {
     const limits = this.getLimits();
     return this.subscriptionTier !== 'free' && this.dailyUsage.imageAnalyses < limits.imageAnalysesPerDay;
   }
   
-  // Check if user can analyze screenshot (2 free for free users)
+  // ⚠️ CRITICAL: Check if user can analyze screenshot ⚠️
+  // FREE/GUEST: 1 screenshot LIFETIME - NEVER resets
+  // PAID (Starter/Pro/Elite): 3 screenshots per MONTH - resets monthly
   canAnalyzeScreenshot() {
-    // Paid users have unlimited screenshot analyses
-    if (this.subscriptionTier !== 'free') {
-      return true;
+    const isPaidUser = ['starter', 'pro', 'elite', 'basic', 'premium'].includes(this.subscriptionTier);
+    
+    if (isPaidUser) {
+      // PAID USERS: Check monthly limit (3 per month)
+      this._resetMonthlyScreenshotsIfNeeded();
+      return this.screenshotAnalyses.monthlyUsed < SCREENSHOT_LIMITS.PAID_MONTHLY_LIMIT;
+    } else {
+      // FREE/GUEST/TRIAL USERS: Check lifetime limit (1 total forever)
+      return this.screenshotAnalyses.lifetimeUsed < SCREENSHOT_LIMITS.FREE_LIFETIME_LIMIT;
     }
-    // Free users get 2 lifetime analyses
-    return this.screenshotAnalyses.totalUsed < this.screenshotAnalyses.freeLimit;
   }
   
-  // Record screenshot analysis usage
+  // Reset monthly screenshot count if new month (for paid users only)
+  _resetMonthlyScreenshotsIfNeeded() {
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+    
+    if (this.screenshotAnalyses.currentMonth !== currentMonth || 
+        this.screenshotAnalyses.currentYear !== currentYear) {
+      this.screenshotAnalyses.monthlyUsed = 0;
+      this.screenshotAnalyses.currentMonth = currentMonth;
+      this.screenshotAnalyses.currentYear = currentYear;
+      console.log(`📅 Monthly screenshot reset for user ${this.userId}`);
+    }
+  }
+  
+  // ⚠️ CRITICAL: Record screenshot analysis usage ⚠️
   recordScreenshotAnalysis() {
-    this.screenshotAnalyses.totalUsed++;
+    const isPaidUser = ['starter', 'pro', 'elite', 'basic', 'premium'].includes(this.subscriptionTier);
+    
+    // ALWAYS increment lifetime counter (for tracking/analytics)
+    this.screenshotAnalyses.lifetimeUsed++;
+    
+    if (isPaidUser) {
+      // Paid users: also increment monthly counter
+      this._resetMonthlyScreenshotsIfNeeded();
+      this.screenshotAnalyses.monthlyUsed++;
+    }
+    
     this.lastActiveAt = new Date();
+    console.log(`📸 Screenshot recorded: Lifetime=${this.screenshotAnalyses.lifetimeUsed}, Monthly=${this.screenshotAnalyses.monthlyUsed}`);
   }
   
-  // Get remaining free screenshot analyses
+  // ⚠️ Get remaining screenshot analyses ⚠️
   getRemainingScreenshotAnalyses() {
-    if (this.subscriptionTier !== 'free') {
-      return -1; // Unlimited
+    const isPaidUser = ['starter', 'pro', 'elite', 'basic', 'premium'].includes(this.subscriptionTier);
+    
+    if (isPaidUser) {
+      this._resetMonthlyScreenshotsIfNeeded();
+      return Math.max(0, SCREENSHOT_LIMITS.PAID_MONTHLY_LIMIT - this.screenshotAnalyses.monthlyUsed);
+    } else {
+      return Math.max(0, SCREENSHOT_LIMITS.FREE_LIFETIME_LIMIT - this.screenshotAnalyses.lifetimeUsed);
     }
-    return Math.max(0, this.screenshotAnalyses.freeLimit - this.screenshotAnalyses.totalUsed);
+  }
+  
+  // Get screenshot limit for current plan
+  getScreenshotLimit() {
+    const isPaidUser = ['starter', 'pro', 'elite', 'basic', 'premium'].includes(this.subscriptionTier);
+    return isPaidUser ? SCREENSHOT_LIMITS.PAID_MONTHLY_LIMIT : SCREENSHOT_LIMITS.FREE_LIFETIME_LIMIT;
+  }
+  
+  // Get screenshot usage for current plan
+  getScreenshotUsed() {
+    const isPaidUser = ['starter', 'pro', 'elite', 'basic', 'premium'].includes(this.subscriptionTier);
+    if (isPaidUser) {
+      this._resetMonthlyScreenshotsIfNeeded();
+      return this.screenshotAnalyses.monthlyUsed;
+    }
+    return this.screenshotAnalyses.lifetimeUsed;
   }
 
   // Get subscription limits (NEW PRICING - €6.99/€12.99/€19.99)
@@ -254,6 +320,7 @@ class User {
         return {
           messagesPerDay: 10,
           imageAnalysesPerDay: 0,
+          screenshotsPerMonth: SCREENSHOT_LIMITS.FREE_LIFETIME_LIMIT,
           adultContent: false,
           isTrial: true,
           trialDaysRemaining: this.getTrialDaysRemaining()
@@ -263,6 +330,7 @@ class User {
         return {
           messagesPerDay: 3, // Very limited to encourage upgrade
           imageAnalysesPerDay: 0,
+          screenshotsPerMonth: SCREENSHOT_LIMITS.FREE_LIFETIME_LIMIT,
           adultContent: false,
           isTrial: false
         };
@@ -271,6 +339,7 @@ class User {
         return {
           messagesPerDay: 75,
           imageAnalysesPerDay: 0,
+          screenshotsPerMonth: SCREENSHOT_LIMITS.PAID_MONTHLY_LIMIT,
           adultContent: true,
           isTrial: false
         };
@@ -279,6 +348,7 @@ class User {
         return {
           messagesPerDay: 200,
           imageAnalysesPerDay: 30,
+          screenshotsPerMonth: SCREENSHOT_LIMITS.PAID_MONTHLY_LIMIT,
           adultContent: true,
           isTrial: false
         };
@@ -287,6 +357,7 @@ class User {
         return {
           messagesPerDay: 500,
           imageAnalysesPerDay: 100,
+          screenshotsPerMonth: SCREENSHOT_LIMITS.PAID_MONTHLY_LIMIT,
           adultContent: true,
           isTrial: false
         };
@@ -295,6 +366,7 @@ class User {
         return {
           messagesPerDay: 75, // Map to starter limits
           imageAnalysesPerDay: 0,
+          screenshotsPerMonth: SCREENSHOT_LIMITS.PAID_MONTHLY_LIMIT,
           adultContent: true,
           isTrial: false
         };
@@ -302,6 +374,7 @@ class User {
         return {
           messagesPerDay: 500, // Map to elite limits
           imageAnalysesPerDay: 100,
+          screenshotsPerMonth: SCREENSHOT_LIMITS.PAID_MONTHLY_LIMIT,
           adultContent: true,
           isTrial: false
         };
@@ -309,6 +382,7 @@ class User {
         return {
           messagesPerDay: 3,
           imageAnalysesPerDay: 0,
+          screenshotsPerMonth: SCREENSHOT_LIMITS.FREE_LIFETIME_LIMIT,
           adultContent: false,
           isTrial: false
         };
@@ -359,6 +433,11 @@ class User {
     this.stripeCustomerId = stripeCustomerId;
     this.stripeSubscriptionId = stripeSubscriptionId;
     this.subscriptionExpiresAt = expiresAt;
+    
+    // Reset monthly screenshot counter on upgrade
+    this.screenshotAnalyses.monthlyUsed = 0;
+    this.screenshotAnalyses.currentMonth = new Date().getMonth();
+    this.screenshotAnalyses.currentYear = new Date().getFullYear();
   }
 
   // Cancel subscription
@@ -379,9 +458,16 @@ class User {
     return true;
   }
 
-  // Get usage stats
+  // Get usage stats (includes accurate screenshot tracking)
   getUsageStats() {
     const limits = this.getLimits();
+    const isPaidUser = ['starter', 'pro', 'elite', 'basic', 'premium'].includes(this.subscriptionTier);
+    
+    // Ensure monthly reset is checked
+    if (isPaidUser) {
+      this._resetMonthlyScreenshotsIfNeeded();
+    }
+    
     return {
       tier: this.subscriptionTier,
       status: this.subscriptionStatus,
@@ -393,11 +479,15 @@ class User {
         imageAnalysesLimit: limits.imageAnalysesPerDay,
         remainingMessages: Math.max(0, limits.messagesPerDay - this.dailyUsage.messages)
       },
+      // ⚠️ CRITICAL: Accurate screenshot tracking ⚠️
       screenshotAnalyses: {
-        used: this.screenshotAnalyses.totalUsed,
-        freeLimit: this.screenshotAnalyses.freeLimit,
+        used: this.getScreenshotUsed(),
+        limit: this.getScreenshotLimit(),
         remaining: this.getRemainingScreenshotAnalyses(),
-        canAnalyze: this.canAnalyzeScreenshot()
+        canAnalyze: this.canAnalyzeScreenshot(),
+        isPaidUser: isPaidUser,
+        resetsMonthly: isPaidUser,
+        lifetimeUsed: this.screenshotAnalyses.lifetimeUsed
       },
       monthlyUsage: {
         totalMessages: this.monthlyUsage.totalMessages,
@@ -419,7 +509,8 @@ class User {
       createdAt: this.createdAt,
       lastActiveAt: this.lastActiveAt,
       dailyUsage: this.dailyUsage,
-      monthlyUsage: this.monthlyUsage
+      monthlyUsage: this.monthlyUsage,
+      screenshotAnalyses: this.screenshotAnalyses
     };
   }
 }
@@ -446,5 +537,4 @@ function getAllUsers() {
   return users;
 }
 
-export { User, getUser, saveUser, getAllUsers };
-
+export { User, getUser, saveUser, getAllUsers, SCREENSHOT_LIMITS };
