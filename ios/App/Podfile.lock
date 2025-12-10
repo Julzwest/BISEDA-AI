@@ -1,7 +1,7 @@
 PODS:
   - Capacitor (7.4.4):
     - CapacitorCordova
-  - CapacitorClipboard (7.0.2):
+  - CapacitorClipboard (7.0.3):
     - Capacitor
   - CapacitorCommunityAppleSignIn (7.1.0):
     - Capacitor
@@ -25,7 +25,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Capacitor: 358dd1c3fdd71d969547b17e159fd8a7736cb45f
-  CapacitorClipboard: 7e227702976d4435a5a40df54f65e154d0dfc1f3
+  CapacitorClipboard: 2a282bc14e8f47d430f2f9698ed95fbe25dcc21c
   CapacitorCommunityAppleSignIn: 271cb2860576fd2961508bbfa7a82117d93eadca
   CapacitorCordova: bf648a636f3c153f652d312ae145fb508b6ffced
 
