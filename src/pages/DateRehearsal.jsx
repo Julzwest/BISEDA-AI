@@ -1318,33 +1318,71 @@ ${langInstruction}`;
                 </div>
               )}
               
-              <Input
-                value={dateName}
-                onChange={(e) => setDateName(e.target.value)}
-                placeholder={getNamePlaceholder()}
-                className="bg-slate-900 border-slate-700 text-white mb-3"
-              />
-              
-              {/* Partner name - only for meeting parents scenario */}
-              {selectedScenarioId === 'meet_parents' && (
-                <div className="mt-4 pt-4 border-t border-slate-700">
-                  <h4 className="font-medium text-white mb-2 flex items-center gap-2">
-                    <Heart className="w-4 h-4 text-pink-400" />
-                    {t('rehearsal.partnerNameLabel', "Your partner's name (their child)")}
-                  </h4>
-                  <p className="text-slate-400 text-xs mb-3">{t('rehearsal.partnerNameHint', "The person you're dating - their son/daughter")}</p>
-                  <Input
-                    value={partnerName}
-                    onChange={(e) => setPartnerName(e.target.value)}
-                    placeholder={t('rehearsal.enterPartnerNamePlaceholder', "e.g. Sarah, Mike...")}
-                    className="bg-slate-900 border-slate-700 text-white"
-                  />
+              {/* Parent name with inline gender selection for meeting parents */}
+              {selectedScenarioId === 'meet_parents' ? (
+                <div className="space-y-4">
+                  {/* Parent name + gender row */}
+                  <div className="flex gap-2">
+                    <Input
+                      value={dateName}
+                      onChange={(e) => setDateName(e.target.value)}
+                      placeholder={getNamePlaceholder()}
+                      className="bg-slate-900 border-slate-700 text-white flex-1"
+                    />
+                    <div className="flex gap-1">
+                      <button
+                        onClick={() => setPersonGender('female')}
+                        className={`px-3 py-2 rounded-lg text-lg transition-all ${
+                          personGender === 'female'
+                            ? 'bg-pink-500/30 border-2 border-pink-500'
+                            : 'bg-slate-800 border-2 border-slate-700 hover:border-slate-600'
+                        }`}
+                        title={t('rehearsal.genderFemale', 'Woman')}
+                      >
+                        👩
+                      </button>
+                      <button
+                        onClick={() => setPersonGender('male')}
+                        className={`px-3 py-2 rounded-lg text-lg transition-all ${
+                          personGender === 'male'
+                            ? 'bg-blue-500/30 border-2 border-blue-500'
+                            : 'bg-slate-800 border-2 border-slate-700 hover:border-slate-600'
+                        }`}
+                        title={t('rehearsal.genderMale', 'Man')}
+                      >
+                        👨
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {/* Partner name section */}
+                  <div className="pt-4 border-t border-slate-700">
+                    <h4 className="font-medium text-white mb-2 flex items-center gap-2">
+                      <Heart className="w-4 h-4 text-pink-400" />
+                      {t('rehearsal.partnerNameLabel', "Your partner's name (their child)")}
+                    </h4>
+                    <p className="text-slate-400 text-xs mb-3">{t('rehearsal.partnerNameHint', "The person you're dating - their son/daughter")}</p>
+                    <Input
+                      value={partnerName}
+                      onChange={(e) => setPartnerName(e.target.value)}
+                      placeholder={t('rehearsal.enterPartnerNamePlaceholder', "e.g. Sarah, Mike...")}
+                      className="bg-slate-900 border-slate-700 text-white"
+                    />
+                  </div>
                 </div>
+              ) : (
+                <Input
+                  value={dateName}
+                  onChange={(e) => setDateName(e.target.value)}
+                  placeholder={getNamePlaceholder()}
+                  className="bg-slate-900 border-slate-700 text-white mb-3"
+                />
               )}
               
-              {dateName.trim() && (selectedScenarioId !== 'meet_parents' || partnerName.trim()) && (
+              {/* Continue button - for meeting parents, requires gender selection too */}
+              {dateName.trim() && (selectedScenarioId !== 'meet_parents' || (partnerName.trim() && personGender)) && (
                 <Button
-                  onClick={() => setSetupStep(3)}
+                  onClick={() => selectedScenarioId === 'meet_parents' ? setSetupStep(4) : setSetupStep(3)}
                   className="w-full mt-4 bg-purple-500 hover:bg-purple-600"
                 >
                   {t('common.continue', 'Continue')}
