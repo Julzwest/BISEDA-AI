@@ -658,100 +658,340 @@ ${dateName} responds naturally:`;
   };
 
   // Generate suggested replies based on the AI's last message
+  // 🔒 HARDCODED: Smart suggested replies based on scenario and context
   const generateSuggestedReplies = (aiMessage, currentScenario) => {
     const lowerMsg = aiMessage.toLowerCase();
-    const intention = intentions.find(i => i.id === selectedIntention);
-    const partnerDisplay = partnerName || 'them';
+    const partnerDisplay = partnerName || 'your child';
+    const intentionId = selectedIntention;
     
-    // Meeting parents specific suggestions
+    // ============================================================
+    // MEETING THE PARENTS - Comprehensive suggestions
+    // ============================================================
     if (currentScenario?.roleType === 'parent') {
-      // If they ask about job/work
-      if (lowerMsg.includes('work') || lowerMsg.includes('job') || lowerMsg.includes('do for a living') || lowerMsg.includes('profession')) {
+      
+      // GREETING / WELCOME responses
+      if (lowerMsg.includes('come in') || lowerMsg.includes('welcome') || lowerMsg.includes('hello') || lowerMsg.includes('nice to meet') || lowerMsg.includes('finally meet')) {
         return [
-          "I work in software development - I build apps and websites",
-          "I'm a nurse at the local hospital, been there 3 years now",
-          "I run my own small business - it's challenging but rewarding",
-          "I'm in marketing - I help companies grow their brand"
+          `Thank you so much! It's wonderful to finally meet you too`,
+          `Hi! Thank you for having me, your home is beautiful`,
+          `Hello! I've heard so many great things about you from ${partnerDisplay}`,
+          `Thanks! I have to admit, I was a little nervous but you've made me feel welcome`
         ];
       }
-      // If they ask how you met their child
-      if (lowerMsg.includes('meet') || lowerMsg.includes('how did you') || lowerMsg.includes('how long')) {
+      
+      // DRINK / FOOD offers
+      if (lowerMsg.includes('tea') || lowerMsg.includes('coffee') || lowerMsg.includes('drink') || lowerMsg.includes('thirsty') || lowerMsg.includes('hungry') || lowerMsg.includes('eat')) {
         return [
-          `We met through mutual friends about ${Math.floor(Math.random() * 12) + 6} months ago`,
-          `Actually we met at a coffee shop - ${partnerDisplay} spilled coffee on me!`,
-          `We connected on a dating app and just clicked instantly`,
-          `We work in the same building and kept bumping into each other`
+          `A cup of tea would be lovely, thank you`,
+          `Coffee would be great if it's not too much trouble`,
+          `I'm okay for now, but thank you so much for offering`,
+          `That's very kind of you, I'll have whatever you're having`
         ];
       }
-      // If they ask about intentions/future
-      if (lowerMsg.includes('intention') || lowerMsg.includes('future') || lowerMsg.includes('plan') || lowerMsg.includes('serious')) {
+      
+      // JOB / WORK questions
+      if (lowerMsg.includes('work') || lowerMsg.includes('job') || lowerMsg.includes('living') || lowerMsg.includes('career') || lowerMsg.includes('profession') || lowerMsg.includes('do you do')) {
         return [
-          `I really care about ${partnerDisplay} and I see a real future together`,
-          "I'm very serious about this relationship - that's why I wanted to meet you",
-          `${partnerDisplay} makes me incredibly happy, I want to build something real`,
-          "I know it's early but I've never felt this way about anyone before"
+          `I work in tech - I develop software for a growing company`,
+          `I'm a healthcare professional - I really love helping people`,
+          `I run my own business - it's challenging but very rewarding`,
+          `I'm in education - I find it incredibly fulfilling to teach`
         ];
       }
-      // If they offer drinks/food
-      if (lowerMsg.includes('tea') || lowerMsg.includes('coffee') || lowerMsg.includes('drink') || lowerMsg.includes('eat')) {
+      
+      // HOW DID YOU MEET questions
+      if (lowerMsg.includes('how did you') || lowerMsg.includes('meet') || lowerMsg.includes('how long') || lowerMsg.includes('together') || lowerMsg.includes('dating')) {
         return [
-          "A cup of tea would be lovely, thank you!",
-          "Coffee would be great, thanks so much",
-          "I'm okay for now, but thank you for offering",
-          "Whatever you're having would be perfect"
+          `We actually met through mutual friends at a party`,
+          `We met at a coffee shop - it was love at first sight honestly!`,
+          `We connected through work and just clicked instantly`,
+          `We've been together about 8 months now, and it's been amazing`
         ];
       }
-      // If they ask about hobbies/interests
-      if (lowerMsg.includes('hobby') || lowerMsg.includes('hobbies') || lowerMsg.includes('free time') || lowerMsg.includes('fun')) {
+      
+      // FUTURE / INTENTIONS questions
+      if (lowerMsg.includes('future') || lowerMsg.includes('plan') || lowerMsg.includes('serious') || lowerMsg.includes('intention') || lowerMsg.includes('where do you see')) {
         return [
-          "I love hiking and being outdoors - nature really clears my head",
-          "I'm really into fitness - gym, running, that kind of thing",
-          "I'm a big football fan, never miss a match on weekends",
-          "I enjoy cooking and trying new restaurants with friends"
+          `I'm very serious about this relationship - ${partnerDisplay} means everything to me`,
+          `I see a real future together - that's why meeting you was so important to me`,
+          `I'm committed to building something lasting with ${partnerDisplay}`,
+          `Honestly, I've never felt this way about anyone before`
         ];
       }
-      // If they share something about themselves
-      if (lowerMsg.includes('i used to') || lowerMsg.includes('when i was') || lowerMsg.includes('my ')) {
+      
+      // HOBBIES / INTERESTS questions
+      if (lowerMsg.includes('hobby') || lowerMsg.includes('fun') || lowerMsg.includes('free time') || lowerMsg.includes('weekend') || lowerMsg.includes('interests')) {
         return [
-          "Oh that's really interesting! Tell me more about that",
-          "That's amazing! How did you get into that?",
-          `${partnerDisplay} mentioned that actually, sounds fascinating`,
-          "No way! I'd love to hear more stories"
+          `I love staying active - gym, hiking, that kind of thing`,
+          `I'm really into cooking and trying new restaurants`,
+          `I'm a big sports fan - football especially`,
+          `I enjoy reading and spending quality time with loved ones`
         ];
       }
-      // Generic warm responses
+      
+      // FAMILY questions
+      if (lowerMsg.includes('family') || lowerMsg.includes('parents') || lowerMsg.includes('sibling') || lowerMsg.includes('brother') || lowerMsg.includes('sister')) {
+        return [
+          `I come from a close-knit family - we're very supportive of each other`,
+          `I have a great relationship with my parents, they'd love to meet you too`,
+          `Family is really important to me, just like it is to ${partnerDisplay}`,
+          `I'm lucky to have a wonderful family - they're excited about us`
+        ];
+      }
+      
+      // COMPLIMENTS about you/child
+      if (lowerMsg.includes('lovely') || lowerMsg.includes('wonderful') || lowerMsg.includes('raised') || lowerMsg.includes('proud')) {
+        return [
+          `Thank you, that means so much coming from you`,
+          `${partnerDisplay} is amazing - you've done a wonderful job raising them`,
+          `I feel very lucky to have ${partnerDisplay} in my life`,
+          `You have such a wonderful family, I can see where ${partnerDisplay} gets it from`
+        ];
+      }
+      
+      // STORIES / SHARING moments
+      if (lowerMsg.includes('remember') || lowerMsg.includes('story') || lowerMsg.includes('when') || lowerMsg.includes('used to') || lowerMsg.includes('tell you')) {
+        return [
+          `That's such a sweet story! ${partnerDisplay} never told me that`,
+          `I love hearing these stories, please tell me more!`,
+          `That's so lovely - you can really tell how close your family is`,
+          `${partnerDisplay} must have had such a wonderful childhood`
+        ];
+      }
+      
+      // Default parent scenario suggestions
       return [
-        "Thank you so much for having me, your home is lovely",
-        `${partnerDisplay} talks about you all the time, it's so nice to finally meet`,
-        "I've been looking forward to this, I was a bit nervous honestly!",
-        "You have such a warm and welcoming home"
+        `I've been really looking forward to meeting you`,
+        `${partnerDisplay} speaks so highly of you`,
+        `You have such a warm and welcoming home`,
+        `I'm so happy we could finally do this`
       ];
     }
     
-    // First date suggestions
+    // ============================================================
+    // FIRST DATE - Comprehensive suggestions
+    // ============================================================
     if (currentScenario?.roleType === 'date') {
-      if (lowerMsg.includes('?')) {
+      
+      // Greeting/Opening
+      if (lowerMsg.includes('hi') || lowerMsg.includes('hello') || lowerMsg.includes('nice to meet') || lowerMsg.includes('how are you')) {
         return [
-          "That's a great question! Let me think...",
-          "I'd love to tell you about that actually",
-          "Honestly? I'm still figuring that out myself",
-          "What about you? I'm curious to know your answer first"
+          `I'm great! A bit nervous honestly, but excited to meet you`,
+          `I'm doing well! You look even better than your photos`,
+          `I'm good! This place is nice, have you been here before?`,
+          `Really happy to finally meet in person!`
         ];
       }
+      
+      // Questions about you
+      if (lowerMsg.includes('about you') || lowerMsg.includes('tell me') || lowerMsg.includes('yourself')) {
+        return [
+          `Well, I love trying new things and meeting interesting people`,
+          `I'm passionate about my work and love spending time outdoors`,
+          `I'm a bit of a foodie and love discovering new restaurants`,
+          `I value genuine connections and good conversations like this`
+        ];
+      }
+      
+      // Work/Job questions
+      if (lowerMsg.includes('work') || lowerMsg.includes('job') || lowerMsg.includes('do for')) {
+        return [
+          `I work in tech - it keeps me busy but I love the creativity`,
+          `I'm in healthcare - it's rewarding to help people every day`,
+          `I run my own business - stressful but worth it`,
+          `What about you? What do you do?`
+        ];
+      }
+      
+      // Hobbies questions
+      if (lowerMsg.includes('hobby') || lowerMsg.includes('fun') || lowerMsg.includes('free time') || lowerMsg.includes('weekend')) {
+        return [
+          `I love being outdoors - hiking, beach, that kind of thing`,
+          `I'm really into fitness and staying healthy`,
+          `I enjoy trying new restaurants and cooking at home`,
+          `What about you? What do you enjoy doing?`
+        ];
+      }
+      
+      // Flirty/Positive responses
+      if (lowerMsg.includes('smile') || lowerMsg.includes('cute') || lowerMsg.includes('attractive') || lowerMsg.includes('like you')) {
+        return [
+          `*smiles* You're making me blush a little`,
+          `I was just thinking the same about you actually`,
+          `You're pretty charming yourself, you know`,
+          `I'm really glad I swiped right`
+        ];
+      }
+      
+      // Default first date suggestions
       return [
-        "I'm having a really great time talking to you",
-        "So tell me more about yourself",
-        "What do you like to do for fun?",
-        "This place is nice, do you come here often?"
+        `I'm really enjoying getting to know you`,
+        `So what made you want to go on this date?`,
+        `What's something most people don't know about you?`,
+        `I feel like we have great chemistry already`
       ];
     }
     
-    // Default suggestions
+    // ============================================================
+    // APPROACHING A STRANGER - Comprehensive suggestions
+    // ============================================================
+    if (currentScenario?.roleType === 'stranger') {
+      
+      // Initial approach/greeting
+      if (lowerMsg.includes('hi') || lowerMsg.includes('hello') || lowerMsg.includes('hey') || lowerMsg.includes('noticed')) {
+        return [
+          `Hey! I couldn't help but come over and say hi`,
+          `I saw you from across the room and had to introduce myself`,
+          `Hi! I'm ${userName}. You looked like someone worth talking to`,
+          `Hey there! Having a good night?`
+        ];
+      }
+      
+      // They ask your name
+      if (lowerMsg.includes('name') || lowerMsg.includes('who are') || lowerMsg.includes('you are')) {
+        return [
+          `I'm ${userName}. And you are?`,
+          `${userName}! Nice to meet you. What brings you here tonight?`,
+          `Call me ${userName}. Can I buy you a drink?`,
+          `I'm ${userName}. I like your style by the way`
+        ];
+      }
+      
+      // Drink offers
+      if (lowerMsg.includes('drink') || lowerMsg.includes('bar') || lowerMsg.includes('get you')) {
+        return [
+          `Sure, I'll have whatever you're having`,
+          `I'd love that, thanks! What do you recommend?`,
+          `That's sweet of you - surprise me!`,
+          `Only if you let me get the next round`
+        ];
+      }
+      
+      // They're interested/flirty
+      if (lowerMsg.includes('interesting') || lowerMsg.includes('charming') || lowerMsg.includes('like') || lowerMsg.includes('impressed')) {
+        return [
+          `*smiles* Well you haven't seen anything yet`,
+          `I could say the same about you`,
+          `Thanks! You're pretty intriguing yourself`,
+          `I'm glad I came over then`
+        ];
+      }
+      
+      // They're shy/hesitant
+      if (lowerMsg.includes('nervous') || lowerMsg.includes('shy') || lowerMsg.includes('usually')) {
+        return [
+          `No pressure at all, I just wanted to say hello`,
+          `I get it, I was nervous too! You seem really cool though`,
+          `Take your time, there's no rush. I'm just enjoying the conversation`,
+          `Honestly, I find that kind of cute`
+        ];
+      }
+      
+      // Default stranger suggestions
+      return [
+        `So what brings you out tonight?`,
+        `I'm glad I came over, you seem really interesting`,
+        `What do you do when you're not being approached by strangers?`,
+        `Want to grab a drink somewhere quieter?`
+      ];
+    }
+    
+    // ============================================================
+    // DIFFICULT CONVERSATION WITH PARTNER
+    // ============================================================
+    if (currentScenario?.roleType === 'partner') {
+      
+      // They're upset
+      if (lowerMsg.includes('upset') || lowerMsg.includes('hurt') || lowerMsg.includes('angry') || lowerMsg.includes('frustrated')) {
+        return [
+          `I hear you, and I'm really sorry you feel that way`,
+          `I understand why you're upset. Can we talk about it?`,
+          `Your feelings are valid. I want to work through this together`,
+          `I didn't mean to hurt you. Help me understand better`
+        ];
+      }
+      
+      // They want to talk
+      if (lowerMsg.includes('talk') || lowerMsg.includes('discuss') || lowerMsg.includes('conversation')) {
+        return [
+          `Of course, I'm here. What's on your mind?`,
+          `I'm all ears. Take your time`,
+          `I've wanted to talk too. Let's be honest with each other`,
+          `I'm glad you brought this up. Communication is important`
+        ];
+      }
+      
+      // Future/relationship questions
+      if (lowerMsg.includes('future') || lowerMsg.includes('relationship') || lowerMsg.includes('us')) {
+        return [
+          `I love you and I want to make this work`,
+          `I'm committed to us. What do you need from me?`,
+          `Let's figure this out together - we're a team`,
+          `I see my future with you. That hasn't changed`
+        ];
+      }
+      
+      // Default partner suggestions
+      return [
+        `I want to understand how you're feeling`,
+        `Let's work through this together`,
+        `I love you and I'm here for you`,
+        `What can I do to make things better?`
+      ];
+    }
+    
+    // ============================================================
+    // RECONNECTING WITH AN EX
+    // ============================================================
+    if (currentScenario?.roleType === 'ex') {
+      
+      // Initial surprise
+      if (lowerMsg.includes('surprised') || lowerMsg.includes('didn\'t expect') || lowerMsg.includes('wow') || lowerMsg.includes('long time')) {
+        return [
+          `Yeah, small world right? How have you been?`,
+          `I know! It's been so long. You look great by the way`,
+          `I'm just as surprised! What are you doing here?`,
+          `Crazy running into you here. Life treating you well?`
+        ];
+      }
+      
+      // How are you questions
+      if (lowerMsg.includes('how are') || lowerMsg.includes('how have') || lowerMsg.includes('been up to')) {
+        return [
+          `I've been good, keeping busy. What about you?`,
+          `Things are going well actually. A lot has changed`,
+          `I'm doing really well. How about yourself?`,
+          `I've been on quite a journey. How are you doing?`
+        ];
+      }
+      
+      // Awkward/uncomfortable
+      if (lowerMsg.includes('awkward') || lowerMsg.includes('weird') || lowerMsg.includes('strange')) {
+        return [
+          `It doesn't have to be weird. We can be adults about this`,
+          `I know, it's a bit surreal isn't it? But it's good to see you`,
+          `Let's not make it awkward. How about we catch up properly?`,
+          `Yeah... but honestly, I'm glad we ran into each other`
+        ];
+      }
+      
+      // Default ex suggestions
+      return [
+        `It's really good to see you`,
+        `I've thought about how you were doing from time to time`,
+        `A lot has changed since we last talked`,
+        `Maybe we could grab coffee sometime and catch up properly`
+      ];
+    }
+    
+    // ============================================================
+    // DEFAULT FALLBACK (should rarely be used)
+    // ============================================================
     return [
-      "That's really interesting",
-      "Tell me more about that",
-      "I completely understand",
-      "That makes a lot of sense"
+      `That's really interesting, tell me more`,
+      `I appreciate you sharing that with me`,
+      `I completely understand what you mean`,
+      `That's a great point`
     ];
   };
 
