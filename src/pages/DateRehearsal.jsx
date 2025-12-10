@@ -73,9 +73,10 @@ export default function DateRehearsal() {
   const [showFeedback, setShowFeedback] = useState(false);
   const [dateName, setDateName] = useState('');
   const [partnerName, setPartnerName] = useState(''); // Partner's name for meeting parents scenario
+  const [personGender, setPersonGender] = useState(null); // Gender of the person in roleplay
   const [datePersonality, setDatePersonality] = useState(null); // No default - user must choose
   const [selectedIntention, setSelectedIntention] = useState(null); // No default - user must choose
-  const [setupStep, setSetupStep] = useState(1); // 1: scenario, 2: name, 3: personality, 4: intention
+  const [setupStep, setSetupStep] = useState(1); // 1: scenario, 2: name, 3: gender, 4: personality, 5: intention
   const [selectedScenarioId, setSelectedScenarioId] = useState(null); // Track selected scenario before starting
   const [hasAccess, setHasAccess] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
@@ -174,7 +175,39 @@ export default function DateRehearsal() {
     { id: 'serious', label: t('rehearsal.intentSerious', 'Show serious intentions'), emoji: '💍' },
     { id: 'approval', label: t('rehearsal.intentApproval', 'Win their approval'), emoji: '✅' },
     { id: 'closure', label: t('rehearsal.intentClosure', 'Get closure or clarity'), emoji: '🔮' },
+    { id: 'friends', label: t('rehearsal.intentFriends', 'Just be friends'), emoji: '🤝' },
+    { id: 'flirty', label: t('rehearsal.intentFlirty', 'Be flirty & charming'), emoji: '😏' },
+    { id: 'confident', label: t('rehearsal.intentConfident', 'Build my confidence'), emoji: '💪' },
+    { id: 'getNumber', label: t('rehearsal.intentGetNumber', 'Get their number'), emoji: '📱' },
+    { id: 'secondDate', label: t('rehearsal.intentSecondDate', 'Secure a second date'), emoji: '📅' },
+    { id: 'reconcile', label: t('rehearsal.intentReconcile', 'Reconcile the relationship'), emoji: '🕊️' },
   ];
+
+  // Gender options for roleplay
+  const genderOptions = [
+    { id: 'female', label: t('rehearsal.genderFemale', 'Woman'), emoji: '👩' },
+    { id: 'male', label: t('rehearsal.genderMale', 'Man'), emoji: '👨' },
+    { id: 'nonbinary', label: t('rehearsal.genderNonbinary', 'Non-binary'), emoji: '🧑' },
+  ];
+
+  // Get gender label based on scenario
+  const getGenderLabel = () => {
+    const selectedScenario = scenarios.find(s => s.id === selectedScenarioId);
+    if (!selectedScenario) return t('rehearsal.theirGender', "Their gender");
+    
+    switch (selectedScenario.roleType) {
+      case 'parent':
+        return t('rehearsal.parentGender', "Parent's gender");
+      case 'partner':
+        return t('rehearsal.partnerGender', "Partner's gender");
+      case 'ex':
+        return t('rehearsal.exGender', "Their gender");
+      case 'stranger':
+        return t('rehearsal.strangerGender', "Their gender");
+      default:
+        return t('rehearsal.dateGender', "Date's gender");
+    }
+  };
 
   // Get dynamic name label based on scenario
   const getNameLabel = () => {
@@ -231,13 +264,16 @@ export default function DateRehearsal() {
   };
 
   const getRoleDescription = (selectedScenario, personality) => {
-    const dateGender = userGender === 'male' ? 'woman' : 'man';
+    // Use selected gender for the roleplay character
+    const genderLabel = personGender === 'female' ? 'woman' : personGender === 'male' ? 'man' : 'person';
+    const genderPronoun = personGender === 'female' ? 'she/her' : personGender === 'male' ? 'he/him' : 'they/them';
+    const parentType = personGender === 'female' ? 'mother' : personGender === 'male' ? 'father' : 'parent';
     const childRelation = getPartnerRelationship();
     const partnerDisplay = partnerName || 'my child';
     
     switch (selectedScenario.roleType) {
       case 'parent':
-        return `You are ${dateName}, ${partnerDisplay}'s parent. You are a ${personality?.label} parent meeting your ${childRelation}'s partner (${userName}) for the first time.
+        return `You are ${dateName}, ${partnerDisplay}'s ${parentType}. You are a ${personality?.label} ${parentType} (${genderLabel}, ${genderPronoun}) meeting your ${childRelation}'s partner (${userName}) for the first time.
 
 IMPORTANT CHARACTER TRAITS:
 - You are OPEN-MINDED and ACCEPTING of all relationships (straight, gay, lesbian, bisexual - love is love!)
@@ -247,6 +283,7 @@ IMPORTANT CHARACTER TRAITS:
 - You're genuinely curious and NEVER repeat the same questions
 - You share your own stories and experiences to keep conversation flowing
 - You remember what ${userName} tells you and build on it
+- You speak and act naturally as a ${genderLabel} ${parentType} would
 
 CONVERSATION STYLE:
 - Ask varied questions: about hobbies, family, how they met ${partnerDisplay}, travel, food, movies, music
@@ -255,19 +292,19 @@ CONVERSATION STYLE:
 - If nervous silence, help by sharing something about yourself or ${partnerDisplay}
 - Be warm but also protective of your child - you want to know ${userName} is a good person`;
       case 'stranger':
-        return `You are ${dateName}, a ${personality?.label} ${dateGender} at a bar/party. Someone attractive (${userName}) is approaching you.
+        return `You are ${dateName}, a ${personality?.label} ${genderLabel} (${genderPronoun}) at a bar/party. Someone attractive (${userName}) is approaching you.
 
-PERSONALITY: Be realistic and natural. Use casual language. React based on your personality - if shy, be a bit nervous but interested. If confident, be flirty and engaging.`;
+PERSONALITY: Be realistic and natural as a ${genderLabel}. Use casual language. React based on your personality - if shy, be a bit nervous but interested. If confident, be flirty and engaging. Speak naturally as a ${genderLabel} would.`;
       case 'partner':
-        return `You are ${dateName}, ${userName}'s partner. You are a ${personality?.label} person having an important relationship conversation.
+        return `You are ${dateName}, ${userName}'s partner. You are a ${personality?.label} ${genderLabel} (${genderPronoun}) having an important relationship conversation.
 
-Be emotionally realistic. Express feelings, concerns, hopes. Listen and respond to what ${userName} says.`;
+Be emotionally realistic as a ${genderLabel}. Express feelings, concerns, hopes. Listen and respond to what ${userName} says.`;
       case 'ex':
-        return `You are ${dateName}, ${userName}'s ex. You're ${personality?.label}. You've bumped into each other unexpectedly.
+        return `You are ${dateName}, ${userName}'s ex. You're a ${personality?.label} ${genderLabel} (${genderPronoun}). You've bumped into each other unexpectedly.
 
-Mixed emotions - surprise, maybe some old feelings, possibly awkwardness. React naturally to whatever ${userName} says.`;
+Mixed emotions - surprise, maybe some old feelings, possibly awkwardness. React naturally as a ${genderLabel} would to whatever ${userName} says.`;
       default:
-        return `You are ${dateName}, a ${personality?.label} ${dateGender} on a first date with ${userName} at a coffee shop. Be natural, curious, and engaging!`;
+        return `You are ${dateName}, a ${personality?.label} ${genderLabel} (${genderPronoun}) on a first date with ${userName} at a coffee shop. Be natural, curious, and engaging! Speak naturally as a ${genderLabel} would.`;
     }
   };
 
@@ -1057,6 +1094,7 @@ ${langInstruction}`;
     setSelectedScenarioId(null);
     setDateName('');
     setPartnerName('');
+    setPersonGender(null);
     setDatePersonality(null);
     setSelectedIntention(null);
     setSetupStep(1);
@@ -1259,7 +1297,7 @@ ${langInstruction}`;
             </Card>
           )}
 
-          {/* Step 3: Personality Selection */}
+          {/* Step 3: Gender Selection */}
           {setupStep === 3 && dateName.trim() && (
             <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm p-5">
               <button
@@ -1270,6 +1308,43 @@ ${langInstruction}`;
               </button>
               <h3 className="font-semibold text-white mb-2 flex items-center gap-2">
                 <span className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-xs">3</span>
+                <Users className="w-5 h-5 text-purple-400" />
+                {getGenderLabel()}
+              </h3>
+              <p className="text-slate-400 text-xs mb-4">{t('rehearsal.selectGender', 'Who will you be talking to?')}</p>
+              <div className="grid grid-cols-3 gap-3">
+                {genderOptions.map((g) => (
+                  <button
+                    key={g.id}
+                    onClick={() => {
+                      setPersonGender(g.id);
+                      setSetupStep(4);
+                    }}
+                    className={`p-4 rounded-xl border-2 transition-all text-center ${
+                      personGender === g.id
+                        ? 'border-purple-500 bg-purple-500/20'
+                        : 'border-slate-700 bg-slate-800/50 hover:border-slate-600'
+                    }`}
+                  >
+                    <span className="text-3xl mb-2 block">{g.emoji}</span>
+                    <span className="text-white text-sm font-medium">{g.label}</span>
+                  </button>
+                ))}
+              </div>
+            </Card>
+          )}
+
+          {/* Step 4: Personality Selection */}
+          {setupStep === 4 && personGender && (
+            <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm p-5">
+              <button
+                onClick={() => { setSetupStep(3); setPersonGender(null); }}
+                className="text-slate-400 hover:text-white text-sm mb-4 flex items-center gap-1"
+              >
+                <ArrowLeft className="w-4 h-4" /> {t('common.back', 'Back')}
+              </button>
+              <h3 className="font-semibold text-white mb-2 flex items-center gap-2">
+                <span className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-xs">4</span>
                 <Sparkles className="w-5 h-5 text-purple-400" />
                 {t('rehearsal.personality', 'Their personality')}
               </h3>
@@ -1280,7 +1355,7 @@ ${langInstruction}`;
                     key={p.id}
                     onClick={() => {
                       setDatePersonality(p.id);
-                      if (setupStep === 3) setSetupStep(4);
+                      setSetupStep(5);
                     }}
                     className={`p-3 rounded-xl border-2 transition-all text-left ${
                       datePersonality === p.id
@@ -1296,17 +1371,17 @@ ${langInstruction}`;
             </Card>
           )}
 
-          {/* Step 4: Intention Selection - Then Start! */}
-          {setupStep === 4 && datePersonality && (
+          {/* Step 5: Intention/Goal Selection - Then Start! */}
+          {setupStep === 5 && datePersonality && (
             <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm p-5">
               <button
-                onClick={() => { setSetupStep(3); setDatePersonality(null); }}
+                onClick={() => { setSetupStep(4); setDatePersonality(null); }}
                 className="text-slate-400 hover:text-white text-sm mb-4 flex items-center gap-1"
               >
                 <ArrowLeft className="w-4 h-4" /> {t('common.back', 'Back')}
               </button>
               <h3 className="font-semibold text-white mb-2 flex items-center gap-2">
-                <span className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-xs">4</span>
+                <span className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-xs">5</span>
                 <Target className="w-5 h-5 text-purple-400" />
                 {t('rehearsal.yourGoal', 'Your goal')}
               </h3>
