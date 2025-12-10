@@ -451,15 +451,24 @@ ${dateName} responds naturally:`
         timestamp: new Date()
       }]);
     } catch (error) {
-      console.error('Error sending message:', error);
-      // Provide a contextual fallback response
+      console.error('❌ Error sending message:', error);
+      console.error('❌ Error details:', error.message, error.code);
+      
+      // Only use fallback if API completely fails
+      // Log the error for debugging
       const fallbackResponse = getFallbackResponse(userMessage);
+      console.log('⚠️ Using fallback response:', fallbackResponse);
+      
       setMessages(prev => [...prev, {
         id: Date.now() + 1,
         sender: 'date',
         text: fallbackResponse,
         timestamp: new Date()
       }]);
+      
+      // Generate suggestions even on fallback
+      const suggestions = generateSuggestedReplies(fallbackResponse, scenario);
+      setSuggestedReplies(suggestions);
     }
     setIsLoading(false);
   };

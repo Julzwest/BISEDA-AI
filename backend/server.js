@@ -61,6 +61,22 @@ setInterval(() => {
     }
   }
 }, 5 * 60 * 1000);
+
+// Rate limit middleware for routes
+const rateLimit = (req, res, next) => {
+  const userId = req.headers['x-user-id'] || req.ip || 'anonymous';
+  const tier = 'free_trial'; // Default tier for simple endpoints
+  
+  const rateCheck = checkRateLimit(userId, tier);
+  if (!rateCheck.allowed) {
+    return res.status(429).json({
+      error: 'Too many requests. Please wait a moment.',
+      code: 'RATE_LIMIT_EXCEEDED',
+      retryAfter: rateCheck.retryAfter
+    });
+  }
+  next();
+};
 import stripeRoutes from './routes/stripe.js';
 import businessRoutes from './routes/businesses.js';
 import creditRoutes from './routes/credits.js';
