@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Calendar, Sparkles, MapPin, Star, Music, PartyPopper, Globe, ExternalLink, Search, Heart, Gift, Flag, ChevronRight, Clock, Bookmark, BookmarkCheck, Share2, Ticket, X, Plus, Dumbbell, UtensilsCrossed, Laugh, Film, Mountain, Palette, Flower2, Tent, HeartHandshake } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { countries, getCitiesForCountry, getCountryByCode, getCityNameEn } from '@/config/countries';
+import { countries, getLocalizedCitiesForCountry, getCountryByCode, getCityNameEn, getLocalizedCountryName } from '@/config/countries';
 import { getBackendUrl } from '@/utils/getBackendUrl';
 import ShareButton from '@/components/ShareButton';
 import PullToRefresh from '@/components/PullToRefresh';
@@ -252,12 +253,24 @@ const defaultFestiveDates = [
 ];
 
 export default function Events() {
+  const { t, i18n } = useTranslation();
   const backendUrl = getBackendUrl();
   
   // Get user's country from localStorage with state for reactivity
   const [userCountry, setUserCountry] = useState(localStorage.getItem('userCountry') || 'AL');
   const currentCountry = getCountryByCode(userCountry);
-  const cities = getCitiesForCountry(userCountry).map(c => c.name);
+  
+  // Get localized cities - depends on i18n.language for reactivity
+  const localizedCities = React.useMemo(() => {
+    return getLocalizedCitiesForCountry(userCountry);
+  }, [userCountry, i18n.language]);
+  
+  // Get localized country name - depends on i18n.language for reactivity
+  const localizedCountryName = React.useMemo(() => {
+    return getLocalizedCountryName(userCountry);
+  }, [userCountry, i18n.language]);
+  
+  const cities = localizedCities.map(c => c.displayName);
   
   const [selectedCity, setSelectedCity] = useState('');
   const [localEvents, setLocalEvents] = useState([]);
@@ -326,22 +339,38 @@ export default function Events() {
 
   const upcomingFestiveDates = getUpcomingFestiveDates();
   const nextFestive = upcomingFestiveDates[0];
-  const months = ['Jan', 'Shk', 'Mar', 'Pri', 'Maj', 'Qer', 'Kor', 'Gus', 'Sht', 'Tet', 'Nën', 'Dhj'];
+  
+  // Get localized month names
+  const getLocalizedMonths = () => {
+    const lang = localStorage.getItem('i18nextLng') || 'en';
+    const monthsMap = {
+      en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      sq: ['Jan', 'Shk', 'Mar', 'Pri', 'Maj', 'Qer', 'Kor', 'Gus', 'Sht', 'Tet', 'Nën', 'Dhj'],
+      de: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+      fr: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'],
+      it: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'],
+      es: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+      el: ['Ιαν', 'Φεβ', 'Μαρ', 'Απρ', 'Μαι', 'Ιον', 'Ιολ', 'Αυγ', 'Σεπ', 'Οκτ', 'Νοε', 'Δεκ'],
+      nl: ['Jan', 'Feb', 'Mrt', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec']
+    };
+    return monthsMap[lang] || monthsMap.en;
+  };
+  const months = getLocalizedMonths();
 
   const eventTypes = [
-    { id: 'all', name: 'Të gjitha', icon: PartyPopper },
-    { id: 'music', name: 'Muzikë', icon: Music },
-    { id: 'nightlife', name: 'Jetë Nate', icon: Sparkles },
-    { id: 'culture', name: 'Kulturë', icon: Calendar },
-    { id: 'sports', name: 'Sport', icon: Dumbbell },
-    { id: 'food', name: 'Gastronomi', icon: UtensilsCrossed },
-    { id: 'comedy', name: 'Komedi', icon: Laugh },
-    { id: 'cinema', name: 'Kinema', icon: Film },
-    { id: 'outdoor', name: 'Aventurë', icon: Mountain },
-    { id: 'art', name: 'Art', icon: Palette },
+    { id: 'all', name: t('events.allEvents'), icon: PartyPopper },
+    { id: 'music', name: t('events.music'), icon: Music },
+    { id: 'nightlife', name: t('events.nightlife'), icon: Sparkles },
+    { id: 'culture', name: t('events.culture'), icon: Calendar },
+    { id: 'sports', name: t('events.sports'), icon: Dumbbell },
+    { id: 'food', name: t('events.food'), icon: UtensilsCrossed },
+    { id: 'comedy', name: t('events.comedy'), icon: Laugh },
+    { id: 'cinema', name: t('events.cinema'), icon: Film },
+    { id: 'outdoor', name: t('events.adventure'), icon: Mountain },
+    { id: 'art', name: t('events.art'), icon: Palette },
     { id: 'wellness', name: 'Wellness', icon: Flower2 },
-    { id: 'festivals', name: 'Festivale', icon: Tent },
-    { id: 'romantic', name: 'Romantike', icon: HeartHandshake }
+    { id: 'festivals', name: 'Festivals', icon: Tent },
+    { id: 'romantic', name: 'Romantic', icon: HeartHandshake }
   ];
 
   // Search queries for different event types
@@ -527,9 +556,9 @@ export default function Events() {
           </div>
         </div>
         <h1 className="text-3xl font-extrabold bg-gradient-to-r from-yellow-300 via-orange-300 to-red-300 bg-clip-text text-transparent mb-2">
-          Evente Lokale 🎉
+          {t('events.title')}
         </h1>
-        <p className="text-slate-400 text-sm">Gjej vende eventesh dhe argëtimi në qytetin tënd</p>
+        <p className="text-slate-400 text-sm">{t('events.subtitle')}</p>
       </div>
 
       {/* 🎯 Upcoming Festive Dates Countdown - Modern Design */}
@@ -558,7 +587,7 @@ export default function Events() {
                 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
-                  <span className="text-xs text-emerald-400 font-semibold uppercase tracking-wider">Festa e ardhshme</span>
+                  <span className="text-xs text-emerald-400 font-semibold uppercase tracking-wider">{t('events.upcomingHoliday')}</span>
                   <h3 className="text-white font-bold text-xl mt-1 truncate">{nextFestive.name}</h3>
                   <div className="flex items-center gap-2 mt-2">
                     <Calendar className="w-4 h-4 text-emerald-400" />
@@ -572,7 +601,7 @@ export default function Events() {
                     {nextFestive.daysUntil}
                   </div>
                   <div className="text-xs text-emerald-300/70 font-semibold uppercase tracking-wider">
-                    ditë
+                    {t('events.days')}
                   </div>
                 </div>
                 
@@ -584,7 +613,7 @@ export default function Events() {
               <div className="mt-4 pt-3 border-t border-emerald-500/20 space-y-3">
                 <p className="text-xs text-emerald-300/60 flex items-center gap-2">
                   <Sparkles className="w-3 h-3" />
-                  Planifiko një takim special! Kliko për më shumë data festive.
+                  {t('events.planSpecialDate')}
                 </p>
                 
                 {/* See More Festive Dates Button */}
@@ -593,7 +622,7 @@ export default function Events() {
                   className="flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02] shadow-lg shadow-emerald-500/30"
                 >
                   <Calendar className="w-4 h-4" />
-                  Shiko më shumë data festive
+                  {t('events.viewMoreFestiveDates')}
                   <ChevronRight className="w-4 h-4" />
                 </Link>
               </div>
@@ -605,7 +634,7 @@ export default function Events() {
             <div className="mt-3 space-y-2 animate-fadeIn">
               <div className="flex items-center gap-2 mb-2">
                 <Clock className="w-4 h-4 text-purple-400" />
-                <span className="text-sm font-semibold text-white">Datat e ardhshme festive</span>
+                <span className="text-sm font-semibold text-white">{t('events.upcomingFestiveDates')}</span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {upcomingFestiveDates.slice(1, 7).map((festive, index) => (
@@ -631,7 +660,7 @@ export default function Events() {
                 className="mt-4 w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 hover:from-emerald-500/30 hover:to-cyan-500/30 border border-emerald-500/30 rounded-xl text-emerald-300 font-semibold transition-all hover:scale-[1.02]"
               >
                 <Calendar className="w-4 h-4" />
-                Shiko të gjitha datat festive
+                {t('events.viewAllFestiveDates')}
                 <ChevronRight className="w-4 h-4" />
               </Link>
             </div>
@@ -643,7 +672,7 @@ export default function Events() {
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-3">
           <Sparkles className="w-5 h-5 text-yellow-400" />
-          <h2 className="text-lg font-bold text-white">Tipi i Eventit</h2>
+          <h2 className="text-lg font-bold text-white">{t('events.eventType')}</h2>
         </div>
         <div className="flex flex-wrap gap-2">
           {eventTypes.map((type) => {
@@ -670,8 +699,8 @@ export default function Events() {
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-3">
           <MapPin className="w-5 h-5 text-purple-400" />
-          <h2 className="text-lg font-bold text-white">Zgjidh Qytetin</h2>
-          <span className="text-xs text-slate-500 ml-auto">{currentCountry?.flag} {currentCountry?.name}</span>
+          <h2 className="text-lg font-bold text-white">{t('events.selectCity')}</h2>
+          <span className="text-xs text-slate-500 ml-auto">{currentCountry?.flag} {localizedCountryName}</span>
         </div>
         <div className="flex flex-wrap gap-2">
           {/* Show first 12 cities, or all if showMoreCities */}
@@ -696,7 +725,7 @@ export default function Events() {
               className="px-4 py-2.5 rounded-xl font-semibold text-sm transition-all bg-slate-700/50 text-slate-300 hover:bg-slate-600/50 border border-slate-600/50 flex items-center gap-1.5"
             >
               <ChevronRight className="w-4 h-4" />
-              <span>+{cities.length - 12} të tjera</span>
+              <span>+{cities.length - 12} {t('events.more')}</span>
             </button>
           )}
           
@@ -706,14 +735,14 @@ export default function Events() {
             className="px-4 py-2.5 rounded-xl font-semibold text-sm transition-all bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-400 border border-cyan-500/30 hover:border-cyan-400/50 hover:bg-cyan-500/30 flex items-center gap-1.5"
           >
             <Plus className="w-4 h-4" />
-            <span>Tjetër qytet</span>
+            <span>{t('events.otherCity')}</span>
           </button>
         </div>
         
         {/* Selected custom city indicator */}
         {selectedCity && !cities.includes(selectedCity) && (
           <div className="mt-3 flex items-center gap-2">
-            <span className="text-sm text-slate-400">Qyteti i zgjedhur:</span>
+            <span className="text-sm text-slate-400">{t('events.selectedCity')}:</span>
             <span className="px-3 py-1 bg-yellow-500/20 text-yellow-300 rounded-full text-sm font-semibold">
               {selectedCity}
             </span>
@@ -736,7 +765,7 @@ export default function Events() {
               <div className="flex items-center justify-between">
                 <h3 className="text-xl font-bold text-white flex items-center gap-2">
                   <MapPin className="w-5 h-5 text-purple-400" />
-                  Zgjidh Qytetin
+                  {t('events.selectCity')}
                 </h3>
                 <button
                   onClick={() => setShowCityModal(false)}
@@ -753,7 +782,7 @@ export default function Events() {
                   type="text"
                   value={customCityInput}
                   onChange={(e) => setCustomCityInput(e.target.value)}
-                  placeholder="Kërko ose shkruaj qytetin..."
+                  placeholder={t('events.searchCity')}
                   className="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
                   style={{ fontSize: '16px' }}
                   autoFocus
@@ -779,7 +808,7 @@ export default function Events() {
                     </div>
                     <div>
                       <p className="text-white font-semibold">"{customCityInput.trim()}"</p>
-                      <p className="text-purple-300 text-sm">Kërko në këtë qytet</p>
+                      <p className="text-purple-300 text-sm">{t('events.searchInCity')}</p>
                     </div>
                   </div>
                 </button>
@@ -816,7 +845,7 @@ export default function Events() {
                         </div>
                         <div>
                           <p className={`font-semibold ${selectedCity === city ? 'text-yellow-300' : 'text-white'}`}>{city}</p>
-                          <p className="text-slate-500 text-sm">{currentCountry?.name}</p>
+                          <p className="text-slate-500 text-sm">{localizedCountryName}</p>
                         </div>
                       </div>
                     </button>
@@ -826,7 +855,7 @@ export default function Events() {
               {/* No results message */}
               {customCityInput && !cities.some(c => c.toLowerCase().includes(customCityInput.toLowerCase())) && (
                 <p className="text-center text-slate-400 text-sm mt-4">
-                  Qyteti "{customCityInput}" nuk u gjet në listë, por mund ta kërkosh direkt.
+                  {t('events.cityNotInList', { city: customCityInput })}
                 </p>
               )}
             </div>
@@ -844,7 +873,7 @@ export default function Events() {
                 disabled={!customCityInput.trim() && !selectedCity}
                 className="w-full py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold rounded-xl"
               >
-                {customCityInput.trim() ? `Kërko në "${customCityInput.trim()}"` : 'Mbyll'}
+                {customCityInput.trim() ? t('events.searchInCityName', { city: customCityInput.trim() }) : t('events.close')}
               </Button>
             </div>
           </div>
@@ -861,12 +890,12 @@ export default function Events() {
           {isLoadingEvents ? (
             <div className="flex items-center justify-center gap-2">
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              <span>Duke kërkuar...</span>
+              <span>{t('events.searching')}</span>
             </div>
           ) : (
             <div className="flex items-center justify-center gap-2">
               <Search className="w-5 h-5" />
-              <span>Kërko Evente në {selectedCity}</span>
+              <span>{t('events.searchEventsIn', { city: selectedCity })}</span>
             </div>
           )}
         </Button>
@@ -876,7 +905,7 @@ export default function Events() {
       {isLoadingEvents && selectedCity && (
         <div className="text-center py-6 mb-6">
           <div className="inline-block w-8 h-8 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-slate-400 mt-3 text-sm">Duke kërkuar vende eventesh në {selectedCity}...</p>
+          <p className="text-slate-400 mt-3 text-sm">{t('events.searchingVenuesIn', { city: selectedCity })}</p>
         </div>
       )}
 
@@ -887,7 +916,7 @@ export default function Events() {
             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-yellow-500 to-transparent"></div>
             <h2 className="text-base font-bold text-white flex items-center gap-2">
               <Music className="w-5 h-5 text-yellow-400" />
-              {localEvents.length} Vende në {selectedCity}
+              {localEvents.length} {t('events.venuesIn', { city: selectedCity })}
             </h2>
             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-yellow-500 to-transparent"></div>
           </div>
@@ -917,7 +946,7 @@ export default function Events() {
                             ? 'bg-emerald-500/20 text-emerald-400'
                             : 'bg-red-500/20 text-red-400'
                         }`}>
-                          {venue.isOpen ? '● Hapur' : '○ Mbyllur'}
+                          {venue.isOpen ? `● ${t('events.open')}` : `○ ${t('events.closed')}`}
                         </span>
                       )}
                       <span className="px-3 py-1 bg-purple-500/20 rounded-full text-xs font-semibold text-purple-300">
@@ -971,7 +1000,7 @@ export default function Events() {
                             className="inline-flex items-center gap-1.5 px-4 py-2 bg-pink-500/20 hover:bg-pink-500/30 rounded-xl text-xs font-bold text-pink-300 transition-all hover:scale-105"
                           >
                             <Ticket className="w-3.5 h-3.5" />
-                            Bileta
+                            {t('events.tickets')}
                           </a>
                         )}
                       
@@ -983,7 +1012,7 @@ export default function Events() {
                               ? 'bg-pink-500/30 text-pink-300'
                               : 'bg-slate-700/30 text-slate-400 hover:text-pink-300 hover:bg-pink-500/20'
                           }`}
-                          title={checkFavorite(venue) ? 'Hiq nga të preferuarat' : 'Shto në të preferuara'}
+                          title={checkFavorite(venue) ? t('events.removeFromFavorites') : t('events.addToFavorites')}
                         >
                           {checkFavorite(venue) ? (
                             <BookmarkCheck className="w-4 h-4" />
@@ -996,7 +1025,7 @@ export default function Events() {
                         <ShareButton
                           variant="mini"
                           title={venue.name}
-                          text={`Shiko ${venue.name} në ${selectedCity}! 🎉`}
+                          text={t('events.checkOutVenue', { venue: venue.name, city: selectedCity })}
                           url={venue.googleMapsLink || window.location.href}
                         />
                       </div>
@@ -1025,12 +1054,12 @@ export default function Events() {
                   {isLoadingMore ? (
                     <>
                       <div className="w-5 h-5 border-2 border-yellow-300 border-t-transparent rounded-full animate-spin" />
-                      Duke ngarkuar...
+                      {t('events.loadingMore')}
                     </>
                   ) : (
                     <>
                       <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                      Shiko më shumë ({localEvents.length - visibleCount} të tjera)
+                      {t('events.showMore', { count: localEvents.length - visibleCount })}
                     </>
                   )}
                 </span>
@@ -1043,7 +1072,7 @@ export default function Events() {
           {/* Show count indicator */}
           {localEvents.length > 0 && (
             <p className="text-center text-slate-500 text-sm mt-4">
-              Duke shfaqur {Math.min(visibleCount, localEvents.length)} nga {localEvents.length} vende
+              {t('events.showingCount', { showing: Math.min(visibleCount, localEvents.length), total: localEvents.length })}
             </p>
           )}
 
@@ -1054,8 +1083,8 @@ export default function Events() {
                 <Ticket className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h3 className="text-white font-bold">Kërko Bileta Online</h3>
-                <p className="text-slate-400 text-xs">Gjej bileta për evente në {selectedCity}</p>
+                <h3 className="text-white font-bold">{t('events.searchTicketsOnline')}</h3>
+                <p className="text-slate-400 text-xs">{t('events.findTicketsIn', { city: selectedCity })}</p>
               </div>
             </div>
             <a
@@ -1065,7 +1094,7 @@ export default function Events() {
               className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 rounded-xl text-white font-bold transition-all hover:scale-[1.02]"
             >
               <Search className="w-4 h-4" />
-              Kërko Bileta për {selectedCity}
+              {t('events.searchTicketsFor', { city: selectedCity })}
               <ExternalLink className="w-4 h-4" />
             </a>
           </div>
@@ -1076,9 +1105,9 @@ export default function Events() {
       {selectedCity && !isLoadingEvents && localEvents.length === 0 && (
         <div className="text-center py-12 mb-6">
           <div className="text-6xl mb-4">🎭</div>
-          <h3 className="text-white font-bold text-lg mb-2">Nuk u gjetën vende eventesh</h3>
-          <p className="text-slate-400">Nuk u gjetën vende eventesh në {selectedCity}</p>
-          <p className="text-slate-500 text-sm mt-1">Provo një qytet tjetër ose tip tjetër eventi</p>
+          <h3 className="text-white font-bold text-lg mb-2">{t('events.noVenuesFound')}</h3>
+          <p className="text-slate-400">{t('events.noVenuesFoundIn', { city: selectedCity })}</p>
+          <p className="text-slate-500 text-sm mt-1">{t('events.tryAnotherCity')}</p>
         </div>
       )}
 
@@ -1086,8 +1115,8 @@ export default function Events() {
       {!selectedCity && (
         <div className="text-center py-12">
           <div className="text-6xl mb-4">🎉</div>
-          <h3 className="text-white font-bold text-lg mb-2">Zgjidh një qytet</h3>
-          <p className="text-slate-400">Zgjidh qytetin tënd për të parë evente dhe vende argëtimi</p>
+          <h3 className="text-white font-bold text-lg mb-2">{t('events.selectACity')}</h3>
+          <p className="text-slate-400">{t('events.selectCityToSeeEvents')}</p>
         </div>
       )}
 
@@ -1096,13 +1125,13 @@ export default function Events() {
         <div className="p-5">
           <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-yellow-400" />
-            Këshilla për Evente
+            {t('events.eventTips')}
           </h3>
           <ul className="space-y-2 text-slate-300 text-sm">
-            <li>• Kontrollo oraret e hapjes para se të shkosh</li>
-            <li>• Rezervo paraprakisht për evente të mëdha</li>
-            <li>• Evente muzikore janë perfekte për takime</li>
-            <li>• Eksploro vende të reja kulturore në qytetin tënd</li>
+            <li>• {t('events.tip1')}</li>
+            <li>• {t('events.tip2')}</li>
+            <li>• {t('events.tip3')}</li>
+            <li>• {t('events.tip4')}</li>
           </ul>
         </div>
       </Card>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -100,9 +101,9 @@ export default function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
     }
   };
 
-  return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <Card className="bg-slate-800 border-slate-700 max-w-5xl w-full max-h-[90vh] overflow-y-auto">
+  return createPortal(
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" style={{ zIndex: 99999 }}>
+      <Card className="bg-slate-900 border-slate-700 max-w-5xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -192,6 +193,7 @@ export default function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
           </div>
         </div>
       </Card>
-    </div>
+    </div>,
+    document.body
   );
 }

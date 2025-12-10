@@ -47,11 +47,31 @@ export default function Admin() {
   const [giftCreditsAmount, setGiftCreditsAmount] = useState(10);
   const [giftCreditsUser, setGiftCreditsUser] = useState(null);
   
+  // Change tier modal
+  const [showChangeTier, setShowChangeTier] = useState(false);
+  const [changeTierUser, setChangeTierUser] = useState(null);
+  const [selectedTier, setSelectedTier] = useState('starter');
+  const [changeTierLoading, setChangeTierLoading] = useState(false);
+  
   // Conversations
   const [conversations, setConversations] = useState([]);
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [showConversationModal, setShowConversationModal] = useState(false);
   const [loadingConversations, setLoadingConversations] = useState(false);
+  
+  // Create User
+  const [showCreateUser, setShowCreateUser] = useState(false);
+  const [createUserLoading, setCreateUserLoading] = useState(false);
+  const [createUserSuccess, setCreateUserSuccess] = useState('');
+  const [createUserError, setCreateUserError] = useState('');
+  const [newUser, setNewUser] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    gender: '',
+    tier: 'starter'
+  });
   
   const backendUrl = getBackendUrl();
   const adminToken = localStorage.getItem('adminToken');
@@ -174,12 +194,106 @@ export default function Admin() {
     }
   };
 
+  const handleChangeTier = async () => {
+    if (!changeTierUser) return;
+    const token = localStorage.getItem('adminToken');
+    setChangeTierLoading(true);
+    
+    try {
+      const response = await fetch(`${backendUrl}/api/admin/users/${changeTierUser.odId}/update-tier`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ tier: selectedTier })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setShowChangeTier(false);
+        setChangeTierUser(null);
+        setSelectedTier('starter');
+        fetchData();
+        alert(`✅ Plani u ndryshua në ${selectedTier.toUpperCase()}!\n\n📊 Mesazhe/ditë: ${selectedTier === 'elite' ? 500 : selectedTier === 'pro' ? 200 : selectedTier === 'starter' ? 75 : 3}\n💰 Kredite të shtuara: +${data.creditsAdded || 0}\n💎 Balanca e re: ${data.newCreditsBalance || 0} kredite`);
+      } else {
+        const data = await response.json();
+        alert(data.error || 'Failed to change tier');
+      }
+    } catch (error) {
+      console.error('Change tier error:', error);
+      alert('Error changing tier');
+    } finally {
+      setChangeTierLoading(false);
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
     localStorage.removeItem('adminUsername');
     setIsAuthenticated(false);
     setUsername('');
     setPassword('');
+  };
+
+  const handleCreateUser = async (e) => {
+    e.preventDefault();
+    setCreateUserError('');
+    setCreateUserSuccess('');
+    
+    // Validation
+    if (!newUser.firstName.trim() || !newUser.lastName.trim()) {
+      setCreateUserError('First name and last name are required');
+      return;
+    }
+    if (!newUser.email.trim() || !newUser.email.includes('@')) {
+      setCreateUserError('Valid email is required');
+      return;
+    }
+    if (!newUser.password || newUser.password.length < 6) {
+      setCreateUserError('Password must be at least 6 characters');
+      return;
+    }
+    
+    const token = localStorage.getItem('adminToken');
+    setCreateUserLoading(true);
+    
+    try {
+      const response = await fetch(`${backendUrl}/api/admin/create-test-user`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json', 
+          'Authorization': `Bearer ${token}` 
+        },
+        body: JSON.stringify({
+          firstName: newUser.firstName.trim(),
+          lastName: newUser.lastName.trim(),
+          email: newUser.email.trim(),
+          password: newUser.password,
+          gender: newUser.gender || null,
+          tier: newUser.tier
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setCreateUserSuccess(`✅ User created successfully! Email: ${data.user.email}, Tier: ${data.user.tier}`);
+        setNewUser({
+          firstName: '',
+          lastName: '',
+          email: '',
+          password: '',
+          gender: '',
+          tier: 'starter'
+        });
+        fetchData(); // Refresh user list
+      } else {
+        setCreateUserError(data.error || 'Failed to create user');
+      }
+    } catch (error) {
+      console.error('Create user error:', error);
+      setCreateUserError('Connection error. Please try again.');
+    } finally {
+      setCreateUserLoading(false);
+    }
   };
 
   const fetchConversations = async () => {
@@ -348,6 +462,7 @@ export default function Admin() {
         {[
           { id: 'overview', label: '📊 Përmbledhje' },
           { id: 'users', label: '👥 Përdoruesit' },
+          { id: 'createUser', label: '➕ Krijo Përdorues' },
           { id: 'conversations', label: '💬 Bisedat' },
           { id: 'subscriptions', label: '💎 Abonimet' },
           { id: 'activity', label: '📈 Aktiviteti' },
@@ -682,6 +797,12 @@ export default function Admin() {
                         <Gift className="w-3 h-3 mr-1" /> Kredite
                       </Button>
                       <Button
+                        onClick={() => { setChangeTierUser(user); setSelectedTier(user.subscriptionTier || 'free'); setShowChangeTier(true); }}
+                        className="bg-amber-600 hover:bg-amber-500 text-white text-xs h-9 px-3"
+                      >
+                        <Crown className="w-3 h-3 mr-1" /> Plan
+                      </Button>
+                      <Button
                         onClick={() => handleBlockUser(user.odId, !user.isBlocked)}
                         className={`${user.isBlocked ? 'bg-green-600 hover:bg-green-500' : 'bg-orange-600 hover:bg-orange-500'} text-white text-xs h-9 px-3`}
                       >
@@ -705,6 +826,204 @@ export default function Admin() {
               <p className="text-slate-400 text-lg">Asnjë përdorues u gjet</p>
             </div>
           )}
+        </Card>
+      )}
+
+      {/* Create User Tab */}
+      {activeTab === 'createUser' && (
+        <Card className="bg-slate-800/50 border-slate-700/50 p-6 max-w-2xl mx-auto">
+          <div className="text-center mb-6">
+            <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-green-500/30">
+              <UserPlus className="w-8 h-8 text-white" />
+            </div>
+            <h2 className="text-2xl font-bold text-white mb-2">Krijo Përdorues të Ri</h2>
+            <p className="text-slate-400">Krijo llogari të re me planin e dëshiruar</p>
+          </div>
+
+          <form onSubmit={handleCreateUser} className="space-y-4">
+            {/* Name Fields */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">👤 Emri</label>
+                <input
+                  type="text"
+                  value={newUser.firstName}
+                  onChange={(e) => setNewUser({...newUser, firstName: e.target.value})}
+                  className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-green-500/50"
+                  placeholder="Emri"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">👤 Mbiemri</label>
+                <input
+                  type="text"
+                  value={newUser.lastName}
+                  onChange={(e) => setNewUser({...newUser, lastName: e.target.value})}
+                  className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-green-500/50"
+                  placeholder="Mbiemri"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Gender Selection */}
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">⚧ Gjinia</label>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => setNewUser({...newUser, gender: 'male'})}
+                  className={`py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 ${
+                    newUser.gender === 'male'
+                      ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30 border-2 border-blue-400'
+                      : 'bg-slate-700/50 border-2 border-slate-600/50 text-slate-400 hover:text-white hover:border-blue-500/50'
+                  }`}
+                >
+                  <span className="text-xl">👨</span>
+                  <span>Mashkull</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setNewUser({...newUser, gender: 'female'})}
+                  className={`py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 ${
+                    newUser.gender === 'female'
+                      ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg shadow-pink-500/30 border-2 border-pink-400'
+                      : 'bg-slate-700/50 border-2 border-slate-600/50 text-slate-400 hover:text-white hover:border-pink-500/50'
+                  }`}
+                >
+                  <span className="text-xl">👩</span>
+                  <span>Femër</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Email */}
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">📧 Email</label>
+              <input
+                type="email"
+                value={newUser.email}
+                onChange={(e) => setNewUser({...newUser, email: e.target.value})}
+                className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-green-500/50"
+                placeholder="email@example.com"
+                required
+              />
+            </div>
+
+            {/* Password */}
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">🔐 Fjalëkalimi</label>
+              <input
+                type="text"
+                value={newUser.password}
+                onChange={(e) => setNewUser({...newUser, password: e.target.value})}
+                className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-green-500/50"
+                placeholder="Minimum 6 karaktere"
+                required
+              />
+            </div>
+
+            {/* Subscription Tier */}
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-2">💎 Plani i Abonimit</label>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {[
+                  { id: 'free', name: 'Falas', price: '€0', color: 'slate', icon: '🆓' },
+                  { id: 'starter', name: 'Starter', price: '€6.99', color: 'blue', icon: '⭐' },
+                  { id: 'pro', name: 'Pro', price: '€12.99', color: 'purple', icon: '💎' },
+                  { id: 'elite', name: 'Elite', price: '€19.99', color: 'amber', icon: '👑' },
+                ].map((tier) => (
+                  <button
+                    key={tier.id}
+                    type="button"
+                    onClick={() => setNewUser({...newUser, tier: tier.id})}
+                    className={`p-4 rounded-xl font-semibold transition-all text-center ${
+                      newUser.tier === tier.id
+                        ? tier.id === 'elite' ? 'bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/30 border-2 border-amber-400' :
+                          tier.id === 'pro' ? 'bg-gradient-to-br from-purple-500 to-pink-600 text-white shadow-lg shadow-purple-500/30 border-2 border-purple-400' :
+                          tier.id === 'starter' ? 'bg-gradient-to-br from-blue-500 to-cyan-600 text-white shadow-lg shadow-blue-500/30 border-2 border-blue-400' :
+                          'bg-gradient-to-br from-slate-500 to-slate-600 text-white shadow-lg border-2 border-slate-400'
+                        : 'bg-slate-700/50 border-2 border-slate-600/50 text-slate-400 hover:text-white hover:border-slate-500/50'
+                    }`}
+                  >
+                    <span className="text-2xl block mb-1">{tier.icon}</span>
+                    <span className="block text-sm font-bold">{tier.name}</span>
+                    <span className="block text-xs opacity-75">{tier.price}/muaj</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Error Message */}
+            {createUserError && (
+              <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-xl">
+                <p className="text-red-400 text-sm text-center flex items-center justify-center gap-2">
+                  <AlertCircle className="w-4 h-4" /> {createUserError}
+                </p>
+              </div>
+            )}
+
+            {/* Success Message */}
+            {createUserSuccess && (
+              <div className="p-4 bg-green-500/10 border border-green-500/30 rounded-xl">
+                <p className="text-green-400 text-sm text-center flex items-center justify-center gap-2">
+                  <CheckCircle className="w-4 h-4" /> {createUserSuccess}
+                </p>
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <Button
+              type="submit"
+              disabled={createUserLoading}
+              className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold h-14 rounded-xl text-base shadow-lg shadow-green-500/20 transition-all"
+            >
+              {createUserLoading ? (
+                <RefreshCw className="w-5 h-5 animate-spin" />
+              ) : (
+                <>
+                  <UserPlus className="w-5 h-5 mr-2" />
+                  Krijo Përdoruesin
+                </>
+              )}
+            </Button>
+          </form>
+
+          {/* Quick Create Buttons */}
+          <div className="mt-6 pt-6 border-t border-slate-700">
+            <p className="text-slate-400 text-sm text-center mb-4">Ose krijo shpejt një llogari testi:</p>
+            <div className="grid grid-cols-2 gap-3">
+              <Button
+                type="button"
+                onClick={() => setNewUser({
+                  firstName: 'Test',
+                  lastName: 'User',
+                  email: `test${Date.now()}@test.com`,
+                  password: 'testpassword123',
+                  gender: 'male',
+                  tier: 'elite'
+                })}
+                className="bg-amber-600 hover:bg-amber-500 text-white"
+              >
+                👑 Elite Test User
+              </Button>
+              <Button
+                type="button"
+                onClick={() => setNewUser({
+                  firstName: 'Test',
+                  lastName: 'User',
+                  email: `test${Date.now()}@test.com`,
+                  password: 'testpassword123',
+                  gender: 'female',
+                  tier: 'pro'
+                })}
+                className="bg-purple-600 hover:bg-purple-500 text-white"
+              >
+                💎 Pro Test User
+              </Button>
+            </div>
+          </div>
         </Card>
       )}
 
@@ -1030,6 +1349,67 @@ export default function Admin() {
               <Button onClick={handleGiftCredits}
                 className="flex-1 bg-purple-600 hover:bg-purple-500 text-white">
                 <Gift className="w-4 h-4 mr-2" /> Dhuro {giftCreditsAmount} Kredite
+              </Button>
+            </div>
+          </Card>
+        </div>
+      )}
+
+      {/* Change Tier Modal */}
+      {showChangeTier && changeTierUser && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
+          <Card className="bg-slate-900 border-amber-500/30 p-6 rounded-2xl max-w-md w-full">
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Crown className="w-8 h-8 text-amber-400" />
+              </div>
+              <h2 className="text-xl font-bold text-white mb-2">Ndrysho Planin</h2>
+              <p className="text-slate-400">
+                Ndrysho planin për <span className="text-white font-semibold">{changeTierUser.email}</span>
+              </p>
+              <p className="text-slate-500 text-sm mt-1">
+                Plani aktual: <span className="text-amber-400 font-semibold">{changeTierUser.subscriptionTier || 'free'}</span>
+              </p>
+            </div>
+            
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-slate-300 mb-3">Zgjidh Planin e Ri</label>
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { id: 'free', name: 'Falas', price: '€0', credits: 0, messages: 3 },
+                  { id: 'starter', name: 'Starter', price: '€6.99', credits: 25, messages: 75 },
+                  { id: 'pro', name: 'Pro', price: '€12.99', credits: 50, messages: 200 },
+                  { id: 'elite', name: 'Elite', price: '€19.99', credits: 100, messages: 500 },
+                ].map((tier) => (
+                  <button
+                    key={tier.id}
+                    onClick={() => setSelectedTier(tier.id)}
+                    className={`p-3 rounded-xl font-semibold transition-all text-center ${
+                      selectedTier === tier.id
+                        ? tier.id === 'elite' ? 'bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-lg border-2 border-amber-400' :
+                          tier.id === 'pro' ? 'bg-gradient-to-br from-purple-500 to-pink-600 text-white shadow-lg border-2 border-purple-400' :
+                          tier.id === 'starter' ? 'bg-gradient-to-br from-blue-500 to-cyan-600 text-white shadow-lg border-2 border-blue-400' :
+                          'bg-gradient-to-br from-slate-500 to-slate-600 text-white shadow-lg border-2 border-slate-400'
+                        : 'bg-slate-700/50 border-2 border-slate-600/50 text-slate-400 hover:text-white hover:border-slate-500/50'
+                    }`}
+                  >
+                    <span className="block text-sm font-bold">{tier.name}</span>
+                    <span className="block text-xs opacity-75">{tier.price}/muaj</span>
+                    <span className="block text-xs mt-1 opacity-60">{tier.messages} msg/ditë</span>
+                    {tier.credits > 0 && <span className="block text-xs text-green-300">+{tier.credits} kredite</span>}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            <div className="flex gap-3">
+              <Button onClick={() => { setShowChangeTier(false); setChangeTierUser(null); }}
+                className="flex-1 bg-slate-700 hover:bg-slate-600 text-white">
+                Anulo
+              </Button>
+              <Button onClick={handleChangeTier} disabled={changeTierLoading}
+                className="flex-1 bg-amber-600 hover:bg-amber-500 text-white">
+                {changeTierLoading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <><Crown className="w-4 h-4 mr-2" /> Ndrysho Planin</>}
               </Button>
             </div>
           </Card>

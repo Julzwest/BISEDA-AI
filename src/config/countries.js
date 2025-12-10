@@ -304,8 +304,68 @@ export const countries = [
       { name: 'Utrecht', nameEn: 'Utrecht' },
       { name: 'Ajndhoven', nameEn: 'Eindhoven' }
     ]
+  },
+  {
+    code: 'MK',
+    name: 'Maqedoni e Veriut',
+    nameEn: 'North Macedonia',
+    flag: '🇲🇰',
+    currency: 'MKD',
+    currencySymbol: 'ден',
+    cities: [
+      { name: 'Shkup', nameEn: 'Skopje' },
+      { name: 'Tetovë', nameEn: 'Tetovo' },
+      { name: 'Gostivar', nameEn: 'Gostivar' },
+      { name: 'Kumanovë', nameEn: 'Kumanovo' },
+      { name: 'Strugë', nameEn: 'Struga' },
+      { name: 'Ohër', nameEn: 'Ohrid' },
+      { name: 'Kërçovë', nameEn: 'Kicevo' },
+      { name: 'Dibër', nameEn: 'Debar' },
+      { name: 'Manastir', nameEn: 'Bitola' },
+      { name: 'Prilep', nameEn: 'Prilep' }
+    ]
+  },
+  {
+    code: 'ME',
+    name: 'Mal i Zi',
+    nameEn: 'Montenegro',
+    flag: '🇲🇪',
+    currency: 'EUR',
+    currencySymbol: '€',
+    cities: [
+      { name: 'Podgoricë', nameEn: 'Podgorica' },
+      { name: 'Ulqin', nameEn: 'Ulcinj' },
+      { name: 'Tivar', nameEn: 'Bar' },
+      { name: 'Tuz', nameEn: 'Tuzi' },
+      { name: 'Guci', nameEn: 'Gusinje' },
+      { name: 'Plavë', nameEn: 'Plav' },
+      { name: 'Rozhajë', nameEn: 'Rozaje' },
+      { name: 'Budvë', nameEn: 'Budva' },
+      { name: 'Kotor', nameEn: 'Kotor' },
+      { name: 'Nikshiq', nameEn: 'Niksic' }
+    ]
   }
 ];
+
+// Helper to get current language - checks multiple possible keys
+export const getCurrentLanguage = () => {
+  // Check i18next language first (set by react-i18next)
+  const i18nextLng = localStorage.getItem('i18nextLng');
+  if (i18nextLng) return i18nextLng;
+  
+  // Check appLanguage (set by LanguageSwitcher)
+  const appLanguage = localStorage.getItem('appLanguage');
+  if (appLanguage) return appLanguage;
+  
+  // Default to Albanian
+  return 'sq';
+};
+
+// Check if current language is Albanian
+export const isAlbanian = () => {
+  const lang = getCurrentLanguage();
+  return lang === 'sq' || lang === 'sq-AL' || lang.startsWith('sq');
+};
 
 // Helper functions
 export const getCountryByCode = (code) => {
@@ -315,6 +375,17 @@ export const getCountryByCode = (code) => {
 export const getCitiesForCountry = (countryCode) => {
   const country = getCountryByCode(countryCode);
   return country ? country.cities : [];
+};
+
+// Get localized cities for a country based on current language
+export const getLocalizedCitiesForCountry = (countryCode) => {
+  const country = getCountryByCode(countryCode);
+  if (!country) return [];
+  
+  return country.cities.map(city => ({
+    ...city,
+    displayName: isAlbanian() ? city.name : city.nameEn
+  }));
 };
 
 export const getCurrencySymbol = (countryCode) => {
@@ -327,6 +398,13 @@ export const getCountryName = (countryCode) => {
   return country ? country.name : 'Shqipëri';
 };
 
+// Get localized country name based on current language
+export const getLocalizedCountryName = (countryCode) => {
+  const country = getCountryByCode(countryCode);
+  if (!country) return 'Albania';
+  return isAlbanian() ? country.name : country.nameEn;
+};
+
 export const getCountryFlag = (countryCode) => {
   const country = getCountryByCode(countryCode);
   return country ? country.flag : '🇦🇱';
@@ -336,8 +414,17 @@ export const getCountryFlag = (countryCode) => {
 export const getCityNameEn = (countryCode, cityName) => {
   const country = getCountryByCode(countryCode);
   if (!country) return cityName;
-  const city = country.cities.find(c => c.name === cityName);
+  const city = country.cities.find(c => c.name === cityName || c.nameEn === cityName);
   return city ? city.nameEn : cityName;
+};
+
+// Get localized city name based on current language
+export const getLocalizedCityName = (countryCode, cityNameOrEn) => {
+  const country = getCountryByCode(countryCode);
+  if (!country) return cityNameOrEn;
+  const city = country.cities.find(c => c.name === cityNameOrEn || c.nameEn === cityNameOrEn);
+  if (!city) return cityNameOrEn;
+  return isAlbanian() ? city.name : city.nameEn;
 };
 
 export default countries;

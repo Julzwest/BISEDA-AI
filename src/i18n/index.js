@@ -10,10 +10,12 @@ import el from './locales/el.json';
 import fr from './locales/fr.json';
 import de from './locales/de.json';
 import nl from './locales/nl.json';
+import es from './locales/es.json';
 
 export const languages = [
   { code: 'sq', name: 'Shqip', flag: '🇦🇱', nativeName: 'Shqip' },
   { code: 'en', name: 'English', flag: '🇬🇧', nativeName: 'English' },
+  { code: 'es', name: 'Español', flag: '🇪🇸', nativeName: 'Español' },
   { code: 'it', name: 'Italiano', flag: '🇮🇹', nativeName: 'Italiano' },
   { code: 'el', name: 'Ελληνικά', flag: '🇬🇷', nativeName: 'Ελληνικά' },
   { code: 'fr', name: 'Français', flag: '🇫🇷', nativeName: 'Français' },
@@ -24,6 +26,7 @@ export const languages = [
 const resources = {
   sq: { translation: sq },
   en: { translation: en },
+  es: { translation: es },
   it: { translation: it },
   el: { translation: el },
   fr: { translation: fr },

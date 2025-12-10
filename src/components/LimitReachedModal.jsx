@@ -1,50 +1,34 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Coffee, Sparkles, Heart, Zap, Crown } from 'lucide-react';
 
-const cheekyMessages = [
-  {
-    emoji: '☕',
-    title: 'Opa! E ke përfunduar...',
-    message: 'Hiq dorë nga NJË kafe këtë muaj dhe merr coach-in tënd personal të dashurisë për 30 ditë. Dashuria > Kafeina 💕',
-    cta: 'Po, dua dashuri!'
-  },
-  {
-    emoji: '💔',
-    title: 'S\'po më lë të të ndihmoj...',
-    message: 'Me çmimin e një ekspresso në ditë, unë punoj 24/7 për ty. Barista yt nuk do të shkruaj mesazhe flirtuese për ty! 😏',
-    cta: 'Bindëm!'
-  },
-  {
-    emoji: '🔥',
-    title: 'Plot potencial, zero mesazhe!',
-    message: 'Më pak se 30 cent në ditë = këshilla të pakufizuara dashurie. Makinë kafeje? €500. Biseda.ai? Priceless. 💎',
-    cta: 'Merrem tani!'
-  },
-  {
-    emoji: '💘',
-    title: 'Dashuria pret, ti jo!',
-    message: 'Një kafe e humbet efektin pas 4 orësh. Këshillat e mia? Ndryshojnë jetën. Skip the latte, get the love! ❤️‍🔥',
-    cta: 'Jam gati!'
-  },
-  {
-    emoji: '🎯',
-    title: 'Limiti ra, por jo ti!',
-    message: 'Harxhon €3-4 për kafe që zgjas 30 minuta. Për €7.99/muaj unë jam në dispozicion GJITHMONË. Do the math! 🧮',
-    cta: 'OK, ke të drejtë!'
-  }
-];
+const emojis = ['☕', '💔', '🔥', '💘', '🎯'];
 
 export default function LimitReachedModal({ isOpen, onClose, onUpgrade }) {
+  const { t } = useTranslation();
+  
+  // Pick a random index (memoized so it doesn't change on re-render)
+  const randomIndex = useMemo(() => Math.floor(Math.random() * 5), []);
+  
   if (!isOpen) return null;
 
-  // Pick a random cheeky message
-  const randomMessage = cheekyMessages[Math.floor(Math.random() * cheekyMessages.length)];
+  const titles = t('limitReached.titles', { returnObjects: true });
+  const messages = t('limitReached.messages', { returnObjects: true });
+  const ctas = t('limitReached.ctas', { returnObjects: true });
+  
+  const randomMessage = {
+    emoji: emojis[randomIndex],
+    title: Array.isArray(titles) ? titles[randomIndex] : titles,
+    message: Array.isArray(messages) ? messages[randomIndex] : messages,
+    cta: Array.isArray(ctas) ? ctas[randomIndex] : ctas
+  };
 
-  return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <Card className="bg-gradient-to-br from-slate-800 via-slate-800 to-purple-900/50 border-purple-500/50 max-w-md w-full shadow-2xl shadow-purple-500/20">
+  return createPortal(
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4" style={{ zIndex: 99999 }}>
+      <Card className="bg-gradient-to-br from-slate-900 via-slate-900 to-purple-900/50 border-purple-500/50 max-w-md w-full shadow-2xl shadow-purple-500/20">
         <div className="p-6">
           <div className="flex flex-col items-center text-center mb-6">
             {/* Animated emoji */}
@@ -65,14 +49,14 @@ export default function LimitReachedModal({ isOpen, onClose, onUpgrade }) {
               <div className="flex items-center justify-center gap-3">
                 <div className="text-center">
                   <Coffee className="w-6 h-6 text-amber-400 mx-auto mb-1" />
-                  <p className="text-amber-300 text-xs">1 Kafe</p>
+                  <p className="text-amber-300 text-xs">{t('limitReached.oneCoffee')}</p>
                   <p className="text-white font-bold">€3-4</p>
                 </div>
                 <div className="text-2xl">→</div>
                 <div className="text-center">
                   <Crown className="w-6 h-6 text-purple-400 mx-auto mb-1" />
-                  <p className="text-purple-300 text-xs">1 Muaj AI</p>
-                  <p className="text-white font-bold">€7.99</p>
+                  <p className="text-purple-300 text-xs">{t('limitReached.oneMonthAI')}</p>
+                  <p className="text-white font-bold">€6.99</p>
                 </div>
               </div>
             </div>
@@ -91,7 +75,7 @@ export default function LimitReachedModal({ isOpen, onClose, onUpgrade }) {
               onClick={onClose}
               className="text-slate-500 hover:text-slate-400 text-sm py-2 transition-colors"
             >
-              Jo faleminderit, preferoj të pres ☹️
+              {t('limitReached.noThanks')}
             </button>
           </div>
 
@@ -99,11 +83,12 @@ export default function LimitReachedModal({ isOpen, onClose, onUpgrade }) {
           <div className="mt-4 pt-4 border-t border-slate-700">
             <p className="text-center text-slate-400 text-xs flex items-center justify-center gap-1">
               <Heart className="w-3 h-3 text-pink-400 fill-pink-400" />
-              Mbi 1,000 çifte të lumtur falë Biseda.ai
+              {t('limitReached.socialProof')}
             </p>
           </div>
         </div>
       </Card>
-    </div>
+    </div>,
+    document.body
   );
 }

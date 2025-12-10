@@ -23,6 +23,7 @@ export const clearAllUserData = () => {
   localStorage.removeItem('userId');
   localStorage.removeItem('userEmail');
   localStorage.removeItem('userName');
+  localStorage.removeItem('userGender');
   localStorage.removeItem('userCountry');
   localStorage.removeItem('isAuthenticated');
   localStorage.removeItem('isGuest');
@@ -33,11 +34,34 @@ export const clearAllUserData = () => {
   console.log('🔓 User logged out - all data cleared');
 };
 
+// Helper to translate backend error codes
+const getTranslatedError = (data, t) => {
+  if (data.code) {
+    const codeToKey = {
+      'INVALID_CREDENTIALS': 'authErrors.invalidCredentials',
+      'EMAIL_EXISTS': 'authErrors.emailExists',
+      'USER_NOT_FOUND': 'authErrors.userNotFound',
+      'CODE_EXPIRED': 'authErrors.codeExpired',
+      'INVALID_CODE': 'authErrors.invalidCode',
+      'SERVER_ERROR': 'authErrors.serverError',
+      'FIELDS_REQUIRED': 'authErrors.somethingWrong',
+      'PASSWORD_TOO_SHORT': 'authErrors.passwordLength',
+      'EMAIL_REQUIRED': 'authErrors.enterEmail',
+    };
+    const translationKey = codeToKey[data.code];
+    if (translationKey) {
+      return t(translationKey);
+    }
+  }
+  return data.error || t('authErrors.somethingWrong');
+};
+
 export default function Auth({ onAuthSuccess }) {
   const { t, i18n } = useTranslation();
   const [isLogin, setIsLogin] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [gender, setGender] = useState(''); // 'male' or 'female'
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -100,13 +124,17 @@ export default function Auth({ onAuthSuccess }) {
             localStorage.setItem('userName', data.user.firstName || data.user.email?.split('@')[0]);
             localStorage.setItem('isAuthenticated', 'true');
             localStorage.setItem('userCountry', data.user.country || 'AL');
+            if (data.user.gender) {
+              localStorage.setItem('userGender', data.user.gender);
+            }
             
             if (onAuthSuccess) {
               onAuthSuccess({
                 userId: data.user.odId || data.user.userId,
                 email: data.user.email,
                 userName: data.user.firstName || data.user.email?.split('@')[0],
-                country: data.user.country || 'AL'
+                country: data.user.country || 'AL',
+                gender: data.user.gender
               });
             }
           } else {
@@ -178,6 +206,11 @@ export default function Auth({ onAuthSuccess }) {
       setError(t('authErrors.enterLastName'));
       return;
     }
+    
+    if (!isLogin && !gender) {
+      setError(t('authErrors.selectGender'));
+      return;
+    }
 
     if (!email.trim()) {
       setError(t('authErrors.enterEmail'));
@@ -198,6 +231,7 @@ export default function Auth({ onAuthSuccess }) {
         : {
             firstName: firstName.trim(),
             lastName: lastName.trim(),
+            gender: gender,
             email: email.trim(),
             password,
             country: 'AL'
@@ -232,8 +266,14 @@ export default function Auth({ onAuthSuccess }) {
         localStorage.setItem('userName', userName);
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('userCountry', data.user.country || 'AL');
+        if (data.user.gender) {
+          localStorage.setItem('userGender', data.user.gender);
+        }
+        if (data.user.subscriptionTier) {
+          localStorage.setItem('userSubscriptionTier', data.user.subscriptionTier);
+        }
 
-        console.log('✅ Auth successful:', { userId, userName, email: data.user.email });
+        console.log('✅ Auth successful:', { userId, userName, email: data.user.email, gender: data.user.gender, tier: data.user.subscriptionTier });
 
         if (onAuthSuccess) {
           onAuthSuccess({
@@ -241,10 +281,11 @@ export default function Auth({ onAuthSuccess }) {
             email: data.user.email,
             userName,
             country: data.user.country || 'AL',
+            subscriptionTier: data.user.subscriptionTier,
           });
         }
       } else {
-        setError(data.error || t('authErrors.somethingWrong'));
+        setError(getTranslatedError(data, t));
       }
     } catch (err) {
       console.error('Auth error:', err);
@@ -544,6 +585,34 @@ export default function Auth({ onAuthSuccess }) {
                       required
                     />
                   </div>
+                </div>
+                
+                {/* Gender Selection */}
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => { setGender('male'); setError(''); }}
+                    className={`py-4 rounded-xl font-semibold text-base transition-all duration-300 flex items-center justify-center gap-2 ${
+                      gender === 'male'
+                        ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30 border-2 border-blue-400'
+                        : 'bg-slate-800/50 border-2 border-slate-700/50 text-slate-400 hover:text-white hover:border-blue-500/50'
+                    }`}
+                  >
+                    <span className="text-xl">👨</span>
+                    <span>{t('auth.male')}</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setGender('female'); setError(''); }}
+                    className={`py-4 rounded-xl font-semibold text-base transition-all duration-300 flex items-center justify-center gap-2 ${
+                      gender === 'female'
+                        ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg shadow-pink-500/30 border-2 border-pink-400'
+                        : 'bg-slate-800/50 border-2 border-slate-700/50 text-slate-400 hover:text-white hover:border-pink-500/50'
+                    }`}
+                  >
+                    <span className="text-xl">👩</span>
+                    <span>{t('auth.female')}</span>
+                  </button>
                 </div>
               </>
             )}

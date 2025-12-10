@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Clipboard, Sparkles, MessageSquare, Upload, X, Copy, Check } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,6 +11,7 @@ import LimitReachedModal from '@/components/LimitReachedModal';
 import { getBackendUrl } from '@/utils/getBackendUrl';
 
 export default function ClipboardSuggestions() {
+  const { t } = useTranslation();
   const [clipboardText, setClipboardText] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [recommendedSuggestion, setRecommendedSuggestion] = useState(null);
@@ -367,7 +369,7 @@ export default function ClipboardSuggestions() {
                   className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={isLoading || isLimitReached}
                 >
-                  {isLoading ? 'Duke analizuar...' : isLimitReached ? 'Limiti u arrit - Përmirëso' : 'Analizo & Gjenero'}
+                  {isLoading ? t('clipboard.analyzing', 'Analyzing...') : isLimitReached ? t('clipboard.limitReached', 'Limit reached - Upgrade') : t('clipboard.analyzeGenerate', 'Analyze & Generate')}
                 </Button>
               </div>
             </Card>
@@ -414,7 +416,7 @@ export default function ClipboardSuggestions() {
               <textarea
                 value={clipboardText}
                 onChange={handleManualInput}
-                placeholder={isLimitReached ? "🚫 Limiti u arrit - Përmirëso për të vazhduar" : hasChecked ? "💬 Shkruaj ose kopjo mesazhin këtu..." : "⏳ Duke kontrolluar..."}
+                placeholder={isLimitReached ? t('clipboard.limitPlaceholder', '🚫 Limit reached - Upgrade to continue') : hasChecked ? t('clipboard.typePlaceholder', '💬 Type or paste message here...') : t('clipboard.checkingPlaceholder', '⏳ Checking...')}
                 className={`w-full p-4 pr-24 pb-16 bg-slate-800/80 border-2 rounded-xl text-white placeholder-slate-400 focus:outline-none resize-none ${isLimitReached ? 'border-red-500/50 opacity-60' : 'border-purple-500/30 focus:border-purple-500'}`}
                 rows={3}
                 style={{ fontSize: '16px' }}
@@ -450,7 +452,7 @@ export default function ClipboardSuggestions() {
         {isLoading && (
           <div className="text-center py-8">
             <div className="inline-block w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin" />
-            <p className="text-slate-400 mt-4 text-sm">Duke gjeneruar përgjigje...</p>
+            <p className="text-slate-400 mt-4 text-sm">{t('clipboard.generatingResponse', 'Generating response...')}</p>
           </div>
         )}
 

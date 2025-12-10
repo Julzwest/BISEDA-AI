@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Phone, Heart, X } from 'lucide-react';
@@ -33,8 +34,8 @@ export default function CrisisHelplineModal({ isOpen, onClose }) {
     }
   };
 
-  return (
-    <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+  return createPortal(
+    <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4" style={{ zIndex: 99999 }}>
       <Card className="bg-gradient-to-br from-purple-900 via-pink-900 to-purple-900 border-2 border-pink-500/50 max-w-md w-full shadow-2xl">
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
@@ -123,7 +124,8 @@ export default function CrisisHelplineModal({ isOpen, onClose }) {
           </div>
         </div>
       </Card>
-    </div>
+    </div>,
+    document.body
   );
 }
 

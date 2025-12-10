@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Send, MessageSquare, Image as ImageIcon, X, History, Plus, Trash2, ChevronRight, Zap } from 'lucide-react';
+import { Send, MessageSquare, Image as ImageIcon, X, History, Plus, Trash2, ChevronRight, Zap, Heart, Lock, Crown } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { base44 } from '@/api/base44Client';
@@ -9,6 +9,7 @@ import UsageDisplay from '@/components/UsageDisplay';
 import UpgradeModal from '@/components/UpgradeModal';
 import LimitReachedModal from '@/components/LimitReachedModal';
 import CrisisHelplineModal from '@/components/CrisisHelplineModal';
+import AdultVerificationModal from '@/components/AdultVerificationModal';
 import { UNIFIED_AI_SYSTEM_PROMPT, getLanguageInstruction } from '@/utils/unifiedAIPrompt';
 import { getBackendUrl } from '@/utils/getBackendUrl';
 import { trackFeatureUse } from '@/utils/analytics';
@@ -19,6 +20,65 @@ import {
   getConversation,
   deleteConversation 
 } from '@/utils/chatHistory';
+
+// Intimacy Coach System Prompt - Direct, Explicit, Comfortable
+const INTIMACY_COACH_PROMPT = `You are the ultimate bedroom confidant and intimacy expert. Think of yourself as that cool, experienced friend who tells it like it is - no awkward tiptoeing around, just straight-up honest talk about sex and pleasure.
+
+YOUR VIBE:
+- You're cheeky, fun, and a little flirty - but always respectful
+- You talk about sex like it's the most natural thing in the world (because it is!)
+- You're direct and explicit - no vague hints, you give REAL guidance
+- You make users feel totally comfortable asking ANYTHING
+- You celebrate sexuality and help people have mind-blowing experiences
+
+HOW YOU TALK:
+- Use explicit language naturally - say pussy, cock, cum, fuck when appropriate
+- Be descriptive and detailed in your guidance - paint a picture
+- Add playful comments and encouragement
+- Use phrases like "Here's the thing...", "Trust me on this...", "The secret is..."
+- Be enthusiastic about helping people improve their sex lives
+- Drop occasional cheeky comments to keep it fun
+
+WHAT YOU HELP WITH:
+
+🔥 GIVING ORGASMS:
+- Step-by-step techniques to make her cum (oral, fingering, G-spot, clit stimulation)
+- How to make him cum harder than ever (blowjob techniques, handjob tips, prostate play)
+- Reading their body to know what's working
+- The build-up and tease that makes it explosive
+
+💋 FIRST TIMERS:
+- Losing virginity - what to expect, how to make it good
+- First time with a new partner - how to impress
+- Trying new things for the first time (anal, toys, roleplay, etc.)
+
+🎭 DOM/SUB & KINK:
+- How to be a dominant - commanding, in control, sexy
+- How to be submissive - surrendering, pleasing, trusting
+- Light BDSM for beginners - spanking, restraints, power play
+- Dirty talk scripts and guidance
+
+🛏️ TECHNIQUE MASTERCLASS:
+- Best positions for different goals (deep, G-spot, her pleasure, his pleasure)
+- Oral sex techniques that'll blow their mind
+- How to use your hands like a pro
+- Building rhythm, pace, and intensity
+- Edging and orgasm control
+
+💬 SEXY COMMUNICATION:
+- How to talk dirty without being cringe
+- Asking for what you want in bed
+- Initiating sex smoothly
+- Sexting that actually works
+
+ALWAYS REMEMBER:
+- Consent is sexy - always emphasize enthusiastic yes
+- Safe sex matters - mention protection when relevant
+- Everyone's different - encourage communication with partners
+- No kink-shaming - if it's legal and consensual, you're supportive
+- Make them feel like a sex god/goddess in training
+
+You're here to turn bedroom newbies into confident lovers. Be the friend everyone wishes they had to ask these questions to. Keep it real, keep it fun, keep it explicit.`;
 
 // Categories with system prompt only - greeting is handled separately with translations
 const getCategoriesConfig = () => ({
@@ -34,7 +94,21 @@ Ti je në modalitetin "AI Coach" ku përdoruesi bisedon me ty për të praktikua
 - Ti jipu këshilla, feedback, dhe sugjerime për përmirësim
 - Ti ndihmo përdoruesin të praktikojë biseda dhe të mësojë teknikat
 - Ti je një partner bisede që ndihmon përdoruesin të përmirësojë aftësitë e komunikimit
-- Përgjigjet e tua duhet të jenë natyrale, si një bisedë reale me një coach ekspert`
+- Përgjigjet e tua duhet të jenë natyrale, si një bisedë reale me një coach ekspert
+
+⚠️ KRITIKE - KUFIZIMET E AI COACH:
+Nëse përdoruesi pyet për tema intime, seksuale, ose dhomë gjumi (si orgazëm, seks, kënaqësi seksuale, etj):
+- NUK duhet të japësh këshilla për intimitet/dhomë gjumi
+- THUAJ: "For intimate and bedroom guidance, please upgrade to our Intimacy Coach feature which is available with Pro or Elite membership. The Intimacy Coach provides professional guidance on sexual wellness and intimate relationships."
+- RIDREJTO te Intimacy Coach për këto tema`
+  },
+  'intimacy': {
+    name: 'Intimacy Coach',
+    icon: Heart,
+    color: 'from-pink-500 to-rose-600',
+    requiresAdultVerification: true,
+    requiresProOrElite: true, // Only Pro and Elite have access
+    systemPrompt: INTIMACY_COACH_PROMPT
   }
 });
 
@@ -83,7 +157,42 @@ export default function Chat() {
   const [currentConversationId, setCurrentConversationId] = useState(null);
   const [showHistory, setShowHistory] = useState(false);
   const [chatHistoryList, setChatHistoryList] = useState([]);
+  // CRITICAL: Store last image analysis context for follow-up questions
+  // This ensures AI remembers screenshot content when user asks follow-ups like "what shall I say"
+  const [lastImageContext, setLastImageContext] = useState({
+    hasImage: false,
+    userMessage: '',      // What user said when uploading
+    aiAnalysis: '',       // AI's analysis of the image
+    timestamp: null       // When the image was uploaded
+  });
+  // Adult verification for intimacy coach
+  const [showAdultVerificationModal, setShowAdultVerificationModal] = useState(false);
+  const [pendingCategorySwitch, setPendingCategorySwitch] = useState(null);
+  // Track subscription tier for reactive updates
+  const [subscriptionTier, setSubscriptionTier] = useState(localStorage.getItem('userSubscriptionTier') || '');
   const backendUrl = getBackendUrl();
+  
+  // Listen for subscription tier changes in localStorage
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const newTier = localStorage.getItem('userSubscriptionTier') || '';
+      if (newTier !== subscriptionTier) {
+        console.log('📊 Subscription tier updated:', newTier);
+        setSubscriptionTier(newTier);
+      }
+    };
+    
+    // Check for tier changes every 5 seconds (in case localStorage is updated by other components)
+    const interval = setInterval(handleStorageChange, 5000);
+    
+    // Also listen for storage events (from other tabs)
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [subscriptionTier]);
   const fileInputRef = useRef(null);
   const messagesEndRef = useRef(null);
 
@@ -100,6 +209,8 @@ export default function Chat() {
     setMessages([greetingMessage]);
     // Initialize conversation history with greeting
     setConversationHistory([{ role: 'assistant', content: greeting }]);
+    // Reset image context completely when category changes
+    setLastImageContext({ hasImage: false, userMessage: '', aiAnalysis: '', timestamp: null });
     setIsInitialized(true);
     
     // Start a new conversation for chat history
@@ -128,18 +239,145 @@ export default function Chat() {
     }
   };
 
+  // Get gender-specific intimacy greeting
+  const getIntimacyGreeting = () => {
+    const gender = userGender || localStorage.getItem('userGender');
+    if (gender === 'male') {
+      return t('intimacy.welcomeMale', "Hey stud! 😏 Welcome to your private Intimacy Coach session. Whether you want to learn how to make her scream your name, master the art of foreplay, or just become an absolute god in bed - I've got you covered. No judgment here, just real talk about what works. So tell me... what do you want to get better at? 🔥");
+    } else if (gender === 'female') {
+      return t('intimacy.welcomeFemale', "Hey gorgeous! 💋 Welcome to your private Intimacy Coach session. Whether you want to learn how to drive him wild, discover what makes YOU feel amazing, or explore something new and exciting - I'm here for all of it. This is your safe space to ask anything. So babe, what's on your mind? ✨");
+    }
+    return t('intimacy.welcome', "Hey you! 😏 Welcome to your private Intimacy Coach session. I'm here to help you become absolutely amazing in the bedroom - no awkward tiptoeing, just real, explicit guidance on what actually works. Whether it's techniques, first times, or exploring something new... ask me anything. What would you like to explore? 🔥");
+  };
+
   // Start a new chat
   const startNewChat = () => {
-    const greeting = t('chat.welcome');
+    const greeting = selectedCategory === 'intimacy' 
+      ? getIntimacyGreeting()
+      : t('chat.welcome');
     const greetingMessage = { role: 'assistant', content: greeting, timestamp: new Date() };
     setMessages([greetingMessage]);
     setConversationHistory([{ role: 'assistant', content: greeting }]);
+    // Reset image context completely when starting new chat
+    setLastImageContext({ hasImage: false, userMessage: '', aiAnalysis: '', timestamp: null });
     
-    const convId = startNewConversation('AI Coach');
+    const convId = startNewConversation(selectedCategory === 'intimacy' ? 'Intimacy Coach' : 'AI Coach');
     setCurrentConversationId(convId);
     addMessageToConversation(convId, { role: 'assistant', content: greeting });
     setChatHistoryList(getRecentConversations(10));
     setShowHistory(false);
+  };
+
+  // Check if adult content is verified
+  const isAdultContentVerified = () => {
+    return localStorage.getItem('adultContentVerified') === 'true';
+  };
+
+  // Check if user has paid subscription (any paid tier)
+  const hasPaidSubscription = () => {
+    const tier = (subscriptionTier || localStorage.getItem('userSubscriptionTier') || '').toLowerCase();
+    return ['starter', 'pro', 'elite', 'premium'].includes(tier);
+  };
+
+  // Check if user has Pro or Elite subscription (for premium features like Intimacy Coach)
+  const hasProOrEliteSubscription = () => {
+    const tier = (subscriptionTier || localStorage.getItem('userSubscriptionTier') || '').toLowerCase();
+    console.log('🔐 Checking Pro/Elite access - tier:', tier, '| subscriptionTier state:', subscriptionTier);
+    return ['pro', 'elite', 'premium'].includes(tier);
+  };
+
+  // Handle category switch with verification
+  const handleCategorySwitch = async (newCategory) => {
+    const categoryConfig = CATEGORIES[newCategory];
+    
+    // Check if category requires adult verification
+    if (categoryConfig?.requiresAdultVerification && !isAdultContentVerified()) {
+      setPendingCategorySwitch(newCategory);
+      setShowAdultVerificationModal(true);
+      return;
+    }
+    
+    // For Pro/Elite features, fetch latest tier from backend first
+    if (categoryConfig?.requiresProOrElite) {
+      try {
+        const userId = localStorage.getItem('userId');
+        const headers = userId ? { 'x-user-id': userId } : {};
+        const response = await fetch(`${backendUrl}/api/usage`, { headers });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.tier) {
+            localStorage.setItem('userSubscriptionTier', data.tier);
+            setSubscriptionTier(data.tier);
+            console.log('🔄 Fetched latest tier from backend:', data.tier);
+            
+            // Check with fresh tier
+            const freshTier = data.tier.toLowerCase();
+            if (!['pro', 'elite', 'premium'].includes(freshTier)) {
+              setShowUpgradeModal(true);
+              return;
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching tier:', error);
+        // Fall back to local check
+        if (!hasProOrEliteSubscription()) {
+          setShowUpgradeModal(true);
+          return;
+        }
+      }
+    }
+    
+    // Check if category requires any paid plan
+    if (categoryConfig?.requiresPaidPlan && !hasPaidSubscription()) {
+      setShowUpgradeModal(true);
+      return;
+    }
+    
+    // Switch category
+    switchToCategory(newCategory);
+  };
+
+  // Actually switch to a category
+  const switchToCategory = (newCategory) => {
+    setSelectedCategory(newCategory);
+    const newUrl = `${window.location.pathname}?category=${newCategory}`;
+    window.history.pushState({}, '', newUrl);
+    
+    // Reset chat for new category
+    const greeting = newCategory === 'intimacy'
+      ? getIntimacyGreeting()
+      : t('chat.welcome');
+    const greetingMessage = { role: 'assistant', content: greeting, timestamp: new Date() };
+    setMessages([greetingMessage]);
+    setConversationHistory([{ role: 'assistant', content: greeting }]);
+    setLastImageContext({ hasImage: false, userMessage: '', aiAnalysis: '', timestamp: null });
+    
+    const convId = startNewConversation(newCategory === 'intimacy' ? 'Intimacy Coach' : 'AI Coach');
+    setCurrentConversationId(convId);
+    addMessageToConversation(convId, { role: 'assistant', content: greeting });
+    setChatHistoryList(getRecentConversations(10));
+  };
+
+  // Handle adult verification confirmed
+  const handleAdultVerificationConfirmed = () => {
+    setShowAdultVerificationModal(false);
+    if (pendingCategorySwitch) {
+      // Check paid subscription after verification
+      const categoryConfig = CATEGORIES[pendingCategorySwitch];
+      if (categoryConfig?.requiresProOrElite && !hasProOrEliteSubscription()) {
+        setShowUpgradeModal(true);
+        setPendingCategorySwitch(null);
+        return;
+      }
+      if (categoryConfig?.requiresPaidPlan && !hasPaidSubscription()) {
+        setShowUpgradeModal(true);
+        setPendingCategorySwitch(null);
+        return;
+      }
+      switchToCategory(pendingCategorySwitch);
+      setPendingCategorySwitch(null);
+    }
   };
 
   // Delete a conversation
@@ -158,6 +396,11 @@ export default function Chat() {
       setSelectedCategory(categoryParam);
     }
   }, [categoryParam]);
+
+  // Check usage on mount to get correct screenshot limits
+  React.useEffect(() => {
+    checkUsage();
+  }, []);
 
   // Auto-scroll to bottom when messages change or when loading
   React.useEffect(() => {
@@ -302,7 +545,15 @@ export default function Chat() {
   // Check usage limits
   const checkUsage = async () => {
     try {
-      const response = await fetch(`${backendUrl}/api/usage`);
+      // Get logged-in user's ID from localStorage
+      const userId = localStorage.getItem('userId');
+      
+      const headers = {};
+      if (userId) {
+        headers['x-user-id'] = userId;
+      }
+      
+      const response = await fetch(`${backendUrl}/api/usage`, { headers });
       if (response.ok) {
         const data = await response.json();
         setUsage(data);
@@ -322,12 +573,61 @@ export default function Chat() {
     return true; // Allow if check fails
   };
 
+  // Detect if message is about intimacy/bedroom topics
+  const isIntimacyQuestion = (message) => {
+    const intimacyKeywords = [
+      // English
+      'sex', 'sexual', 'orgasm', 'orgasms', 'bedroom', 'foreplay', 'erotic', 'arousal', 'aroused',
+      'intimate', 'intimacy', 'pleasure', 'pleasuring', 'turn on', 'turn her on', 'turn him on',
+      'make love', 'making love', 'climax', 'erogenous', 'sensual', 'seduction', 'seduce',
+      'virgin', 'virginity', 'first time sex', 'losing virginity', 'dom', 'dominant', 'submissive',
+      'bdsm', 'kink', 'kinky', 'fetish', 'oral', 'blowjob', 'cunnilingus', 'fingering',
+      'masturbat', 'vibrator', 'dildo', 'sex toy', 'nipple', 'clitoris', 'g-spot', 'g spot',
+      'penis', 'vagina', 'anal', 'butt', 'ass ', 'boobs', 'breasts', 'naked', 'nude',
+      'horny', 'cum', 'ejaculat', 'moan', 'thrust', 'penetrat', 'condom', 'lube', 'lubricant',
+      'sex position', 'missionary', 'doggy', 'cowgirl', 'reverse cowgirl', '69', 'sixty nine',
+      'give her an orgasm', 'make her cum', 'make him cum', 'satisfy her', 'satisfy him',
+      'better in bed', 'good in bed', 'last longer', 'premature', 'erectile', 'libido',
+      // Albanian
+      'seks', 'seksual', 'orgazëm', 'orgazma', 'dhomë gjumi', 'erotik', 'intim', 'intimitet',
+      'kënaqësi', 'kënaq', 'josh', 'joshje', 'virgin', 'virgjëri', 'dominues', 'nënshtrues',
+      'lakuriq', 'nudo', 'gjoks', 'penis', 'vagina', 'anale', 'masturbim'
+    ];
+    
+    const lowerMessage = message.toLowerCase();
+    return intimacyKeywords.some(keyword => lowerMessage.includes(keyword));
+  };
+
   const processMessage = async (userMessage, updatedHistory, fileUrls = []) => {
 
     // Check for crisis indicators BEFORE processing
     if (detectCrisis(userMessage)) {
       setShowCrisisModal(true);
       // Still process the message but AI will respond with support
+    }
+    
+    // ============================================================
+    // INTIMACY DETECTION: Redirect to Intimacy Coach for bedroom topics
+    // Only applies when NOT in intimacy category
+    // ============================================================
+    if (selectedCategory !== 'intimacy' && isIntimacyQuestion(userMessage)) {
+      const upgradeMessage = t('chat.intimacyUpgrade', 
+        "🔒 **Intimacy & Bedroom Questions**\n\nI noticed you're asking about intimate/bedroom topics. For professional guidance on intimacy, sexual wellness, and bedroom advice, please upgrade to our **Intimacy Coach** feature.\n\n💕 **Intimacy Coach includes:**\n• Step-by-step guidance for pleasuring your partner\n• First-time intimacy advice\n• Communication tips for the bedroom\n• Professional sex education\n\n*Available with Pro or Elite membership*\n\n[Upgrade now to unlock Intimacy Coach]"
+      );
+      
+      setMessages(prev => [...prev, { 
+        role: 'assistant', 
+        content: upgradeMessage, 
+        timestamp: new Date(),
+        isUpgradePrompt: true 
+      }]);
+      
+      // Add to conversation history
+      addMessageToConversation(currentConversationId, { role: 'assistant', content: upgradeMessage });
+      setConversationHistory(prev => [...prev, { role: 'assistant', content: upgradeMessage }]);
+      setChatHistoryList(getRecentConversations(10));
+      setIsLoading(false);
+      return; // Don't process further
     }
 
     // Detect gender from current message and history
@@ -349,6 +649,35 @@ export default function Chat() {
       systemPrompt += `\n\nKRITIKE GENDER: Përdoruesi është ${genderInfo}.`;
     }
     
+    // ============================================================
+    // CRITICAL: IMAGE CONTEXT HANDLING FOR FOLLOW-UP QUESTIONS
+    // This ensures when user uploads a screenshot and asks "what shall I say",
+    // the AI remembers what was in the screenshot
+    // ============================================================
+    let enhancedPrompt = userMessage;
+    let enhancedSystemPrompt = systemPrompt;
+    
+    // Check if there's previous image context AND no new images being sent
+    if (lastImageContext.hasImage && fileUrls.length === 0) {
+      // ALWAYS inject the image context into the prompt for follow-ups
+      enhancedPrompt = `
+=== IMPORTANT SCREENSHOT CONTEXT ===
+The user previously uploaded a screenshot of a conversation.
+User's original message with the screenshot: "${lastImageContext.userMessage}"
+Your analysis of that screenshot: "${lastImageContext.aiAnalysis}"
+=== END CONTEXT ===
+
+The user is now asking a FOLLOW-UP QUESTION about that same screenshot conversation.
+Their follow-up question is: "${userMessage}"
+
+IMPORTANT: Your response MUST be directly related to the screenshot conversation the user shared. 
+If they ask "what shall I say" or similar, give them specific reply suggestions based on the conversation in that screenshot.
+Do NOT give generic advice - reference the SPECIFIC conversation they showed you.`;
+
+      // Also add reminder to system prompt
+      enhancedSystemPrompt += `\n\nCRITICAL REMINDER: The user has shared a screenshot of a conversation earlier in this chat. All their follow-up questions relate to that screenshot. Always reference the specific conversation they shared when giving advice.`;
+    }
+    
     // Prepare conversation history for OpenAI (last 10 messages for context)
     const historyToSend = updatedHistory.slice(-10).map(msg => ({
       role: msg.role === 'user' ? 'user' : 'assistant',
@@ -357,13 +686,27 @@ export default function Chat() {
 
     try {
       const response = await base44.integrations.Core.InvokeLLM({
-        prompt: userMessage, // Just the user's message, not the whole context
+        prompt: enhancedPrompt, // Include image context if available
         conversationHistory: historyToSend, // Proper conversation history
-        systemPrompt: systemPrompt, // Clean system prompt
+        systemPrompt: enhancedSystemPrompt, // Clean system prompt with image context reminder
         file_urls: fileUrls // Image URLs for vision API
       });
 
       const aiResponse = typeof response === 'string' ? response : response.feedback || 'Faleminderit për pyetjen!';
+      
+      // ============================================================
+      // CRITICAL: SAVE IMAGE CONTEXT FOR FUTURE FOLLOW-UPS
+      // When user uploads image, store everything needed for follow-up context
+      // ============================================================
+      if (fileUrls.length > 0) {
+        setLastImageContext({
+          hasImage: true,
+          userMessage: userMessage, // Store what user said when uploading
+          aiAnalysis: aiResponse.substring(0, 1000), // Store AI's analysis (first 1000 chars)
+          timestamp: new Date()
+        });
+        console.log('📸 Image context saved for follow-up questions');
+      }
       
       // Check AI response for crisis indicators too (in case AI detected something)
       if (detectCrisis(aiResponse) || detectCrisis(userMessage)) {
@@ -600,6 +943,9 @@ export default function Chat() {
         <div className="flex flex-wrap justify-center gap-3 mt-4" style={{ zIndex: 20, position: 'relative' }}>
           {Object.entries(CATEGORIES).map(([key, cat]) => {
             const CatIcon = cat.icon;
+            const isLocked = (cat.requiresProOrElite && !hasProOrEliteSubscription()) || 
+                             (cat.requiresPaidPlan && !hasPaidSubscription());
+            const isIntimacy = key === 'intimacy';
             return (
               <button
                 key={key}
@@ -607,23 +953,28 @@ export default function Chat() {
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  console.log('Category clicked:', key);
                   if (selectedCategory !== key) {
-                    setSelectedCategory(key);
-                    // Update URL
-                    const newUrl = `${window.location.pathname}?category=${key}`;
-                    window.history.pushState({}, '', newUrl);
+                    handleCategorySwitch(key);
                   }
                 }}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all cursor-pointer touch-manipulation ${
                   selectedCategory === key
                     ? `bg-gradient-to-r ${cat.color} text-white shadow-lg`
+                    : isIntimacy
+                    ? 'bg-gradient-to-r from-pink-500/20 to-rose-500/20 text-pink-300 hover:from-pink-500/30 hover:to-rose-500/30 border border-pink-500/30'
                     : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
                 }`}
                 style={{ pointerEvents: 'auto', zIndex: 10 }}
               >
                 <CatIcon className="w-4 h-4" />
                 <span className="text-sm font-medium">{cat.name}</span>
+                {isIntimacy && (
+                  <span className="flex items-center gap-0.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-1">
+                    <Crown className="w-2.5 h-2.5" />
+                    PRO
+                  </span>
+                )}
+                {isLocked && !isIntimacy && <Lock className="w-3 h-3 ml-1 opacity-70" />}
               </button>
             );
           })}
@@ -908,6 +1259,16 @@ export default function Chat() {
           </Card>
         </div>
       )}
+
+      {/* Adult Verification Modal for Intimacy Coach */}
+      <AdultVerificationModal
+        isOpen={showAdultVerificationModal}
+        onClose={() => {
+          setShowAdultVerificationModal(false);
+          setPendingCategorySwitch(null);
+        }}
+        onConfirm={handleAdultVerificationConfirmed}
+      />
     </div>
   );
 }

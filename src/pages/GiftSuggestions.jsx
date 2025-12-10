@@ -1,19 +1,30 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Gift, Heart, Sparkles, ShoppingBag, Star, TrendingUp, ExternalLink, MapPin, Store, Globe } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { SaveButton } from '@/components/SaveButton';
 import { base44 } from '@/api/base44Client';
-import { countries, getCitiesForCountry, getCountryByCode, getCityNameEn, getCurrencySymbol } from '@/config/countries';
+import { countries, getLocalizedCitiesForCountry, getCountryByCode, getCityNameEn, getCurrencySymbol, getLocalizedCountryName } from '@/config/countries';
 
 export default function GiftSuggestions() {
+  const { t, i18n } = useTranslation();
   const backendUrl = import.meta.env.VITE_BACKEND_URL || 'https://biseda-ai.onrender.com';
   
   // Get user's country from localStorage
   const userCountry = localStorage.getItem('userCountry') || 'AL';
   const currentCountry = getCountryByCode(userCountry);
   const currencySymbol = getCurrencySymbol(userCountry);
-  const cities = getCitiesForCountry(userCountry).map(c => c.name);
+  
+  // Get localized cities - depends on i18n.language for reactivity
+  const localizedCities = React.useMemo(() => {
+    return getLocalizedCitiesForCountry(userCountry);
+  }, [userCountry, i18n.language]);
+  
+  // Get localized country name - depends on i18n.language for reactivity
+  const localizedCountryName = React.useMemo(() => {
+    return getLocalizedCountryName(userCountry);
+  }, [userCountry, i18n.language]);
   
   const [partnerInterests, setPartnerInterests] = useState('');
   const [occasion, setOccasion] = useState('');
@@ -27,12 +38,12 @@ export default function GiftSuggestions() {
   const [debugInfo, setDebugInfo] = useState('');
 
   const occasions = [
-    { id: 'birthday', name: 'Ditëlindje', icon: '🎂' },
-    { id: 'anniversary', name: 'Përvjetor', icon: '💕' },
-    { id: 'valentine', name: 'Dita e Dashurisë', icon: '💖' },
-    { id: 'christmas', name: 'Krishtlindje', icon: '🎄' },
-    { id: 'newyear', name: 'Viti i Ri', icon: '🎉' },
-    { id: 'justbecause', name: 'Thjesht sepse', icon: '💝' }
+    { id: 'birthday', name: t('gifts.occasions.birthday'), icon: '🎂' },
+    { id: 'anniversary', name: t('gifts.occasions.anniversary'), icon: '💕' },
+    { id: 'valentine', name: t('gifts.occasions.valentine'), icon: '💖' },
+    { id: 'christmas', name: t('gifts.occasions.christmas'), icon: '🎄' },
+    { id: 'newyear', name: t('gifts.occasions.newyear'), icon: '🎉' },
+    { id: 'justbecause', name: t('gifts.occasions.justbecause'), icon: '💝' }
   ];
 
   // Dynamic budgets based on currency
@@ -78,7 +89,7 @@ export default function GiftSuggestions() {
 
   const generateGiftSuggestions = async () => {
     if (!partnerInterests.trim()) {
-      alert('Ju lutem shkruani interesat e partnerit');
+      alert(t('gifts.enterInterests'));
       return;
     }
 
@@ -378,9 +389,9 @@ RULES:
           </div>
         </div>
         <h1 className="text-3xl font-extrabold bg-gradient-to-r from-pink-300 via-rose-300 to-red-300 bg-clip-text text-transparent mb-2">
-          Sugjerime Dhuratash 🎁
+          {t('gifts.title')}
         </h1>
-        <p className="text-slate-400 text-sm">Gjej dhuratën perfekte bazuar në interesat e partnerit</p>
+        <p className="text-slate-400 text-sm">{t('gifts.subtitle')}</p>
         {debugInfo && (
           <div className="mt-3 p-2 bg-blue-500/20 border border-blue-500/50 rounded-lg">
             <p className="text-blue-300 text-xs font-mono">{debugInfo}</p>
@@ -391,12 +402,12 @@ RULES:
       {/* Partner Interests Input */}
       <div className="mb-6">
         <label className="block text-sm font-semibold text-white mb-2">
-          Çfarë i pëlqen partnerit tënd? (interesat, hobby-t, etj.)
+          {t('gifts.partnerInterests')}
         </label>
         <textarea
           value={partnerInterests}
           onChange={(e) => setPartnerInterests(e.target.value)}
-          placeholder="P.sh: I pëlqen muzika, futbolli, libra, teknologjia, moda..."
+          placeholder={t('gifts.partnerInterestsPlaceholder')}
           className="w-full p-4 bg-slate-800/80 border-2 border-purple-500/30 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-purple-500 resize-none"
           rows={3}
           style={{ fontSize: '16px' }}
@@ -406,7 +417,7 @@ RULES:
       {/* Occasion Selection */}
       <div className="mb-6">
         <label className="block text-sm font-semibold text-white mb-3">
-          Rast special
+          {t('gifts.specialOccasion')}
         </label>
         <div className="grid grid-cols-3 gap-2">
           {occasions.map((occ) => (
@@ -429,7 +440,7 @@ RULES:
       {/* Budget Selection */}
       <div className="mb-6">
         <label className="block text-sm font-semibold text-white mb-3">
-          Buxheti
+          {t('gifts.budget')}
         </label>
         <div className="grid grid-cols-4 gap-2">
           {budgets.map((bud) => (
@@ -453,10 +464,10 @@ RULES:
         <div className="flex items-center gap-2">
           <Globe className="w-4 h-4 text-cyan-400" />
           <span className="text-cyan-300 text-sm font-medium">
-            Vendndodhja: {currentCountry?.flag} {currentCountry?.name}
+            {t('gifts.location')}: {currentCountry?.flag} {localizedCountryName}
           </span>
           <a href="#/profile" className="ml-auto text-xs text-cyan-400 hover:text-cyan-300 underline">
-            Ndrysho
+            {t('gifts.change')}
           </a>
         </div>
       </div>
@@ -465,27 +476,27 @@ RULES:
       <div className="mb-6">
         <label className="block text-sm font-semibold text-white mb-3 flex items-center gap-2">
           <MapPin className="w-4 h-4 text-cyan-400" />
-          Qyteti (opsionale - për dyqane lokale)
+          {t('gifts.cityOptional')}
         </label>
         <div className="flex flex-wrap gap-2">
-          {cities.map((city) => (
+          {localizedCities.map((city) => (
             <button
-              key={city}
-              onClick={() => setSelectedCity(selectedCity === city ? '' : city)}
+              key={city.nameEn}
+              onClick={() => setSelectedCity(selectedCity === city.displayName ? '' : city.displayName)}
               className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-                selectedCity === city
+                selectedCity === city.displayName
                   ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/30 scale-105'
                   : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white'
               }`}
             >
-              {city}
+              {city.displayName}
             </button>
           ))}
         </div>
         {selectedCity && (
           <p className="text-xs text-cyan-400 mt-2 flex items-center gap-1">
             <Store className="w-3 h-3" />
-            Do të shfaqen edhe dyqane lokale në {selectedCity}
+            {t('gifts.willShowLocalShops', { city: selectedCity })}
           </p>
         )}
       </div>
@@ -500,12 +511,12 @@ RULES:
           {isLoading ? (
             <span className="flex items-center justify-center gap-2">
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              <span>Duke gjeneruar sugjerime...</span>
+              <span>{t('gifts.generating')}</span>
             </span>
           ) : (
             <span className="flex items-center justify-center gap-2">
               <Sparkles className="w-5 h-5" />
-              <span>Gjenero Sugjerime</span>
+              <span>{t('gifts.generateSuggestions')}</span>
             </span>
           )}
         </Button>
@@ -515,7 +526,7 @@ RULES:
       {isLoadingShops && selectedCity && (
         <div className="text-center py-6 mb-6">
           <div className="inline-block w-6 h-6 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-slate-400 mt-3 text-sm">Duke kërkuar dyqane lokale në {selectedCity}...</p>
+          <p className="text-slate-400 mt-3 text-sm">{t('gifts.searchingLocalShops', { city: selectedCity })}</p>
         </div>
       )}
 
@@ -526,7 +537,7 @@ RULES:
             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent"></div>
             <h2 className="text-base font-bold text-white flex items-center gap-2">
               <Store className="w-5 h-5 text-cyan-400" />
-              Dyqane Lokale në {selectedCity}
+              {t('gifts.localShopsIn', { city: selectedCity })}
             </h2>
             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent"></div>
           </div>
@@ -577,7 +588,7 @@ RULES:
                           className="inline-flex items-center gap-1 px-3 py-1.5 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/50 rounded-lg text-xs font-semibold text-cyan-300 transition-all"
                         >
                           <MapPin className="w-3 h-3" />
-                          Shiko në Google Maps
+                          {t('gifts.viewOnGoogleMaps')}
                         </a>
                       )}
                     </div>
@@ -597,12 +608,12 @@ RULES:
               {isLoadingMoreShops ? (
                 <div className="flex items-center justify-center gap-2">
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                  <span>Duke ngarkuar më shumë dyqane...</span>
+                  <span>{t('gifts.loadingMoreShops')}</span>
                 </div>
               ) : (
                 <div className="flex items-center justify-center gap-2">
                   <Store className="w-5 h-5" />
-                  <span>Ngarko Më Shumë Dyqane</span>
+                  <span>{t('gifts.loadMoreShops')}</span>
                 </div>
               )}
             </Button>
@@ -614,7 +625,7 @@ RULES:
       {isLoading && (
         <div className="text-center py-8">
           <div className="inline-block w-8 h-8 border-4 border-pink-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-slate-400 mt-4 text-sm">Duke gjeneruar ide dhuratash...</p>
+          <p className="text-slate-400 mt-4 text-sm">{t('gifts.generatingIdeas')}</p>
         </div>
       )}
 
@@ -625,7 +636,7 @@ RULES:
             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-pink-500 to-transparent"></div>
             <h2 className="text-base font-bold text-white flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-pink-400" />
-              Ide Dhuratash (Online)
+              {t('gifts.giftIdeasOnline')}
             </h2>
             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-pink-500 to-transparent"></div>
           </div>
@@ -673,7 +684,7 @@ RULES:
                         >
                           <span className="flex items-center justify-center gap-2">
                             <ShoppingBag className="w-4 h-4" />
-                            <span>Shiko dhe Blij</span>
+                            <span>{t('gifts.viewAndBuy')}</span>
                             <ExternalLink className="w-4 h-4" />
                           </span>
                         </Button>
@@ -696,8 +707,8 @@ RULES:
       {!isLoading && !isLoadingShops && suggestions.length === 0 && localShops.length === 0 && (
         <div className="text-center py-12">
           <div className="text-6xl mb-3">🎁</div>
-          <p className="text-slate-400 text-sm mb-2">Shkruani interesat e partnerit dhe zgjidhni rastin</p>
-          <p className="text-slate-500 text-xs">AI do të gjenerojë sugjerime perfekte për dhuratë</p>
+          <p className="text-slate-400 text-sm mb-2">{t('gifts.emptyState')}</p>
+          <p className="text-slate-500 text-xs">{t('gifts.emptyStateSubtitle')}</p>
         </div>
       )}
 
@@ -706,7 +717,7 @@ RULES:
         <Card className="mt-6 bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-2 border-purple-500/30 backdrop-blur-sm">
           <div className="p-4">
             <p className="text-xs text-slate-400 text-center">
-              💡 Klikoni "Shiko dhe Blij" për të hapur lidhjen e partnerit. Biseda.ai merr komision të vogël për blerjet që bëni përmes lidhjeve tona.
+              {t('gifts.affiliateNote')}
             </p>
           </div>
         </Card>

@@ -1,19 +1,25 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Calendar, Sparkles, Flag, Heart, Star, Gift, Globe } from 'lucide-react';
 import { Card } from '@/components/ui/card';
-import { getCountryByCode } from '@/config/countries';
+import { getCountryByCode, getLocalizedCountryName } from '@/config/countries';
 
 export default function FestiveDates() {
+  const { t, i18n } = useTranslation();
+  
   // Get user's country from localStorage
   const userCountry = localStorage.getItem('userCountry') || 'AL';
   const currentCountry = getCountryByCode(userCountry);
   
+  // Get localized country name - depends on i18n.language for reactivity
+  const localizedCountryName = React.useMemo(() => {
+    return getLocalizedCountryName(userCountry);
+  }, [userCountry, i18n.language]);
+  
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
 
-  const months = [
-    'Janar', 'Shkurt', 'Mars', 'Prill', 'Maj', 'Qershor',
-    'Korrik', 'Gusht', 'Shtator', 'Tetor', 'Nëntor', 'Dhjetor'
-  ];
+  // Get localized month names
+  const months = t('festiveDates.months', { returnObjects: true });
 
   // Country-specific festive dates
   const festiveDatesByCountry = {
@@ -251,9 +257,9 @@ export default function FestiveDates() {
 
   const getDateTypeLabel = (type) => {
     const labels = {
-      national: 'Kombëtare',
-      international: 'Ndërkombëtare',
-      cultural: 'Kulturore'
+      national: t('festiveDates.national'),
+      international: t('festiveDates.international'),
+      cultural: t('festiveDates.cultural')
     };
     return labels[type] || type;
   };
@@ -282,9 +288,9 @@ export default function FestiveDates() {
           </div>
         </div>
         <h1 className="text-3xl font-extrabold bg-gradient-to-r from-red-300 via-orange-300 to-yellow-300 bg-clip-text text-transparent mb-2">
-          Datat Festive {currentCountry?.flag}
+          {t('festiveDates.title')} {currentCountry?.flag}
         </h1>
-        <p className="text-slate-400 text-sm">Gjej datat e rëndësishme për takime speciale</p>
+        <p className="text-slate-400 text-sm">{t('festiveDates.subtitle')}</p>
       </div>
 
       {/* Current Country Display */}
@@ -292,10 +298,10 @@ export default function FestiveDates() {
         <div className="flex items-center gap-2">
           <Globe className="w-4 h-4 text-orange-400" />
           <span className="text-orange-300 text-sm font-medium">
-            Vendndodhja: {currentCountry?.flag} {currentCountry?.name}
+            {t('gifts.location')}: {currentCountry?.flag} {localizedCountryName}
           </span>
           <a href="#/profile" className="ml-auto text-xs text-orange-400 hover:text-orange-300 underline">
-            Ndrysho
+            {t('gifts.change')}
           </a>
         </div>
       </div>
@@ -304,7 +310,7 @@ export default function FestiveDates() {
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-3">
           <Calendar className="w-5 h-5 text-purple-400" />
-          <h2 className="text-lg font-bold text-white">Zgjidh Muajin</h2>
+          <h2 className="text-lg font-bold text-white">{t('festiveDates.selectMonth')}</h2>
         </div>
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
           {months.map((month, index) => (
@@ -377,7 +383,7 @@ export default function FestiveDates() {
         ) : (
           <div className="text-center py-8">
             <div className="text-4xl mb-3">📅</div>
-            <p className="text-slate-400">Nuk ka data festive për këtë muaj</p>
+            <p className="text-slate-400">{t('festiveDates.noEventsThisMonth')}</p>
           </div>
         )}
       </div>
