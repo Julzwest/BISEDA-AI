@@ -27,6 +27,7 @@ export default function GiftSuggestions() {
   }, [userCountry, i18n.language]);
   
   const [partnerInterests, setPartnerInterests] = useState('');
+  const [partnerGender, setPartnerGender] = useState(''); // Gender of gift recipient
   const [occasion, setOccasion] = useState('');
   const [budget, setBudget] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
@@ -36,6 +37,13 @@ export default function GiftSuggestions() {
   const [isLoadingShops, setIsLoadingShops] = useState(false);
   const [isLoadingMoreShops, setIsLoadingMoreShops] = useState(false);
   const [showLocalShops, setShowLocalShops] = useState(false); // Toggle for local shops
+
+  // Gender options for gift recipient
+  const genderOptions = [
+    { id: 'female', label: t('gifts.forHer', 'For Her'), emoji: '👩', color: 'from-pink-500 to-rose-500' },
+    { id: 'male', label: t('gifts.forHim', 'For Him'), emoji: '👨', color: 'from-blue-500 to-cyan-500' },
+    { id: 'nonbinary', label: t('gifts.forThem', 'For Them'), emoji: '🧑', color: 'from-purple-500 to-violet-500' }
+  ];
 
   const occasions = [
     { id: 'birthday', name: t('gifts.occasions.birthday'), icon: '🎂' },
@@ -111,10 +119,14 @@ export default function GiftSuggestions() {
       };
       const budgetText = budgetRanges[budget] || 'any budget';
       const occasionText = occasions.find(o => o.id === occasion)?.name || 'any occasion';
+      const genderText = partnerGender === 'female' ? 'a woman/girlfriend/wife' : 
+                         partnerGender === 'male' ? 'a man/boyfriend/husband' : 
+                         'a person (gender-neutral)';
       
-      // Improved prompt focused on REAL PURCHASABLE PRODUCTS
-      const prompt = `You are a gift recommendation expert. Suggest 6 SPECIFIC, REAL products that can be purchased ONLINE for someone who likes: "${partnerInterests}"
+      // Improved prompt focused on REAL PURCHASABLE PRODUCTS with gender context
+      const prompt = `You are a gift recommendation expert. Suggest 6 SPECIFIC, REAL products that can be purchased ONLINE.
 
+RECIPIENT: ${genderText} who likes: "${partnerInterests}"
 Occasion: ${occasionText}
 Budget: ${budgetText}
 
@@ -122,21 +134,22 @@ IMPORTANT RULES:
 1. Suggest REAL products that actually exist and can be bought online
 2. Be SPECIFIC - include brand names, model names, or specific product types
 3. Match the interests EXACTLY - if they like music, suggest music-related gifts
-4. Include a mix of: physical products, experiences, subscriptions, personalized items
-5. Prices should be realistic and within the budget range
+4. TAILOR gifts to the recipient's gender where appropriate (e.g., jewelry styles, clothing, grooming products)
+5. Include a mix of: physical products, experiences, subscriptions, personalized items
+6. Prices should be realistic and within the budget range
 
 Return ONLY a JSON array with this EXACT format:
 [
 {"name":"Specific Product Name","description":"Brief description of why this is perfect for them","price":"${currencySymbol}XX","category":"Category","searchTerm":"exact search term for finding this online"}
 ]
 
-Example for "music lover":
+Example for "music lover" (woman):
 [
-{"name":"Bluetooth Vinyl Record Player","description":"Retro-style turntable with modern Bluetooth connectivity","price":"£89","category":"Electronics","searchTerm":"bluetooth vinyl record player"},
+{"name":"Rose Gold Wireless Headphones","description":"Stylish Bluetooth headphones with premium sound quality","price":"£89","category":"Electronics","searchTerm":"rose gold wireless headphones women"},
 {"name":"Spotify Premium 12-Month Subscription","description":"Ad-free music streaming with offline downloads","price":"£120","category":"Subscription","searchTerm":"spotify premium gift card 12 months"}
 ]
 
-Now generate 6 gift ideas for: "${partnerInterests}"`;
+Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
 
       // Call the AI API
       const response = await base44.integrations.Core.InvokeLLM({ 
@@ -218,46 +231,68 @@ Now generate 6 gift ideas for: "${partnerInterests}"`;
   // Smart fallback that actually matches the interests
   const generateSmartFallback = (interests, occasion, budget) => {
     const interestLower = interests.toLowerCase();
-    const searchTerm = encodeURIComponent(interests);
+    const gender = partnerGender; // Use the selected gender
+    const genderSuffix = gender === 'female' ? ' for women' : gender === 'male' ? ' for men' : '';
     
-    // Category-specific suggestions based on keywords
+    // Category-specific suggestions based on keywords AND gender
     let suggestions = [];
     
     if (interestLower.includes('music') || interestLower.includes('guitar') || interestLower.includes('piano')) {
-      suggestions = [
-        { name: 'Wireless Bluetooth Headphones', description: 'Premium sound quality for music lovers', price: `${currencySymbol}79`, category: 'Electronics', searchTerm: 'wireless bluetooth headphones' },
-        { name: 'Vinyl Record Subscription Box', description: 'Monthly delivery of curated vinyl records', price: `${currencySymbol}25/month`, category: 'Subscription', searchTerm: 'vinyl record subscription' },
-        { name: 'Concert Tickets Gift Card', description: 'Let them choose their own live music experience', price: `${currencySymbol}100`, category: 'Experience', searchTerm: 'concert tickets gift card' },
-        { name: 'Music Theory Book & Accessories', description: 'Learn music with this comprehensive guide', price: `${currencySymbol}35`, category: 'Books', searchTerm: 'music theory book' },
-        { name: 'Portable Bluetooth Speaker', description: 'Take the music anywhere with premium sound', price: `${currencySymbol}89`, category: 'Electronics', searchTerm: 'portable bluetooth speaker JBL' },
-        { name: 'Personalized Song Print', description: 'Custom artwork of their favorite song', price: `${currencySymbol}45`, category: 'Personalized', searchTerm: 'personalized song print' }
-      ];
+      if (gender === 'female') {
+        suggestions = [
+          { name: 'Rose Gold Wireless Headphones', description: 'Stylish headphones with premium sound quality', price: `${currencySymbol}79`, category: 'Electronics', searchTerm: 'rose gold wireless headphones women' },
+          { name: 'Vinyl Record Subscription Box', description: 'Monthly delivery of curated vinyl records', price: `${currencySymbol}25/month`, category: 'Subscription', searchTerm: 'vinyl record subscription' },
+          { name: 'Concert Tickets Gift Card', description: 'Let her choose her own live music experience', price: `${currencySymbol}100`, category: 'Experience', searchTerm: 'concert tickets gift card' },
+          { name: 'Music Note Jewelry Set', description: 'Elegant necklace and earrings with music notes', price: `${currencySymbol}45`, category: 'Jewelry', searchTerm: 'music note jewelry set women' },
+          { name: 'Portable Bluetooth Speaker (Pink)', description: 'Take the music anywhere with style', price: `${currencySymbol}89`, category: 'Electronics', searchTerm: 'portable bluetooth speaker pink' },
+          { name: 'Personalized Song Print', description: 'Custom artwork of your special song', price: `${currencySymbol}45`, category: 'Personalized', searchTerm: 'personalized song print' }
+        ];
+      } else if (gender === 'male') {
+        suggestions = [
+          { name: 'Premium Over-Ear Headphones', description: 'Studio-quality sound for serious music lovers', price: `${currencySymbol}129`, category: 'Electronics', searchTerm: 'premium over ear headphones men' },
+          { name: 'Vinyl Record Subscription Box', description: 'Monthly delivery of curated vinyl records', price: `${currencySymbol}25/month`, category: 'Subscription', searchTerm: 'vinyl record subscription' },
+          { name: 'Concert Tickets Gift Card', description: 'Let him choose his own live music experience', price: `${currencySymbol}100`, category: 'Experience', searchTerm: 'concert tickets gift card' },
+          { name: 'Guitar Accessories Kit', description: 'Picks, capo, tuner and more for guitarists', price: `${currencySymbol}35`, category: 'Music', searchTerm: 'guitar accessories kit' },
+          { name: 'JBL Portable Bluetooth Speaker', description: 'Powerful sound in a rugged design', price: `${currencySymbol}89`, category: 'Electronics', searchTerm: 'JBL portable bluetooth speaker' },
+          { name: 'Band T-Shirt Collection', description: 'Official merchandise from favorite bands', price: `${currencySymbol}30`, category: 'Clothing', searchTerm: 'band t-shirt men' }
+        ];
+      } else {
+        suggestions = [
+          { name: 'Wireless Bluetooth Headphones', description: 'Premium sound quality for music lovers', price: `${currencySymbol}79`, category: 'Electronics', searchTerm: 'wireless bluetooth headphones' },
+          { name: 'Vinyl Record Subscription Box', description: 'Monthly delivery of curated vinyl records', price: `${currencySymbol}25/month`, category: 'Subscription', searchTerm: 'vinyl record subscription' },
+          { name: 'Concert Tickets Gift Card', description: 'Let them choose their own live music experience', price: `${currencySymbol}100`, category: 'Experience', searchTerm: 'concert tickets gift card' },
+          { name: 'Music Theory Book & Accessories', description: 'Learn music with this comprehensive guide', price: `${currencySymbol}35`, category: 'Books', searchTerm: 'music theory book' },
+          { name: 'Portable Bluetooth Speaker', description: 'Take the music anywhere with premium sound', price: `${currencySymbol}89`, category: 'Electronics', searchTerm: 'portable bluetooth speaker JBL' },
+          { name: 'Personalized Song Print', description: 'Custom artwork of their favorite song', price: `${currencySymbol}45`, category: 'Personalized', searchTerm: 'personalized song print' }
+        ];
+      }
     } else if (interestLower.includes('gaming') || interestLower.includes('video game') || interestLower.includes('playstation') || interestLower.includes('xbox')) {
       suggestions = [
-        { name: 'Gaming Headset', description: 'Immersive audio for the ultimate gaming experience', price: `${currencySymbol}89`, category: 'Gaming', searchTerm: 'gaming headset' },
+        { name: 'Gaming Headset', description: 'Immersive audio for the ultimate gaming experience', price: `${currencySymbol}89`, category: 'Gaming', searchTerm: `gaming headset${genderSuffix}` },
         { name: 'PlayStation/Xbox Gift Card', description: 'Let them choose their next game', price: `${currencySymbol}50`, category: 'Gift Card', searchTerm: 'playstation gift card' },
         { name: 'RGB Gaming Mouse', description: 'Precision gaming mouse with customizable lighting', price: `${currencySymbol}59`, category: 'Gaming', searchTerm: 'rgb gaming mouse' },
-        { name: 'Gaming Chair', description: 'Ergonomic comfort for long gaming sessions', price: `${currencySymbol}199`, category: 'Furniture', searchTerm: 'gaming chair' },
+        { name: 'Gaming Chair', description: 'Ergonomic comfort for long gaming sessions', price: `${currencySymbol}199`, category: 'Furniture', searchTerm: `gaming chair${genderSuffix}` },
         { name: 'Game Merchandise', description: 'Collectibles from their favorite games', price: `${currencySymbol}35`, category: 'Collectibles', searchTerm: 'gaming merchandise' },
         { name: 'Streaming Setup Kit', description: 'Everything needed to start streaming', price: `${currencySymbol}149`, category: 'Electronics', searchTerm: 'streaming starter kit' }
       ];
     } else if (interestLower.includes('book') || interestLower.includes('reading') || interestLower.includes('literature')) {
       suggestions = [
         { name: 'Kindle Paperwhite', description: 'Read anywhere with this waterproof e-reader', price: `${currencySymbol}129`, category: 'Electronics', searchTerm: 'kindle paperwhite' },
-        { name: 'Book Subscription Box', description: 'Monthly curated book deliveries', price: `${currencySymbol}30/month`, category: 'Subscription', searchTerm: 'book subscription box' },
+        { name: 'Book Subscription Box', description: 'Monthly curated book deliveries', price: `${currencySymbol}30/month`, category: 'Subscription', searchTerm: `book subscription box${genderSuffix}` },
         { name: 'Personalized Leather Bookmark', description: 'Handcrafted bookmark with their name', price: `${currencySymbol}25`, category: 'Personalized', searchTerm: 'personalized leather bookmark' },
-        { name: 'Book Lover Gift Set', description: 'Candle, mug, and reading accessories', price: `${currencySymbol}45`, category: 'Gift Set', searchTerm: 'book lover gift set' },
+        { name: 'Book Lover Gift Set', description: 'Candle, mug, and reading accessories', price: `${currencySymbol}45`, category: 'Gift Set', searchTerm: `book lover gift set${genderSuffix}` },
         { name: 'First Edition Book', description: 'Collectible first edition of a classic', price: `${currencySymbol}85`, category: 'Collectibles', searchTerm: 'first edition book' },
         { name: 'Audible Gift Membership', description: '3-month audiobook subscription', price: `${currencySymbol}30`, category: 'Subscription', searchTerm: 'audible gift membership' }
       ];
     } else {
-      // Generic but still relevant suggestions
+      // Generic but gender-aware suggestions
+      const forText = gender === 'female' ? 'for her' : gender === 'male' ? 'for him' : '';
       suggestions = [
-        { name: `${interests} Gift Set`, description: `Curated collection for ${interests} enthusiasts`, price: `${currencySymbol}55`, category: 'Gift Set', searchTerm: `${interests} gift set` },
-        { name: `${interests} Experience`, description: `Memorable experience related to ${interests}`, price: `${currencySymbol}99`, category: 'Experience', searchTerm: `${interests} experience gift` },
-        { name: `${interests} Accessories`, description: `Premium accessories for ${interests} lovers`, price: `${currencySymbol}45`, category: 'Accessories', searchTerm: `${interests} accessories` },
-        { name: `Personalized ${interests} Gift`, description: `Custom-made gift celebrating their love of ${interests}`, price: `${currencySymbol}65`, category: 'Personalized', searchTerm: `personalized ${interests} gift` },
-        { name: `${interests} Subscription`, description: `Monthly subscription for ${interests} enthusiasts`, price: `${currencySymbol}25/month`, category: 'Subscription', searchTerm: `${interests} subscription box` },
+        { name: `${interests} Gift Set`, description: `Curated collection for ${interests} enthusiasts`, price: `${currencySymbol}55`, category: 'Gift Set', searchTerm: `${interests} gift set ${forText}`.trim() },
+        { name: `${interests} Experience`, description: `Memorable experience related to ${interests}`, price: `${currencySymbol}99`, category: 'Experience', searchTerm: `${interests} experience gift ${forText}`.trim() },
+        { name: `${interests} Accessories`, description: `Premium accessories for ${interests} lovers`, price: `${currencySymbol}45`, category: 'Accessories', searchTerm: `${interests} accessories ${forText}`.trim() },
+        { name: `Personalized ${interests} Gift`, description: `Custom-made gift celebrating their love of ${interests}`, price: `${currencySymbol}65`, category: 'Personalized', searchTerm: `personalized ${interests} gift ${forText}`.trim() },
+        { name: `${interests} Subscription`, description: `Monthly subscription for ${interests} enthusiasts`, price: `${currencySymbol}25/month`, category: 'Subscription', searchTerm: `${interests} subscription box ${forText}`.trim() },
         { name: `${interests} Book/Guide`, description: `The ultimate guide to ${interests}`, price: `${currencySymbol}30`, category: 'Books', searchTerm: `${interests} book guide` }
       ];
     }
@@ -386,6 +421,29 @@ Now generate 6 gift ideas for: "${partnerInterests}"`;
           rows={3}
           style={{ fontSize: '16px' }}
         />
+      </div>
+
+      {/* Gender Selection */}
+      <div className="mb-6">
+        <label className="block text-sm font-semibold text-white mb-3">
+          {t('gifts.giftFor', 'Gift for')}
+        </label>
+        <div className="grid grid-cols-3 gap-3">
+          {genderOptions.map((g) => (
+            <button
+              key={g.id}
+              onClick={() => setPartnerGender(g.id)}
+              className={`p-4 rounded-xl text-center transition-all ${
+                partnerGender === g.id
+                  ? `bg-gradient-to-r ${g.color} text-white shadow-lg scale-105`
+                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white border-2 border-slate-700'
+              }`}
+            >
+              <div className="text-3xl mb-1">{g.emoji}</div>
+              <div className="text-xs font-medium">{g.label}</div>
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Occasion Selection */}
