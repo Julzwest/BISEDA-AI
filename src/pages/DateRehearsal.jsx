@@ -1262,6 +1262,62 @@ ${langInstruction}`;
                 {getNameLabel()}
               </h3>
               <p className="text-slate-400 text-xs mb-4">{t('rehearsal.enterTheirName', 'Enter the name for the roleplay')}</p>
+              
+              {/* Quick name options for approaching strangers */}
+              {selectedScenarioId === 'approaching' && (
+                <div className="mb-4">
+                  <p className="text-slate-500 text-xs mb-2">{t('rehearsal.quickSelect', 'Quick select:')}</p>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => { setDateName(t('rehearsal.strangerDefault', 'Stranger')); setSetupStep(3); }}
+                      className="px-3 py-2 bg-purple-500/20 border border-purple-500/50 rounded-lg text-purple-300 text-sm hover:bg-purple-500/30 transition-all flex items-center gap-1"
+                    >
+                      👤 {t('rehearsal.dontKnowName', "I don't know their name")}
+                    </button>
+                    <button
+                      onClick={() => { setDateName(t('rehearsal.mysteryPerson', 'Mystery Person')); setSetupStep(3); }}
+                      className="px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-300 text-sm hover:bg-slate-700 transition-all"
+                    >
+                      ✨ {t('rehearsal.mysteryPerson', 'Mystery Person')}
+                    </button>
+                    <button
+                      onClick={() => { setDateName(t('rehearsal.cuteStranger', 'Cutie at the bar')); setSetupStep(3); }}
+                      className="px-3 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-slate-300 text-sm hover:bg-slate-700 transition-all"
+                    >
+                      😍 {t('rehearsal.cuteStranger', 'Cutie at the bar')}
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-3 my-4">
+                    <div className="flex-1 h-px bg-slate-700"></div>
+                    <span className="text-slate-500 text-xs">{t('common.or', 'or')}</span>
+                    <div className="flex-1 h-px bg-slate-700"></div>
+                  </div>
+                  <p className="text-slate-500 text-xs mb-2">{t('rehearsal.enterCustomName', 'Enter a custom name:')}</p>
+                </div>
+              )}
+              
+              {/* Quick name suggestions for first date */}
+              {selectedScenarioId === 'first_date' && (
+                <div className="mb-3">
+                  <p className="text-slate-500 text-xs mb-2">{t('rehearsal.suggestedNames', 'Suggested names:')}</p>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {['Alex', 'Jordan', 'Sam', 'Taylor', 'Riley'].map((name) => (
+                      <button
+                        key={name}
+                        onClick={() => setDateName(name)}
+                        className={`px-3 py-1 rounded-full text-sm transition-all ${
+                          dateName === name 
+                            ? 'bg-purple-500 text-white' 
+                            : 'bg-slate-700/50 text-slate-300 hover:bg-slate-700'
+                        }`}
+                      >
+                        {name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
               <Input
                 value={dateName}
                 onChange={(e) => setDateName(e.target.value)}
