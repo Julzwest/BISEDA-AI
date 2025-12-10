@@ -315,27 +315,45 @@ ${dateName} says:`
 
   // Fallback greetings when API fails - scenario-specific
   const getFallbackGreeting = (selectedScenario) => {
+    const partnerDisplay = partnerName || 'my child';
+    const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+    
     switch (selectedScenario.roleType) {
       case 'parent':
-        return isAlbanian 
-          ? `Përshëndetje ${userName}! Sa mirë që erdhe! Si je? Hyn brenda, bëhu komod.`
-          : `Hello ${userName}! So lovely to finally meet you! How are you? Please, come in and make yourself at home.`;
+        return pick([
+          `Oh hello ${userName}! Come in, come in! ${partnerDisplay} has told us so much about you. Can I get you something to drink?`,
+          `${userName}! So lovely to finally meet you! Please, make yourself at home. How was your journey here?`,
+          `Well hello there! You must be ${userName}! ${partnerDisplay} didn't tell us you'd be so charming. Come in!`,
+          `Hi ${userName}! Welcome to our home. ${partnerDisplay} is just finishing up - can I offer you some tea or coffee?`
+        ]);
       case 'stranger':
-        return isAlbanian
-          ? `Hej! Të kam parë dhe doja të vija të flisja me ty. Si je?`
-          : `Hey! I noticed you from across the room. I'm ${dateName}. How's your night going?`;
+        return pick([
+          `Hey! I noticed you from across the room. I'm ${dateName}. What brings you here tonight?`,
+          `Hi there! I don't think we've met. I'm ${dateName}. And you are?`,
+          `*smiles* Hey! You looked like someone worth talking to. I'm ${dateName}.`,
+          `Hello stranger! I'm ${dateName}. I couldn't help but come say hi.`
+        ]);
       case 'partner':
-        return isAlbanian
-          ? `${userName}, duhet të flasim për diçka. A ke një moment?`
-          : `${userName}, we need to talk about something. Do you have a moment?`;
+        return pick([
+          `${userName}, we need to talk about something. Do you have a moment?`,
+          `Hey ${userName}... can we sit down? There's something on my mind.`,
+          `${userName}, I've been thinking a lot lately. Can we chat?`,
+          `Babe, I need to talk to you about something. It's important.`
+        ]);
       case 'ex':
-        return isAlbanian
-          ? `${userName}? Oj! Nuk e prisja që do të të shihja këtu. Si ke qenë?`
-          : `${userName}? Oh wow! I didn't expect to see you here. How have you been?`;
+        return pick([
+          `${userName}? Oh wow! I didn't expect to see you here. How have you been?`,
+          `Wait... ${userName}? Is that really you? It's been so long!`,
+          `${userName}! *surprised* I... wow. Hi. How are you?`,
+          `Oh my god, ${userName}?! What are the chances? How've you been?`
+        ]);
       default:
-        return isAlbanian
-          ? `Hej ${userName}! Gëzohem që u takuam. Si je sot?`
-          : `Hey ${userName}! It's so nice to finally meet you. How are you doing today?`;
+        return pick([
+          `Hey ${userName}! It's so nice to finally meet you. I love this place, do you come here often?`,
+          `Hi! You must be ${userName}! I'm ${dateName}. I was a little nervous, honestly. How are you?`,
+          `${userName}! Great to meet you. I have to say, you look even better than your photos!`,
+          `Hey there! I'm ${dateName}. So glad we could finally meet in person!`
+        ]);
     }
   };
 
@@ -446,57 +464,143 @@ ${dateName} responds naturally:`
     setIsLoading(false);
   };
 
-  // Fallback responses when API fails - based on user's message
+  // Fallback responses when API fails - based on user's message and scenario
   const getFallbackResponse = (userMessage) => {
     const lowerMsg = userMessage.toLowerCase();
     const personality = personalities.find(p => p.id === datePersonality);
     const isWarm = personality?.id === 'warm' || personality?.id === 'friendly';
     const isShy = personality?.id === 'shy';
+    const isConfident = personality?.id === 'confident';
+    const partnerDisplay = partnerName || 'them';
     
-    // Greetings
-    if (lowerMsg.includes('hi') || lowerMsg.includes('hello') || lowerMsg.includes('hey')) {
-      if (scenario?.roleType === 'parent') {
-        return isAlbanian 
-          ? `Mirë se erdhe! Dëgjova shumë për ty. Dëshiron çaj apo kafe?`
-          : `Welcome! I've heard so much about you. Would you like some tea or coffee?`;
+    // Random picker helper
+    const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+    
+    // Meeting parents specific responses
+    if (scenario?.roleType === 'parent') {
+      // Greetings
+      if (lowerMsg.includes('hi') || lowerMsg.includes('hello') || lowerMsg.includes('hey') || lowerMsg.includes('good')) {
+        return pick([
+          `Welcome, welcome! Come on in, make yourself at home. Can I get you something to drink?`,
+          `Oh hello! ${partnerDisplay} has told us so much about you. Please, sit down!`,
+          `Hi there! So lovely to finally put a face to the name. How was your journey here?`,
+          `Hello! Don't be shy, come in! ${partnerDisplay} is just getting ready.`
+        ]);
       }
-      return isAlbanian ? `Hej! Si je?` : `Hey! How are you doing?`;
-    }
-    
-    // How are you
-    if (lowerMsg.includes('how are you') || lowerMsg.includes('si je')) {
-      if (isWarm) {
-        return isAlbanian 
-          ? `Jam shumë mirë, faleminderit që pyet! Po ti, si je?`
-          : `I'm doing great, thanks for asking! How about you?`;
+      // Work/job questions
+      if (lowerMsg.includes('work') || lowerMsg.includes('job') || lowerMsg.includes('software') || lowerMsg.includes('nurse') || lowerMsg.includes('business') || lowerMsg.includes('marketing')) {
+        return pick([
+          `Oh that sounds fascinating! How did you get into that field?`,
+          `Really? My cousin works in something similar! Do you enjoy it?`,
+          `That's impressive! Is that how you met ${partnerDisplay}?`,
+          `Interesting! What's the best part about your job?`
+        ]);
       }
-      return isAlbanian ? `Mirë jam, po ti?` : `I'm good, and you?`;
-    }
-    
-    // Nice to meet you
-    if (lowerMsg.includes('nice to meet') || lowerMsg.includes('gëzohem')) {
-      if (scenario?.roleType === 'parent') {
-        return isAlbanian
-          ? `Edhe ne gëzohemi! Na thuaj diçka për veten, çfarë bën për punë?`
-          : `We're glad to meet you too! Tell us about yourself, what do you do for work?`;
+      // How they met
+      if (lowerMsg.includes('met') || lowerMsg.includes('dating app') || lowerMsg.includes('friends') || lowerMsg.includes('coffee')) {
+        return pick([
+          `Aww that's such a sweet story! ${partnerDisplay} never told us that part.`,
+          `How romantic! So how long have you two been together now?`,
+          `That's lovely! You two seem really happy together.`,
+          `Oh wonderful! I can see why ${partnerDisplay} is so smitten with you.`
+        ]);
       }
-      return isAlbanian ? `Edhe unë gëzohem!` : `Nice to meet you too!`;
+      // Hobbies/interests
+      if (lowerMsg.includes('hobby') || lowerMsg.includes('football') || lowerMsg.includes('gym') || lowerMsg.includes('hiking') || lowerMsg.includes('cook') || lowerMsg.includes('read')) {
+        return pick([
+          `Oh that's great! Do you and ${partnerDisplay} do that together?`,
+          `Lovely! It's so important to have your own interests too.`,
+          `That sounds fun! I used to enjoy that when I was younger.`,
+          `Wonderful! ${partnerDisplay} mentioned you're quite passionate about that.`
+        ]);
+      }
+      // Intentions/serious
+      if (lowerMsg.includes('serious') || lowerMsg.includes('future') || lowerMsg.includes('care') || lowerMsg.includes('love')) {
+        return pick([
+          `That's really lovely to hear. ${partnerDisplay} clearly means a lot to you.`,
+          `I can see you're genuine. That's all we want for ${partnerDisplay}.`,
+          `That makes me happy. As long as you treat ${partnerDisplay} well, you're welcome here.`,
+          `Well said. I can tell you've thought about this seriously.`
+        ]);
+      }
+      // Thanks/compliments
+      if (lowerMsg.includes('thank') || lowerMsg.includes('lovely home') || lowerMsg.includes('nice')) {
+        return pick([
+          `Oh you're too kind! Would you like to see some photos of ${partnerDisplay} as a kid?`,
+          `Thank you! We've been in this house for 20 years now. Lots of memories.`,
+          `That's sweet of you to say. So tell me more about yourself!`,
+          `You're very welcome here. Now, are you hungry? I made some snacks.`
+        ]);
+      }
+      // Default parent responses
+      return pick([
+        `So tell me, what are your plans for the future?`,
+        `That reminds me of when ${partnerDisplay} was little... anyway, tell me more!`,
+        `Interesting! And what does your family think about you two?`,
+        `I see! So how do you two spend your weekends usually?`,
+        `That's nice. Do you have any siblings?`
+      ]);
     }
     
-    // Questions
-    if (lowerMsg.includes('?')) {
-      return isAlbanian 
-        ? `Kjo është pyetje e mirë. Çfarë mendon ti?`
-        : `That's a good question. What do you think?`;
+    // Stranger/approaching scenario
+    if (scenario?.roleType === 'stranger') {
+      if (lowerMsg.includes('hi') || lowerMsg.includes('hey') || lowerMsg.includes('hello')) {
+        return pick([
+          `Hey yourself! I don't think I've seen you here before.`,
+          `Hi! You're brave coming over here. I like that.`,
+          `Hello! What brings you to this side of the room?`,
+          `Hey! Nice to meet you. Are you here with friends?`
+        ]);
+      }
+      if (lowerMsg.includes('drink') || lowerMsg.includes('bar')) {
+        return pick([
+          `Sure, I'll have whatever you're having!`,
+          `That's sweet of you. I'd love a gin and tonic.`,
+          `Trying to get me drunk already? *laughs* I'm kidding, sure!`,
+          `I was just about to get one myself. Great minds think alike!`
+        ]);
+      }
+      if (lowerMsg.includes('name') || lowerMsg.includes('you')) {
+        return pick([
+          `I'm ${dateName}. And you are?`,
+          `${dateName}. So what do you do when you're not approaching strangers at bars?`,
+          `Call me ${dateName}. What about you?`,
+          `${dateName}! So tell me something interesting about yourself.`
+        ]);
+      }
+      if (isShy) {
+        return pick([
+          `*smiles shyly* That's nice...`,
+          `Oh... um, thanks. I'm not usually good at this.`,
+          `*looks down* Yeah... so...`,
+          `That's sweet. Sorry, I'm a bit nervous.`
+        ]);
+      }
+      if (isConfident) {
+        return pick([
+          `*smiles confidently* I like your style.`,
+          `Smooth. I'm impressed.`,
+          `Well aren't you charming? Tell me more.`,
+          `*leans in* Go on, I'm listening.`
+        ]);
+      }
+      return pick([
+        `So what brings you out tonight?`,
+        `I'm liking this conversation. What else you got?`,
+        `*smiles* Tell me something I don't know.`,
+        `Interesting. And what do you do for fun?`
+      ]);
     }
     
-    // Default response
-    if (isShy) {
-      return isAlbanian ? `Mm... po, e kuptoj.` : `Mm... yeah, I understand.`;
-    }
-    return isAlbanian 
-      ? `Interesante! Më trego më shumë.`
-      : `That's interesting! Tell me more.`;
+    // Default for other scenarios
+    return pick([
+      `That's really interesting! Tell me more.`,
+      `I see what you mean. And then what happened?`,
+      `Oh wow, really? That's surprising!`,
+      `Hmm, I hadn't thought of it that way.`,
+      `*nods* Makes sense. So what do you think we should do?`,
+      `That's a good point. What else?`
+    ]);
   };
 
   // Generate suggested replies based on the AI's last message
@@ -775,7 +879,7 @@ ${langInstruction}`
         {/* Setup */}
         <div className="space-y-6">
           {/* Step 1: Scenario Selection (FIRST - so we know the context) */}
-          {setupStep >= 1 && (
+          {setupStep === 1 && (
             <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm p-5">
               <h3 className="font-semibold text-white mb-2 flex items-center gap-2">
                 <span className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-xs">1</span>
@@ -814,8 +918,14 @@ ${langInstruction}`
           )}
 
           {/* Step 2: Names (with dynamic labels based on scenario) */}
-          {setupStep >= 2 && selectedScenarioId && (
+          {setupStep === 2 && selectedScenarioId && (
             <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm p-5">
+              <button
+                onClick={() => { setSetupStep(1); setSelectedScenarioId(null); }}
+                className="text-slate-400 hover:text-white text-sm mb-4 flex items-center gap-1"
+              >
+                <ArrowLeft className="w-4 h-4" /> {t('common.back', 'Back')}
+              </button>
               <h3 className="font-semibold text-white mb-2 flex items-center gap-2">
                 <span className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-xs">2</span>
                 <User className="w-5 h-5 text-purple-400" />
@@ -858,8 +968,14 @@ ${langInstruction}`
           )}
 
           {/* Step 3: Personality Selection */}
-          {setupStep >= 3 && dateName.trim() && (
+          {setupStep === 3 && dateName.trim() && (
             <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm p-5">
+              <button
+                onClick={() => setSetupStep(2)}
+                className="text-slate-400 hover:text-white text-sm mb-4 flex items-center gap-1"
+              >
+                <ArrowLeft className="w-4 h-4" /> {t('common.back', 'Back')}
+              </button>
               <h3 className="font-semibold text-white mb-2 flex items-center gap-2">
                 <span className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-xs">3</span>
                 <Sparkles className="w-5 h-5 text-purple-400" />
@@ -889,8 +1005,14 @@ ${langInstruction}`
           )}
 
           {/* Step 4: Intention Selection - Then Start! */}
-          {setupStep >= 4 && datePersonality && (
+          {setupStep === 4 && datePersonality && (
             <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm p-5">
+              <button
+                onClick={() => { setSetupStep(3); setDatePersonality(null); }}
+                className="text-slate-400 hover:text-white text-sm mb-4 flex items-center gap-1"
+              >
+                <ArrowLeft className="w-4 h-4" /> {t('common.back', 'Back')}
+              </button>
               <h3 className="font-semibold text-white mb-2 flex items-center gap-2">
                 <span className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-xs">4</span>
                 <Target className="w-5 h-5 text-purple-400" />
