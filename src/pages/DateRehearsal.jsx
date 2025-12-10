@@ -12,6 +12,56 @@ import {
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
+// ============================================================
+// 🔒 HARDCODED: Robust API call with retry logic
+// This ensures the roleplay ALWAYS works reliably
+// ============================================================
+const callAIWithRetry = async (prompt, maxRetries = 3) => {
+  let lastError = null;
+  
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      console.log(`🎭 API Call attempt ${attempt}/${maxRetries}`);
+      
+      const response = await base44.integrations.Core.InvokeLLM({
+        prompt: prompt
+      });
+      
+      // Validate response
+      if (response && typeof response === 'string' && response.trim().length > 0) {
+        console.log(`✅ API Call successful on attempt ${attempt}`);
+        return response;
+      }
+      
+      // If response is an object, extract text
+      if (response && typeof response === 'object') {
+        const text = response.feedback || response.text || response.content || response.message;
+        if (text && text.trim().length > 0) {
+          console.log(`✅ API Call successful on attempt ${attempt}`);
+          return text;
+        }
+      }
+      
+      throw new Error('Empty or invalid response from API');
+      
+    } catch (error) {
+      console.error(`❌ API Call attempt ${attempt} failed:`, error.message);
+      lastError = error;
+      
+      // Wait before retrying (exponential backoff)
+      if (attempt < maxRetries) {
+        const waitTime = Math.min(1000 * Math.pow(2, attempt - 1), 5000);
+        console.log(`⏳ Waiting ${waitTime}ms before retry...`);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+      }
+    }
+  }
+  
+  // All retries failed
+  console.error(`❌ All ${maxRetries} API attempts failed`);
+  throw lastError || new Error('API call failed after all retries');
+};
+
 export default function DateRehearsal() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
@@ -260,8 +310,8 @@ Then naturally transition - offer a drink, invite them to sit, maybe compliment 
       
       console.log('🎭 Starting scenario:', { scenario: selectedScenario.id, name: dateName, personality: personality?.label });
 
-      const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are roleplaying in a practice conversation scenario. DO NOT break character.
+      // 🔒 HARDCODED: Use retry helper for reliable API calls
+      const prompt = `You are roleplaying in a practice conversation scenario. DO NOT break character.
 
 YOUR ROLE: ${roleDescription}
 YOUR NAME: ${dateName}
@@ -281,13 +331,10 @@ CRITICAL INSTRUCTIONS:
 
 ${langInstruction}
 
-${dateName} says:`
-      });
+${dateName} says:`;
 
-      console.log('🎭 Got opening response:', response);
-
-      // Handle response properly
-      const responseText = typeof response === 'string' ? response : (response?.feedback || response?.text || `Hi there! Nice to meet you.`);
+      const responseText = await callAIWithRetry(prompt, 3);
+      console.log('🎭 Got opening response:', responseText);
 
       // Generate initial suggested replies
       const suggestions = generateSuggestedReplies(responseText, selectedScenario);
@@ -397,8 +444,8 @@ ${dateName} says:`
 
       const partnerDisplay = partnerName || 'my child';
 
-      const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are roleplaying in a practice conversation scenario. STAY COMPLETELY IN CHARACTER.
+      // 🔒 HARDCODED: Build the prompt for OpenAI
+      const prompt = `You are roleplaying in a practice conversation scenario. STAY COMPLETELY IN CHARACTER.
 
 YOUR ROLE: ${roleDescription}
 YOUR NAME: ${dateName}
@@ -432,13 +479,11 @@ VARY YOUR RESPONSES - some options:
 
 ${langInstruction}
 
-${dateName} responds naturally:`
-      });
+${dateName} responds naturally:`;
 
-      console.log('🎭 Got roleplay response:', response);
-
-      // Extract just the response text
-      const responseText = typeof response === 'string' ? response : (response?.feedback || response?.text || 'Hello!');
+      // 🔒 HARDCODED: Use retry helper for reliable API calls
+      const responseText = await callAIWithRetry(prompt, 3);
+      console.log('🎭 Got roleplay response:', responseText);
 
       // Generate suggested replies for the user
       const suggestions = generateSuggestedReplies(responseText, scenario);
@@ -727,8 +772,8 @@ ${dateName} responds naturally:`
 
       console.log('🎯 Getting feedback for conversation:', conversationHistory);
 
-      const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are an expert dating coach analyzing a practice conversation.
+      // 🔒 HARDCODED: Build feedback prompt
+      const prompt = `You are an expert dating coach analyzing a practice conversation.
 
 SCENARIO: ${scenario.title} - ${scenario.setting}
 DATE'S PERSONALITY: ${personalities.find(p => p.id === datePersonality)?.label}
@@ -747,13 +792,11 @@ Provide detailed feedback on the user's performance:
 6. 🎯 KEY TAKEAWAY - One main lesson
 
 Be encouraging but honest. Give specific, actionable advice.
-${langInstruction}`
-      });
+${langInstruction}`;
 
-      console.log('🎯 Got feedback response:', response);
-      
-      // Handle response
-      const feedbackText = typeof response === 'string' ? response : (response?.feedback || response?.text || 'Great conversation! Keep practicing.');
+      // 🔒 HARDCODED: Use retry helper for reliable feedback
+      const feedbackText = await callAIWithRetry(prompt, 3);
+      console.log('🎯 Got feedback response:', feedbackText);
       
       setFeedback(feedbackText);
       setShowFeedback(true);
