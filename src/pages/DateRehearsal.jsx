@@ -22,12 +22,14 @@ export default function DateRehearsal() {
   const [feedback, setFeedback] = useState(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [dateName, setDateName] = useState('');
+  const [partnerName, setPartnerName] = useState(''); // Partner's name for meeting parents scenario
   const [datePersonality, setDatePersonality] = useState(null); // No default - user must choose
   const [selectedIntention, setSelectedIntention] = useState(null); // No default - user must choose
   const [setupStep, setSetupStep] = useState(1); // 1: scenario, 2: name, 3: personality, 4: intention
   const [selectedScenarioId, setSelectedScenarioId] = useState(null); // Track selected scenario before starting
   const [hasAccess, setHasAccess] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [suggestedReplies, setSuggestedReplies] = useState([]); // Suggested replies for user
   const messagesEndRef = useRef(null);
 
   // Check if user has Pro or Elite subscription
@@ -167,36 +169,74 @@ export default function DateRehearsal() {
   }, [messages]);
 
   // Get role description based on scenario type
+  // Determine relationship type based on user's gender preference
+  const getPartnerRelationship = () => {
+    // Check if user specified their partner's gender or assume from their own gender
+    const partnerGenderHint = localStorage.getItem('partnerGender');
+    if (partnerGenderHint) {
+      return partnerGenderHint === 'male' ? 'son' : 'daughter';
+    }
+    // Default: opposite gender relationship, but parent should be accepting either way
+    return userGender === 'male' ? 'daughter' : 'son';
+  };
+
   const getRoleDescription = (selectedScenario, personality) => {
     const dateGender = userGender === 'male' ? 'woman' : 'man';
-    const parentGender = userGender === 'male' ? "girlfriend's" : "boyfriend's";
+    const childRelation = getPartnerRelationship();
+    const partnerDisplay = partnerName || 'my child';
     
     switch (selectedScenario.roleType) {
       case 'parent':
-        return `You are ${dateName}, the ${parentGender} parent. You are a ${personality?.label} parent who is meeting your child's partner for the first time. You want to assess if this person is good enough for your child. Be realistic - ask about their job, future plans, intentions with your child.`;
+        return `You are ${dateName}, ${partnerDisplay}'s parent. You are a ${personality?.label} parent meeting your ${childRelation}'s partner (${userName}) for the first time.
+
+IMPORTANT CHARACTER TRAITS:
+- You are OPEN-MINDED and ACCEPTING of all relationships (straight, gay, lesbian, bisexual - love is love!)
+- You have REAL KNOWLEDGE about many professions: tech, medicine, law, trades, arts, sports, business, education, etc.
+- You know about sports: football, basketball, tennis, golf, MMA, boxing, swimming, running, cycling, etc.
+- You use casual language and slang sometimes - "that's awesome!", "no way!", "oh lovely!", "brilliant!"
+- You're genuinely curious and NEVER repeat the same questions
+- You share your own stories and experiences to keep conversation flowing
+- You remember what ${userName} tells you and build on it
+
+CONVERSATION STYLE:
+- Ask varied questions: about hobbies, family, how they met ${partnerDisplay}, travel, food, movies, music
+- React genuinely to answers - if they say something interesting, show enthusiasm!
+- Share relevant stories: "Oh my nephew works in tech too!", "I used to play tennis back in the day!"
+- If nervous silence, help by sharing something about yourself or ${partnerDisplay}
+- Be warm but also protective of your child - you want to know ${userName} is a good person`;
       case 'stranger':
-        return `You are ${dateName}, a ${personality?.label} ${dateGender} at a bar/party. Someone is approaching you to start a conversation. React naturally based on your personality.`;
+        return `You are ${dateName}, a ${personality?.label} ${dateGender} at a bar/party. Someone attractive (${userName}) is approaching you.
+
+PERSONALITY: Be realistic and natural. Use casual language. React based on your personality - if shy, be a bit nervous but interested. If confident, be flirty and engaging.`;
       case 'partner':
-        return `You are ${dateName}, the user's partner/significant other. You are a ${personality?.label} person. You're having an important conversation about your relationship.`;
+        return `You are ${dateName}, ${userName}'s partner. You are a ${personality?.label} person having an important relationship conversation.
+
+Be emotionally realistic. Express feelings, concerns, hopes. Listen and respond to what ${userName} says.`;
       case 'ex':
-        return `You are ${dateName}, the user's ex-partner. You are a ${personality?.label} ${dateGender}. You've run into each other unexpectedly. You have mixed feelings about seeing them again.`;
+        return `You are ${dateName}, ${userName}'s ex. You're ${personality?.label}. You've bumped into each other unexpectedly.
+
+Mixed emotions - surprise, maybe some old feelings, possibly awkwardness. React naturally to whatever ${userName} says.`;
       default:
-        return `You are ${dateName}, a ${personality?.label} ${dateGender} on a first date at a coffee shop.`;
+        return `You are ${dateName}, a ${personality?.label} ${dateGender} on a first date with ${userName} at a coffee shop. Be natural, curious, and engaging!`;
     }
   };
 
   const getScenarioOpener = (selectedScenario) => {
+    const partnerDisplay = partnerName || 'my child';
+    
     switch (selectedScenario.roleType) {
       case 'parent':
-        return `The user's name is ${userName}. ${userName} has just arrived at your home - your child has brought them over to meet you. 
-        
-Open the door and warmly greet ${userName} by name. Say something like "Hello ${userName}, lovely to finally meet you! How are you?" Then invite them in or ask them something natural.`;
+        return `${userName} has just arrived at your home with ${partnerDisplay}. Open the door warmly.
+
+Start with a warm greeting like: "Oh hello! You must be ${userName}! Come in, come in! ${partnerDisplay} has told us so much about you! How was the drive over?"
+
+Then naturally transition - offer a drink, invite them to sit, maybe compliment something about them.`;
       case 'stranger':
-        return `You're at a bar/party and someone catches your eye. They're walking toward you. React to them approaching based on your personality.`;
+        return `You're at a bar/party and ${userName} is walking toward you. React naturally - maybe smile, maybe look intrigued.`;
       case 'partner':
-        return `You and your partner ${userName} need to have an important conversation. Start by bringing up what's been on your mind.`;
+        return `You and ${userName} need to have an important conversation. Start by bringing up what's been on your mind.`;
       case 'ex':
-        return `You've just spotted your ex ${userName} unexpectedly. Make eye contact and react - surprise, awkwardness, happiness, or whatever fits your personality.`;
+        return `You've just spotted ${userName} unexpectedly. Make eye contact and react - surprise, awkwardness, or whatever fits.`;
       default:
         return `You've just sat down at the coffee shop for a first date with ${userName}. Start the conversation naturally - maybe compliment them or ask about their day.`;
     }
@@ -248,6 +288,10 @@ ${dateName} says:`
 
       // Handle response properly
       const responseText = typeof response === 'string' ? response : (response?.feedback || response?.text || `Hi there! Nice to meet you.`);
+
+      // Generate initial suggested replies
+      const suggestions = generateSuggestedReplies(responseText, selectedScenario);
+      setSuggestedReplies(suggestions);
 
       setMessages([{
         id: Date.now(),
@@ -327,6 +371,14 @@ ${dateName} says:`
 
       console.log('🎭 Sending roleplay message:', { scenario: scenario.id, personality: datePersonality, userMessage });
 
+      // Extract questions already asked to avoid repetition
+      const alreadyAsked = messages
+        .filter(m => m.sender === 'date' && m.text.includes('?'))
+        .map(m => m.text)
+        .join(' | ');
+
+      const partnerDisplay = partnerName || 'my child';
+
       const response = await base44.integrations.Core.InvokeLLM({
         prompt: `You are roleplaying in a practice conversation scenario. STAY COMPLETELY IN CHARACTER.
 
@@ -335,27 +387,44 @@ YOUR NAME: ${dateName}
 YOUR PERSONALITY: ${personality?.label}
 SCENARIO: ${scenario.setting}
 USER'S GOAL: ${intention?.label}
+${scenario.roleType === 'parent' ? `YOUR CHILD'S NAME: ${partnerDisplay}` : ''}
 
 CONVERSATION SO FAR:
 ${conversationHistory}
 
+QUESTIONS YOU'VE ALREADY ASKED (DO NOT REPEAT THESE):
+${alreadyAsked || 'None yet'}
+
 CRITICAL INSTRUCTIONS:
 1. You ARE ${dateName}. Respond as them, NOT as an AI.
-2. React naturally and authentically to what the user just said.
-3. Keep your response to 1-3 sentences maximum.
-4. DO NOT break character, offer meta-commentary, or give advice.
-5. DO NOT ask "how can I help you" - you're not an assistant, you're a real person.
-6. If the user says something casual like "hi" or "how are you", respond naturally as ${dateName} would.
+2. React GENUINELY to what ${userName} just said - show interest, surprise, happiness, concern as appropriate.
+3. NEVER repeat a question you've already asked! Ask something NEW and different.
+4. Keep responses natural - 1-3 sentences. Use casual language like "Oh wow!", "That's brilliant!", "No way!"
+5. Share relevant personal anecdotes: "Oh my brother works in that field!", "I remember when..."
+6. If ${userName} mentions a profession, show you KNOW about it - ask specific follow-up questions.
+7. If they mention sports/hobbies, engage with real knowledge about that activity.
+8. Build on what they say - don't just ask random questions.
+9. Be warm and make them feel comfortable, even if personality is protective/skeptical.
+
+VARY YOUR RESPONSES - some options:
+- React with enthusiasm + share related story
+- React + ask follow-up about what they just said
+- React + change topic naturally to something new
+- Share something about yourself/your child that relates
 
 ${langInstruction}
 
-${dateName} responds:`
+${dateName} responds naturally:`
       });
 
       console.log('🎭 Got roleplay response:', response);
 
       // Extract just the response text
       const responseText = typeof response === 'string' ? response : (response?.feedback || response?.text || 'Hello!');
+
+      // Generate suggested replies for the user
+      const suggestions = generateSuggestedReplies(responseText, scenario);
+      setSuggestedReplies(suggestions);
 
       setMessages(prev => [...prev, {
         id: Date.now() + 1,
@@ -430,6 +499,104 @@ ${dateName} responds:`
       : `That's interesting! Tell me more.`;
   };
 
+  // Generate suggested replies based on the AI's last message
+  const generateSuggestedReplies = (aiMessage, currentScenario) => {
+    const lowerMsg = aiMessage.toLowerCase();
+    const intention = intentions.find(i => i.id === selectedIntention);
+    const partnerDisplay = partnerName || 'them';
+    
+    // Meeting parents specific suggestions
+    if (currentScenario?.roleType === 'parent') {
+      // If they ask about job/work
+      if (lowerMsg.includes('work') || lowerMsg.includes('job') || lowerMsg.includes('do for a living') || lowerMsg.includes('profession')) {
+        return [
+          "I work in software development - I build apps and websites",
+          "I'm a nurse at the local hospital, been there 3 years now",
+          "I run my own small business - it's challenging but rewarding",
+          "I'm in marketing - I help companies grow their brand"
+        ];
+      }
+      // If they ask how you met their child
+      if (lowerMsg.includes('meet') || lowerMsg.includes('how did you') || lowerMsg.includes('how long')) {
+        return [
+          `We met through mutual friends about ${Math.floor(Math.random() * 12) + 6} months ago`,
+          `Actually we met at a coffee shop - ${partnerDisplay} spilled coffee on me!`,
+          `We connected on a dating app and just clicked instantly`,
+          `We work in the same building and kept bumping into each other`
+        ];
+      }
+      // If they ask about intentions/future
+      if (lowerMsg.includes('intention') || lowerMsg.includes('future') || lowerMsg.includes('plan') || lowerMsg.includes('serious')) {
+        return [
+          `I really care about ${partnerDisplay} and I see a real future together`,
+          "I'm very serious about this relationship - that's why I wanted to meet you",
+          `${partnerDisplay} makes me incredibly happy, I want to build something real`,
+          "I know it's early but I've never felt this way about anyone before"
+        ];
+      }
+      // If they offer drinks/food
+      if (lowerMsg.includes('tea') || lowerMsg.includes('coffee') || lowerMsg.includes('drink') || lowerMsg.includes('eat')) {
+        return [
+          "A cup of tea would be lovely, thank you!",
+          "Coffee would be great, thanks so much",
+          "I'm okay for now, but thank you for offering",
+          "Whatever you're having would be perfect"
+        ];
+      }
+      // If they ask about hobbies/interests
+      if (lowerMsg.includes('hobby') || lowerMsg.includes('hobbies') || lowerMsg.includes('free time') || lowerMsg.includes('fun')) {
+        return [
+          "I love hiking and being outdoors - nature really clears my head",
+          "I'm really into fitness - gym, running, that kind of thing",
+          "I'm a big football fan, never miss a match on weekends",
+          "I enjoy cooking and trying new restaurants with friends"
+        ];
+      }
+      // If they share something about themselves
+      if (lowerMsg.includes('i used to') || lowerMsg.includes('when i was') || lowerMsg.includes('my ')) {
+        return [
+          "Oh that's really interesting! Tell me more about that",
+          "That's amazing! How did you get into that?",
+          `${partnerDisplay} mentioned that actually, sounds fascinating`,
+          "No way! I'd love to hear more stories"
+        ];
+      }
+      // Generic warm responses
+      return [
+        "Thank you so much for having me, your home is lovely",
+        `${partnerDisplay} talks about you all the time, it's so nice to finally meet`,
+        "I've been looking forward to this, I was a bit nervous honestly!",
+        "You have such a warm and welcoming home"
+      ];
+    }
+    
+    // First date suggestions
+    if (currentScenario?.roleType === 'date') {
+      if (lowerMsg.includes('?')) {
+        return [
+          "That's a great question! Let me think...",
+          "I'd love to tell you about that actually",
+          "Honestly? I'm still figuring that out myself",
+          "What about you? I'm curious to know your answer first"
+        ];
+      }
+      return [
+        "I'm having a really great time talking to you",
+        "So tell me more about yourself",
+        "What do you like to do for fun?",
+        "This place is nice, do you come here often?"
+      ];
+    }
+    
+    // Default suggestions
+    return [
+      "That's really interesting",
+      "Tell me more about that",
+      "I completely understand",
+      "That makes a lot of sense"
+    ];
+  };
+
   // Count user messages (not total messages)
   const userMessageCount = messages.filter(m => m.sender === 'user').length;
 
@@ -493,9 +660,11 @@ ${langInstruction}`
     setInputText('');
     setSelectedScenarioId(null);
     setDateName('');
+    setPartnerName('');
     setDatePersonality(null);
     setSelectedIntention(null);
     setSetupStep(1);
+    setSuggestedReplies([]);
   };
 
   // Upgrade Modal
@@ -644,7 +813,7 @@ ${langInstruction}`
             </Card>
           )}
 
-          {/* Step 2: Name (with dynamic label based on scenario) */}
+          {/* Step 2: Names (with dynamic labels based on scenario) */}
           {setupStep >= 2 && selectedScenarioId && (
             <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm p-5">
               <h3 className="font-semibold text-white mb-2 flex items-center gap-2">
@@ -657,12 +826,30 @@ ${langInstruction}`
                 value={dateName}
                 onChange={(e) => setDateName(e.target.value)}
                 placeholder={getNamePlaceholder()}
-                className="bg-slate-900 border-slate-700 text-white"
+                className="bg-slate-900 border-slate-700 text-white mb-3"
               />
-              {dateName.trim() && (
+              
+              {/* Partner name - only for meeting parents scenario */}
+              {selectedScenarioId === 'meet_parents' && (
+                <div className="mt-4 pt-4 border-t border-slate-700">
+                  <h4 className="font-medium text-white mb-2 flex items-center gap-2">
+                    <Heart className="w-4 h-4 text-pink-400" />
+                    {t('rehearsal.partnerNameLabel', "Your partner's name (their child)")}
+                  </h4>
+                  <p className="text-slate-400 text-xs mb-3">{t('rehearsal.partnerNameHint', "The person you're dating - their son/daughter")}</p>
+                  <Input
+                    value={partnerName}
+                    onChange={(e) => setPartnerName(e.target.value)}
+                    placeholder={t('rehearsal.enterPartnerNamePlaceholder', "e.g. Sarah, Mike...")}
+                    className="bg-slate-900 border-slate-700 text-white"
+                  />
+                </div>
+              )}
+              
+              {dateName.trim() && (selectedScenarioId !== 'meet_parents' || partnerName.trim()) && (
                 <Button
                   onClick={() => setSetupStep(3)}
-                  className="w-full mt-3 bg-purple-500 hover:bg-purple-600"
+                  className="w-full mt-4 bg-purple-500 hover:bg-purple-600"
                 >
                   {t('common.continue', 'Continue')}
                 </Button>
@@ -856,6 +1043,30 @@ ${langInstruction}`
             <RefreshCw className="w-4 h-4 mr-2" />
             {t('rehearsal.tryAnother', 'Try Another Scenario')}
           </Button>
+        </div>
+      )}
+
+      {/* Suggested Replies */}
+      {!showFeedback && suggestedReplies.length > 0 && !isLoading && (
+        <div className="px-4 py-2 border-t border-slate-800 bg-slate-900/50">
+          <p className="text-slate-400 text-xs mb-2 flex items-center gap-1">
+            <Sparkles className="w-3 h-3" />
+            {t('rehearsal.suggestedReplies', 'Suggested replies:')}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {suggestedReplies.slice(0, 4).map((reply, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  setInputText(reply);
+                  setSuggestedReplies([]);
+                }}
+                className="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-3 py-2 rounded-full border border-slate-700 hover:border-purple-500 transition-all truncate max-w-[200px]"
+              >
+                {reply}
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
