@@ -1750,29 +1750,39 @@ app.get('/api/admin/stats', checkAdminAuth, (req, res) => {
   }
 });
 
-// Get all users list
-app.get('/api/admin/users', checkAdminAuth, (req, res) => {
+// Get all users list - Now fetches from MongoDB (persistent) + in-memory (usage data)
+app.get('/api/admin/users', checkAdminAuth, async (req, res) => {
   try {
-    const allUsers = Array.from(getAllUsers().values());
+    // Fetch all registered users from MongoDB (persistent storage)
+    const mongoUsers = await UserAccountModel.find({}).sort({ createdAt: -1 }).lean();
     
-    const usersList = allUsers.map(u => ({
-      userId: u.userId,
-      subscriptionTier: u.subscriptionTier,
-      subscriptionStatus: u.subscriptionStatus,
-      subscriptionExpiresAt: u.subscriptionExpiresAt,
-      createdAt: u.createdAt,
-      lastActiveAt: u.lastActiveAt,
-      dailyUsage: u.dailyUsage,
-      monthlyUsage: u.monthlyUsage,
-      costTracking: u.costTracking,
-      credits: u.credits || 0,
-      isBlocked: u.isBlocked || false,
-      securityStrikes: u.securityStrikes || 0,
-      stripeCustomerId: u.stripeCustomerId
-    }));
+    // Get in-memory usage data
+    const inMemoryUsers = getAllUsers();
+    
+    const usersList = mongoUsers.map(mongoUser => {
+      const usageData = inMemoryUsers.get(mongoUser.odId);
+      return {
+        odId: mongoUser.odId,
+        userId: mongoUser.odId,
+        username: mongoUser.username,
+        email: mongoUser.email,
+        subscriptionTier: usageData?.subscriptionTier || mongoUser.subscriptionTier || 'free_trial',
+        subscriptionStatus: usageData?.subscriptionStatus || 'active',
+        subscriptionExpiresAt: usageData?.subscriptionExpiresAt,
+        createdAt: mongoUser.createdAt,
+        lastActiveAt: usageData?.lastActiveAt || mongoUser.lastLogin,
+        dailyUsage: usageData?.dailyUsage || { messages: 0 },
+        monthlyUsage: usageData?.monthlyUsage || { totalMessages: 0 },
+        costTracking: usageData?.costTracking || { totalSpent: 0 },
+        credits: usageData?.credits || mongoUser.credits || 0,
+        isBlocked: usageData?.isBlocked || false,
+        securityStrikes: usageData?.securityStrikes || 0,
+        stripeCustomerId: usageData?.stripeCustomerId || mongoUser.stripeCustomerId
+      };
+    });
     
     // Sort by last active (most recent first)
-    usersList.sort((a, b) => new Date(b.lastActiveAt) - new Date(a.lastActiveAt));
+    usersList.sort((a, b) => new Date(b.lastActiveAt || 0) - new Date(a.lastActiveAt || 0));
     
     res.json({
       users: usersList,
