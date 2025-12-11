@@ -11634,569 +11634,6 @@ const X = createLucideIcon("X", [
 const Zap = createLucideIcon("Zap", [
   ["polygon", { points: "13 2 3 14 12 14 11 22 21 10 12 10 13 2", key: "45s27k" }]
 ]);
-const countries = [
-  {
-    code: "AL",
-    name: "Shqipëri",
-    nameEn: "Albania",
-    flag: "🇦🇱",
-    currency: "ALL",
-    currencySymbol: "L",
-    cities: [
-      { name: "Tiranë", nameEn: "Tirana" },
-      { name: "Durrës", nameEn: "Durres" },
-      { name: "Vlorë", nameEn: "Vlora" },
-      { name: "Shkodër", nameEn: "Shkoder" },
-      { name: "Elbasan", nameEn: "Elbasan" },
-      { name: "Korçë", nameEn: "Korce" },
-      { name: "Fier", nameEn: "Fier" },
-      { name: "Berat", nameEn: "Berat" },
-      { name: "Lushnjë", nameEn: "Lushnje" },
-      { name: "Pogradec", nameEn: "Pogradec" },
-      { name: "Sarandë", nameEn: "Saranda" },
-      { name: "Gjirokastër", nameEn: "Gjirokastra" },
-      { name: "Has", nameEn: "Has" },
-      { name: "Tropojë", nameEn: "Tropoja" },
-      { name: "Tepelenë", nameEn: "Tepelena" },
-      { name: "Kukës", nameEn: "Kukes" },
-      { name: "Lezhë", nameEn: "Lezha" },
-      { name: "Peshkopi", nameEn: "Peshkopi" },
-      { name: "Bulqizë", nameEn: "Bulqiza" },
-      { name: "Librazhd", nameEn: "Librazhd" },
-      { name: "Gramsh", nameEn: "Gramsh" },
-      { name: "Përmet", nameEn: "Permet" },
-      { name: "Ersekë", nameEn: "Erseka" },
-      { name: "Pukë", nameEn: "Puka" },
-      { name: "Mirditë", nameEn: "Mirdita" },
-      { name: "Krujë", nameEn: "Kruja" },
-      { name: "Kavajë", nameEn: "Kavaja" },
-      { name: "Peqin", nameEn: "Peqin" },
-      { name: "Cërrik", nameEn: "Cerrik" },
-      { name: "Kuçovë", nameEn: "Kucova" },
-      { name: "Roskovec", nameEn: "Roskovec" },
-      { name: "Patos", nameEn: "Patos" },
-      { name: "Ballsh", nameEn: "Ballsh" },
-      { name: "Memaliaj", nameEn: "Memaliaj" },
-      { name: "Selenicë", nameEn: "Selenica" },
-      { name: "Himarë", nameEn: "Himara" },
-      { name: "Delvinë", nameEn: "Delvina" },
-      { name: "Konispol", nameEn: "Konispol" },
-      { name: "Finiq", nameEn: "Finiq" },
-      { name: "Dropull", nameEn: "Dropull" },
-      { name: "Libohovë", nameEn: "Libohova" },
-      { name: "Këlcyrë", nameEn: "Kelcyra" },
-      { name: "Skrapar", nameEn: "Skrapar" },
-      { name: "Poliçan", nameEn: "Polican" },
-      { name: "Devoll", nameEn: "Devoll" },
-      { name: "Pustec", nameEn: "Pustec" },
-      { name: "Maliq", nameEn: "Maliq" },
-      { name: "Kolonjë", nameEn: "Kolonja" },
-      { name: "Vau i Dejës", nameEn: "Vau i Dejes" },
-      { name: "Fushë-Arrëz", nameEn: "Fushe-Arrez" },
-      { name: "Malësi e Madhe", nameEn: "Malesia e Madhe" },
-      { name: "Klos", nameEn: "Klos" },
-      { name: "Mat", nameEn: "Mat" },
-      { name: "Dibër", nameEn: "Diber" },
-      { name: "Laç", nameEn: "Lac" },
-      { name: "Mamurras", nameEn: "Mamurras" },
-      { name: "Kurbin", nameEn: "Kurbin" },
-      { name: "Shijak", nameEn: "Shijak" },
-      { name: "Vorë", nameEn: "Vora" },
-      { name: "Kamëz", nameEn: "Kamza" }
-    ]
-  },
-  {
-    code: "XK",
-    name: "Kosovë",
-    nameEn: "Kosovo",
-    flag: "🇽🇰",
-    currency: "EUR",
-    currencySymbol: "€",
-    cities: [
-      { name: "Prishtinë", nameEn: "Pristina" },
-      { name: "Prizren", nameEn: "Prizren" },
-      { name: "Ferizaj", nameEn: "Ferizaj" },
-      { name: "Pejë", nameEn: "Peja" },
-      { name: "Gjakovë", nameEn: "Gjakova" },
-      { name: "Gjilan", nameEn: "Gjilan" },
-      { name: "Mitrovicë", nameEn: "Mitrovica" },
-      { name: "Podujevë", nameEn: "Podujeva" }
-    ]
-  },
-  {
-    code: "GB",
-    name: "Britani e Madhe",
-    nameEn: "United Kingdom",
-    flag: "🇬🇧",
-    currency: "GBP",
-    currencySymbol: "£",
-    cities: [
-      { name: "Londër", nameEn: "London" },
-      { name: "Mançester", nameEn: "Manchester" },
-      { name: "Birmingham", nameEn: "Birmingham" },
-      { name: "Leeds", nameEn: "Leeds" },
-      { name: "Liverpool", nameEn: "Liverpool" },
-      { name: "Bristol", nameEn: "Bristol" },
-      { name: "Sheffield", nameEn: "Sheffield" },
-      { name: "Edinburgh", nameEn: "Edinburgh" },
-      { name: "Glasgow", nameEn: "Glasgow" },
-      { name: "Nottingham", nameEn: "Nottingham" }
-    ]
-  },
-  {
-    code: "CH",
-    name: "Zvicër",
-    nameEn: "Switzerland",
-    flag: "🇨🇭",
-    currency: "CHF",
-    currencySymbol: "CHF",
-    cities: [
-      { name: "Cyrih", nameEn: "Zurich" },
-      { name: "Gjenevë", nameEn: "Geneva" },
-      { name: "Bazel", nameEn: "Basel" },
-      { name: "Bernë", nameEn: "Bern" },
-      { name: "Lozanë", nameEn: "Lausanne" },
-      { name: "Winterthur", nameEn: "Winterthur" },
-      { name: "St. Gallen", nameEn: "St. Gallen" },
-      { name: "Lugano", nameEn: "Lugano" }
-    ]
-  },
-  {
-    code: "DE",
-    name: "Gjermani",
-    nameEn: "Germany",
-    flag: "🇩🇪",
-    currency: "EUR",
-    currencySymbol: "€",
-    cities: [
-      { name: "Mynih", nameEn: "Munich" },
-      { name: "Berlin", nameEn: "Berlin" },
-      { name: "Frankfurt", nameEn: "Frankfurt" },
-      { name: "Hamburg", nameEn: "Hamburg" },
-      { name: "Këln", nameEn: "Cologne" },
-      { name: "Dyseldorf", nameEn: "Dusseldorf" },
-      { name: "Shtutgart", nameEn: "Stuttgart" },
-      { name: "Dortmund", nameEn: "Dortmund" },
-      { name: "Esen", nameEn: "Essen" },
-      { name: "Hanover", nameEn: "Hanover" }
-    ]
-  },
-  {
-    code: "US",
-    name: "SHBA",
-    nameEn: "United States",
-    flag: "🇺🇸",
-    currency: "USD",
-    currencySymbol: "$",
-    cities: [
-      { name: "Nju Jork", nameEn: "New York" },
-      { name: "Çikago", nameEn: "Chicago" },
-      { name: "Los Anxhelos", nameEn: "Los Angeles" },
-      { name: "Detroit", nameEn: "Detroit" },
-      { name: "Boston", nameEn: "Boston" },
-      { name: "Filadelfia", nameEn: "Philadelphia" },
-      { name: "Uashington", nameEn: "Washington DC" },
-      { name: "Houston", nameEn: "Houston" },
-      { name: "San Francisko", nameEn: "San Francisco" },
-      { name: "Miami", nameEn: "Miami" }
-    ]
-  },
-  {
-    code: "IT",
-    name: "Itali",
-    nameEn: "Italy",
-    flag: "🇮🇹",
-    currency: "EUR",
-    currencySymbol: "€",
-    cities: [
-      { name: "Milano", nameEn: "Milan" },
-      { name: "Romë", nameEn: "Rome" },
-      { name: "Torino", nameEn: "Turin" },
-      { name: "Napoli", nameEn: "Naples" },
-      { name: "Firence", nameEn: "Florence" },
-      { name: "Bolonjë", nameEn: "Bologna" },
-      { name: "Venecia", nameEn: "Venice" },
-      { name: "Bari", nameEn: "Bari" },
-      { name: "Verona", nameEn: "Verona" },
-      { name: "Padova", nameEn: "Padua" }
-    ]
-  },
-  {
-    code: "FR",
-    name: "Francë",
-    nameEn: "France",
-    flag: "🇫🇷",
-    currency: "EUR",
-    currencySymbol: "€",
-    cities: [
-      { name: "Paris", nameEn: "Paris" },
-      { name: "Lion", nameEn: "Lyon" },
-      { name: "Marsejë", nameEn: "Marseille" },
-      { name: "Tuluz", nameEn: "Toulouse" },
-      { name: "Nicë", nameEn: "Nice" },
-      { name: "Nant", nameEn: "Nantes" },
-      { name: "Strasburg", nameEn: "Strasbourg" },
-      { name: "Bordo", nameEn: "Bordeaux" },
-      { name: "Lil", nameEn: "Lille" },
-      { name: "Ren", nameEn: "Rennes" }
-    ]
-  },
-  {
-    code: "ES",
-    name: "Spanjë",
-    nameEn: "Spain",
-    flag: "🇪🇸",
-    currency: "EUR",
-    currencySymbol: "€",
-    cities: [
-      { name: "Madrid", nameEn: "Madrid" },
-      { name: "Barcelonë", nameEn: "Barcelona" },
-      { name: "Valensja", nameEn: "Valencia" },
-      { name: "Seviljë", nameEn: "Seville" },
-      { name: "Saragozë", nameEn: "Zaragoza" },
-      { name: "Malagë", nameEn: "Malaga" },
-      { name: "Murcia", nameEn: "Murcia" },
-      { name: "Palma", nameEn: "Palma" },
-      { name: "Bilbao", nameEn: "Bilbao" },
-      { name: "Alikante", nameEn: "Alicante" }
-    ]
-  },
-  {
-    code: "GR",
-    name: "Greqi",
-    nameEn: "Greece",
-    flag: "🇬🇷",
-    currency: "EUR",
-    currencySymbol: "€",
-    cities: [
-      { name: "Athinë", nameEn: "Athens" },
-      { name: "Selanik", nameEn: "Thessaloniki" },
-      { name: "Patras", nameEn: "Patras" },
-      { name: "Heraklion", nameEn: "Heraklion" },
-      { name: "Larisa", nameEn: "Larissa" },
-      { name: "Volos", nameEn: "Volos" },
-      { name: "Janinë", nameEn: "Ioannina" },
-      { name: "Kavala", nameEn: "Kavala" },
-      { name: "Rodos", nameEn: "Rhodes" },
-      { name: "Korfuz", nameEn: "Corfu" }
-    ]
-  },
-  {
-    code: "AT",
-    name: "Austri",
-    nameEn: "Austria",
-    flag: "🇦🇹",
-    currency: "EUR",
-    currencySymbol: "€",
-    cities: [
-      { name: "Vjenë", nameEn: "Vienna" },
-      { name: "Grac", nameEn: "Graz" },
-      { name: "Linc", nameEn: "Linz" },
-      { name: "Salcburg", nameEn: "Salzburg" },
-      { name: "Innsbruk", nameEn: "Innsbruck" }
-    ]
-  },
-  {
-    code: "BE",
-    name: "Belgjikë",
-    nameEn: "Belgium",
-    flag: "🇧🇪",
-    currency: "EUR",
-    currencySymbol: "€",
-    cities: [
-      { name: "Bruksel", nameEn: "Brussels" },
-      { name: "Antverp", nameEn: "Antwerp" },
-      { name: "Gent", nameEn: "Ghent" },
-      { name: "Bryzh", nameEn: "Bruges" },
-      { name: "Liezh", nameEn: "Liege" }
-    ]
-  },
-  {
-    code: "SE",
-    name: "Suedi",
-    nameEn: "Sweden",
-    flag: "🇸🇪",
-    currency: "SEK",
-    currencySymbol: "kr",
-    cities: [
-      { name: "Stokholm", nameEn: "Stockholm" },
-      { name: "Gotenburg", nameEn: "Gothenburg" },
-      { name: "Malmö", nameEn: "Malmo" },
-      { name: "Uppsala", nameEn: "Uppsala" }
-    ]
-  },
-  {
-    code: "NL",
-    name: "Holandë",
-    nameEn: "Netherlands",
-    flag: "🇳🇱",
-    currency: "EUR",
-    currencySymbol: "€",
-    cities: [
-      { name: "Amsterdam", nameEn: "Amsterdam" },
-      { name: "Rotërdam", nameEn: "Rotterdam" },
-      { name: "Hagë", nameEn: "The Hague" },
-      { name: "Utrecht", nameEn: "Utrecht" },
-      { name: "Ajndhoven", nameEn: "Eindhoven" }
-    ]
-  },
-  {
-    code: "MK",
-    name: "Maqedoni e Veriut",
-    nameEn: "North Macedonia",
-    flag: "🇲🇰",
-    currency: "MKD",
-    currencySymbol: "ден",
-    cities: [
-      { name: "Shkup", nameEn: "Skopje" },
-      { name: "Tetovë", nameEn: "Tetovo" },
-      { name: "Gostivar", nameEn: "Gostivar" },
-      { name: "Kumanovë", nameEn: "Kumanovo" },
-      { name: "Strugë", nameEn: "Struga" },
-      { name: "Ohër", nameEn: "Ohrid" },
-      { name: "Kërçovë", nameEn: "Kicevo" },
-      { name: "Dibër", nameEn: "Debar" },
-      { name: "Manastir", nameEn: "Bitola" },
-      { name: "Prilep", nameEn: "Prilep" }
-    ]
-  },
-  {
-    code: "ME",
-    name: "Mal i Zi",
-    nameEn: "Montenegro",
-    flag: "🇲🇪",
-    currency: "EUR",
-    currencySymbol: "€",
-    cities: [
-      { name: "Podgoricë", nameEn: "Podgorica" },
-      { name: "Ulqin", nameEn: "Ulcinj" },
-      { name: "Tivar", nameEn: "Bar" },
-      { name: "Tuz", nameEn: "Tuzi" },
-      { name: "Guci", nameEn: "Gusinje" },
-      { name: "Plavë", nameEn: "Plav" },
-      { name: "Rozhajë", nameEn: "Rozaje" },
-      { name: "Budvë", nameEn: "Budva" },
-      { name: "Kotor", nameEn: "Kotor" },
-      { name: "Nikshiq", nameEn: "Niksic" }
-    ]
-  }
-];
-const getCurrentLanguage = () => {
-  const i18nextLng = localStorage.getItem("i18nextLng");
-  if (i18nextLng) return i18nextLng;
-  const appLanguage = localStorage.getItem("appLanguage");
-  if (appLanguage) return appLanguage;
-  return "sq";
-};
-const isAlbanian = () => {
-  const lang = getCurrentLanguage();
-  return lang === "sq" || lang === "sq-AL" || lang.startsWith("sq");
-};
-const getCountryByCode = (code) => {
-  return countries.find((c) => c.code === code) || countries[0];
-};
-const getCitiesForCountry = (countryCode) => {
-  const country2 = getCountryByCode(countryCode);
-  return country2 ? country2.cities : [];
-};
-const getLocalizedCitiesForCountry = (countryCode) => {
-  const country2 = getCountryByCode(countryCode);
-  if (!country2) return [];
-  return country2.cities.map((city) => ({
-    ...city,
-    displayName: isAlbanian() ? city.name : city.nameEn
-  }));
-};
-const getCurrencySymbol = (countryCode) => {
-  const country2 = getCountryByCode(countryCode);
-  return country2 ? country2.currencySymbol : "€";
-};
-const getLocalizedCountryName = (countryCode) => {
-  const country2 = getCountryByCode(countryCode);
-  if (!country2) return "Albania";
-  return isAlbanian() ? country2.name : country2.nameEn;
-};
-const getCityNameEn = (countryCode, cityName) => {
-  const country2 = getCountryByCode(countryCode);
-  if (!country2) return cityName;
-  const city = country2.cities.find((c) => c.name === cityName || c.nameEn === cityName);
-  return city ? city.nameEn : cityName;
-};
-function CountrySwitcher() {
-  const { t } = useTranslation();
-  const [isOpen, setIsOpen] = reactExports.useState(false);
-  const [selectedCountry, setSelectedCountry] = reactExports.useState(
-    localStorage.getItem("userCountry") || "AL"
-  );
-  const triggerRef = reactExports.useRef(null);
-  const dropdownRef = reactExports.useRef(null);
-  const currentCountry = getCountryByCode(selectedCountry);
-  reactExports.useEffect(() => {
-    const handleClickOutside = (event) => {
-      const clickedInsideTrigger = triggerRef.current && triggerRef.current.contains(event.target);
-      const clickedInsideDropdown = dropdownRef.current && dropdownRef.current.contains(event.target);
-      if (!clickedInsideTrigger && !clickedInsideDropdown) {
-        setIsOpen(false);
-      }
-    };
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isOpen]);
-  reactExports.useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === "Escape") setIsOpen(false);
-    };
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscape);
-    }
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, [isOpen]);
-  reactExports.useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
-  const handleSelectCountry = (countryCode) => {
-    setSelectedCountry(countryCode);
-    localStorage.setItem("userCountry", countryCode);
-    localStorage.removeItem("userCity");
-    window.dispatchEvent(new CustomEvent("countryChanged", {
-      detail: { countryCode }
-    }));
-    setIsOpen(false);
-  };
-  const getTriggerRect = () => {
-    if (triggerRef.current) {
-      return triggerRef.current.getBoundingClientRect();
-    }
-    return null;
-  };
-  const triggerRect = isOpen ? getTriggerRect() : null;
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", ref: triggerRef, children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "button",
-      {
-        onClick: (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setIsOpen(!isOpen);
-        },
-        className: "group flex items-center gap-1.5 px-3 py-2 bg-slate-800/90 border border-slate-700/60 rounded-xl hover:bg-slate-700/90 hover:border-purple-500/50 transition-all duration-200",
-        "aria-label": "Change country",
-        "aria-expanded": isOpen,
-        type: "button",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-3.5 h-3.5 text-slate-400 group-hover:text-purple-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg", children: currentCountry?.flag }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            ChevronDown,
-            {
-              className: `w-3.5 h-3.5 text-slate-400 group-hover:text-purple-400 transition-all duration-200 ${isOpen ? "rotate-180" : ""}`
-            }
-          )
-        ]
-      }
-    ),
-    isOpen && reactDomExports.createPortal(
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "div",
-          {
-            className: "md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[10000]",
-            onClick: (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setIsOpen(false);
-            }
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            ref: dropdownRef,
-            className: "fixed left-4 right-4 bottom-4 md:fixed md:left-auto md:right-auto md:bottom-auto bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-[10001]",
-            style: {
-              maxHeight: "calc(100vh - 120px)",
-              ...triggerRect && window.innerWidth >= 768 ? {
-                top: triggerRect.bottom + 8,
-                right: window.innerWidth - triggerRect.right,
-                width: 288,
-                left: "auto",
-                bottom: "auto"
-              } : {}
-            },
-            onClick: (e) => e.stopPropagation(),
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-3 border-b border-slate-700/50 bg-gradient-to-r from-slate-800 to-slate-800/50", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-4 h-4 text-purple-400" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-white", children: t("country.selectCountry") })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    onClick: (e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setIsOpen(false);
-                    },
-                    className: "p-1.5 hover:bg-slate-700 rounded-lg transition-colors md:hidden",
-                    type: "button",
-                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5 text-slate-400" })
-                  }
-                )
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-y-auto max-h-[400px]", children: countries.map((country2) => {
-                const isSelected = selectedCountry === country2.code;
-                return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "button",
-                  {
-                    onClick: (e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleSelectCountry(country2.code);
-                    },
-                    className: `w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-150 border-b border-slate-800/50 last:border-b-0 ${isSelected ? "bg-purple-500/20 text-white" : "text-slate-300 hover:bg-slate-800 hover:text-white active:bg-slate-700"}`,
-                    type: "button",
-                    children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: country2.flag }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-medium", children: getLocalizedCountryName(country2.code) }),
-                          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-xs text-slate-500", children: [
-                            country2.cities?.length || 0,
-                            " ",
-                            t("country.cities")
-                          ] })
-                        ] })
-                      ] }),
-                      isSelected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-400 font-medium", children: t("common.active") }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-purple-400 flex-shrink-0" })
-                      ] })
-                    ]
-                  },
-                  country2.code
-                );
-              }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-4 py-2 border-t border-slate-700/50 bg-slate-800/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-slate-500 text-center", children: t("country.hint") }) })
-            ]
-          }
-        )
-      ] }),
-      document.body
-    )
-  ] });
-}
 const {
   slice,
   forEach
@@ -12683,15 +12120,15 @@ const events$6 = { "title": "Local Events 🎉", "subtitle": "Find event venues 
 const dates$6 = { "title": "First Dates 💕", "subtitle": "Find perfect ideas for your first date", "selectCity": "Select City", "selectCategory": "Select Category", "restaurants": "Restaurants", "restaurantsDesc": "Romantic restaurants with great atmosphere", "cafes": "Cafes", "cafesDesc": "Beautiful cafes for comfortable conversations", "bars": "Bars & Rooftop", "barsDesc": "Bars and rooftop bars for a lovely evening", "cinema": "Cinema", "cinemaDesc": "Movies and cinema activities", "music": "Music & Live", "musicDesc": "Concerts and music events", "activities": "Activities", "activitiesDesc": "Bowling, escape rooms, and other activities", "culture": "Culture & Art", "cultureDesc": "Museums, galleries, and cultural events", "nature": "Nature & Parks", "natureDesc": "Parks, walks, and outdoor activities", "getSuggestions": "Get Suggestions", "loading": "Searching...", "otherCity": "Other city", "more": "more", "selectedCity": "Selected city", "searchCity": "Search or type a city...", "searchInCity": "Search in this city", "cityNotInList": 'City "{{city}}" not found in list, but you can search directly.', "searchInCityName": 'Search in "{{city}}"', "close": "Close", "selectCityAndCategory": "Please select a city and category!", "generating": "Generating...", "generateSuggestions": "Generate Suggestions", "selectCityAndCategoryAbove": "Select the city and category above", "nowSelectCategory": "Now select a category!", "nowSelectCity": "Now select a city!", "suggestions": "Suggestions", "sponsored": "Sponsored", "loadingMore": "Loading more...", "loadMoreResults": "Load More Results", "yourBusinessHere": "Your Business Here?", "businessPartnershipDesc": "Want your business to appear as sponsored and get more customers? Contact us for partnership!", "becomePartner": "Become Partner", "selectCityForSuggestions": "Select a city to see specific suggestions", "selectCategoryToStart": "Select a category to start" };
 const gifts$6 = { "title": "Gift Suggestions 🎁", "subtitle": "Find the perfect gift based on your partner's interests", "partnerInterests": "What does your partner like? (interests, hobbies, etc.)", "partnerInterestsPlaceholder": "e.g: They like music, football, books, technology, fashion...", "enterInterests": "Please enter your partner's interests", "specialOccasion": "Special Occasion", "budget": "Budget", "location": "Location", "change": "Change", "cityOptional": "City (optional - for local shops)", "willShowLocalShops": "Local shops in {{city}} will also be shown", "generating": "Generating suggestions...", "generateSuggestions": "Generate Suggestions", "searchingLocalShops": "Searching local shops in {{city}}...", "localShopsIn": "Local Shops in {{city}}", "viewOnGoogleMaps": "View on Google Maps", "loadingMoreShops": "Loading more shops...", "loadMoreShops": "Load More Shops", "generatingIdeas": "Generating gift ideas...", "giftIdeasOnline": "Online Gift Ideas", "viewAndBuy": "View and Buy", "alsoShowLocalShops": "Also show local shops near me", "selectCity": "Select your city", "shopOn": "Shop on", "giftFor": "Gift for", "forHer": "For Her", "forHim": "For Him", "forThem": "For Them", "emptyState": "Enter your partner's interests and select an occasion", "emptyStateSubtitle": "AI will generate perfect gift suggestions", "affiliateNote": '💡 Click "View and Buy" to open the partner link. Biseda.ai receives a small commission for purchases made through our links.', "occasions": { "birthday": "Birthday", "anniversary": "Anniversary", "valentine": "Valentine's Day", "christmas": "Christmas", "newyear": "New Year", "justbecause": "Just Because" } };
 const settings$6 = { "title": "Settings", "language": "Language", "region": "Region", "notifications": "Notifications", "darkMode": "Dark mode", "about": "About", "help": "Help", "privacy": "Privacy", "terms": "Terms" };
-const common$6 = { "loading": "Loading...", "error": "Error", "success": "Success", "cancel": "Cancel", "confirm": "Confirm", "save": "Save", "saved": "Saved!", "saving": "Saving...", "delete": "Delete", "edit": "Edit", "goBack": "Go Back", "home": "Home", "close": "Close", "search": "Search", "filter": "Filter", "sort": "Sort", "refresh": "Refresh", "refreshing": "Refreshing...", "tryAgain": "Try again", "seeAll": "See all", "more": "More", "less": "Less", "yes": "Yes", "no": "No", "active": "Active", "cities": "cities", "loginToSave": "Please log in to save", "saveError": "Error saving" };
+const common$6 = { "loading": "Loading...", "error": "Error", "success": "Success", "cancel": "Cancel", "confirm": "Confirm", "save": "Save", "saved": "Saved!", "saving": "Saving...", "delete": "Delete", "edit": "Edit", "goBack": "Go Back", "home": "Home", "close": "Close", "search": "Search", "filter": "Filter", "sort": "Sort", "refresh": "Refresh", "refreshing": "Refreshing...", "tryAgain": "Try again", "seeAll": "See all", "more": "More", "less": "Less", "yes": "Yes", "no": "No", "active": "Active", "cities": "cities", "loginToSave": "Please log in to save", "saveError": "Error saving", "regionSettings": "Region Settings" };
 const ageVerification$6 = { "title": "Age Verification", "subtitle": "This app is for adults only (18+)", "selectAge": "How old are you?", "chooseAge": "Select age...", "yearsOld": "years old", "confirm": "Confirm & Continue", "disclaimer": "By continuing, you confirm that you are 18 or older." };
 const clipboard$1 = { "analyzing": "Analyzing...", "limitReached": "Limit reached - Upgrade", "analyzeGenerate": "Analyze & Generate", "limitPlaceholder": "🚫 Limit reached - Upgrade to continue", "typePlaceholder": "💬 Type or paste message here...", "checkingPlaceholder": "⏳ Checking...", "generatingResponse": "Generating response..." };
 const mood$1 = { "title": "Mood Check", "subtitle": "How are you feeling today?", "confident": "Confident", "nervous": "Nervous", "excited": "Excited", "anxious": "Anxious", "happy": "Happy", "unsure": "Unsure", "highEnergy": "High Energy", "mediumEnergy": "Medium", "lowEnergy": "Low Energy", "howFeeling": "How are you feeling?", "energyLevel": "What's your energy level?", "whatSituation": "What's the situation?", "contextFirstDate": "Going on a first date", "contextTexting": "Texting someone new", "contextApproaching": "Want to approach someone", "contextMeetParents": "First time meeting the parents", "contextAskingOut": "Asking someone out", "contextSecondDate": "Going on a second date", "contextMakingMove": "Making the first move", "contextRejected": "Feeling rejected", "contextBreakup": "Going through a breakup", "contextLongDistance": "Long distance relationship", "contextRelationship": "In a relationship", "contextGeneral": "Just need a boost", "analyzing": "Analyzing...", "getAdvice": "Get Personalized Advice", "yourState": "Your current state: {{mood}}, {{energy}} energy, {{context}}", "yourAdvice": "Your Personalized Advice", "checkAgain": "Check Again" };
 const rehearsal$1 = { "title": "Date Rehearsal", "subtitle": "Practice conversations with AI roleplay", "personName": "Person's name", "parentName": "Parent's name", "partnerName": "Partner's name", "exName": "Their name", "strangerName": "Their name", "dateName": "Your date's name", "enterParentName": "e.g. John, Mary...", "enterPartnerName": "Enter their name...", "enterTheirName": "Enter the name for the roleplay", "selectScenario": "What situation do you want to practice?", "startRoleplay": "Start Roleplay", "partnerNameLabel": "Your partner's name (their child)", "partnerNameHint": "The person you're dating - their son/daughter", "enterPartnerNamePlaceholder": "e.g. Sarah, Mike...", "suggestedReplies": "Suggested replies:", "enterName": "Enter a name...", "personality": "Their personality", "selectPersonality": "Choose a personality type", "selectGoal": "What do you want to achieve?", "yourGoal": "Your goal", "chooseScenario": "Choose a scenario", "enterNameFirst": "⚠️ Enter a name first to start", "firstDate": "First Date", "firstDateDesc": "Practice conversation at a coffee shop", "approaching": "Approaching Someone", "approachingDesc": "Practice starting a conversation", "meetParents": "Meeting the Parents", "meetParentsDesc": "Practice making a good impression", "difficultConvo": "Difficult Conversation", "difficultConvoDesc": "Practice handling tough topics", "reconnecting": "Reconnecting", "reconnectingDesc": "Practice reaching out to an ex or old flame", "friendly": "Friendly & Open", "shy": "Shy & Reserved", "confident": "Confident & Flirty", "challenging": "Playing Hard to Get", "sarcastic": "Sarcastic & Witty", "serious": "Serious & Traditional", "protective": "Protective & Skeptical", "warm": "Warm & Welcoming", "intentImpress": "Make a great impression", "intentConnect": "Build a genuine connection", "intentFun": "Have fun & be playful", "intentSerious": "Show serious intentions", "intentApproval": "Win their approval", "intentClosure": "Get closure or clarity", "intentFriends": "Just be friends", "intentFlirty": "Be flirty & charming", "intentConfident": "Build my confidence", "intentGetNumber": "Get their number", "intentSecondDate": "Secure a second date", "intentReconcile": "Reconcile the relationship", "genderFemale": "Woman", "genderMale": "Man", "genderNonbinary": "Non-binary", "theirGender": "Their gender", "parentGender": "Parent's gender", "partnerGender": "Partner's gender", "exGender": "Their gender", "strangerGender": "Their gender", "dateGender": "Date's gender", "selectGender": "Who will you be talking to?", "quickSelect": "Quick select:", "dontKnowName": "I don't know their name", "strangerDefault": "Stranger", "mysteryPerson": "Mystery Person", "cuteStranger": "Cutie at the bar", "enterCustomName": "Enter a custom name:", "suggestedNames": "Suggested names:", "getFeedback": "Get Feedback", "yourFeedback": "Your Feedback", "tryAnother": "Try Another Scenario", "yourResponse": "Your response...", "tipMinMessages": "Send at least 2 messages to unlock feedback", "tipReady": 'Ready for feedback! Click "Get Feedback" when done', "errorResponse": "Sorry, I couldn't respond. Please try again.", "errorStarting": "Hi! Let's get started. What would you like to say?", "feedbackError": "Could not generate feedback. Please try again.", "newPerson": "Start with new person", "roleParent": "Parent", "roleStranger": "Stranger", "rolePartner": "Partner", "roleEx": "Ex", "roleDate": "Date" };
 const upgrade$6 = { "title": "Upgrade Plan", "limitReached": "Limit reached!", "unlimitedMessages": "Unlimited messages", "allFeatures": "All features", "priority": "Priority support", "monthly": "Monthly", "yearly": "Yearly", "choosePlan": "Choose Plan", "proFeature": "Pro Feature", "upgradeToPro": "Upgrade to Pro", "requiresProElite": "Requires Pro or Elite membership", "profileOptimizerLocked": "Profile Optimizer is available for Pro and Elite members. Upgrade to unlock AI-powered profile analysis!", "moodCheckLocked": "Mood Check is available for Pro and Elite members. Upgrade to get personalized advice based on your emotional state!", "dateRehearsalLocked": "Date Rehearsal is available for Pro and Elite members. Upgrade to practice conversations with AI roleplay!" };
 const usage$6 = { "freeTrial": "Free Trial", "freePlan": "Free Plan", "starterPlan": "Starter Plan (€6.99)", "proPlan": "Pro Plan (€12.99)", "elitePlan": "Elite Plan (€19.99)", "basePlan": "Basic Plan", "buyCredits": "Buy Credits", "upgradeMore": "Upgrade More", "credits": "Credits", "limitReached": "Daily limit reached!", "upgradeToChat": "Upgrade to continue chatting.", "screenshotAnalysis": "free analyses left" };
-const country$6 = { "selectCountry": "Select Country", "hint": "Select country to see local events and dates" };
-const language$6 = { "selectLanguage": "Select Language", "hint": "Select app language" };
+const country$6 = { "selectCountry": "Select Country", "hint": "Region affects local recommendations", "region": "Region", "cities": "cities" };
+const language$6 = { "selectLanguage": "Select Language", "hint": "Language affects app text and AI responses", "language": "Language" };
 const plans$6 = { "mostPopular": "Most Popular", "select": "Select", "subscribeWeb": "Subscribe on Web", "webSubscription": "To subscribe, visit bisedaai.com from your browser.", "securePayment": "Secure payment with Stripe. Cancel anytime.", "starter": { "messages": "50 messages per day", "screenshots": "5 screenshot analyses/month", "categories": "All categories", "adultContent": "Adult content access", "aiCoach": "AI Coach chat", "tips": "Dating tips & advice" }, "pro": { "messages": "150 messages per day", "screenshots": "15 screenshot analyses/month", "imageAnalysis": "20 image analyses/day", "starterFeatures": "Everything from Starter", "intimacyCoach": "Intimacy Coach access", "advancedAI": "Advanced AI responses" }, "elite": { "messages": "350 messages per day", "screenshots": "50 screenshot analyses/month", "imageAnalysis": "50 image analyses/day", "proFeatures": "Everything from Pro", "intimacyCoach": "Full Intimacy Coach", "prioritySupport": "Priority support 24/7", "earlyAccess": "Early access to new features" } };
 const profile$6 = { "overview": "Overview", "saved": "Saved", "plan": "Plan", "currentMembership": "Current membership", "upgrade": "Upgrade", "messagesToday": "Messages Today", "credits": "Credits", "location": "Location", "selectCountry": "Select country", "selectCity": "Select city", "saveLocation": "Save", "locationSaved": "Location saved!", "logout": "Log Out", "logoutConfirm": "Are you sure you want to log out?", "cancel": "Cancel", "noSavedItems": "No saved items", "noSavedItemsDesc": "Your saved items will appear here", "loading": "Loading profile...", "savedOn": "Saved", "savedVenues": "Saved Venues", "savedDateIdeas": "Saved Date Ideas", "savedGifts": "Saved Gifts", "savedTips": "Saved Tips", "cancelMembership": "Cancel Membership", "cancelNote": "Need to cancel your subscription?", "cancel30Days": "30-Day Notice Required", "cancel30DaysDesc": "Cancellation requests require 30 days advance notice. Your membership will remain active until the notice period ends.", "cancel30DaysDetail": "As per our terms, cancellations require 30 days advance notice. Your membership and all features will remain active during this period.", "requestCancellation": "Request Cancellation", "cancelSubtitle": "We're sorry to see you go", "cancelReason": "Why are you cancelling? (Optional)", "cancelReasonPlaceholder": "Tell us how we could improve...", "whatYouLose": "What you'll lose after cancellation:", "loseMessages": "Extended daily message limits", "loseScreenshots": "Screenshot analysis feature", "loseIntimacy": "Access to Intimacy Coach", "confirmCancellation": "Confirm Cancellation Request", "keepMembership": "Keep My Membership", "cancelRequestSent": "Cancellation Request Sent", "cancelConfirmation": "We have received your cancellation request", "requestReceived": "Request Received", "cancelProcessing": "Your cancellation will be processed within 30 days. You'll receive a confirmation email shortly.", "activeUntil": "Your membership remains active for 30 more days" };
 const credits$6 = { "title": "Buy Credits", "subtitle": "Extend your daily limit", "currentBalance": "Current Balance", "creditsCount": "credits", "perCredit": "per credit", "buyNow": "Buy Now", "processing": "Processing...", "purchaseFailed": "Purchase failed. Please try again.", "errorOccurred": "An error occurred. Please try again.", "description": "Credits are used when you exceed your daily message limit. 1 credit = 1 message." };
@@ -13068,12 +12505,405 @@ instance.use(Browser).use(initReactI18next).init({
     // React already escapes
   }
 });
-function LanguageSwitcher() {
+const countries = [
+  {
+    code: "AL",
+    name: "Shqipëri",
+    nameEn: "Albania",
+    flag: "🇦🇱",
+    currency: "ALL",
+    currencySymbol: "L",
+    cities: [
+      { name: "Tiranë", nameEn: "Tirana" },
+      { name: "Durrës", nameEn: "Durres" },
+      { name: "Vlorë", nameEn: "Vlora" },
+      { name: "Shkodër", nameEn: "Shkoder" },
+      { name: "Elbasan", nameEn: "Elbasan" },
+      { name: "Korçë", nameEn: "Korce" },
+      { name: "Fier", nameEn: "Fier" },
+      { name: "Berat", nameEn: "Berat" },
+      { name: "Lushnjë", nameEn: "Lushnje" },
+      { name: "Pogradec", nameEn: "Pogradec" },
+      { name: "Sarandë", nameEn: "Saranda" },
+      { name: "Gjirokastër", nameEn: "Gjirokastra" },
+      { name: "Has", nameEn: "Has" },
+      { name: "Tropojë", nameEn: "Tropoja" },
+      { name: "Tepelenë", nameEn: "Tepelena" },
+      { name: "Kukës", nameEn: "Kukes" },
+      { name: "Lezhë", nameEn: "Lezha" },
+      { name: "Peshkopi", nameEn: "Peshkopi" },
+      { name: "Bulqizë", nameEn: "Bulqiza" },
+      { name: "Librazhd", nameEn: "Librazhd" },
+      { name: "Gramsh", nameEn: "Gramsh" },
+      { name: "Përmet", nameEn: "Permet" },
+      { name: "Ersekë", nameEn: "Erseka" },
+      { name: "Pukë", nameEn: "Puka" },
+      { name: "Mirditë", nameEn: "Mirdita" },
+      { name: "Krujë", nameEn: "Kruja" },
+      { name: "Kavajë", nameEn: "Kavaja" },
+      { name: "Peqin", nameEn: "Peqin" },
+      { name: "Cërrik", nameEn: "Cerrik" },
+      { name: "Kuçovë", nameEn: "Kucova" },
+      { name: "Roskovec", nameEn: "Roskovec" },
+      { name: "Patos", nameEn: "Patos" },
+      { name: "Ballsh", nameEn: "Ballsh" },
+      { name: "Memaliaj", nameEn: "Memaliaj" },
+      { name: "Selenicë", nameEn: "Selenica" },
+      { name: "Himarë", nameEn: "Himara" },
+      { name: "Delvinë", nameEn: "Delvina" },
+      { name: "Konispol", nameEn: "Konispol" },
+      { name: "Finiq", nameEn: "Finiq" },
+      { name: "Dropull", nameEn: "Dropull" },
+      { name: "Libohovë", nameEn: "Libohova" },
+      { name: "Këlcyrë", nameEn: "Kelcyra" },
+      { name: "Skrapar", nameEn: "Skrapar" },
+      { name: "Poliçan", nameEn: "Polican" },
+      { name: "Devoll", nameEn: "Devoll" },
+      { name: "Pustec", nameEn: "Pustec" },
+      { name: "Maliq", nameEn: "Maliq" },
+      { name: "Kolonjë", nameEn: "Kolonja" },
+      { name: "Vau i Dejës", nameEn: "Vau i Dejes" },
+      { name: "Fushë-Arrëz", nameEn: "Fushe-Arrez" },
+      { name: "Malësi e Madhe", nameEn: "Malesia e Madhe" },
+      { name: "Klos", nameEn: "Klos" },
+      { name: "Mat", nameEn: "Mat" },
+      { name: "Dibër", nameEn: "Diber" },
+      { name: "Laç", nameEn: "Lac" },
+      { name: "Mamurras", nameEn: "Mamurras" },
+      { name: "Kurbin", nameEn: "Kurbin" },
+      { name: "Shijak", nameEn: "Shijak" },
+      { name: "Vorë", nameEn: "Vora" },
+      { name: "Kamëz", nameEn: "Kamza" }
+    ]
+  },
+  {
+    code: "XK",
+    name: "Kosovë",
+    nameEn: "Kosovo",
+    flag: "🇽🇰",
+    currency: "EUR",
+    currencySymbol: "€",
+    cities: [
+      { name: "Prishtinë", nameEn: "Pristina" },
+      { name: "Prizren", nameEn: "Prizren" },
+      { name: "Ferizaj", nameEn: "Ferizaj" },
+      { name: "Pejë", nameEn: "Peja" },
+      { name: "Gjakovë", nameEn: "Gjakova" },
+      { name: "Gjilan", nameEn: "Gjilan" },
+      { name: "Mitrovicë", nameEn: "Mitrovica" },
+      { name: "Podujevë", nameEn: "Podujeva" }
+    ]
+  },
+  {
+    code: "GB",
+    name: "Britani e Madhe",
+    nameEn: "United Kingdom",
+    flag: "🇬🇧",
+    currency: "GBP",
+    currencySymbol: "£",
+    cities: [
+      { name: "Londër", nameEn: "London" },
+      { name: "Mançester", nameEn: "Manchester" },
+      { name: "Birmingham", nameEn: "Birmingham" },
+      { name: "Leeds", nameEn: "Leeds" },
+      { name: "Liverpool", nameEn: "Liverpool" },
+      { name: "Bristol", nameEn: "Bristol" },
+      { name: "Sheffield", nameEn: "Sheffield" },
+      { name: "Edinburgh", nameEn: "Edinburgh" },
+      { name: "Glasgow", nameEn: "Glasgow" },
+      { name: "Nottingham", nameEn: "Nottingham" }
+    ]
+  },
+  {
+    code: "CH",
+    name: "Zvicër",
+    nameEn: "Switzerland",
+    flag: "🇨🇭",
+    currency: "CHF",
+    currencySymbol: "CHF",
+    cities: [
+      { name: "Cyrih", nameEn: "Zurich" },
+      { name: "Gjenevë", nameEn: "Geneva" },
+      { name: "Bazel", nameEn: "Basel" },
+      { name: "Bernë", nameEn: "Bern" },
+      { name: "Lozanë", nameEn: "Lausanne" },
+      { name: "Winterthur", nameEn: "Winterthur" },
+      { name: "St. Gallen", nameEn: "St. Gallen" },
+      { name: "Lugano", nameEn: "Lugano" }
+    ]
+  },
+  {
+    code: "DE",
+    name: "Gjermani",
+    nameEn: "Germany",
+    flag: "🇩🇪",
+    currency: "EUR",
+    currencySymbol: "€",
+    cities: [
+      { name: "Mynih", nameEn: "Munich" },
+      { name: "Berlin", nameEn: "Berlin" },
+      { name: "Frankfurt", nameEn: "Frankfurt" },
+      { name: "Hamburg", nameEn: "Hamburg" },
+      { name: "Këln", nameEn: "Cologne" },
+      { name: "Dyseldorf", nameEn: "Dusseldorf" },
+      { name: "Shtutgart", nameEn: "Stuttgart" },
+      { name: "Dortmund", nameEn: "Dortmund" },
+      { name: "Esen", nameEn: "Essen" },
+      { name: "Hanover", nameEn: "Hanover" }
+    ]
+  },
+  {
+    code: "US",
+    name: "SHBA",
+    nameEn: "United States",
+    flag: "🇺🇸",
+    currency: "USD",
+    currencySymbol: "$",
+    cities: [
+      { name: "Nju Jork", nameEn: "New York" },
+      { name: "Çikago", nameEn: "Chicago" },
+      { name: "Los Anxhelos", nameEn: "Los Angeles" },
+      { name: "Detroit", nameEn: "Detroit" },
+      { name: "Boston", nameEn: "Boston" },
+      { name: "Filadelfia", nameEn: "Philadelphia" },
+      { name: "Uashington", nameEn: "Washington DC" },
+      { name: "Houston", nameEn: "Houston" },
+      { name: "San Francisko", nameEn: "San Francisco" },
+      { name: "Miami", nameEn: "Miami" }
+    ]
+  },
+  {
+    code: "IT",
+    name: "Itali",
+    nameEn: "Italy",
+    flag: "🇮🇹",
+    currency: "EUR",
+    currencySymbol: "€",
+    cities: [
+      { name: "Milano", nameEn: "Milan" },
+      { name: "Romë", nameEn: "Rome" },
+      { name: "Torino", nameEn: "Turin" },
+      { name: "Napoli", nameEn: "Naples" },
+      { name: "Firence", nameEn: "Florence" },
+      { name: "Bolonjë", nameEn: "Bologna" },
+      { name: "Venecia", nameEn: "Venice" },
+      { name: "Bari", nameEn: "Bari" },
+      { name: "Verona", nameEn: "Verona" },
+      { name: "Padova", nameEn: "Padua" }
+    ]
+  },
+  {
+    code: "FR",
+    name: "Francë",
+    nameEn: "France",
+    flag: "🇫🇷",
+    currency: "EUR",
+    currencySymbol: "€",
+    cities: [
+      { name: "Paris", nameEn: "Paris" },
+      { name: "Lion", nameEn: "Lyon" },
+      { name: "Marsejë", nameEn: "Marseille" },
+      { name: "Tuluz", nameEn: "Toulouse" },
+      { name: "Nicë", nameEn: "Nice" },
+      { name: "Nant", nameEn: "Nantes" },
+      { name: "Strasburg", nameEn: "Strasbourg" },
+      { name: "Bordo", nameEn: "Bordeaux" },
+      { name: "Lil", nameEn: "Lille" },
+      { name: "Ren", nameEn: "Rennes" }
+    ]
+  },
+  {
+    code: "ES",
+    name: "Spanjë",
+    nameEn: "Spain",
+    flag: "🇪🇸",
+    currency: "EUR",
+    currencySymbol: "€",
+    cities: [
+      { name: "Madrid", nameEn: "Madrid" },
+      { name: "Barcelonë", nameEn: "Barcelona" },
+      { name: "Valensja", nameEn: "Valencia" },
+      { name: "Seviljë", nameEn: "Seville" },
+      { name: "Saragozë", nameEn: "Zaragoza" },
+      { name: "Malagë", nameEn: "Malaga" },
+      { name: "Murcia", nameEn: "Murcia" },
+      { name: "Palma", nameEn: "Palma" },
+      { name: "Bilbao", nameEn: "Bilbao" },
+      { name: "Alikante", nameEn: "Alicante" }
+    ]
+  },
+  {
+    code: "GR",
+    name: "Greqi",
+    nameEn: "Greece",
+    flag: "🇬🇷",
+    currency: "EUR",
+    currencySymbol: "€",
+    cities: [
+      { name: "Athinë", nameEn: "Athens" },
+      { name: "Selanik", nameEn: "Thessaloniki" },
+      { name: "Patras", nameEn: "Patras" },
+      { name: "Heraklion", nameEn: "Heraklion" },
+      { name: "Larisa", nameEn: "Larissa" },
+      { name: "Volos", nameEn: "Volos" },
+      { name: "Janinë", nameEn: "Ioannina" },
+      { name: "Kavala", nameEn: "Kavala" },
+      { name: "Rodos", nameEn: "Rhodes" },
+      { name: "Korfuz", nameEn: "Corfu" }
+    ]
+  },
+  {
+    code: "AT",
+    name: "Austri",
+    nameEn: "Austria",
+    flag: "🇦🇹",
+    currency: "EUR",
+    currencySymbol: "€",
+    cities: [
+      { name: "Vjenë", nameEn: "Vienna" },
+      { name: "Grac", nameEn: "Graz" },
+      { name: "Linc", nameEn: "Linz" },
+      { name: "Salcburg", nameEn: "Salzburg" },
+      { name: "Innsbruk", nameEn: "Innsbruck" }
+    ]
+  },
+  {
+    code: "BE",
+    name: "Belgjikë",
+    nameEn: "Belgium",
+    flag: "🇧🇪",
+    currency: "EUR",
+    currencySymbol: "€",
+    cities: [
+      { name: "Bruksel", nameEn: "Brussels" },
+      { name: "Antverp", nameEn: "Antwerp" },
+      { name: "Gent", nameEn: "Ghent" },
+      { name: "Bryzh", nameEn: "Bruges" },
+      { name: "Liezh", nameEn: "Liege" }
+    ]
+  },
+  {
+    code: "SE",
+    name: "Suedi",
+    nameEn: "Sweden",
+    flag: "🇸🇪",
+    currency: "SEK",
+    currencySymbol: "kr",
+    cities: [
+      { name: "Stokholm", nameEn: "Stockholm" },
+      { name: "Gotenburg", nameEn: "Gothenburg" },
+      { name: "Malmö", nameEn: "Malmo" },
+      { name: "Uppsala", nameEn: "Uppsala" }
+    ]
+  },
+  {
+    code: "NL",
+    name: "Holandë",
+    nameEn: "Netherlands",
+    flag: "🇳🇱",
+    currency: "EUR",
+    currencySymbol: "€",
+    cities: [
+      { name: "Amsterdam", nameEn: "Amsterdam" },
+      { name: "Rotërdam", nameEn: "Rotterdam" },
+      { name: "Hagë", nameEn: "The Hague" },
+      { name: "Utrecht", nameEn: "Utrecht" },
+      { name: "Ajndhoven", nameEn: "Eindhoven" }
+    ]
+  },
+  {
+    code: "MK",
+    name: "Maqedoni e Veriut",
+    nameEn: "North Macedonia",
+    flag: "🇲🇰",
+    currency: "MKD",
+    currencySymbol: "ден",
+    cities: [
+      { name: "Shkup", nameEn: "Skopje" },
+      { name: "Tetovë", nameEn: "Tetovo" },
+      { name: "Gostivar", nameEn: "Gostivar" },
+      { name: "Kumanovë", nameEn: "Kumanovo" },
+      { name: "Strugë", nameEn: "Struga" },
+      { name: "Ohër", nameEn: "Ohrid" },
+      { name: "Kërçovë", nameEn: "Kicevo" },
+      { name: "Dibër", nameEn: "Debar" },
+      { name: "Manastir", nameEn: "Bitola" },
+      { name: "Prilep", nameEn: "Prilep" }
+    ]
+  },
+  {
+    code: "ME",
+    name: "Mal i Zi",
+    nameEn: "Montenegro",
+    flag: "🇲🇪",
+    currency: "EUR",
+    currencySymbol: "€",
+    cities: [
+      { name: "Podgoricë", nameEn: "Podgorica" },
+      { name: "Ulqin", nameEn: "Ulcinj" },
+      { name: "Tivar", nameEn: "Bar" },
+      { name: "Tuz", nameEn: "Tuzi" },
+      { name: "Guci", nameEn: "Gusinje" },
+      { name: "Plavë", nameEn: "Plav" },
+      { name: "Rozhajë", nameEn: "Rozaje" },
+      { name: "Budvë", nameEn: "Budva" },
+      { name: "Kotor", nameEn: "Kotor" },
+      { name: "Nikshiq", nameEn: "Niksic" }
+    ]
+  }
+];
+const getCurrentLanguage = () => {
+  const i18nextLng = localStorage.getItem("i18nextLng");
+  if (i18nextLng) return i18nextLng;
+  const appLanguage = localStorage.getItem("appLanguage");
+  if (appLanguage) return appLanguage;
+  return "sq";
+};
+const isAlbanian = () => {
+  const lang = getCurrentLanguage();
+  return lang === "sq" || lang === "sq-AL" || lang.startsWith("sq");
+};
+const getCountryByCode = (code) => {
+  return countries.find((c) => c.code === code) || countries[0];
+};
+const getCitiesForCountry = (countryCode) => {
+  const country2 = getCountryByCode(countryCode);
+  return country2 ? country2.cities : [];
+};
+const getLocalizedCitiesForCountry = (countryCode) => {
+  const country2 = getCountryByCode(countryCode);
+  if (!country2) return [];
+  return country2.cities.map((city) => ({
+    ...city,
+    displayName: isAlbanian() ? city.name : city.nameEn
+  }));
+};
+const getCurrencySymbol = (countryCode) => {
+  const country2 = getCountryByCode(countryCode);
+  return country2 ? country2.currencySymbol : "€";
+};
+const getLocalizedCountryName = (countryCode) => {
+  const country2 = getCountryByCode(countryCode);
+  if (!country2) return "Albania";
+  return isAlbanian() ? country2.name : country2.nameEn;
+};
+const getCityNameEn = (countryCode, cityName) => {
+  const country2 = getCountryByCode(countryCode);
+  if (!country2) return cityName;
+  const city = country2.cities.find((c) => c.name === cityName || c.nameEn === cityName);
+  return city ? city.nameEn : cityName;
+};
+function RegionSwitcher() {
   const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = reactExports.useState(false);
+  const [activeTab, setActiveTab] = reactExports.useState("language");
+  const [selectedCountry, setSelectedCountry] = reactExports.useState(
+    localStorage.getItem("userCountry") || "AL"
+  );
   const triggerRef = reactExports.useRef(null);
   const dropdownRef = reactExports.useRef(null);
   const currentLanguage = languages.find((lang) => lang.code === i18n.language) || languages[0];
+  const currentCountry = getCountryByCode(selectedCountry);
   reactExports.useEffect(() => {
     const handleClickOutside = (event) => {
       const clickedInsideTrigger = triggerRef.current && triggerRef.current.contains(event.target);
@@ -13111,9 +12941,16 @@ function LanguageSwitcher() {
   const handleSelectLanguage = (langCode) => {
     i18n.changeLanguage(langCode);
     localStorage.setItem("appLanguage", langCode);
-    setIsOpen(false);
     window.dispatchEvent(new CustomEvent("languageChanged", {
       detail: { langCode }
+    }));
+  };
+  const handleSelectCountry = (countryCode) => {
+    setSelectedCountry(countryCode);
+    localStorage.setItem("userCountry", countryCode);
+    localStorage.removeItem("userCity");
+    window.dispatchEvent(new CustomEvent("countryChanged", {
+      detail: { countryCode }
     }));
   };
   const getTriggerRect = () => {
@@ -13132,17 +12969,20 @@ function LanguageSwitcher() {
           e.stopPropagation();
           setIsOpen(!isOpen);
         },
-        className: "group flex items-center gap-1.5 px-3 py-2 bg-slate-800/90 border border-slate-700/60 rounded-xl hover:bg-slate-700/90 hover:border-purple-500/50 transition-all duration-200",
-        "aria-label": "Change language",
+        className: "group flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 bg-slate-800/90 border border-slate-700/60 rounded-xl hover:bg-slate-700/90 hover:border-purple-500/50 transition-all duration-200",
+        "aria-label": "Change region settings",
         "aria-expanded": isOpen,
         type: "button",
         children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Languages, { className: "w-3.5 h-3.5 text-slate-400 group-hover:text-purple-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg", children: currentLanguage?.flag }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Globe, { className: "w-3 h-3 sm:w-3.5 sm:h-3.5 text-slate-400 group-hover:text-purple-400" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center -space-x-1", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-base sm:text-lg", children: currentLanguage?.flag }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-base sm:text-lg", children: currentCountry?.flag })
+          ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(
             ChevronDown,
             {
-              className: `w-3.5 h-3.5 text-slate-400 group-hover:text-purple-400 transition-all duration-200 ${isOpen ? "rotate-180" : ""}`
+              className: `w-3 h-3 sm:w-3.5 sm:h-3.5 text-slate-400 group-hover:text-purple-400 transition-all duration-200 ${isOpen ? "rotate-180" : ""}`
             }
           )
         ]
@@ -13153,7 +12993,7 @@ function LanguageSwitcher() {
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "div",
           {
-            className: "md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[10000]",
+            className: "fixed inset-0 bg-black/60 backdrop-blur-sm z-[10000]",
             onClick: (e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -13171,62 +13011,130 @@ function LanguageSwitcher() {
               ...triggerRect && window.innerWidth >= 768 ? {
                 top: triggerRect.bottom + 8,
                 right: window.innerWidth - triggerRect.right,
-                width: 256,
+                width: 320,
                 left: "auto",
                 bottom: "auto"
               } : {}
             },
             onClick: (e) => e.stopPropagation(),
             children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-3 border-b border-slate-700/50 bg-gradient-to-r from-slate-800 to-slate-800/50", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Languages, { className: "w-4 h-4 text-purple-400" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-white", children: t("language.selectLanguage") })
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-b border-slate-700/50 bg-gradient-to-r from-slate-800 to-slate-800/50", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(Globe, { className: "w-4 h-4 text-purple-400" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-white", children: t("common.regionSettings") || "Region Settings" })
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      onClick: (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setIsOpen(false);
+                      },
+                      className: "p-1.5 hover:bg-slate-700 rounded-lg transition-colors",
+                      type: "button",
+                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5 text-slate-400" })
+                    }
+                  )
                 ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    onClick: (e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setIsOpen(false);
-                    },
-                    className: "p-1.5 hover:bg-slate-700 rounded-lg transition-colors md:hidden",
-                    type: "button",
-                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5 text-slate-400" })
-                  }
-                )
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex px-2 pb-2 gap-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "button",
+                    {
+                      onClick: () => setActiveTab("language"),
+                      className: `flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === "language" ? "bg-purple-500/20 text-purple-400 border border-purple-500/50" : "bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:bg-slate-700/50"}`,
+                      type: "button",
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(Languages, { className: "w-4 h-4" }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("language.language") || "Language" }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg", children: currentLanguage?.flag })
+                      ]
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "button",
+                    {
+                      onClick: () => setActiveTab("country"),
+                      className: `flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === "country" ? "bg-purple-500/20 text-purple-400 border border-purple-500/50" : "bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:bg-slate-700/50"}`,
+                      type: "button",
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-4 h-4" }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("country.region") || "Region" }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg", children: currentCountry?.flag })
+                      ]
+                    }
+                  )
+                ] })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-y-auto max-h-[350px]", children: languages.map((language2) => {
-                const isSelected = i18n.language === language2.code;
-                return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "button",
-                  {
-                    onClick: (e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleSelectLanguage(language2.code);
-                    },
-                    className: `w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-150 border-b border-slate-800/50 last:border-b-0 ${isSelected ? "bg-purple-500/20 text-white" : "text-slate-300 hover:bg-slate-800 hover:text-white active:bg-slate-700"}`,
-                    type: "button",
-                    children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: language2.flag }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-medium", children: language2.nativeName }),
-                          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-slate-500", children: language2.name })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-y-auto max-h-[350px]", children: activeTab === "language" ? (
+                // Languages List
+                languages.map((language2) => {
+                  const isSelected = i18n.language === language2.code;
+                  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "button",
+                    {
+                      onClick: (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleSelectLanguage(language2.code);
+                      },
+                      className: `w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-150 border-b border-slate-800/50 last:border-b-0 ${isSelected ? "bg-purple-500/20 text-white" : "text-slate-300 hover:bg-slate-800 hover:text-white active:bg-slate-700"}`,
+                      type: "button",
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: language2.flag }),
+                          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-medium", children: language2.nativeName }),
+                            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-slate-500", children: language2.name })
+                          ] })
+                        ] }),
+                        isSelected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-400 font-medium", children: t("common.active") }),
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-purple-400 flex-shrink-0" })
                         ] })
-                      ] }),
-                      isSelected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-400 font-medium", children: t("common.active") }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-purple-400 flex-shrink-0" })
-                      ] })
-                    ]
-                  },
-                  language2.code
-                );
-              }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-4 py-2 border-t border-slate-700/50 bg-slate-800/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-slate-500 text-center", children: t("language.hint") }) })
+                      ]
+                    },
+                    language2.code
+                  );
+                })
+              ) : (
+                // Countries List
+                countries.map((country2) => {
+                  const isSelected = selectedCountry === country2.code;
+                  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "button",
+                    {
+                      onClick: (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleSelectCountry(country2.code);
+                      },
+                      className: `w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-150 border-b border-slate-800/50 last:border-b-0 ${isSelected ? "bg-purple-500/20 text-white" : "text-slate-300 hover:bg-slate-800 hover:text-white active:bg-slate-700"}`,
+                      type: "button",
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: country2.flag }),
+                          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-medium", children: getLocalizedCountryName(country2.code) }),
+                            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-xs text-slate-500", children: [
+                              country2.cities?.length || 0,
+                              " ",
+                              t("country.cities") || "cities"
+                            ] })
+                          ] })
+                        ] }),
+                        isSelected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-400 font-medium", children: t("common.active") }),
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-purple-400 flex-shrink-0" })
+                        ] })
+                      ]
+                    },
+                    country2.code
+                  );
+                })
+              ) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-4 py-2 border-t border-slate-700/50 bg-slate-800/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-slate-500 text-center", children: activeTab === "language" ? t("language.hint") || "Language affects app text and AI responses" : t("country.hint") || "Region affects local recommendations" }) })
             ]
           }
         )
@@ -13817,6 +13725,173 @@ class CapacitorHttpPluginWeb extends WebPlugin {
 registerPlugin("CapacitorHttp", {
   web: () => new CapacitorHttpPluginWeb()
 });
+function LanguageSwitcher() {
+  const { t, i18n } = useTranslation();
+  const [isOpen, setIsOpen] = reactExports.useState(false);
+  const triggerRef = reactExports.useRef(null);
+  const dropdownRef = reactExports.useRef(null);
+  const currentLanguage = languages.find((lang) => lang.code === i18n.language) || languages[0];
+  reactExports.useEffect(() => {
+    const handleClickOutside = (event) => {
+      const clickedInsideTrigger = triggerRef.current && triggerRef.current.contains(event.target);
+      const clickedInsideDropdown = dropdownRef.current && dropdownRef.current.contains(event.target);
+      if (!clickedInsideTrigger && !clickedInsideDropdown) {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+  reactExports.useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscape);
+    }
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [isOpen]);
+  reactExports.useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+  const handleSelectLanguage = (langCode) => {
+    i18n.changeLanguage(langCode);
+    localStorage.setItem("appLanguage", langCode);
+    setIsOpen(false);
+    window.dispatchEvent(new CustomEvent("languageChanged", {
+      detail: { langCode }
+    }));
+  };
+  const getTriggerRect = () => {
+    if (triggerRef.current) {
+      return triggerRef.current.getBoundingClientRect();
+    }
+    return null;
+  };
+  const triggerRect = isOpen ? getTriggerRect() : null;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", ref: triggerRef, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "button",
+      {
+        onClick: (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsOpen(!isOpen);
+        },
+        className: "group flex items-center gap-1.5 px-3 py-2 bg-slate-800/90 border border-slate-700/60 rounded-xl hover:bg-slate-700/90 hover:border-purple-500/50 transition-all duration-200",
+        "aria-label": "Change language",
+        "aria-expanded": isOpen,
+        type: "button",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Languages, { className: "w-3.5 h-3.5 text-slate-400 group-hover:text-purple-400" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg", children: currentLanguage?.flag }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            ChevronDown,
+            {
+              className: `w-3.5 h-3.5 text-slate-400 group-hover:text-purple-400 transition-all duration-200 ${isOpen ? "rotate-180" : ""}`
+            }
+          )
+        ]
+      }
+    ),
+    isOpen && reactDomExports.createPortal(
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            className: "md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[10000]",
+            onClick: (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsOpen(false);
+            }
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            ref: dropdownRef,
+            className: "fixed left-4 right-4 bottom-4 md:fixed md:left-auto md:right-auto md:bottom-auto bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-[10001]",
+            style: {
+              maxHeight: "calc(100vh - 120px)",
+              ...triggerRect && window.innerWidth >= 768 ? {
+                top: triggerRect.bottom + 8,
+                right: window.innerWidth - triggerRect.right,
+                width: 256,
+                left: "auto",
+                bottom: "auto"
+              } : {}
+            },
+            onClick: (e) => e.stopPropagation(),
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-3 border-b border-slate-700/50 bg-gradient-to-r from-slate-800 to-slate-800/50", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Languages, { className: "w-4 h-4 text-purple-400" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-white", children: t("language.selectLanguage") })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    onClick: (e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setIsOpen(false);
+                    },
+                    className: "p-1.5 hover:bg-slate-700 rounded-lg transition-colors md:hidden",
+                    type: "button",
+                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5 text-slate-400" })
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-y-auto max-h-[350px]", children: languages.map((language2) => {
+                const isSelected = i18n.language === language2.code;
+                return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "button",
+                  {
+                    onClick: (e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleSelectLanguage(language2.code);
+                    },
+                    className: `w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-150 border-b border-slate-800/50 last:border-b-0 ${isSelected ? "bg-purple-500/20 text-white" : "text-slate-300 hover:bg-slate-800 hover:text-white active:bg-slate-700"}`,
+                    type: "button",
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: language2.flag }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-medium", children: language2.nativeName }),
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-slate-500", children: language2.name })
+                        ] })
+                      ] }),
+                      isSelected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-400 font-medium", children: t("common.active") }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-purple-400 flex-shrink-0" })
+                      ] })
+                    ]
+                  },
+                  language2.code
+                );
+              }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-4 py-2 border-t border-slate-700/50 bg-slate-800/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-slate-500 text-center", children: t("language.hint") }) })
+            ]
+          }
+        )
+      ] }),
+      document.body
+    )
+  ] });
+}
 const clearGuestSession = () => {
   localStorage.removeItem("guestSession");
   localStorage.removeItem("isGuest");
@@ -13882,7 +13957,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-B4fVxaCW.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-B9IN57WC.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -14801,9 +14876,8 @@ function Layout({ children, onLogout }) {
               }
             }
           ) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1 sm:gap-2 flex-shrink-0", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "scale-90 sm:scale-100 origin-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LanguageSwitcher, {}) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "scale-90 sm:scale-100 origin-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx(CountrySwitcher, {}) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5 sm:gap-2 flex-shrink-0", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(RegionSwitcher, {}),
             /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/profile", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg hover:scale-105 hover:shadow-purple-500/30 transition-all duration-200", children: /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-4 h-4 sm:w-5 sm:h-5 text-white" }) }) })
           ] })
         ] })
@@ -16907,7 +16981,7 @@ function ClipboardSuggestions() {
       if (window.Capacitor && window.Capacitor.isNativePlatform()) {
         try {
           const { Clipboard: Clipboard2 } = await __vitePreload(async () => {
-            const { Clipboard: Clipboard22 } = await import("./index-DNwRNkFG.js");
+            const { Clipboard: Clipboard22 } = await import("./index-BDhyKVji.js");
             return { Clipboard: Clipboard22 };
           }, true ? [] : void 0);
           const { value } = await Clipboard2.read();
