@@ -15664,7 +15664,7 @@ function ClipboardSuggestions() {
       if (window.Capacitor && window.Capacitor.isNativePlatform()) {
         try {
           const { Clipboard: Clipboard2 } = await __vitePreload(async () => {
-            const { Clipboard: Clipboard22 } = await import("./index-BfDWXLo4.js");
+            const { Clipboard: Clipboard22 } = await import("./index-BWmz4Y-T.js");
             return { Clipboard: Clipboard22 };
           }, true ? [] : void 0);
           const { value } = await Clipboard2.read();
@@ -16790,6 +16790,102 @@ function CrisisHelplineModal({ isOpen, onClose }) {
     ] })
   ] }) }) });
 }
+function AdultVerificationModal({ isOpen, onClose, onConfirm }) {
+  const { t } = useTranslation();
+  const [hasAccepted, setHasAccepted] = reactExports.useState(false);
+  if (!isOpen) return null;
+  const handleConfirm = () => {
+    if (hasAccepted) {
+      localStorage.setItem("adultContentVerified", "true");
+      localStorage.setItem("adultContentVerifiedAt", (/* @__PURE__ */ new Date()).toISOString());
+      onConfirm();
+    }
+  };
+  return reactDomExports.createPortal(
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: "fixed inset-0 z-[99999] flex items-center justify-center p-4",
+        style: { backgroundColor: "rgba(0, 0, 0, 0.9)" },
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-md bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl border border-pink-500/30 shadow-2xl overflow-hidden", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative p-6 text-center border-b border-slate-700/50", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: onClose,
+                className: "absolute top-4 right-4 p-2 text-slate-400 hover:text-white hover:bg-slate-700/50 rounded-xl transition-all",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5" })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-600 mb-4 shadow-lg shadow-pink-500/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Shield, { className: "w-8 h-8 text-white" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white mb-2", children: t("intimacy.ageVerification.title", "Adult Content") }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: t("intimacy.ageVerification.subtitle", "This section contains mature content for adults only") })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6 space-y-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3 p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(AlertTriangle, { className: "w-5 h-5 text-amber-400 shrink-0 mt-0.5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-amber-300 font-semibold text-sm", children: t("intimacy.ageVerification.warning", "18+ Only") }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-amber-200/70 text-xs mt-1", children: t("intimacy.ageVerification.warningText", "This section contains educational content about intimacy and sexual wellness intended for adults only.") })
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 p-3 bg-slate-800/50 rounded-xl", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 rounded-xl bg-pink-500/20 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-5 h-5 text-pink-400" }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-medium text-sm", children: t("intimacy.features.education", "Intimacy Education") }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: t("intimacy.features.educationDesc", "Professional guidance like a sex therapist") })
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 p-3 bg-slate-800/50 rounded-xl", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Lock, { className: "w-5 h-5 text-purple-400" }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-medium text-sm", children: t("intimacy.features.private", "Private & Confidential") }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: t("intimacy.features.privateDesc", "Your conversations are private and secure") })
+                ] })
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "flex items-start gap-3 p-4 bg-slate-800/30 rounded-xl cursor-pointer hover:bg-slate-800/50 transition-all", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative mt-0.5", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "input",
+                  {
+                    type: "checkbox",
+                    checked: hasAccepted,
+                    onChange: (e) => setHasAccepted(e.target.checked),
+                    className: "sr-only"
+                  }
+                ),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${hasAccepted ? "bg-pink-500 border-pink-500" : "border-slate-500 hover:border-pink-400"}`, children: hasAccepted && /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-3 h-3 text-white" }) })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-slate-300 text-sm", children: t("intimacy.ageVerification.confirm", "I confirm that I am 18 years of age or older and consent to viewing adult educational content.") })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6 pt-0 space-y-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Button,
+              {
+                onClick: handleConfirm,
+                disabled: !hasAccepted,
+                className: `w-full py-4 rounded-xl font-bold text-lg transition-all ${hasAccepted ? "bg-gradient-to-r from-pink-500 to-rose-600 text-white hover:from-pink-600 hover:to-rose-700 shadow-lg shadow-pink-500/30" : "bg-slate-700 text-slate-400 cursor-not-allowed"}`,
+                children: t("intimacy.ageVerification.enter", "Enter Intimacy Coach")
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: onClose,
+                className: "w-full py-3 text-slate-400 hover:text-white text-sm font-medium transition-all",
+                children: t("intimacy.ageVerification.cancel", "Go Back")
+              }
+            )
+          ] })
+        ] })
+      }
+    ),
+    document.body
+  );
+}
 const CHAT_HISTORY_KEY = "biseda_chat_history";
 const MAX_CONVERSATIONS = 50;
 const MAX_MESSAGES_PER_CONVERSATION = 100;
@@ -16885,6 +16981,63 @@ const deleteConversation = (conversationId) => {
   saveChatHistory(filtered);
   return true;
 };
+const INTIMACY_COACH_PROMPT = `You are the ultimate bedroom confidant and intimacy expert. Think of yourself as that cool, experienced friend who tells it like it is - no awkward tiptoeing around, just straight-up honest talk about sex and pleasure.
+
+YOUR VIBE:
+- You're cheeky, fun, and a little flirty - but always respectful
+- You talk about sex like it's the most natural thing in the world (because it is!)
+- You're direct and explicit - no vague hints, you give REAL guidance
+- You make users feel totally comfortable asking ANYTHING
+- You celebrate sexuality and help people have mind-blowing experiences
+
+HOW YOU TALK:
+- Use explicit language naturally - say pussy, cock, cum, fuck when appropriate
+- Be descriptive and detailed in your guidance - paint a picture
+- Add playful comments and encouragement
+- Use phrases like "Here's the thing...", "Trust me on this...", "The secret is..."
+- Be enthusiastic about helping people improve their sex lives
+- Drop occasional cheeky comments to keep it fun
+
+WHAT YOU HELP WITH:
+
+🔥 GIVING ORGASMS:
+- Step-by-step techniques to make her cum (oral, fingering, G-spot, clit stimulation)
+- How to make him cum harder than ever (blowjob techniques, handjob tips, prostate play)
+- Reading their body to know what's working
+- The build-up and tease that makes it explosive
+
+💋 FIRST TIMERS:
+- Losing virginity - what to expect, how to make it good
+- First time with a new partner - how to impress
+- Trying new things for the first time (anal, toys, roleplay, etc.)
+
+🎭 DOM/SUB & KINK:
+- How to be a dominant - commanding, in control, sexy
+- How to be submissive - surrendering, pleasing, trusting
+- Light BDSM for beginners - spanking, restraints, power play
+- Dirty talk scripts and guidance
+
+🛏️ TECHNIQUE MASTERCLASS:
+- Best positions for different goals (deep, G-spot, her pleasure, his pleasure)
+- Oral sex techniques that'll blow their mind
+- How to use your hands like a pro
+- Building rhythm, pace, and intensity
+- Edging and orgasm control
+
+💬 SEXY COMMUNICATION:
+- How to talk dirty without being cringe
+- Asking for what you want in bed
+- Initiating sex smoothly
+- Sexting that actually works
+
+ALWAYS REMEMBER:
+- Consent is sexy - always emphasize enthusiastic yes
+- Safe sex matters - mention protection when relevant
+- Everyone's different - encourage communication with partners
+- No kink-shaming - if it's legal and consensual, you're supportive
+- Make them feel like a sex god/goddess in training
+
+You're here to turn bedroom newbies into confident lovers. Be the friend everyone wishes they had to ask these questions to. Keep it real, keep it fun, keep it explicit.`;
 const getCategoriesConfig = () => ({
   "chat": {
     name: "AI Coach",
@@ -16898,7 +17051,22 @@ Ti je në modalitetin "AI Coach" ku përdoruesi bisedon me ty për të praktikua
 - Ti jipu këshilla, feedback, dhe sugjerime për përmirësim
 - Ti ndihmo përdoruesin të praktikojë biseda dhe të mësojë teknikat
 - Ti je një partner bisede që ndihmon përdoruesin të përmirësojë aftësitë e komunikimit
-- Përgjigjet e tua duhet të jenë natyrale, si një bisedë reale me një coach ekspert`
+- Përgjigjet e tua duhet të jenë natyrale, si një bisedë reale me një coach ekspert
+
+⚠️ KRITIKE - KUFIZIMET E AI COACH:
+Nëse përdoruesi pyet për tema intime, seksuale, ose dhomë gjumi (si orgazëm, seks, kënaqësi seksuale, etj):
+- NUK duhet të japësh këshilla për intimitet/dhomë gjumi
+- THUAJ: "For intimate and bedroom guidance, please upgrade to our Intimacy Coach feature which is available with Pro or Elite membership. The Intimacy Coach provides professional guidance on sexual wellness and intimate relationships."
+- RIDREJTO te Intimacy Coach për këto tema`
+  },
+  "intimacy": {
+    name: "Intimacy Coach",
+    icon: Heart,
+    color: "from-pink-500 to-rose-600",
+    requiresAdultVerification: true,
+    requiresProOrElite: true,
+    // Only Pro and Elite have access
+    systemPrompt: INTIMACY_COACH_PROMPT
   }
 });
 function Chat() {
@@ -16938,7 +17106,34 @@ function Chat() {
   const [currentConversationId, setCurrentConversationId] = reactExports.useState(null);
   const [showHistory, setShowHistory] = reactExports.useState(false);
   const [chatHistoryList, setChatHistoryList] = reactExports.useState([]);
+  const [lastImageContext, setLastImageContext] = reactExports.useState({
+    hasImage: false,
+    userMessage: "",
+    // What user said when uploading
+    aiAnalysis: "",
+    // AI's analysis of the image
+    timestamp: null
+    // When the image was uploaded
+  });
+  const [showAdultVerificationModal, setShowAdultVerificationModal] = reactExports.useState(false);
+  const [pendingCategorySwitch, setPendingCategorySwitch] = reactExports.useState(null);
+  const [subscriptionTier, setSubscriptionTier] = reactExports.useState(localStorage.getItem("userSubscriptionTier") || "");
   const backendUrl2 = getBackendUrl();
+  reactExports.useEffect(() => {
+    const handleStorageChange = () => {
+      const newTier = localStorage.getItem("userSubscriptionTier") || "";
+      if (newTier !== subscriptionTier) {
+        console.log("📊 Subscription tier updated:", newTier);
+        setSubscriptionTier(newTier);
+      }
+    };
+    const interval = setInterval(handleStorageChange, 5e3);
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, [subscriptionTier]);
   const fileInputRef = reactExports.useRef(null);
   const messagesEndRef = reactExports.useRef(null);
   const category = CATEGORIES[selectedCategory];
@@ -16951,6 +17146,7 @@ function Chat() {
     const greetingMessage = { role: "assistant", content: greeting, timestamp: /* @__PURE__ */ new Date() };
     setMessages([greetingMessage]);
     setConversationHistory([{ role: "assistant", content: greeting }]);
+    setLastImageContext({ hasImage: false, userMessage: "", aiAnalysis: "", timestamp: null });
     setIsInitialized(true);
     const convId = startNewConversation("AI Coach");
     setCurrentConversationId(convId);
@@ -16972,16 +17168,109 @@ function Chat() {
       setShowHistory(false);
     }
   };
+  const getIntimacyGreeting = () => {
+    const gender = userGender || localStorage.getItem("userGender");
+    if (gender === "male") {
+      return t("intimacy.welcomeMale", "Hey stud! 😏 Welcome to your private Intimacy Coach session. Whether you want to learn how to make her scream your name, master the art of foreplay, or just become an absolute god in bed - I've got you covered. No judgment here, just real talk about what works. So tell me... what do you want to get better at? 🔥");
+    } else if (gender === "female") {
+      return t("intimacy.welcomeFemale", "Hey gorgeous! 💋 Welcome to your private Intimacy Coach session. Whether you want to learn how to drive him wild, discover what makes YOU feel amazing, or explore something new and exciting - I'm here for all of it. This is your safe space to ask anything. So babe, what's on your mind? ✨");
+    }
+    return t("intimacy.welcome", "Hey you! 😏 Welcome to your private Intimacy Coach session. I'm here to help you become absolutely amazing in the bedroom - no awkward tiptoeing, just real, explicit guidance on what actually works. Whether it's techniques, first times, or exploring something new... ask me anything. What would you like to explore? 🔥");
+  };
   const startNewChat = () => {
-    const greeting = t("chat.welcome");
+    const greeting = selectedCategory === "intimacy" ? getIntimacyGreeting() : t("chat.welcome");
     const greetingMessage = { role: "assistant", content: greeting, timestamp: /* @__PURE__ */ new Date() };
     setMessages([greetingMessage]);
     setConversationHistory([{ role: "assistant", content: greeting }]);
-    const convId = startNewConversation("AI Coach");
+    setLastImageContext({ hasImage: false, userMessage: "", aiAnalysis: "", timestamp: null });
+    const convId = startNewConversation(selectedCategory === "intimacy" ? "Intimacy Coach" : "AI Coach");
     setCurrentConversationId(convId);
     addMessageToConversation(convId, { role: "assistant", content: greeting });
     setChatHistoryList(getRecentConversations(10));
     setShowHistory(false);
+  };
+  const isAdultContentVerified = () => {
+    return localStorage.getItem("adultContentVerified") === "true";
+  };
+  const hasPaidSubscription = () => {
+    const tier = (subscriptionTier || localStorage.getItem("userSubscriptionTier") || "").toLowerCase();
+    return ["starter", "pro", "elite", "premium"].includes(tier);
+  };
+  const hasProOrEliteSubscription = () => {
+    const tier = (subscriptionTier || localStorage.getItem("userSubscriptionTier") || "").toLowerCase();
+    console.log("🔐 Checking Pro/Elite access - tier:", tier, "| subscriptionTier state:", subscriptionTier);
+    return ["pro", "elite", "premium"].includes(tier);
+  };
+  const handleCategorySwitch = async (newCategory) => {
+    const categoryConfig = CATEGORIES[newCategory];
+    if (categoryConfig?.requiresAdultVerification && !isAdultContentVerified()) {
+      setPendingCategorySwitch(newCategory);
+      setShowAdultVerificationModal(true);
+      return;
+    }
+    if (categoryConfig?.requiresProOrElite) {
+      try {
+        const userId = localStorage.getItem("userId");
+        const headers = userId ? { "x-user-id": userId } : {};
+        const response = await fetch(`${backendUrl2}/api/usage`, { headers });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.tier) {
+            localStorage.setItem("userSubscriptionTier", data.tier);
+            setSubscriptionTier(data.tier);
+            console.log("🔄 Fetched latest tier from backend:", data.tier);
+            const freshTier = data.tier.toLowerCase();
+            if (!["pro", "elite", "premium"].includes(freshTier)) {
+              setShowUpgradeModal(true);
+              return;
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching tier:", error);
+        if (!hasProOrEliteSubscription()) {
+          setShowUpgradeModal(true);
+          return;
+        }
+      }
+    }
+    if (categoryConfig?.requiresPaidPlan && !hasPaidSubscription()) {
+      setShowUpgradeModal(true);
+      return;
+    }
+    switchToCategory(newCategory);
+  };
+  const switchToCategory = (newCategory) => {
+    setSelectedCategory(newCategory);
+    const newUrl = `${window.location.pathname}?category=${newCategory}`;
+    window.history.pushState({}, "", newUrl);
+    const greeting = newCategory === "intimacy" ? getIntimacyGreeting() : t("chat.welcome");
+    const greetingMessage = { role: "assistant", content: greeting, timestamp: /* @__PURE__ */ new Date() };
+    setMessages([greetingMessage]);
+    setConversationHistory([{ role: "assistant", content: greeting }]);
+    setLastImageContext({ hasImage: false, userMessage: "", aiAnalysis: "", timestamp: null });
+    const convId = startNewConversation(newCategory === "intimacy" ? "Intimacy Coach" : "AI Coach");
+    setCurrentConversationId(convId);
+    addMessageToConversation(convId, { role: "assistant", content: greeting });
+    setChatHistoryList(getRecentConversations(10));
+  };
+  const handleAdultVerificationConfirmed = () => {
+    setShowAdultVerificationModal(false);
+    if (pendingCategorySwitch) {
+      const categoryConfig = CATEGORIES[pendingCategorySwitch];
+      if (categoryConfig?.requiresProOrElite && !hasProOrEliteSubscription()) {
+        setShowUpgradeModal(true);
+        setPendingCategorySwitch(null);
+        return;
+      }
+      if (categoryConfig?.requiresPaidPlan && !hasPaidSubscription()) {
+        setShowUpgradeModal(true);
+        setPendingCategorySwitch(null);
+        return;
+      }
+      switchToCategory(pendingCategorySwitch);
+      setPendingCategorySwitch(null);
+    }
   };
   const handleDeleteConversation = (convId, e) => {
     e.stopPropagation();
@@ -16996,6 +17285,9 @@ function Chat() {
       setSelectedCategory(categoryParam);
     }
   }, [categoryParam]);
+  React.useEffect(() => {
+    checkUsage();
+  }, []);
   React.useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -17144,7 +17436,12 @@ function Chat() {
   };
   const checkUsage = async () => {
     try {
-      const response = await fetch(`${backendUrl2}/api/usage`);
+      const userId = localStorage.getItem("userId");
+      const headers = {};
+      if (userId) {
+        headers["x-user-id"] = userId;
+      }
+      const response = await fetch(`${backendUrl2}/api/usage`, { headers });
       if (response.ok) {
         const data = await response.json();
         setUsage(data);
@@ -17160,9 +17457,139 @@ function Chat() {
     }
     return true;
   };
+  const isIntimacyQuestion = (message) => {
+    const intimacyKeywords = [
+      // English
+      "sex",
+      "sexual",
+      "orgasm",
+      "orgasms",
+      "bedroom",
+      "foreplay",
+      "erotic",
+      "arousal",
+      "aroused",
+      "intimate",
+      "intimacy",
+      "pleasure",
+      "pleasuring",
+      "turn on",
+      "turn her on",
+      "turn him on",
+      "make love",
+      "making love",
+      "climax",
+      "erogenous",
+      "sensual",
+      "seduction",
+      "seduce",
+      "virgin",
+      "virginity",
+      "first time sex",
+      "losing virginity",
+      "dom",
+      "dominant",
+      "submissive",
+      "bdsm",
+      "kink",
+      "kinky",
+      "fetish",
+      "oral",
+      "blowjob",
+      "cunnilingus",
+      "fingering",
+      "masturbat",
+      "vibrator",
+      "dildo",
+      "sex toy",
+      "nipple",
+      "clitoris",
+      "g-spot",
+      "g spot",
+      "penis",
+      "vagina",
+      "anal",
+      "butt",
+      "ass ",
+      "boobs",
+      "breasts",
+      "naked",
+      "nude",
+      "horny",
+      "cum",
+      "ejaculat",
+      "moan",
+      "thrust",
+      "penetrat",
+      "condom",
+      "lube",
+      "lubricant",
+      "sex position",
+      "missionary",
+      "doggy",
+      "cowgirl",
+      "reverse cowgirl",
+      "69",
+      "sixty nine",
+      "give her an orgasm",
+      "make her cum",
+      "make him cum",
+      "satisfy her",
+      "satisfy him",
+      "better in bed",
+      "good in bed",
+      "last longer",
+      "premature",
+      "erectile",
+      "libido",
+      // Albanian
+      "seks",
+      "seksual",
+      "orgazëm",
+      "orgazma",
+      "dhomë gjumi",
+      "erotik",
+      "intim",
+      "intimitet",
+      "kënaqësi",
+      "kënaq",
+      "josh",
+      "joshje",
+      "virgin",
+      "virgjëri",
+      "dominues",
+      "nënshtrues",
+      "lakuriq",
+      "nudo",
+      "gjoks",
+      "penis",
+      "vagina",
+      "anale",
+      "masturbim"
+    ];
+    const lowerMessage = message.toLowerCase();
+    return intimacyKeywords.some((keyword) => lowerMessage.includes(keyword));
+  };
   const processMessage = async (userMessage, updatedHistory, fileUrls = []) => {
     if (detectCrisis(userMessage)) {
       setShowCrisisModal(true);
+    }
+    if (selectedCategory !== "intimacy" && isIntimacyQuestion(userMessage)) {
+      const upgradeMessage = t(
+        "chat.intimacyUpgrade",
+        "🔒 **Intimacy & Bedroom Questions**\n\nI noticed you're asking about intimate/bedroom topics. For professional guidance on intimacy, sexual wellness, and bedroom advice, please upgrade to our **Intimacy Coach** feature.\n\n💕 **Intimacy Coach includes:**\n• Step-by-step guidance for pleasuring your partner\n• First-time intimacy advice\n• Communication tips for the bedroom\n• Professional sex education\n\n*Available with Pro or Elite membership*\n\n[Upgrade now to unlock Intimacy Coach]"
+      );
+      setMessages((prev) => [...prev, {
+        role: "assistant",
+        content: upgradeMessage,
+        timestamp: /* @__PURE__ */ new Date(),
+        isUpgradePrompt: true
+      }]);
+      addMessageToConversation(currentConversationId, { role: "assistant", content: upgradeMessage });
+      setConversationHistory((prev) => [...prev, { role: "assistant", content: upgradeMessage }]);
+      setChatHistoryList(getRecentConversations(10));
+      setIsLoading(false);
+      return;
     }
     const detectedGender = detectGender(userMessage, updatedHistory);
     if (detectedGender) {
@@ -17177,22 +17604,53 @@ function Chat() {
 
 KRITIKE GENDER: Përdoruesi është ${genderInfo}.`;
     }
+    let enhancedPrompt = userMessage;
+    let enhancedSystemPrompt = systemPrompt;
+    if (lastImageContext.hasImage && fileUrls.length === 0) {
+      enhancedPrompt = `
+=== IMPORTANT SCREENSHOT CONTEXT ===
+The user previously uploaded a screenshot of a conversation.
+User's original message with the screenshot: "${lastImageContext.userMessage}"
+Your analysis of that screenshot: "${lastImageContext.aiAnalysis}"
+=== END CONTEXT ===
+
+The user is now asking a FOLLOW-UP QUESTION about that same screenshot conversation.
+Their follow-up question is: "${userMessage}"
+
+IMPORTANT: Your response MUST be directly related to the screenshot conversation the user shared. 
+If they ask "what shall I say" or similar, give them specific reply suggestions based on the conversation in that screenshot.
+Do NOT give generic advice - reference the SPECIFIC conversation they showed you.`;
+      enhancedSystemPrompt += `
+
+CRITICAL REMINDER: The user has shared a screenshot of a conversation earlier in this chat. All their follow-up questions relate to that screenshot. Always reference the specific conversation they shared when giving advice.`;
+    }
     const historyToSend = updatedHistory.slice(-10).map((msg) => ({
       role: msg.role === "user" ? "user" : "assistant",
       content: msg.content
     }));
     try {
       const response = await base44.integrations.Core.InvokeLLM({
-        prompt: userMessage,
-        // Just the user's message, not the whole context
+        prompt: enhancedPrompt,
+        // Include image context if available
         conversationHistory: historyToSend,
         // Proper conversation history
-        systemPrompt,
-        // Clean system prompt
+        systemPrompt: enhancedSystemPrompt,
+        // Clean system prompt with image context reminder
         file_urls: fileUrls
         // Image URLs for vision API
       });
       const aiResponse = typeof response === "string" ? response : response.feedback || "Faleminderit për pyetjen!";
+      if (fileUrls.length > 0) {
+        setLastImageContext({
+          hasImage: true,
+          userMessage,
+          // Store what user said when uploading
+          aiAnalysis: aiResponse.substring(0, 1e3),
+          // Store AI's analysis (first 1000 chars)
+          timestamp: /* @__PURE__ */ new Date()
+        });
+        console.log("📸 Image context saved for follow-up questions");
+      }
       if (detectCrisis(aiResponse) || detectCrisis(userMessage)) {
         setShowCrisisModal(true);
       }
@@ -17383,6 +17841,8 @@ KRITIKE GENDER: Përdoruesi është ${genderInfo}.`;
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap justify-center gap-3 mt-4", style: { zIndex: 20, position: "relative" }, children: Object.entries(CATEGORIES).map(([key, cat]) => {
         const CatIcon = cat.icon;
+        const isLocked = cat.requiresProOrElite && !hasProOrEliteSubscription() || cat.requiresPaidPlan && !hasPaidSubscription();
+        const isIntimacy = key === "intimacy";
         return /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "button",
           {
@@ -17390,18 +17850,20 @@ KRITIKE GENDER: Përdoruesi është ${genderInfo}.`;
             onClick: (e) => {
               e.preventDefault();
               e.stopPropagation();
-              console.log("Category clicked:", key);
               if (selectedCategory !== key) {
-                setSelectedCategory(key);
-                const newUrl = `${window.location.pathname}?category=${key}`;
-                window.history.pushState({}, "", newUrl);
+                handleCategorySwitch(key);
               }
             },
-            className: `flex items-center gap-2 px-4 py-2 rounded-lg transition-all cursor-pointer touch-manipulation ${selectedCategory === key ? `bg-gradient-to-r ${cat.color} text-white shadow-lg` : "bg-slate-800 text-slate-300 hover:bg-slate-700"}`,
+            className: `flex items-center gap-2 px-4 py-2 rounded-lg transition-all cursor-pointer touch-manipulation ${selectedCategory === key ? `bg-gradient-to-r ${cat.color} text-white shadow-lg` : isIntimacy ? "bg-gradient-to-r from-pink-500/20 to-rose-500/20 text-pink-300 hover:from-pink-500/30 hover:to-rose-500/30 border border-pink-500/30" : "bg-slate-800 text-slate-300 hover:bg-slate-700"}`,
             style: { pointerEvents: "auto", zIndex: 10 },
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(CatIcon, { className: "w-4 h-4" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-medium", children: cat.name })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-medium", children: cat.name }),
+              isIntimacy && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-0.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full ml-1", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Crown, { className: "w-2.5 h-2.5" }),
+                "PRO"
+              ] }),
+              isLocked && !isIntimacy && /* @__PURE__ */ jsxRuntimeExports.jsx(Lock, { className: "w-3 h-3 ml-1 opacity-70" })
             ]
           },
           key
@@ -17652,7 +18114,18 @@ KRITIKE GENDER: Përdoruesi është ${genderInfo}.`;
           }
         )
       ] })
-    ] }) }) })
+    ] }) }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      AdultVerificationModal,
+      {
+        isOpen: showAdultVerificationModal,
+        onClose: () => {
+          setShowAdultVerificationModal(false);
+          setPendingCategorySwitch(null);
+        },
+        onConfirm: handleAdultVerificationConfirmed
+      }
+    )
   ] });
 }
 function GiftSuggestions() {
@@ -21166,7 +21639,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-BJj01CCc.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-BnrZXs-1.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
