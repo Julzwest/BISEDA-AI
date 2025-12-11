@@ -13727,7 +13727,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-CkGV7lfV.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-C1uaNWVt.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -15084,7 +15084,8 @@ function Home() {
       description: t("home.features.gifts.desc"),
       color: "from-rose-500 to-red-600",
       // Rose-Red for gifts/love
-      page: "Gifts"
+      page: "Gifts",
+      requiresProOrElite: true
     },
     {
       icon: Heart,
@@ -15100,7 +15101,8 @@ function Home() {
       description: t("home.features.profileOptimizer.desc", "Improve your dating profile"),
       color: "from-indigo-500 to-blue-600",
       // Indigo-Blue for profile/optimization
-      page: "ProfileOptimizer"
+      page: "ProfileOptimizer",
+      requiresProOrElite: true
     },
     {
       icon: Sparkles,
@@ -15108,7 +15110,8 @@ function Home() {
       description: t("home.features.styleAdvisor.desc", "Get fashion advice"),
       color: "from-amber-500 to-orange-500",
       // Amber-Orange for style/fashion
-      page: "StyleAdvisor"
+      page: "StyleAdvisor",
+      requiresProOrElite: true
     }
   ];
   const stats = [

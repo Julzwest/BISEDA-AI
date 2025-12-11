@@ -116,7 +116,8 @@ export default function Home() {
       title: t('home.features.gifts.title'),
       description: t('home.features.gifts.desc'),
       color: 'from-rose-500 to-red-600', // Rose-Red for gifts/love
-      page: 'Gifts'
+      page: 'Gifts',
+      requiresProOrElite: true
     },
     {
       icon: Heart,
@@ -130,14 +131,16 @@ export default function Home() {
       title: t('home.features.profileOptimizer.title', 'Profile Optimizer'),
       description: t('home.features.profileOptimizer.desc', 'Improve your dating profile'),
       color: 'from-indigo-500 to-blue-600', // Indigo-Blue for profile/optimization
-      page: 'ProfileOptimizer'
+      page: 'ProfileOptimizer',
+      requiresProOrElite: true
     },
     {
       icon: Sparkles,
       title: t('home.features.styleAdvisor.title', 'Style Advisor'),
       description: t('home.features.styleAdvisor.desc', 'Get fashion advice'),
       color: 'from-amber-500 to-orange-500', // Amber-Orange for style/fashion
-      page: 'StyleAdvisor'
+      page: 'StyleAdvisor',
+      requiresProOrElite: true
     }
   ];
 
