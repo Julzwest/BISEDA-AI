@@ -57,10 +57,13 @@ For each response:
 
 Format as JSON array with "type" and "message" fields.`;
 
-      const response = await base44.generateResponse(prompt, 'gpt-4o-mini');
+      const response = await base44.integrations.Core.InvokeLLM({
+        prompt: prompt,
+        model: 'gpt-4o-mini'
+      });
       
       // Parse AI response
-      const content = response.choices?.[0]?.message?.content || '';
+      const content = response.response || '';
       
       // Try to extract JSON from the response
       const jsonMatch = content.match(/\[[\s\S]*\]/);

@@ -15,6 +15,7 @@ export default function FirstDates() {
   const [activeTab, setActiveTab] = useState('venues'); // 'venues' or 'planner'
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedTimeOfDay, setSelectedTimeOfDay] = useState(''); // New: time filter
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -44,6 +45,14 @@ export default function FirstDates() {
   }, [userCountry, i18n.language]);
   
   const cities = localizedCities.map(c => c.displayName);
+
+  const timeOfDayOptions = [
+    { id: 'morning', label: 'Morning', emoji: '🌅', color: 'from-yellow-400 to-orange-400' },
+    { id: 'afternoon', label: 'Afternoon', emoji: '☀️', color: 'from-orange-400 to-amber-500' },
+    { id: 'evening', label: 'Evening', emoji: '🌆', color: 'from-purple-500 to-pink-500' },
+    { id: 'night', label: 'Night', emoji: '🌙', color: 'from-indigo-600 to-purple-600' },
+    { id: 'anytime', label: 'Any Time', emoji: '⏰', color: 'from-slate-600 to-slate-700' }
+  ];
 
   const categories = [
     {
@@ -556,6 +565,27 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
             </button>
           </div>
         )}
+      </div>
+
+      {/* Time of Day Filter */}
+      <div className="mb-6">
+        <h2 className="text-lg font-bold text-white mb-3">⏰ Time of Day</h2>
+        <div className="flex flex-wrap gap-2">
+          {timeOfDayOptions.map((time) => (
+            <button
+              key={time.id}
+              onClick={() => setSelectedTimeOfDay(time.id)}
+              className={`px-4 py-2.5 rounded-xl font-semibold text-sm transition-all ${
+                selectedTimeOfDay === time.id
+                  ? `bg-gradient-to-r ${time.color} text-white shadow-lg`
+                  : 'bg-slate-800/70 text-slate-300 hover:bg-slate-700/70 border border-slate-700/50 hover:border-purple-500/50'
+              }`}
+            >
+              <span className="mr-1.5">{time.emoji}</span>
+              {time.label}
+            </button>
+          ))}
+        </div>
       </div>
       
         </>

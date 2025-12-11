@@ -8,9 +8,7 @@ import Chat from './pages/Chat.jsx';
 import GiftSuggestions from './pages/GiftSuggestions.jsx';
 import Events from './pages/Events.jsx';
 import TextResponseHelper from './pages/TextResponseHelper.jsx';
-import PhotoFeedback from './pages/PhotoFeedback.jsx';
 import ConversationStarters from './pages/ConversationStarters.jsx';
-import QuickDateIdeas from './pages/QuickDateIdeas.jsx';
 import ProgressTracking from './pages/ProgressTracking.jsx';
 import SubscriptionSuccess from './pages/SubscriptionSuccess.jsx';
 import SubscriptionCancel from './pages/SubscriptionCancel.jsx';
@@ -143,9 +141,7 @@ function App() {
           
           {/* New Features */}
           <Route path="/text-helper" element={<TextResponseHelper />} />
-          <Route path="/photo-feedback" element={<PhotoFeedback />} />
           <Route path="/starters" element={<ConversationStarters />} />
-          <Route path="/quick-ideas" element={<QuickDateIdeas />} />
           <Route path="/progress" element={<ProgressTracking />} />
           
           {/* User & Tools */}

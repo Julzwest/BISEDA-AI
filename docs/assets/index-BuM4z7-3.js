@@ -13810,7 +13810,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-DSx3MTOA.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-BbTnvPTU.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -15160,14 +15160,6 @@ function Home() {
       isNew: true
     },
     {
-      icon: Camera,
-      title: "Photo Feedback",
-      description: "Rate your profile photos",
-      color: "from-rose-500 to-pink-500",
-      page: "photo-feedback",
-      isNew: true
-    },
-    {
       icon: MessageSquare,
       title: "Conversation Starters",
       description: "Ready-to-use opening lines",
@@ -15183,11 +15175,11 @@ function Home() {
       requiresProOrElite: true
     },
     {
-      icon: Heart,
-      title: "Quick Date Ideas",
-      description: "Instant date inspiration",
+      icon: Calendar,
+      title: "Find & Plan Dates",
+      description: "Venues and date planning",
       color: "from-pink-500 to-rose-500",
-      page: "quick-ideas"
+      page: "dates"
     },
     {
       icon: PartyPopper,
@@ -16226,6 +16218,7 @@ function FirstDates() {
   const [activeTab, setActiveTab] = reactExports.useState("venues");
   const [selectedCity, setSelectedCity] = reactExports.useState("");
   const [selectedCategory, setSelectedCategory] = reactExports.useState(null);
+  const [selectedTimeOfDay, setSelectedTimeOfDay] = reactExports.useState("");
   const [suggestions, setSuggestions] = reactExports.useState([]);
   const [loading, setLoading] = reactExports.useState(false);
   const [loadingMore, setLoadingMore] = reactExports.useState(false);
@@ -16244,6 +16237,13 @@ function FirstDates() {
     return getLocalizedCountryName(userCountry);
   }, [userCountry, i18n.language]);
   const cities = localizedCities.map((c) => c.displayName);
+  const timeOfDayOptions = [
+    { id: "morning", label: "Morning", emoji: "🌅", color: "from-yellow-400 to-orange-400" },
+    { id: "afternoon", label: "Afternoon", emoji: "☀️", color: "from-orange-400 to-amber-500" },
+    { id: "evening", label: "Evening", emoji: "🌆", color: "from-purple-500 to-pink-500" },
+    { id: "night", label: "Night", emoji: "🌙", color: "from-indigo-600 to-purple-600" },
+    { id: "anytime", label: "Any Time", emoji: "⏰", color: "from-slate-600 to-slate-700" }
+  ];
   const categories = [
     {
       id: "restaurants",
@@ -16624,70 +16624,87 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
         }
       )
     ] }),
-    activeTab === "venues" && /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-3", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-5 h-5 text-purple-400" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-lg font-bold text-white", children: t("dates.selectCity") }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs text-slate-500 ml-auto", children: [
-          currentCountry?.flag,
-          " ",
-          localizedCountryName
+    activeTab === "venues" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-5 h-5 text-purple-400" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-lg font-bold text-white", children: t("dates.selectCity") }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs text-slate-500 ml-auto", children: [
+            currentCountry?.flag,
+            " ",
+            localizedCountryName
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-2", children: [
+          cities.slice(0, showMoreCities ? cities.length : 12).map((city) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => handleCitySelect(city),
+              className: `px-4 py-2.5 rounded-xl font-semibold text-sm transition-all ${selectedCity === city ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/40" : "bg-slate-800/70 text-slate-300 hover:bg-slate-700/70 border border-slate-700/50 hover:border-purple-500/50"}`,
+              children: city
+            },
+            city
+          )),
+          cities.length > 12 && !showMoreCities && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              onClick: () => setShowMoreCities(true),
+              className: "px-4 py-2.5 rounded-xl font-semibold text-sm transition-all bg-slate-700/50 text-slate-300 hover:bg-slate-600/50 border border-slate-600/50 flex items-center gap-1.5",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "w-4 h-4" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                  "+",
+                  cities.length - 12,
+                  " ",
+                  t("dates.more")
+                ] })
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              onClick: () => setShowCityModal(true),
+              className: "px-4 py-2.5 rounded-xl font-semibold text-sm transition-all bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-400 border border-cyan-500/30 hover:border-cyan-400/50 hover:bg-cyan-500/30 flex items-center gap-1.5",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "w-4 h-4" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("dates.otherCity") })
+              ]
+            }
+          )
+        ] }),
+        selectedCity && !cities.includes(selectedCity) && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sm text-slate-400", children: [
+            t("dates.selectedCity"),
+            ":"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm font-semibold", children: selectedCity }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => setSelectedCity(""),
+              className: "p-1 text-slate-400 hover:text-white",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-4 h-4" })
+            }
+          )
         ] })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-2", children: [
-        cities.slice(0, showMoreCities ? cities.length : 12).map((city) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-lg font-bold text-white mb-3", children: "⏰ Time of Day" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: timeOfDayOptions.map((time) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
           "button",
           {
-            onClick: () => handleCitySelect(city),
-            className: `px-4 py-2.5 rounded-xl font-semibold text-sm transition-all ${selectedCity === city ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/40" : "bg-slate-800/70 text-slate-300 hover:bg-slate-700/70 border border-slate-700/50 hover:border-purple-500/50"}`,
-            children: city
+            onClick: () => setSelectedTimeOfDay(time.id),
+            className: `px-4 py-2.5 rounded-xl font-semibold text-sm transition-all ${selectedTimeOfDay === time.id ? `bg-gradient-to-r ${time.color} text-white shadow-lg` : "bg-slate-800/70 text-slate-300 hover:bg-slate-700/70 border border-slate-700/50 hover:border-purple-500/50"}`,
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mr-1.5", children: time.emoji }),
+              time.label
+            ]
           },
-          city
-        )),
-        cities.length > 12 && !showMoreCities && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            onClick: () => setShowMoreCities(true),
-            className: "px-4 py-2.5 rounded-xl font-semibold text-sm transition-all bg-slate-700/50 text-slate-300 hover:bg-slate-600/50 border border-slate-600/50 flex items-center gap-1.5",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "w-4 h-4" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-                "+",
-                cities.length - 12,
-                " ",
-                t("dates.more")
-              ] })
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            onClick: () => setShowCityModal(true),
-            className: "px-4 py-2.5 rounded-xl font-semibold text-sm transition-all bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-400 border border-cyan-500/30 hover:border-cyan-400/50 hover:bg-cyan-500/30 flex items-center gap-1.5",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "w-4 h-4" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("dates.otherCity") })
-            ]
-          }
-        )
-      ] }),
-      selectedCity && !cities.includes(selectedCity) && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 flex items-center gap-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sm text-slate-400", children: [
-          t("dates.selectedCity"),
-          ":"
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm font-semibold", children: selectedCity }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            onClick: () => setSelectedCity(""),
-            className: "p-1 text-slate-400 hover:text-white",
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-4 h-4" })
-          }
-        )
+          time.id
+        )) })
       ] })
-    ] }) }),
+    ] }),
     activeTab === "planner" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold mb-4", children: "Plan Your Perfect Date" }),
@@ -20960,8 +20977,11 @@ For each response:
 - Give them something to respond to
 
 Format as JSON array with "type" and "message" fields.`;
-      const response = await base44.generateResponse(prompt, "gpt-4o-mini");
-      const content = response.choices?.[0]?.message?.content || "";
+      const response = await base44.integrations.Core.InvokeLLM({
+        prompt,
+        model: "gpt-4o-mini"
+      });
+      const content = response.response || "";
       const jsonMatch = content.match(/\[[\s\S]*\]/);
       if (jsonMatch) {
         const parsed = JSON.parse(jsonMatch[0]);
@@ -21116,261 +21136,6 @@ Format as JSON array with "type" and "message" fields.`;
       {
         onClose: () => setShowLimitModal(false),
         featureName: "Text Response Helper",
-        limit: maxUsage,
-        onUpgrade: () => {
-          setShowLimitModal(false);
-          setShowUpgradeModal(true);
-        }
-      }
-    )
-  ] });
-}
-function PhotoFeedback() {
-  const [selectedImages, setSelectedImages] = reactExports.useState([]);
-  const [feedback, setFeedback] = reactExports.useState(null);
-  const [isLoading, setIsLoading] = reactExports.useState(false);
-  const [showUpgradeModal, setShowUpgradeModal] = reactExports.useState(false);
-  const [showLimitModal, setShowLimitModal] = reactExports.useState(false);
-  const [usageCount, setUsageCount] = reactExports.useState(0);
-  const [maxUsage] = reactExports.useState(3);
-  const fileInputRef = reactExports.useRef(null);
-  const subscriptionTier = localStorage.getItem("userSubscriptionTier") || "free";
-  const isPaidUser = ["pro", "elite", "premium"].includes(subscriptionTier?.toLowerCase());
-  const handleImageSelect = async (e) => {
-    const files = Array.from(e.target.files || []);
-    if (files.length === 0) return;
-    const imageFiles = files.filter((file) => file.type.startsWith("image/"));
-    if (imageFiles.length === 0) {
-      alert("Please select only image files!");
-      return;
-    }
-    const remainingSlots = 6 - selectedImages.length;
-    const filesToAdd = imageFiles.slice(0, remainingSlots);
-    const newImages = await Promise.all(
-      filesToAdd.map((file) => {
-        return new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.onload = (e2) => {
-            resolve({
-              file,
-              dataUrl: e2.target.result,
-              name: file.name
-            });
-          };
-          reader.readAsDataURL(file);
-        });
-      })
-    );
-    setSelectedImages((prev) => [...prev, ...newImages]);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
-  const removeImage = (index) => {
-    setSelectedImages((prev) => prev.filter((_, i) => i !== index));
-  };
-  const analyzePhotos = async () => {
-    if (selectedImages.length === 0) return;
-    if (!isPaidUser && usageCount >= maxUsage) {
-      setShowLimitModal(true);
-      return;
-    }
-    setIsLoading(true);
-    trackFeatureUse("photo_feedback");
-    try {
-      const prompt = `You are a dating profile expert. Analyze these ${selectedImages.length} dating profile photo(s).
-
-Rate each photo 1-10 and provide:
-1. Overall score (1-10)
-2. What works well
-3. What could be improved
-4. Recommended order for dating profile
-
-Then provide:
-- Overall profile photo score
-- Which photo should be the main profile picture
-- General tips for better photos
-
-Be honest, specific, and helpful. Format as JSON with:
-{
-  "overall_score": number,
-  "main_photo_recommendation": number (index 1-${selectedImages.length}),
-  "photos": [{ "score": number, "works_well": string, "improve": string }],
-  "general_tips": [string]
-}`;
-      const response = await base44.generateResponse(prompt, "gpt-4o-mini");
-      const content = response.choices?.[0]?.message?.content || "";
-      const jsonMatch = content.match(/\{[\s\S]*\}/);
-      if (jsonMatch) {
-        const parsed = JSON.parse(jsonMatch[0]);
-        setFeedback(parsed);
-        setUsageCount((prev) => prev + 1);
-      } else {
-        throw new Error("Failed to parse response");
-      }
-    } catch (error) {
-      console.error("Error analyzing photos:", error);
-      alert("Failed to analyze photos. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 pt-20 pb-32 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950 min-h-screen", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-xl flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Image, { className: "w-5 h-5 text-white" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-white", children: "Photo Feedback" })
-        ] }),
-        !isPaidUser && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-3 py-1 bg-slate-800 border border-slate-700 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-slate-400 text-sm", children: [
-          usageCount,
-          "/",
-          maxUsage,
-          " this month"
-        ] }) })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400", children: "Get AI-powered feedback on your dating profile photos" })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "input",
-      {
-        ref: fileInputRef,
-        type: "file",
-        accept: "image/*",
-        multiple: true,
-        onChange: handleImageSelect,
-        className: "hidden"
-      }
-    ),
-    selectedImages.length < 6 && !feedback && /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-800/50 border-slate-700 p-8 mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "button",
-      {
-        onClick: () => fileInputRef.current?.click(),
-        className: "w-full border-2 border-dashed border-slate-600 hover:border-purple-500 rounded-xl p-8 transition-colors",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Upload, { className: "w-12 h-12 text-slate-500 mx-auto mb-3" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-semibold mb-1", children: "Upload Profile Photos" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: "Add up to 6 photos for analysis" })
-        ]
-      }
-    ) }),
-    selectedImages.length > 0 && !feedback && /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-4 mb-6", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-white font-semibold mb-3", children: [
-        "Selected Photos (",
-        selectedImages.length,
-        "/6)"
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-3 gap-2 mb-4", children: selectedImages.map((img, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative aspect-square", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: img.dataUrl, alt: `Upload ${index + 1}`, className: "w-full h-full object-cover rounded-lg" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            onClick: () => removeImage(index),
-            className: "absolute top-1 right-1 w-6 h-6 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center",
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-4 h-4 text-white" })
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute bottom-1 left-1 w-6 h-6 bg-slate-900 rounded-full flex items-center justify-center border border-slate-700", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white text-xs font-bold", children: index + 1 }) })
-      ] }, index)) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        Button,
-        {
-          onClick: analyzePhotos,
-          disabled: isLoading,
-          className: "w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white",
-          children: isLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" }),
-            "Analyzing Photos..."
-          ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 mr-2" }),
-            "Analyze My Photos"
-          ] })
-        }
-      )
-    ] }),
-    feedback && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border-blue-500/30 p-5", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold", children: "Overall Profile Score" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Star, { className: "w-5 h-5 text-yellow-400 fill-yellow-400" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-2xl font-bold text-white", children: [
-              feedback.overall_score,
-              "/10"
-            ] })
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-300 text-sm", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: "Main Photo:" }),
-          " Use Photo #",
-          feedback.main_photo_recommendation
-        ] })
-      ] }),
-      feedback.photos?.map((photo, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: `bg-slate-800/50 border-slate-700 p-4 ${index + 1 === feedback.main_photo_recommendation ? "ring-2 ring-yellow-500" : ""}`, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3 mb-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: selectedImages[index].dataUrl, alt: `Photo ${index + 1}`, className: "w-16 h-16 object-cover rounded-lg" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("h4", { className: "text-white font-semibold", children: [
-                "Photo #",
-                index + 1
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1 px-2 py-1 bg-slate-700 rounded-lg", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Star, { className: "w-4 h-4 text-yellow-400" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-white font-bold", children: [
-                  photo.score,
-                  "/10"
-                ] })
-              ] })
-            ] }),
-            index + 1 === feedback.main_photo_recommendation && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-2 py-1 bg-yellow-500/20 border border-yellow-500/30 rounded text-xs text-yellow-400 font-semibold inline-block mb-2", children: "⭐ Recommended Main Photo" })
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2 text-sm", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-green-400 font-semibold flex items-center gap-1 mb-1", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-3 h-3" }),
-              " What Works"
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300", children: photo.works_well })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-orange-400 font-semibold flex items-center gap-1 mb-1", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(TrendingUp, { className: "w-3 h-3" }),
-              " Could Improve"
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300", children: photo.improve })
-          ] })
-        ] })
-      ] }, index)),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-white font-bold mb-3 flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5 text-purple-400" }),
-          "General Photo Tips"
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "space-y-2", children: feedback.general_tips?.map((tip, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2 text-slate-300 text-sm", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-purple-400", children: "•" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: tip })
-        ] }, index)) })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        Button,
-        {
-          onClick: () => {
-            setFeedback(null);
-            setSelectedImages([]);
-          },
-          className: "w-full bg-slate-700 hover:bg-slate-600 text-white",
-          children: "Analyze New Photos"
-        }
-      )
-    ] }),
-    showUpgradeModal && /* @__PURE__ */ jsxRuntimeExports.jsx(UpgradeModal, { onClose: () => setShowUpgradeModal(false) }),
-    showLimitModal && /* @__PURE__ */ jsxRuntimeExports.jsx(
-      LimitReachedModal,
-      {
-        onClose: () => setShowLimitModal(false),
-        featureName: "Photo Feedback",
         limit: maxUsage,
         onUpgrade: () => {
           setShowLimitModal(false);
@@ -21588,211 +21353,6 @@ function ConversationStarters() {
         /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• Profile-specific starters get the best response rates" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• Save your favorites for quick access later" })
       ] })
-    ] })
-  ] });
-}
-function QuickDateIdeas() {
-  const [ideas, setIdeas] = reactExports.useState([]);
-  const [isLoading, setIsLoading] = reactExports.useState(false);
-  const [filters, setFilters] = reactExports.useState({
-    budget: "medium",
-    mood: "romantic",
-    time: "evening"
-  });
-  const budgetOptions = [
-    { value: "low", label: "Budget-Friendly", emoji: "💸", desc: "Under $30" },
-    { value: "medium", label: "Moderate", emoji: "💰", desc: "$30-100" },
-    { value: "high", label: "Splurge", emoji: "💎", desc: "$100+" }
-  ];
-  const moodOptions = [
-    { value: "romantic", label: "Romantic", emoji: "💕" },
-    { value: "fun", label: "Fun & Playful", emoji: "🎉" },
-    { value: "chill", label: "Chill & Casual", emoji: "😌" },
-    { value: "adventurous", label: "Adventurous", emoji: "🚀" },
-    { value: "cultural", label: "Cultural", emoji: "🎭" }
-  ];
-  const timeOptions = [
-    { value: "morning", label: "Morning", emoji: "🌅" },
-    { value: "afternoon", label: "Afternoon", emoji: "☀️" },
-    { value: "evening", label: "Evening", emoji: "🌆" },
-    { value: "night", label: "Night", emoji: "🌙" }
-  ];
-  const generateIdeas = async () => {
-    setIsLoading(true);
-    trackFeatureUse("quick_date_ideas");
-    const userCountry = localStorage.getItem("userCountry") || "AL";
-    const userCity = localStorage.getItem("userCity") || "";
-    try {
-      const prompt = `Generate 3 unique date ideas for ${filters.time} with a ${filters.budget} budget and ${filters.mood} mood.
-${userCity ? `Location: ${userCity}, ${userCountry}` : `Country: ${userCountry}`}
-
-For each idea provide:
-- Title (creative and fun)
-- Description (what you'll do, 2-3 sentences)
-- Why it works (1 sentence)
-- Estimated cost
-- Duration
-- Pro tip
-
-Format as JSON array with: title, description, why_it_works, cost, duration, pro_tip`;
-      const response = await base44.generateResponse(prompt, "gpt-4o-mini");
-      const content = response.choices?.[0]?.message?.content || "";
-      const jsonMatch = content.match(/\[[\s\S]*\]/);
-      if (jsonMatch) {
-        const parsed = JSON.parse(jsonMatch[0]);
-        setIdeas(parsed);
-      }
-    } catch (error) {
-      console.error("Error generating ideas:", error);
-      alert("Failed to generate ideas. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 pt-20 pb-32 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950 min-h-screen", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5 text-white" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-white", children: "Quick Date Ideas" })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400", children: "Instant date inspiration in seconds" })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4 mb-6", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-semibold text-white mb-2", children: "Budget" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-3 gap-2", children: budgetOptions.map((option) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            onClick: () => setFilters((prev) => ({ ...prev, budget: option.value })),
-            className: `p-3 rounded-lg border-2 transition-all ${filters.budget === option.value ? "border-purple-500 bg-purple-500/20" : "border-slate-700 bg-slate-900 hover:bg-slate-800"}`,
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-2xl mb-1", children: option.emoji }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs font-semibold text-white", children: option.label }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-slate-400", children: option.desc })
-            ]
-          },
-          option.value
-        )) })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-semibold text-white mb-2", children: "Mood" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-3 gap-2", children: moodOptions.map((option) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            onClick: () => setFilters((prev) => ({ ...prev, mood: option.value })),
-            className: `p-2 rounded-lg border-2 transition-all ${filters.mood === option.value ? "border-pink-500 bg-pink-500/20" : "border-slate-700 bg-slate-900 hover:bg-slate-800"}`,
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xl mb-1", children: option.emoji }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs font-semibold text-white", children: option.label })
-            ]
-          },
-          option.value
-        )) })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-semibold text-white mb-2", children: "Time of Day" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-4 gap-2", children: timeOptions.map((option) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            onClick: () => setFilters((prev) => ({ ...prev, time: option.value })),
-            className: `p-2 rounded-lg border-2 transition-all ${filters.time === option.value ? "border-cyan-500 bg-cyan-500/20" : "border-slate-700 bg-slate-900 hover:bg-slate-800"}`,
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xl mb-1", children: option.emoji }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs font-semibold text-white", children: option.label })
-            ]
-          },
-          option.value
-        )) })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        Button,
-        {
-          onClick: generateIdeas,
-          disabled: isLoading,
-          className: "w-full bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white h-12",
-          children: isLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" }),
-            "Generating Ideas..."
-          ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5 mr-2" }),
-            "Generate Date Ideas"
-          ] })
-        }
-      )
-    ] }),
-    ideas.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-      ideas.map((idea, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between mb-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-white flex-1", children: idea.title }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                onClick: () => {
-                  if (navigator.share) {
-                    navigator.share({
-                      title: idea.title,
-                      text: `${idea.description}
-
-${idea.why_it_works}`,
-                      url: window.location.href
-                    });
-                  }
-                },
-                className: "p-2 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors",
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Share2, { className: "w-4 h-4 text-slate-400" })
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              SaveButton,
-              {
-                item: {
-                  id: `quick-date-${Date.now()}-${index}`,
-                  title: idea.title,
-                  description: idea.description,
-                  type: "date_idea"
-                },
-                type: "dateIdeas"
-              }
-            )
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 mb-3", children: idea.description }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-2 mb-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-2 py-1 bg-green-500/20 border border-green-500/30 rounded text-xs text-green-400 font-semibold", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(DollarSign, { className: "w-3 h-3 inline mr-1" }),
-            idea.cost
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-2 py-1 bg-blue-500/20 border border-blue-500/30 rounded text-xs text-blue-400 font-semibold", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "w-3 h-3 inline mr-1" }),
-            idea.duration
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-3 bg-purple-500/10 border border-purple-500/20 rounded-lg mb-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-slate-300", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-purple-400 font-semibold", children: "Why it works: " }),
-          idea.why_it_works
-        ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-slate-300", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-yellow-400 font-semibold", children: "💡 Pro Tip: " }),
-          idea.pro_tip
-        ] }) })
-      ] }, index)),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        Button,
-        {
-          onClick: generateIdeas,
-          className: "w-full bg-slate-700 hover:bg-slate-600 text-white",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { className: "w-4 h-4 mr-2" }),
-            "Generate New Ideas"
-          ]
-        }
-      )
-    ] }),
-    !isLoading && ideas.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center py-12", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-8 h-8 text-slate-600" }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-slate-300 mb-2", children: "No Ideas Yet" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-500", children: "Set your filters and generate instant date ideas!" })
     ] })
   ] });
 }
@@ -26036,9 +25596,7 @@ function App() {
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/gifts", element: /* @__PURE__ */ jsxRuntimeExports.jsx(GiftSuggestions, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/chat", element: /* @__PURE__ */ jsxRuntimeExports.jsx(Chat, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/text-helper", element: /* @__PURE__ */ jsxRuntimeExports.jsx(TextResponseHelper, {}) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/photo-feedback", element: /* @__PURE__ */ jsxRuntimeExports.jsx(PhotoFeedback, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/starters", element: /* @__PURE__ */ jsxRuntimeExports.jsx(ConversationStarters, {}) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/quick-ideas", element: /* @__PURE__ */ jsxRuntimeExports.jsx(QuickDateIdeas, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/progress", element: /* @__PURE__ */ jsxRuntimeExports.jsx(ProgressTracking, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/mood", element: /* @__PURE__ */ jsxRuntimeExports.jsx(MoodCheck, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/profileoptimizer", element: /* @__PURE__ */ jsxRuntimeExports.jsx(ProfileOptimizer, {}) }),

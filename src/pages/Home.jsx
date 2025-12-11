@@ -105,14 +105,6 @@ export default function Home() {
       isNew: true
     },
     {
-      icon: Camera,
-      title: 'Photo Feedback',
-      description: 'Rate your profile photos',
-      color: 'from-rose-500 to-pink-500',
-      page: 'photo-feedback',
-      isNew: true
-    },
-    {
       icon: MessageSquare,
       title: 'Conversation Starters',
       description: 'Ready-to-use opening lines',
@@ -128,11 +120,11 @@ export default function Home() {
       requiresProOrElite: true
     },
     {
-      icon: Heart,
-      title: 'Quick Date Ideas',
-      description: 'Instant date inspiration',
+      icon: Calendar,
+      title: 'Find & Plan Dates',
+      description: 'Venues and date planning',
       color: 'from-pink-500 to-rose-500',
-      page: 'quick-ideas'
+      page: 'dates'
     },
     {
       icon: PartyPopper,
