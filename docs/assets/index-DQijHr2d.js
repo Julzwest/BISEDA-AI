@@ -13727,7 +13727,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-C1uaNWVt.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-D__i5iot.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -18990,6 +18990,20 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
 function GiftSuggestions() {
   const { t, i18n } = useTranslation();
   const backendUrl2 = "https://biseda-ai.onrender.com";
+  const [hasAccess, setHasAccess] = reactExports.useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = reactExports.useState(false);
+  const checkAccess = () => {
+    const tier = (localStorage.getItem("userSubscriptionTier") || "").toLowerCase();
+    console.log("🔐 Gift Suggestions - Checking access for tier:", tier);
+    return ["pro", "elite", "premium"].includes(tier);
+  };
+  reactExports.useEffect(() => {
+    const access = checkAccess();
+    setHasAccess(access);
+    if (!access) {
+      setShowUpgradeModal(true);
+    }
+  }, []);
   const userCountry = localStorage.getItem("userCountry") || "AL";
   const currentCountry = getCountryByCode(userCountry);
   const currencySymbol = getCurrencySymbol(userCountry);
@@ -19638,7 +19652,15 @@ Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm mb-2", children: t("gifts.emptyState") }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-500 text-xs", children: t("gifts.emptyStateSubtitle") })
     ] }),
-    suggestions.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "mt-6 bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-2 border-purple-500/30 backdrop-blur-sm", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-400 text-center", children: t("gifts.affiliateNote") }) }) })
+    suggestions.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "mt-6 bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-2 border-purple-500/30 backdrop-blur-sm", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-400 text-center", children: t("gifts.affiliateNote") }) }) }),
+    showUpgradeModal && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      UpgradeModal,
+      {
+        isOpen: showUpgradeModal,
+        onClose: () => setShowUpgradeModal(false),
+        feature: "Gift Suggestions"
+      }
+    )
   ] });
 }
 function SubscriptionSuccess() {
@@ -21834,20 +21856,7 @@ function MoodCheck() {
   const [advice, setAdvice] = reactExports.useState(null);
   const [isLoading, setIsLoading] = reactExports.useState(false);
   const [step, setStep] = reactExports.useState(1);
-  const [hasAccess, setHasAccess] = reactExports.useState(false);
-  const [showUpgradeModal, setShowUpgradeModal] = reactExports.useState(false);
   getBackendUrl();
-  const checkAccess = () => {
-    const tier = (localStorage.getItem("userSubscriptionTier") || "").toLowerCase();
-    return ["pro", "elite", "premium"].includes(tier);
-  };
-  reactExports.useEffect(() => {
-    const access = checkAccess();
-    setHasAccess(access);
-    if (!access) {
-      setShowUpgradeModal(true);
-    }
-  }, []);
   const currentLang = i18n.language || "en";
   const isAlbanian2 = currentLang === "sq" || currentLang.startsWith("sq");
   const moods = [
@@ -21916,55 +21925,6 @@ Format with clear sections using emojis.`
     setAdvice(null);
     setStep(1);
   };
-  const UpgradeModal2 = () => {
-    if (!showUpgradeModal) return null;
-    return reactDomExports.createPortal(
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "fixed inset-0 z-[99999] flex items-center justify-center p-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-black/80 backdrop-blur-sm", onClick: () => window.history.back() }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative bg-slate-900 border border-purple-500/30 rounded-2xl p-6 max-w-sm w-full shadow-2xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Crown, { className: "w-8 h-8 text-white" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl font-bold text-white mb-2", children: t("upgrade.proFeature", "Pro Feature") }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 mb-6", children: t("upgrade.moodCheckLocked", "Mood Check is available for Pro and Elite members. Upgrade to get personalized advice based on your emotional state!") }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              Button,
-              {
-                onClick: () => window.location.hash = "#/profile?tab=subscription",
-                className: "w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Crown, { className: "w-4 h-4 mr-2" }),
-                  t("upgrade.upgradeToPro", "Upgrade to Pro")
-                ]
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              Button,
-              {
-                onClick: () => window.history.back(),
-                variant: "outline",
-                className: "w-full border-slate-700 text-slate-300",
-                children: t("common.goBack", "Go Back")
-              }
-            )
-          ] })
-        ] }) })
-      ] }),
-      document.body
-    );
-  };
-  if (!hasAccess) {
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(UpgradeModal2, {}),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-4 pt-6 pb-32 w-full max-w-full overflow-x-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6 text-center", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-block mb-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 bg-gradient-to-br from-slate-600 to-slate-700 rounded-3xl flex items-center justify-center shadow-2xl opacity-50", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-10 h-10 text-white" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -top-1 -right-1 w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Lock, { className: "w-3 h-3 text-white" }) })
-        ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-white mb-1", children: t("mood.title", "Mood Check") }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: t("upgrade.requiresProElite", "Requires Pro or Elite membership") })
-      ] }) })
-    ] });
-  }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 pt-6 pb-32 w-full max-w-full overflow-x-hidden", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "button",
@@ -22533,6 +22493,20 @@ function StyleAdvisor() {
   const [advice, setAdvice] = reactExports.useState(null);
   const [isLoading, setIsLoading] = reactExports.useState(false);
   const [uploadedImage, setUploadedImage] = reactExports.useState(null);
+  const [hasAccess, setHasAccess] = reactExports.useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = reactExports.useState(false);
+  const checkAccess = () => {
+    const tier = (localStorage.getItem("userSubscriptionTier") || "").toLowerCase();
+    console.log("🔐 Style Advisor - Checking access for tier:", tier);
+    return ["pro", "elite", "premium"].includes(tier);
+  };
+  reactExports.useEffect(() => {
+    const access = checkAccess();
+    setHasAccess(access);
+    if (!access) {
+      setShowUpgradeModal(true);
+    }
+  }, []);
   const occasions = [
     { value: "coffee", label: t("styleAdvisor.occasions.coffee") },
     { value: "dinner", label: t("styleAdvisor.occasions.dinner") },
@@ -22712,7 +22686,15 @@ KRITIKE: Shiko foton e ngarkuar dhe analizo atë që sheh në foto. Jep këshill
           }
         )
       ] })
-    ] })
+    ] }),
+    showUpgradeModal && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      UpgradeModal,
+      {
+        isOpen: showUpgradeModal,
+        onClose: () => setShowUpgradeModal(false),
+        feature: "Style Advisor"
+      }
+    )
   ] });
 }
 const callAIWithRetry = async (prompt, maxRetries = 3) => {

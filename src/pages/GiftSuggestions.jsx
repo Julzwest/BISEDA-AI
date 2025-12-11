@@ -1,15 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Gift, Heart, Sparkles, ShoppingBag, Star, TrendingUp, ExternalLink, MapPin, Store, Globe } from 'lucide-react';
+import { Gift, Heart, Sparkles, ShoppingBag, Star, TrendingUp, ExternalLink, MapPin, Store, Globe, Lock, Crown } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { SaveButton } from '@/components/SaveButton';
 import { base44 } from '@/api/base44Client';
 import { countries, getLocalizedCitiesForCountry, getCountryByCode, getCityNameEn, getCurrencySymbol, getLocalizedCountryName } from '@/config/countries';
+import UpgradeModal from '@/components/UpgradeModal';
 
 export default function GiftSuggestions() {
   const { t, i18n } = useTranslation();
   const backendUrl = import.meta.env.VITE_BACKEND_URL || 'https://biseda-ai.onrender.com';
+  
+  // Check if user has Pro or Elite subscription
+  const [hasAccess, setHasAccess] = useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  
+  const checkAccess = () => {
+    const tier = (localStorage.getItem('userSubscriptionTier') || '').toLowerCase();
+    console.log('🔐 Gift Suggestions - Checking access for tier:', tier);
+    return ['pro', 'elite', 'premium'].includes(tier);
+  };
+  
+  useEffect(() => {
+    const access = checkAccess();
+    setHasAccess(access);
+    if (!access) {
+      setShowUpgradeModal(true);
+    }
+  }, []);
   
   // Get user's country from localStorage
   const userCountry = localStorage.getItem('userCountry') || 'AL';
@@ -844,6 +863,15 @@ Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
             </p>
           </div>
         </Card>
+      )}
+
+      {/* Upgrade Modal */}
+      {showUpgradeModal && (
+        <UpgradeModal 
+          isOpen={showUpgradeModal}
+          onClose={() => setShowUpgradeModal(false)}
+          feature="Gift Suggestions"
+        />
       )}
     </div>
   );

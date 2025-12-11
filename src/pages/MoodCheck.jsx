@@ -17,23 +17,7 @@ export default function MoodCheck() {
   const [advice, setAdvice] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [step, setStep] = useState(1);
-  const [hasAccess, setHasAccess] = useState(false);
-  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const backendUrl = getBackendUrl();
-
-  // Check if user has Pro or Elite subscription
-  const checkAccess = () => {
-    const tier = (localStorage.getItem('userSubscriptionTier') || '').toLowerCase();
-    return ['pro', 'elite', 'premium'].includes(tier);
-  };
-
-  useEffect(() => {
-    const access = checkAccess();
-    setHasAccess(access);
-    if (!access) {
-      setShowUpgradeModal(true);
-    }
-  }, []);
   
   const currentLang = i18n.language || 'en';
   const isAlbanian = currentLang === 'sq' || currentLang.startsWith('sq');
@@ -111,70 +95,6 @@ Format with clear sections using emojis.`
     setAdvice(null);
     setStep(1);
   };
-
-  // Upgrade Modal
-  const UpgradeModal = () => {
-    if (!showUpgradeModal) return null;
-    
-    return createPortal(
-      <div className="fixed inset-0 z-[99999] flex items-center justify-center p-4">
-        <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => window.history.back()} />
-        <div className="relative bg-slate-900 border border-purple-500/30 rounded-2xl p-6 max-w-sm w-full shadow-2xl">
-          <div className="text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <Crown className="w-8 h-8 text-white" />
-            </div>
-            <h3 className="text-xl font-bold text-white mb-2">{t('upgrade.proFeature', 'Pro Feature')}</h3>
-            <p className="text-slate-400 mb-6">
-              {t('upgrade.moodCheckLocked', 'Mood Check is available for Pro and Elite members. Upgrade to get personalized advice based on your emotional state!')}
-            </p>
-            <div className="space-y-3">
-              <Button 
-                onClick={() => window.location.hash = '#/profile?tab=subscription'}
-                className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
-              >
-                <Crown className="w-4 h-4 mr-2" />
-                {t('upgrade.upgradeToPro', 'Upgrade to Pro')}
-              </Button>
-              <Button 
-                onClick={() => window.history.back()}
-                variant="outline"
-                className="w-full border-slate-700 text-slate-300"
-              >
-                {t('common.goBack', 'Go Back')}
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>,
-      document.body
-    );
-  };
-
-  // If no access, show locked state
-  if (!hasAccess) {
-    return (
-      <>
-        <UpgradeModal />
-        <div className="px-4 pt-6 pb-32 w-full max-w-full overflow-x-hidden">
-          <div className="mb-6 text-center">
-            <div className="inline-block mb-3">
-              <div className="relative">
-                <div className="w-20 h-20 bg-gradient-to-br from-slate-600 to-slate-700 rounded-3xl flex items-center justify-center shadow-2xl opacity-50">
-                  <Heart className="w-10 h-10 text-white" />
-                </div>
-                <div className="absolute -top-1 -right-1 w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center">
-                  <Lock className="w-3 h-3 text-white" />
-                </div>
-              </div>
-            </div>
-            <h1 className="text-2xl font-bold text-white mb-1">{t('mood.title', 'Mood Check')}</h1>
-            <p className="text-slate-400 text-sm">{t('upgrade.requiresProElite', 'Requires Pro or Elite membership')}</p>
-          </div>
-        </div>
-      </>
-    );
-  }
 
   return (
     <div className="px-4 pt-6 pb-32 w-full max-w-full overflow-x-hidden">

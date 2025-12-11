@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Sparkles, Upload } from 'lucide-react';
+import { Sparkles, Upload, Lock, Crown } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import UpgradeModal from '@/components/UpgradeModal';
 
 export default function StyleAdvisor() {
   const { t } = useTranslation();
@@ -14,6 +15,24 @@ export default function StyleAdvisor() {
   const [advice, setAdvice] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedImage, setUploadedImage] = useState(null);
+  
+  // Check if user has Pro or Elite subscription
+  const [hasAccess, setHasAccess] = useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  
+  const checkAccess = () => {
+    const tier = (localStorage.getItem('userSubscriptionTier') || '').toLowerCase();
+    console.log('🔐 Style Advisor - Checking access for tier:', tier);
+    return ['pro', 'elite', 'premium'].includes(tier);
+  };
+  
+  useEffect(() => {
+    const access = checkAccess();
+    setHasAccess(access);
+    if (!access) {
+      setShowUpgradeModal(true);
+    }
+  }, []);
 
   const occasions = [
     { value: 'coffee', label: t('styleAdvisor.occasions.coffee') },
@@ -240,6 +259,15 @@ Bëji këshillat praktike dhe moderne. Jep 3-4 opsione të ndryshme në varësi 
           </div>
         )}
       </div>
+
+      {/* Upgrade Modal */}
+      {showUpgradeModal && (
+        <UpgradeModal 
+          isOpen={showUpgradeModal}
+          onClose={() => setShowUpgradeModal(false)}
+          feature="Style Advisor"
+        />
+      )}
     </div>
   );
 }
