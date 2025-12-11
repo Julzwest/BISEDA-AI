@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, RefreshCw, Heart, DollarSign, MapPin, Clock, Share2, Bookmark, BookmarkCheck } from 'lucide-react';
+import { Sparkles, RefreshCw, Heart, DollarSign, MapPin, Clock, Share2, Bookmark, BookmarkCheck, X } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { base44 } from '@/api/base44Client';
@@ -174,15 +174,31 @@ Format as JSON array with: title, description, why_it_works, cost, duration, pro
             <Card key={index} className="bg-slate-800/50 border-slate-700 p-5">
               <div className="flex items-start justify-between mb-3">
                 <h3 className="text-lg font-bold text-white flex-1">{idea.title}</h3>
-                <SaveButton
-                  item={{
-                    id: `quick-date-${Date.now()}-${index}`,
-                    title: idea.title,
-                    description: idea.description,
-                    type: 'date_idea'
-                  }}
-                  type="dateIdeas"
-                />
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      if (navigator.share) {
+                        navigator.share({
+                          title: idea.title,
+                          text: `${idea.description}\n\n${idea.why_it_works}`,
+                          url: window.location.href
+                        });
+                      }
+                    }}
+                    className="p-2 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors"
+                  >
+                    <Share2 className="w-4 h-4 text-slate-400" />
+                  </button>
+                  <SaveButton
+                    item={{
+                      id: `quick-date-${Date.now()}-${index}`,
+                      title: idea.title,
+                      description: idea.description,
+                      type: 'date_idea'
+                    }}
+                    type="dateIdeas"
+                  />
+                </div>
               </div>
 
               <p className="text-slate-300 mb-3">{idea.description}</p>

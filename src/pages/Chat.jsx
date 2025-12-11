@@ -276,7 +276,7 @@ export default function Chat() {
   // Check if user has paid subscription (any paid tier)
   const hasPaidSubscription = () => {
     const tier = (subscriptionTier || localStorage.getItem('userSubscriptionTier') || '').toLowerCase();
-    return ['starter', 'pro', 'elite', 'premium'].includes(tier);
+    return ['pro', 'elite', 'premium'].includes(tier); // Only Pro, Elite, and Premium (legacy) have paid features
   };
 
   // Check if user has Pro or Elite subscription (for premium features like Intimacy Coach)

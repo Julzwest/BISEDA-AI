@@ -12,11 +12,17 @@ const backendUrl = getBackendUrl();
 
 export default function FirstDates() {
   const { t, i18n } = useTranslation();
+  const [activeTab, setActiveTab] = useState('venues'); // 'venues' or 'planner'
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
+  
+  // Date Planner state
+  const [dateIdea, setDateIdea] = useState('');
+  const [plannerLoading, setPlannerLoading] = useState(false);
+  const [plannedDate, setPlannedDate] = useState(null);
   
   // City selection modal
   const [showCityModal, setShowCityModal] = useState(false);
@@ -459,11 +465,38 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
           </div>
         </div>
         <h1 className="text-3xl font-extrabold bg-gradient-to-r from-pink-300 via-rose-300 to-red-300 bg-clip-text text-transparent mb-2">
-          {t('dates.title')}
+          Date Ideas
         </h1>
-        <p className="text-slate-400 text-sm">{t('dates.subtitle')}</p>
+        <p className="text-slate-400 text-sm">Find venues or plan your perfect date</p>
       </div>
 
+      {/* Tabs */}
+      <div className="flex gap-2 mb-6 bg-slate-900/50 p-1 rounded-xl">
+        <button
+          onClick={() => setActiveTab('venues')}
+          className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all ${
+            activeTab === 'venues'
+              ? 'bg-gradient-to-r from-pink-500 to-rose-600 text-white shadow-lg'
+              : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          🗺️ Find Venues
+        </button>
+        <button
+          onClick={() => setActiveTab('planner')}
+          className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all ${
+            activeTab === 'planner'
+              ? 'bg-gradient-to-r from-pink-500 to-rose-600 text-white shadow-lg'
+              : 'text-slate-400 hover:text-white'
+          }`}
+        >
+          📅 Plan Date
+        </button>
+      </div>
+
+      {/* Venues Tab Content */}
+      {activeTab === 'venues' && (
+        <>
       {/* City Selection - Modern Design */}
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-3">
@@ -525,6 +558,141 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
         )}
       </div>
       
+        </>
+      )}
+
+      {/* Date Planner Tab Content */}
+      {activeTab === 'planner' && (
+        <div className="space-y-4">
+          <Card className="bg-slate-800/50 border-slate-700 p-5">
+            <h3 className="text-white font-bold mb-4">Plan Your Perfect Date</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  What kind of date are you thinking?
+                </label>
+                <textarea
+                  value={dateIdea}
+                  onChange={(e) => setDateIdea(e.target.value)}
+                  placeholder="E.g., 'romantic dinner with live music', 'fun outdoor adventure', 'cozy coffee date'"
+                  className="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder:text-slate-500 min-h-[100px]"
+                  style={{ fontSize: '16px' }}
+                />
+              </div>
+
+              <Button
+                onClick={async () => {
+                  if (!dateIdea.trim()) return;
+                  setPlannerLoading(true);
+                  try {
+                    const prompt = `Plan a complete date based on this idea: "${dateIdea}"
+                    
+Location: ${selectedCity || userCountry}
+
+Provide a detailed date plan with:
+1. Date title (creative and exciting)
+2. Full step-by-step itinerary (at least 3-4 activities/stops)
+3. Estimated timeline
+4. Estimated total cost
+5. What to wear
+6. Conversation topics to prepare
+7. Pro tips to make it special
+
+Format as JSON with: title, itinerary (array of {time, activity, description}), duration, cost, dress_code, conversation_topics (array), pro_tips (array)`;
+
+                    const response = await base44.generateResponse(prompt, 'gpt-4o-mini');
+                    const content = response.choices?.[0]?.message?.content || '';
+                    const jsonMatch = content.match(/\{[\s\S]*\}/);
+                    if (jsonMatch) {
+                      setPlannedDate(JSON.parse(jsonMatch[0]));
+                    }
+                  } catch (error) {
+                    console.error('Error:', error);
+                    alert('Failed to plan date. Please try again.');
+                  } finally {
+                    setPlannerLoading(false);
+                  }
+                }}
+                disabled={plannerLoading || !dateIdea.trim()}
+                className="w-full bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white"
+              >
+                {plannerLoading ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                    Planning Your Date...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Plan My Date
+                  </>
+                )}
+              </Button>
+            </div>
+          </Card>
+
+          {/* Planned Date Results */}
+          {plannedDate && (
+            <div className="space-y-4">
+              <Card className="bg-gradient-to-br from-pink-500/20 to-rose-500/20 border-pink-500/30 p-5">
+                <h2 className="text-2xl font-bold text-white mb-2">{plannedDate.title}</h2>
+                <div className="flex flex-wrap gap-2 text-sm">
+                  <span className="px-2 py-1 bg-slate-900 rounded text-slate-300">⏰ {plannedDate.duration}</span>
+                  <span className="px-2 py-1 bg-slate-900 rounded text-slate-300">💰 {plannedDate.cost}</span>
+                  <span className="px-2 py-1 bg-slate-900 rounded text-slate-300">👔 {plannedDate.dress_code}</span>
+                </div>
+              </Card>
+
+              <Card className="bg-slate-800/50 border-slate-700 p-5">
+                <h3 className="text-white font-bold mb-3">📋 Itinerary</h3>
+                <div className="space-y-3">
+                  {plannedDate.itinerary?.map((item, i) => (
+                    <div key={i} className="flex gap-3 p-3 bg-slate-900 rounded-lg">
+                      <div className="flex-shrink-0 w-16 text-purple-400 font-semibold text-sm">{item.time}</div>
+                      <div className="flex-1">
+                        <h4 className="text-white font-semibold mb-1">{item.activity}</h4>
+                        <p className="text-slate-400 text-sm">{item.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+
+              <Card className="bg-slate-800/50 border-slate-700 p-5">
+                <h3 className="text-white font-bold mb-3">💬 Conversation Topics</h3>
+                <ul className="space-y-2">
+                  {plannedDate.conversation_topics?.map((topic, i) => (
+                    <li key={i} className="flex items-start gap-2 text-slate-300 text-sm">
+                      <span className="text-pink-400 flex-shrink-0">•</span>
+                      <span>{topic}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+
+              <Card className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-yellow-500/30 p-5">
+                <h3 className="text-white font-bold mb-3">💡 Pro Tips</h3>
+                <ul className="space-y-2">
+                  {plannedDate.pro_tips?.map((tip, i) => (
+                    <li key={i} className="flex items-start gap-2 text-slate-300 text-sm">
+                      <span className="text-yellow-400 flex-shrink-0">✨</span>
+                      <span>{tip}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+
+              <Button
+                onClick={() => setPlannedDate(null)}
+                className="w-full bg-slate-700 hover:bg-slate-600 text-white"
+              >
+                Plan Another Date
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* City Selection Modal */}
       {showCityModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">

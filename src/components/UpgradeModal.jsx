@@ -17,33 +17,18 @@ export default function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
 
   const plans = [
     {
-      name: 'Starter',
-      tier: 'starter',
-      price: '€6.99',
-      period: 'month',
-      priceId: import.meta.env.VITE_STRIPE_STARTER_PRICE_ID,
-      features: [
-        t('plans.starter.messages'),
-        t('plans.starter.categories'),
-        t('plans.starter.adultContent'),
-        t('plans.starter.aiCoach'),
-        t('plans.starter.tips')
-      ],
-      color: 'from-blue-500 to-cyan-600',
-      popular: false
-    },
-    {
       name: 'Pro',
       tier: 'pro',
-      price: '€12.99',
+      price: '€9.99',
       period: 'month',
       priceId: import.meta.env.VITE_STRIPE_PRO_PRICE_ID,
       features: [
-        t('plans.pro.messages'),
-        t('plans.pro.starterFeatures'),
-        t('plans.pro.imageAnalysis'),
-        t('plans.pro.advancedAI'),
-        t('plans.pro.prioritySupport')
+        '100 messages per day',
+        'All AI Coach categories',
+        'Unlimited Text Response Helper',
+        'Unlimited Photo Feedback',
+        'All dating tools unlocked',
+        'Priority support'
       ],
       color: 'from-purple-500 to-pink-600',
       popular: true
@@ -55,11 +40,12 @@ export default function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
       period: 'month',
       priceId: import.meta.env.VITE_STRIPE_ELITE_PRICE_ID,
       features: [
-        t('plans.elite.messages'),
-        t('plans.elite.proFeatures'),
-        t('plans.elite.imageAnalysis'),
-        t('plans.elite.vipSupport'),
-        t('plans.elite.earlyAccess')
+        'Unlimited everything',
+        'Intimacy Coach access',
+        'VIP priority support 24/7',
+        'Early access to new features',
+        'Custom AI training',
+        'Personal success coach'
       ],
       color: 'from-amber-500 to-orange-600',
       popular: false

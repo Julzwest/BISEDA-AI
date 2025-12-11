@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MessageCircle, Copy, Check, Heart, Laugh, Brain, Zap, Sparkles, Star, Search } from 'lucide-react';
+import { MessageCircle, Copy, Check, Heart, Laugh, Brain, Zap, Sparkles, Star, Search, Share2 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -113,11 +113,27 @@ export default function ConversationStarters() {
     <div className="px-4 pt-20 pb-32 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950 min-h-screen">
       {/* Header */}
       <div className="mb-6">
-        <div className="flex items-center gap-2 mb-2">
-          <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
-            <MessageCircle className="w-5 h-5 text-white" />
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
+              <MessageCircle className="w-5 h-5 text-white" />
+            </div>
+            <h1 className="text-2xl font-bold text-white">Conversation Starters</h1>
           </div>
-          <h1 className="text-2xl font-bold text-white">Conversation Starters</h1>
+          <button
+            onClick={() => {
+              if (navigator.share) {
+                navigator.share({
+                  title: 'BisedaAI - Conversation Starters',
+                  text: '50+ ready-to-use conversation starters for dating apps!',
+                  url: window.location.href
+                });
+              }
+            }}
+            className="p-2 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors"
+          >
+            <Share2 className="w-5 h-5 text-slate-400" />
+          </button>
         </div>
         <p className="text-slate-400">Ready-to-use opening messages for dating apps</p>
       </div>

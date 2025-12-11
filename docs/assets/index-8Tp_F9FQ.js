@@ -13810,7 +13810,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-C6uLeWVj.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-DSx3MTOA.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -14958,33 +14958,18 @@ function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
   const isNativeIOS = Capacitor.isNativePlatform() && Capacitor.getPlatform() === "ios";
   const plans2 = [
     {
-      name: "Starter",
-      tier: "starter",
-      price: "€6.99",
-      period: "month",
-      priceId: void 0,
-      features: [
-        t("plans.starter.messages"),
-        t("plans.starter.categories"),
-        t("plans.starter.adultContent"),
-        t("plans.starter.aiCoach"),
-        t("plans.starter.tips")
-      ],
-      color: "from-blue-500 to-cyan-600",
-      popular: false
-    },
-    {
       name: "Pro",
       tier: "pro",
-      price: "€12.99",
+      price: "€9.99",
       period: "month",
       priceId: void 0,
       features: [
-        t("plans.pro.messages"),
-        t("plans.pro.starterFeatures"),
-        t("plans.pro.imageAnalysis"),
-        t("plans.pro.advancedAI"),
-        t("plans.pro.prioritySupport")
+        "100 messages per day",
+        "All AI Coach categories",
+        "Unlimited Text Response Helper",
+        "Unlimited Photo Feedback",
+        "All dating tools unlocked",
+        "Priority support"
       ],
       color: "from-purple-500 to-pink-600",
       popular: true
@@ -14996,11 +14981,12 @@ function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
       period: "month",
       priceId: void 0,
       features: [
-        t("plans.elite.messages"),
-        t("plans.elite.proFeatures"),
-        t("plans.elite.imageAnalysis"),
-        t("plans.elite.vipSupport"),
-        t("plans.elite.earlyAccess")
+        "Unlimited everything",
+        "Intimacy Coach access",
+        "VIP priority support 24/7",
+        "Early access to new features",
+        "Custom AI training",
+        "Personal success coach"
       ],
       color: "from-amber-500 to-orange-600",
       popular: false
@@ -16237,11 +16223,15 @@ Now write 10 COMPLETELY new messages:`
 const backendUrl = getBackendUrl();
 function FirstDates() {
   const { t, i18n } = useTranslation();
+  const [activeTab, setActiveTab] = reactExports.useState("venues");
   const [selectedCity, setSelectedCity] = reactExports.useState("");
   const [selectedCategory, setSelectedCategory] = reactExports.useState(null);
   const [suggestions, setSuggestions] = reactExports.useState([]);
   const [loading, setLoading] = reactExports.useState(false);
   const [loadingMore, setLoadingMore] = reactExports.useState(false);
+  const [dateIdea, setDateIdea] = reactExports.useState("");
+  const [plannerLoading, setPlannerLoading] = reactExports.useState(false);
+  const [plannedDate, setPlannedDate] = reactExports.useState(null);
   const [showCityModal, setShowCityModal] = reactExports.useState(false);
   const [customCityInput, setCustomCityInput] = reactExports.useState("");
   const [showMoreCities, setShowMoreCities] = reactExports.useState(false);
@@ -16613,10 +16603,28 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 bg-gradient-to-br from-pink-500 via-rose-500 to-red-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-pink-500/50 animate-pulse", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-10 h-10 text-white", fill: "currentColor" }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center animate-bounce", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-3 h-3 text-slate-900" }) })
       ] }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-3xl font-extrabold bg-gradient-to-r from-pink-300 via-rose-300 to-red-300 bg-clip-text text-transparent mb-2", children: t("dates.title") }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: t("dates.subtitle") })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-3xl font-extrabold bg-gradient-to-r from-pink-300 via-rose-300 to-red-300 bg-clip-text text-transparent mb-2", children: "Date Ideas" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: "Find venues or plan your perfect date" })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 mb-6 bg-slate-900/50 p-1 rounded-xl", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: () => setActiveTab("venues"),
+          className: `flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all ${activeTab === "venues" ? "bg-gradient-to-r from-pink-500 to-rose-600 text-white shadow-lg" : "text-slate-400 hover:text-white"}`,
+          children: "🗺️ Find Venues"
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: () => setActiveTab("planner"),
+          className: `flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all ${activeTab === "planner" ? "bg-gradient-to-r from-pink-500 to-rose-600 text-white shadow-lg" : "text-slate-400 hover:text-white"}`,
+          children: "📅 Plan Date"
+        }
+      )
+    ] }),
+    activeTab === "venues" && /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-3", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-5 h-5 text-purple-400" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-lg font-bold text-white", children: t("dates.selectCity") }),
@@ -16676,6 +16684,122 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
             onClick: () => setSelectedCity(""),
             className: "p-1 text-slate-400 hover:text-white",
             children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-4 h-4" })
+          }
+        )
+      ] })
+    ] }) }),
+    activeTab === "planner" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold mb-4", children: "Plan Your Perfect Date" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: "What kind of date are you thinking?" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "textarea",
+              {
+                value: dateIdea,
+                onChange: (e) => setDateIdea(e.target.value),
+                placeholder: "E.g., 'romantic dinner with live music', 'fun outdoor adventure', 'cozy coffee date'",
+                className: "w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder:text-slate-500 min-h-[100px]",
+                style: { fontSize: "16px" }
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Button,
+            {
+              onClick: async () => {
+                if (!dateIdea.trim()) return;
+                setPlannerLoading(true);
+                try {
+                  const prompt = `Plan a complete date based on this idea: "${dateIdea}"
+                    
+Location: ${selectedCity || userCountry}
+
+Provide a detailed date plan with:
+1. Date title (creative and exciting)
+2. Full step-by-step itinerary (at least 3-4 activities/stops)
+3. Estimated timeline
+4. Estimated total cost
+5. What to wear
+6. Conversation topics to prepare
+7. Pro tips to make it special
+
+Format as JSON with: title, itinerary (array of {time, activity, description}), duration, cost, dress_code, conversation_topics (array), pro_tips (array)`;
+                  const response = await base44.generateResponse(prompt, "gpt-4o-mini");
+                  const content = response.choices?.[0]?.message?.content || "";
+                  const jsonMatch = content.match(/\{[\s\S]*\}/);
+                  if (jsonMatch) {
+                    setPlannedDate(JSON.parse(jsonMatch[0]));
+                  }
+                } catch (error) {
+                  console.error("Error:", error);
+                  alert("Failed to plan date. Please try again.");
+                } finally {
+                  setPlannerLoading(false);
+                }
+              },
+              disabled: plannerLoading || !dateIdea.trim(),
+              className: "w-full bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white",
+              children: plannerLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" }),
+                "Planning Your Date..."
+              ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 mr-2" }),
+                "Plan My Date"
+              ] })
+            }
+          )
+        ] })
+      ] }),
+      plannedDate && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-gradient-to-br from-pink-500/20 to-rose-500/20 border-pink-500/30 p-5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white mb-2", children: plannedDate.title }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-2 text-sm", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "px-2 py-1 bg-slate-900 rounded text-slate-300", children: [
+              "⏰ ",
+              plannedDate.duration
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "px-2 py-1 bg-slate-900 rounded text-slate-300", children: [
+              "💰 ",
+              plannedDate.cost
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "px-2 py-1 bg-slate-900 rounded text-slate-300", children: [
+              "👔 ",
+              plannedDate.dress_code
+            ] })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold mb-3", children: "📋 Itinerary" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: plannedDate.itinerary?.map((item, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-3 p-3 bg-slate-900 rounded-lg", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-shrink-0 w-16 text-purple-400 font-semibold text-sm", children: item.time }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-white font-semibold mb-1", children: item.activity }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: item.description })
+            ] })
+          ] }, i)) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold mb-3", children: "💬 Conversation Topics" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "space-y-2", children: plannedDate.conversation_topics?.map((topic, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2 text-slate-300 text-sm", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-pink-400 flex-shrink-0", children: "•" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: topic })
+          ] }, i)) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-yellow-500/30 p-5", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold mb-3", children: "💡 Pro Tips" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "space-y-2", children: plannedDate.pro_tips?.map((tip, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2 text-slate-300 text-sm", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-yellow-400 flex-shrink-0", children: "✨" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: tip })
+          ] }, i)) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Button,
+          {
+            onClick: () => setPlannedDate(null),
+            className: "w-full bg-slate-700 hover:bg-slate-600 text-white",
+            children: "Plan Another Date"
           }
         )
       ] })
@@ -17944,7 +18068,7 @@ function Chat() {
   };
   const hasPaidSubscription = () => {
     const tier = (subscriptionTier || localStorage.getItem("userSubscriptionTier") || "").toLowerCase();
-    return ["starter", "pro", "elite", "premium"].includes(tier);
+    return ["pro", "elite", "premium"].includes(tier);
   };
   const hasProOrEliteSubscription = () => {
     const tier = (subscriptionTier || localStorage.getItem("userSubscriptionTier") || "").toLowerCase();
@@ -21354,9 +21478,27 @@ function ConversationStarters() {
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 pt-20 pb-32 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950 min-h-screen", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(MessageCircle, { className: "w-5 h-5 text-white" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-white", children: "Conversation Starters" })
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(MessageCircle, { className: "w-5 h-5 text-white" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-white", children: "Conversation Starters" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => {
+              if (navigator.share) {
+                navigator.share({
+                  title: "BisedaAI - Conversation Starters",
+                  text: "50+ ready-to-use conversation starters for dating apps!",
+                  url: window.location.href
+                });
+              }
+            },
+            className: "p-2 bg-slate-800 hover:bg-slate-700 rounded-lg transition-colors",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Share2, { className: "w-5 h-5 text-slate-400" })
+          }
+        )
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400", children: "Ready-to-use opening messages for dating apps" })
     ] }),
@@ -21582,18 +21724,38 @@ Format as JSON array with: title, description, why_it_works, cost, duration, pro
       ideas.map((idea, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between mb-3", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-white flex-1", children: idea.title }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            SaveButton,
-            {
-              item: {
-                id: `quick-date-${Date.now()}-${index}`,
-                title: idea.title,
-                description: idea.description,
-                type: "date_idea"
-              },
-              type: "dateIdeas"
-            }
-          )
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => {
+                  if (navigator.share) {
+                    navigator.share({
+                      title: idea.title,
+                      text: `${idea.description}
+
+${idea.why_it_works}`,
+                      url: window.location.href
+                    });
+                  }
+                },
+                className: "p-2 bg-slate-700 hover:bg-slate-600 rounded-lg transition-colors",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Share2, { className: "w-4 h-4 text-slate-400" })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              SaveButton,
+              {
+                item: {
+                  id: `quick-date-${Date.now()}-${index}`,
+                  title: idea.title,
+                  description: idea.description,
+                  type: "date_idea"
+                },
+                type: "dateIdeas"
+              }
+            )
+          ] })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 mb-3", children: idea.description }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-2 mb-3", children: [
