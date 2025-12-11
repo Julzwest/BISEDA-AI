@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MapPin, Coffee, UtensilsCrossed, Film, Music, Dumbbell, Palette, TreePine, Sparkles, Heart, Star, Crown, TrendingUp, Globe, X, Search, Plus, ChevronRight } from 'lucide-react';
+import { MapPin, Coffee, UtensilsCrossed, Film, Music, Dumbbell, Palette, TreePine, Sparkles, Heart, Star, Crown, TrendingUp, Globe, X, Search, Plus, ChevronRight, PartyPopper } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { SaveButton } from '@/components/SaveButton';

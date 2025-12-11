@@ -11330,7 +11330,7 @@ const Palette = createLucideIcon("Palette", [
     }
   ]
 ]);
-const PartyPopper$1 = createLucideIcon("PartyPopper", [
+const PartyPopper = createLucideIcon("PartyPopper", [
   ["path", { d: "M5.8 11.3 2 22l10.7-3.79", key: "gwxi1d" }],
   ["path", { d: "M4 3h.01", key: "1vcuye" }],
   ["path", { d: "M22 8h.01", key: "1mrtc2" }],
@@ -13711,7 +13711,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-utj0RwHn.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-C142BwOs.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -20338,7 +20338,7 @@ function Admin() {
           { icon: Bot, name: "AI Coach", color: "purple" },
           { icon: Heart, name: "First Dates", color: "pink" },
           { icon: Lightbulb, name: "Tips", color: "amber" },
-          { icon: PartyPopper$1, name: "Events", color: "yellow" },
+          { icon: PartyPopper, name: "Events", color: "yellow" },
           { icon: Gift, name: "Gifts", color: "rose" }
         ].map((feature, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `bg-${feature.color}-500/10 border border-${feature.color}-500/30 p-4 rounded-xl text-center`, children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(feature.icon, { className: `w-8 h-8 text-${feature.color}-400 mx-auto mb-2` }),
@@ -21234,7 +21234,7 @@ function UserProfile({ onLogout }) {
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Start chatting" })
           ] }) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/events", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-xl hover:scale-105 transition-transform", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(PartyPopper$1, { className: "w-5 h-5 text-yellow-400 mb-1" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(PartyPopper, { className: "w-5 h-5 text-yellow-400 mb-1" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-sm font-semibold", children: "Events" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Near you" })
           ] }) }),
@@ -24035,7 +24035,7 @@ const getSteps = (t) => [
     id: 3,
     title: t("onboarding.steps.events.title"),
     description: t("onboarding.steps.events.description"),
-    icon: PartyPopper$1,
+    icon: PartyPopper,
     color: "from-yellow-500 to-orange-500",
     features: t("onboarding.steps.events.features", { returnObjects: true })
   }
