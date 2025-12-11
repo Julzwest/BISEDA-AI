@@ -382,3 +382,218 @@ select::-webkit-scrollbar-thumb {
   --accent-secondary: #ec4899;
   --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
 }
+
+/* ==========================================
+   IPHONE RESPONSIVE STYLES
+   ========================================== */
+
+/* Base mobile styles - applies to all phones */
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 16px;
+  }
+  
+  .container, .main-content {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+/* iPhone SE, iPhone 8 and smaller (375px width) */
+@media screen and (max-width: 375px) {
+  html {
+    font-size: 14px;
+  }
+  
+  .container, .main-content {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  /* Smaller buttons and text for small screens */
+  button, .btn {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+  
+  h1, .text-2xl {
+    font-size: 1.5rem !important;
+  }
+  
+  h2, .text-xl {
+    font-size: 1.25rem !important;
+  }
+  
+  /* Cards on small screens */
+  .card, [class*="rounded-xl"] {
+    padding: 12px;
+  }
+}
+
+/* iPhone 12 Mini, iPhone 13 Mini (360px width) */
+@media screen and (max-width: 360px) {
+  html {
+    font-size: 13px;
+  }
+  
+  .container, .main-content {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+  
+  button, .btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+
+/* iPhone 14/15/16/17 Pro (393px width) */
+@media screen and (min-width: 390px) and (max-width: 394px) {
+  html {
+    font-size: 15px;
+  }
+  
+  .container, .main-content {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+/* iPhone 14/15/16/17 Pro Max (430px width) */
+@media screen and (min-width: 428px) and (max-width: 432px) {
+  html {
+    font-size: 16px;
+  }
+  
+  .container, .main-content {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  
+  /* Larger touch targets for Pro Max */
+  button, .btn {
+    min-height: 48px;
+    padding: 14px 24px;
+  }
+  
+  /* Better spacing on larger phones */
+  .card, [class*="rounded-xl"] {
+    padding: 20px;
+  }
+  
+  h1, .text-2xl {
+    font-size: 1.875rem !important;
+  }
+  
+  h2, .text-xl {
+    font-size: 1.5rem !important;
+  }
+}
+
+/* All Pro Max devices (width >= 428px) */
+@media screen and (min-width: 428px) and (max-width: 480px) {
+  /* Feature cards grid - 2 columns on Pro Max */
+  .feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  /* Modal sizing for larger phones */
+  .modal-content {
+    max-width: 400px;
+    margin: 20px;
+  }
+}
+
+/* Dynamic Island safe area for iPhone 14 Pro and newer */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .header, .navbar, .top-bar {
+    padding-top: calc(12px + env(safe-area-inset-top));
+  }
+  
+  .fixed-top {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+/* Home indicator safe area (all modern iPhones) */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .footer, .bottom-bar, .tab-bar {
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+  }
+  
+  .fixed-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  /* Chat input area safe area */
+  .chat-input-container, .input-container {
+    padding-bottom: calc(8px + env(safe-area-inset-bottom));
+  }
+}
+
+/* Tall phones (iPhone X and newer aspect ratio) */
+@media screen and (min-aspect-ratio: 9/19) {
+  .main-content {
+    min-height: 100dvh;
+  }
+  
+  /* Ensure content doesn't get hidden behind notch/island */
+  .page-content {
+    padding-top: max(20px, env(safe-area-inset-top));
+  }
+}
+
+/* Landscape mode on iPhones */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .modal-content {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  /* Reduce vertical spacing in landscape */
+  .py-6, .py-8 {
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+  }
+}
+
+/* High resolution displays (Retina) */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /* Ensure crisp text and borders */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Thin borders on retina */
+  .border {
+    border-width: 0.5px;
+  }
+}
+
+/* Prevent text size adjustment on orientation change */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Touch-friendly sizing for all mobile */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets */
+  button, .btn, a.btn, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better tap areas for icons */
+  .icon-btn, [class*="icon"] {
+    padding: 10px;
+  }
+  
+  /* Input fields */
+  input, textarea, select {
+    min-height: 44px;
+    font-size: 16px; /* Prevents iOS zoom on focus */
+  }
+}
