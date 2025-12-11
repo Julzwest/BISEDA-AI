@@ -13813,7 +13813,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-hvbFzhUk.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-MxxMftrY.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -16787,7 +16787,7 @@ function ClipboardSuggestions() {
       if (window.Capacitor && window.Capacitor.isNativePlatform()) {
         try {
           const { Clipboard: Clipboard2 } = await __vitePreload(async () => {
-            const { Clipboard: Clipboard22 } = await import("./index-CYhoLHl9.js");
+            const { Clipboard: Clipboard22 } = await import("./index-BxjLuHPa.js");
             return { Clipboard: Clipboard22 };
           }, true ? [] : void 0);
           const { value } = await Clipboard2.read();
@@ -19104,7 +19104,7 @@ CRITICAL REMINDER: The user has shared a screenshot of a conversation earlier in
               }
             ),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 Button,
                 {
                   onClick: () => {
@@ -19114,10 +19114,13 @@ CRITICAL REMINDER: The user has shared a screenshot of a conversation earlier in
                       fileInputRef.current?.click();
                     }
                   },
-                  className: `px-4 py-3 rounded-lg h-auto self-end ${screenshotUsage.remaining === 0 ? "bg-orange-600 hover:bg-orange-700" : "bg-slate-700 hover:bg-slate-600"} text-white`,
+                  className: `px-3 py-3 rounded-lg h-auto self-end flex items-center gap-2 ${screenshotUsage.remaining === 0 ? "bg-orange-600 hover:bg-orange-700" : "bg-slate-700 hover:bg-slate-600"} text-white`,
                   disabled: isLoading || selectedImages.length >= 4,
                   title: screenshotUsage.remaining > 0 ? `${screenshotUsage.remaining}/${screenshotUsage.limit} ${screenshotUsage.isPaidUser ? t("chat.thisMonth") : t("chat.remaining")}` : t("chat.upgradeForScreenshot"),
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(Image, { className: "w-5 h-5" })
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(Image, { className: "w-5 h-5" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-medium", children: "Chat Screenshot" })
+                  ]
                 }
               ),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: `absolute -top-2 -right-2 min-w-5 h-5 px-1 rounded-full text-xs font-bold flex items-center justify-center ${screenshotUsage.remaining === 0 ? "bg-red-500 text-white" : "bg-green-500 text-white"}`, children: [
@@ -23005,7 +23008,7 @@ function UserProfile({ onLogout }) {
         !isEditingLocation ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 p-4 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-xl", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-3xl", children: currentCountry?.flag || "🌍" }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-bold", children: currentCountry?.name || "Not set" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-bold", children: userCountry ? getLocalizedCountryName(userCountry) : "Not set" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: userCity || "Select city" })
           ] }),
           locationSaved && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "ml-auto flex items-center gap-1 text-green-400", children: [

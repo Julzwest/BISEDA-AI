@@ -1112,7 +1112,7 @@ Do NOT give generic advice - reference the SPECIFIC conversation they showed you
                       fileInputRef.current?.click();
                     }
                   }}
-                  className={`px-4 py-3 rounded-lg h-auto self-end ${
+                  className={`px-3 py-3 rounded-lg h-auto self-end flex items-center gap-2 ${
                     screenshotUsage.remaining === 0
                       ? 'bg-orange-600 hover:bg-orange-700'
                       : 'bg-slate-700 hover:bg-slate-600'
@@ -1123,6 +1123,7 @@ Do NOT give generic advice - reference the SPECIFIC conversation they showed you
                     : t('chat.upgradeForScreenshot')}
                 >
                   <ImageIcon className="w-5 h-5" />
+                  <span className="text-sm font-medium">Chat Screenshot</span>
                 </Button>
                 {/* Badge showing remaining analyses - for ALL users */}
                 <span className={`absolute -top-2 -right-2 min-w-5 h-5 px-1 rounded-full text-xs font-bold flex items-center justify-center ${

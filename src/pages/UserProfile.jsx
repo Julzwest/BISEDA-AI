@@ -8,6 +8,7 @@ import {
   MessageSquare, Sparkles, Trophy, PartyPopper
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { getLocalizedCountryName } from '@/config/countries';
 import { getBackendUrl } from '@/utils/getBackendUrl';
 import UpgradeModal from '@/components/UpgradeModal';
 import { countries, getCitiesForCountry, getCountryByCode } from '@/config/countries';
@@ -455,7 +456,7 @@ export default function UserProfile({ onLogout }) {
               <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-xl">
                 <span className="text-3xl">{currentCountry?.flag || '🌍'}</span>
                 <div>
-                  <p className="text-white font-bold">{currentCountry?.name || 'Not set'}</p>
+                  <p className="text-white font-bold">{userCountry ? getLocalizedCountryName(userCountry) : 'Not set'}</p>
                   <p className="text-slate-400 text-sm">{userCity || 'Select city'}</p>
                 </div>
                 {locationSaved && (
