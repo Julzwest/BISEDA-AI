@@ -11134,10 +11134,6 @@ const Coffee = createLucideIcon("Coffee", [
   ["line", { x1: "10", x2: "10", y1: "2", y2: "4", key: "170wym" }],
   ["line", { x1: "14", x2: "14", y1: "2", y2: "4", key: "1c5f70" }]
 ]);
-const Copy$1 = createLucideIcon("Copy", [
-  ["rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2", key: "17jyea" }],
-  ["path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2", key: "zix9uf" }]
-]);
 const CreditCard = createLucideIcon("CreditCard", [
   ["rect", { width: "20", height: "14", x: "2", y: "5", rx: "2", key: "ynyp8z" }],
   ["line", { x1: "2", x2: "22", y1: "10", y2: "10", key: "1b3vmo" }]
@@ -13731,7 +13727,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-BtFfQj8n.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-CkGV7lfV.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -15064,15 +15060,6 @@ function Home() {
       color: "from-purple-500 to-pink-500",
       // Purple-Pink gradient for AI/chat
       page: "Chat"
-    },
-    {
-      icon: MessageSquare,
-      title: "Text Response Helper",
-      description: "AI suggests perfect replies",
-      color: "from-blue-500 to-cyan-400",
-      // Blue-Cyan for messaging
-      page: "text-helper",
-      isNew: true
     },
     {
       icon: Users,
@@ -19649,216 +19636,6 @@ Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-500 text-xs", children: t("gifts.emptyStateSubtitle") })
     ] }),
     suggestions.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "mt-6 bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-2 border-purple-500/30 backdrop-blur-sm", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-400 text-center", children: t("gifts.affiliateNote") }) }) })
-  ] });
-}
-function TextResponseHelper() {
-  const [receivedMessage, setReceivedMessage] = reactExports.useState("");
-  const [context, setContext] = reactExports.useState("");
-  const [suggestions, setSuggestions] = reactExports.useState([]);
-  const [isLoading, setIsLoading] = reactExports.useState(false);
-  const [copiedIndex, setCopiedIndex] = reactExports.useState(null);
-  const [showUpgradeModal, setShowUpgradeModal] = reactExports.useState(false);
-  const [showLimitModal, setShowLimitModal] = reactExports.useState(false);
-  const [usageCount, setUsageCount] = reactExports.useState(0);
-  const [maxUsage] = reactExports.useState(10);
-  const subscriptionTier = localStorage.getItem("userSubscriptionTier") || "free";
-  const isPaidUser = ["pro", "elite", "premium"].includes(subscriptionTier?.toLowerCase());
-  const handleGetSuggestions = async () => {
-    if (!receivedMessage.trim()) return;
-    if (!isPaidUser && usageCount >= maxUsage) {
-      setShowLimitModal(true);
-      return;
-    }
-    setIsLoading(true);
-    trackFeatureUse("text_response_helper");
-    try {
-      const prompt = `You are a dating and conversation expert. A user received this message on a dating app:
-
-"${receivedMessage}"
-
-${context ? `Additional context: ${context}` : ""}
-
-Provide 5 different response suggestions:
-1. Flirty & Fun - Playful, shows interest
-2. Casual & Cool - Laid-back, friendly
-3. Deep & Thoughtful - Shows depth, emotional intelligence
-4. Funny & Witty - Makes them laugh
-5. Direct & Confident - Clear intentions
-
-For each response:
-- Keep it natural and authentic
-- Match the tone of the original message
-- Be 1-3 sentences max
-- Show interest without being desperate
-- Give them something to respond to
-
-Format as JSON array with "type" and "message" fields.`;
-      const response = await base44.integrations.Core.InvokeLLM({
-        prompt,
-        model: "gpt-4o-mini"
-      });
-      const content = response.response || "";
-      const jsonMatch = content.match(/\[[\s\S]*\]/);
-      if (jsonMatch) {
-        const parsed = JSON.parse(jsonMatch[0]);
-        setSuggestions(parsed);
-      } else {
-        const lines = content.split(/\n\d+\./).filter((l) => l.trim());
-        const fallbackSuggestions = lines.map((line, i) => {
-          const types = ["Flirty & Fun", "Casual & Cool", "Deep & Thoughtful", "Funny & Witty", "Direct & Confident"];
-          return {
-            type: types[i] || "Suggestion",
-            message: line.replace(/^.*?:/, "").trim()
-          };
-        }).slice(0, 5);
-        setSuggestions(fallbackSuggestions);
-      }
-      setUsageCount((prev) => prev + 1);
-    } catch (error) {
-      console.error("Error getting suggestions:", error);
-      alert("Failed to get suggestions. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  const copyToClipboard = async (text, index) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopiedIndex(index);
-      setTimeout(() => setCopiedIndex(null), 2e3);
-    } catch (error) {
-      console.error("Failed to copy:", error);
-    }
-  };
-  const getTypeColor = (type) => {
-    if (type.includes("Flirty")) return "from-pink-500 to-rose-500";
-    if (type.includes("Casual")) return "from-blue-500 to-cyan-500";
-    if (type.includes("Deep")) return "from-purple-500 to-indigo-500";
-    if (type.includes("Funny")) return "from-yellow-500 to-orange-500";
-    if (type.includes("Direct")) return "from-green-500 to-emerald-500";
-    return "from-slate-500 to-slate-600";
-  };
-  const getTypeIcon = (type) => {
-    if (type.includes("Flirty")) return "😘";
-    if (type.includes("Casual")) return "😎";
-    if (type.includes("Deep")) return "💭";
-    if (type.includes("Funny")) return "😄";
-    if (type.includes("Direct")) return "🎯";
-    return "💬";
-  };
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 pt-20 pb-32 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950 min-h-screen", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(MessageSquare, { className: "w-5 h-5 text-white" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-white", children: "Text Response Helper" })
-        ] }),
-        !isPaidUser && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-3 py-1 bg-slate-800 border border-slate-700 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-slate-400 text-sm", children: [
-          usageCount,
-          "/",
-          maxUsage,
-          " today"
-        ] }) })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400", children: "Get AI-powered response suggestions for any message you receive" })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-800/50 border-slate-700 p-5 mb-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: [
-          "Message You Received ",
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-red-400", children: "*" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          Textarea,
-          {
-            value: receivedMessage,
-            onChange: (e) => setReceivedMessage(e.target.value),
-            placeholder: "Paste the message you received here...",
-            className: "w-full bg-slate-900 border-slate-700 text-white placeholder:text-slate-500 min-h-[100px]",
-            style: { fontSize: "16px" }
-          }
-        )
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: "Additional Context (Optional)" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          Textarea,
-          {
-            value: context,
-            onChange: (e) => setContext(e.target.value),
-            placeholder: "E.g., 'We've been talking for 2 days', 'This is our first message', 'We matched on their dog photo'",
-            className: "w-full bg-slate-900 border-slate-700 text-white placeholder:text-slate-500",
-            style: { fontSize: "16px" }
-          }
-        )
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        Button,
-        {
-          onClick: handleGetSuggestions,
-          disabled: isLoading || !receivedMessage.trim(),
-          className: "w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white",
-          children: isLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" }),
-            "Generating Suggestions..."
-          ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 mr-2" }),
-            "Get Response Suggestions"
-          ] })
-        }
-      )
-    ] }) }),
-    suggestions.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-lg font-bold text-white flex items-center gap-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-5 h-5 text-yellow-400" }),
-        "Response Suggestions"
-      ] }),
-      suggestions.map((suggestion, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between gap-3 mb-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: getTypeIcon(suggestion.type) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `px-2 py-1 bg-gradient-to-r ${getTypeColor(suggestion.type)} bg-opacity-20 rounded-lg`, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-semibold text-white", children: suggestion.type }) })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Button,
-            {
-              onClick: () => copyToClipboard(suggestion.message, index),
-              className: "bg-slate-700 hover:bg-slate-600 text-white h-8 px-3",
-              children: copiedIndex === index ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Check$1, { className: "w-3 h-3 mr-1" }),
-                "Copied!"
-              ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Copy$1, { className: "w-3 h-3 mr-1" }),
-                "Copy"
-              ] })
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white leading-relaxed", children: suggestion.message })
-      ] }, index)),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-6 p-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-slate-300", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { className: "text-white", children: "💡 Pro Tip:" }),
-        " Use these as inspiration and make them your own! Add your personality and adjust based on your conversation style."
-      ] }) })
-    ] }),
-    !isLoading && suggestions.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center py-12", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(MessageSquare, { className: "w-8 h-8 text-slate-600" }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-semibold text-slate-300 mb-2", children: "No Suggestions Yet" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-500", children: "Paste a message above and we'll generate smart response options for you!" })
-    ] }),
-    showUpgradeModal && /* @__PURE__ */ jsxRuntimeExports.jsx(UpgradeModal, { onClose: () => setShowUpgradeModal(false) }),
-    showLimitModal && /* @__PURE__ */ jsxRuntimeExports.jsx(
-      LimitReachedModal,
-      {
-        onClose: () => setShowLimitModal(false),
-        featureName: "Text Response Helper",
-        limit: maxUsage,
-        onUpgrade: () => {
-          setShowLimitModal(false);
-          setShowUpgradeModal(true);
-        }
-      }
-    )
   ] });
 }
 function SubscriptionSuccess() {
@@ -24604,7 +24381,6 @@ function App() {
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/events", element: /* @__PURE__ */ jsxRuntimeExports.jsx(Navigate, { to: "/explore", replace: true }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/gifts", element: /* @__PURE__ */ jsxRuntimeExports.jsx(GiftSuggestions, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/chat", element: /* @__PURE__ */ jsxRuntimeExports.jsx(Chat, {}) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/text-helper", element: /* @__PURE__ */ jsxRuntimeExports.jsx(TextResponseHelper, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/progress", element: /* @__PURE__ */ jsxRuntimeExports.jsx(Navigate, { to: "/profile", replace: true }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/mood", element: /* @__PURE__ */ jsxRuntimeExports.jsx(MoodCheck, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/moodcheck", element: /* @__PURE__ */ jsxRuntimeExports.jsx(MoodCheck, {}) }),

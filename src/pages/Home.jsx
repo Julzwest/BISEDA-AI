@@ -97,14 +97,6 @@ export default function Home() {
       page: 'Chat'
     },
     {
-      icon: MessageSquare,
-      title: 'Text Response Helper',
-      description: 'AI suggests perfect replies',
-      color: 'from-blue-500 to-cyan-400', // Blue-Cyan for messaging
-      page: 'text-helper',
-      isNew: true
-    },
-    {
       icon: Users,
       title: 'Date Rehearsal',
       description: 'Practice with AI roleplay',

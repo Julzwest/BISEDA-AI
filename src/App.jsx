@@ -6,7 +6,6 @@ import Tips from './pages/Tips.jsx';
 import Chat from './pages/Chat.jsx';
 import Explore from './pages/Explore.jsx';
 import GiftSuggestions from './pages/GiftSuggestions.jsx';
-import TextResponseHelper from './pages/TextResponseHelper.jsx';
 import SubscriptionSuccess from './pages/SubscriptionSuccess.jsx';
 import SubscriptionCancel from './pages/SubscriptionCancel.jsx';
 import Admin from './pages/Admin.jsx';
@@ -137,8 +136,7 @@ function App() {
           <Route path="/gifts" element={<GiftSuggestions />} />
           <Route path="/chat" element={<Chat />} />
           
-          {/* New Features */}
-          <Route path="/text-helper" element={<TextResponseHelper />} />
+          {/* Redirects */}
           <Route path="/progress" element={<Navigate to="/profile" replace />} />
           
           {/* User & Tools */}
