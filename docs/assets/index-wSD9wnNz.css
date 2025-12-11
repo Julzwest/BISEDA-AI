@@ -1278,11 +1278,6 @@ video {
 .gap-4 {
   gap: 1rem;
 }
-.-space-x-1 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-x-reverse: 0;
-  margin-right: calc(-0.25rem * var(--tw-space-x-reverse));
-  margin-left: calc(-0.25rem * calc(1 - var(--tw-space-x-reverse)));
-}
 .space-y-2 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
@@ -5039,10 +5034,6 @@ button, .btn, [role="button"] {
     gap: 0.25rem;
   }
 
-  .sm\:gap-1\.5 {
-    gap: 0.375rem;
-  }
-
   .sm\:gap-2 {
     gap: 0.5rem;
   }
@@ -5098,11 +5089,6 @@ button, .btn, [role="button"] {
   .sm\:py-1\.5 {
     padding-top: 0.375rem;
     padding-bottom: 0.375rem;
-  }
-
-  .sm\:py-2 {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
   }
 
   .sm\:text-2xl {

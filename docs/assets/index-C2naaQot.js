@@ -12969,20 +12969,17 @@ function RegionSwitcher() {
           e.stopPropagation();
           setIsOpen(!isOpen);
         },
-        className: "group flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 bg-slate-800/90 border border-slate-700/60 rounded-xl hover:bg-slate-700/90 hover:border-purple-500/50 transition-all duration-200",
+        className: "group flex items-center gap-1.5 px-2.5 py-2 bg-slate-800/90 border border-slate-700/60 rounded-xl hover:bg-slate-700/90 hover:border-purple-500/50 transition-all duration-200",
         "aria-label": "Change region settings",
         "aria-expanded": isOpen,
         type: "button",
         children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Globe, { className: "w-3 h-3 sm:w-3.5 sm:h-3.5 text-slate-400 group-hover:text-purple-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center -space-x-1", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-base sm:text-lg", children: currentLanguage?.flag }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-base sm:text-lg", children: currentCountry?.flag })
-          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg", children: currentLanguage?.flag }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-medium text-slate-300 uppercase", children: currentLanguage?.code }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(
             ChevronDown,
             {
-              className: `w-3 h-3 sm:w-3.5 sm:h-3.5 text-slate-400 group-hover:text-purple-400 transition-all duration-200 ${isOpen ? "rotate-180" : ""}`
+              className: `w-3.5 h-3.5 text-slate-400 group-hover:text-purple-400 transition-all duration-200 ${isOpen ? "rotate-180" : ""}`
             }
           )
         ]
@@ -13957,7 +13954,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-BsWWf0rk.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-ClHnOB1n.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -16975,7 +16972,7 @@ function ClipboardSuggestions() {
       if (window.Capacitor && window.Capacitor.isNativePlatform()) {
         try {
           const { Clipboard: Clipboard2 } = await __vitePreload(async () => {
-            const { Clipboard: Clipboard22 } = await import("./index-BxBEvZvF.js");
+            const { Clipboard: Clipboard22 } = await import("./index-ZmtakRLn.js");
             return { Clipboard: Clipboard22 };
           }, true ? [] : void 0);
           const { value } = await Clipboard2.read();
