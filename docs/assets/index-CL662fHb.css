@@ -1832,6 +1832,11 @@ video {
   --tw-gradient-to: rgb(22 78 99 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
+.from-emerald-500 {
+  --tw-gradient-from: #10b981 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(16 185 129 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
 .from-fuchsia-400 {
   --tw-gradient-from: #e879f9 var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(232 121 249 / 0) var(--tw-gradient-to-position);

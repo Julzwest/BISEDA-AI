@@ -11459,7 +11459,7 @@ const UserX = createLucideIcon("UserX", [
   ["line", { x1: "17", x2: "22", y1: "8", y2: "13", key: "3nzzx3" }],
   ["line", { x1: "22", x2: "17", y1: "8", y2: "13", key: "1swrse" }]
 ]);
-const User = createLucideIcon("User", [
+const User$1 = createLucideIcon("User", [
   ["path", { d: "M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2", key: "975kel" }],
   ["circle", { cx: "12", cy: "7", r: "4", key: "17ys0d" }]
 ]);
@@ -13660,7 +13660,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-B3vnZ-Cs.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-Cye1H1V8.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -14529,7 +14529,7 @@ function Layout({ children, onLogout }) {
           ),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(RegionSwitcher, {}),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/profile", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg hover:scale-105 hover:shadow-purple-500/30 transition-all duration-200", children: /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-5 h-5 text-white" }) }) })
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/profile", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg hover:scale-105 hover:shadow-purple-500/30 transition-all duration-200", children: /* @__PURE__ */ jsxRuntimeExports.jsx(User$1, { className: "w-5 h-5 text-white" }) }) })
           ] })
         ] })
       }
@@ -15015,6 +15015,34 @@ function Home() {
       description: t("home.features.gifts.desc"),
       color: "from-rose-500 to-red-500",
       page: "Gifts"
+    },
+    {
+      icon: Heart,
+      title: t("home.features.mood.title", "Mood Check"),
+      description: t("home.features.mood.desc", "Check your dating readiness"),
+      color: "from-pink-500 to-rose-500",
+      page: "MoodCheck"
+    },
+    {
+      icon: User,
+      title: t("home.features.profileOptimizer.title", "Profile Optimizer"),
+      description: t("home.features.profileOptimizer.desc", "Improve your dating profile"),
+      color: "from-indigo-500 to-purple-500",
+      page: "ProfileOptimizer"
+    },
+    {
+      icon: TrendingUp,
+      title: "Progress Tracking",
+      description: "Track your dating journey",
+      color: "from-emerald-500 to-green-500",
+      page: "progress"
+    },
+    {
+      icon: Sparkles,
+      title: t("home.features.styleAdvisor.title", "Style Advisor"),
+      description: t("home.features.styleAdvisor.desc", "Get fashion advice"),
+      color: "from-cyan-500 to-blue-500",
+      page: "StyleAdvisor"
     }
   ];
   const stats = [
@@ -20079,7 +20107,7 @@ function Admin() {
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-4 space-y-4", children: selectedConversation.messages?.map((msg, i) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `flex ${msg.role === "user" ? "justify-end" : "justify-start"}`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `max-w-[80%] p-3 rounded-2xl ${msg.role === "user" ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-br-md" : "bg-slate-700 text-slate-200 rounded-bl-md"}`, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-1", children: [
-          msg.role === "user" ? /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-4 h-4" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Bot, { className: "w-4 h-4" }),
+          msg.role === "user" ? /* @__PURE__ */ jsxRuntimeExports.jsx(User$1, { className: "w-4 h-4" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Bot, { className: "w-4 h-4" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs opacity-75", children: msg.role === "user" ? "Përdoruesi" : "AI Coach" }),
           msg.hasImages && /* @__PURE__ */ jsxRuntimeExports.jsx(Image, { className: "w-3 h-3" })
         ] }),
@@ -20288,7 +20316,7 @@ function UserProfile({ onLogout }) {
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative z-10", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4 mb-4", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl shadow-purple-500/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-10 h-10 text-white" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl shadow-purple-500/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx(User$1, { className: "w-10 h-10 text-white" }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center border-2 border-slate-900 shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-bold text-white", children: userLevel.level }) })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
@@ -20453,12 +20481,12 @@ function UserProfile({ onLogout }) {
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/80 border-slate-700 p-6 mb-6", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white mb-4 flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-5 h-5 text-purple-400" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(User$1, { className: "w-5 h-5 text-purple-400" }),
           "Account Information"
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-5 h-5 text-slate-400" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(User$1, { className: "w-5 h-5 text-slate-400" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-500", children: "Username" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-medium", children: userName })
@@ -21459,6 +21487,278 @@ ${langInstruction}`;
         )
       ] })
     )
+  ] });
+}
+const SelectContext = React.createContext(null);
+function Select({ children, value, onValueChange, ...props }) {
+  const [isOpen, setIsOpen] = reactExports.useState(false);
+  const [selectedLabel, setSelectedLabel] = reactExports.useState("");
+  const selectRef = reactExports.useRef(null);
+  reactExports.useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (selectRef.current && !selectRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(SelectContext.Provider, { value: { value, onValueChange, isOpen, setIsOpen, selectedLabel, setSelectedLabel }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "select-wrapper relative", ref: selectRef, children: React.Children.map(children, (child) => {
+    if (React.isValidElement(child)) {
+      return React.cloneElement(child, { ...props });
+    }
+    return child;
+  }) }) });
+}
+function SelectTrigger({ children, className = "", placeholder, ...props }) {
+  const context = React.useContext(SelectContext);
+  if (!context) {
+    throw new Error("SelectTrigger must be used within Select");
+  }
+  const { isOpen, setIsOpen, selectedLabel } = context;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "button",
+    {
+      type: "button",
+      onClick: () => setIsOpen(!isOpen),
+      className: `w-full rounded-xl border px-4 py-3 text-sm flex items-center justify-between transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 ${className}`,
+      ...props,
+      children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: selectedLabel || placeholder }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronDown, { className: `w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}` })
+      ]
+    }
+  );
+}
+function SelectValue({ placeholder }) {
+  const context = React.useContext(SelectContext);
+  if (context) {
+    context.setSelectedLabel(placeholder);
+  }
+  return null;
+}
+function SelectContent({ children }) {
+  const context = React.useContext(SelectContext);
+  if (!context) {
+    throw new Error("SelectContent must be used within Select");
+  }
+  const { isOpen, setIsOpen, setSelectedLabel, onValueChange } = context;
+  if (!isOpen) return null;
+  const handleSelect = (val, label) => {
+    setSelectedLabel(label);
+    onValueChange?.(val);
+    setIsOpen(false);
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute z-50 w-full mt-1 bg-slate-900 border border-slate-700 rounded-xl shadow-lg max-h-60 overflow-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-1", children: React.Children.map(children, (child) => {
+    if (React.isValidElement(child) && child.type === SelectItem) {
+      return React.cloneElement(child, { onSelect: handleSelect });
+    }
+    return child;
+  }) }) });
+}
+function SelectItem({ children, value, onSelect, ...props }) {
+  const label = typeof children === "string" ? children : React.Children.toArray(children).join("");
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "div",
+    {
+      onClick: () => onSelect?.(value, label),
+      className: "px-4 py-2 text-sm text-white hover:bg-slate-800 cursor-pointer transition-colors",
+      ...props,
+      children
+    }
+  );
+}
+function StyleAdvisor() {
+  const { t } = useTranslation();
+  const [occasion, setOccasion] = reactExports.useState("");
+  const [description, setDescription] = reactExports.useState("");
+  const [advice, setAdvice] = reactExports.useState(null);
+  const [isLoading, setIsLoading] = reactExports.useState(false);
+  const [uploadedImage, setUploadedImage] = reactExports.useState(null);
+  const occasions = [
+    { value: "coffee", label: t("styleAdvisor.occasions.coffee") },
+    { value: "dinner", label: t("styleAdvisor.occasions.dinner") },
+    { value: "casual", label: t("styleAdvisor.occasions.casual") },
+    { value: "club", label: t("styleAdvisor.occasions.club") },
+    { value: "movie", label: t("styleAdvisor.occasions.movie") },
+    { value: "beach", label: t("styleAdvisor.occasions.beach") }
+  ];
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setIsLoading(true);
+    try {
+      const result = await base44.integrations.Core.UploadFile({ file });
+      setUploadedImage(result.file_url);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+    setIsLoading(false);
+  };
+  const getAdvice = async () => {
+    if (!occasion) return;
+    setIsLoading(true);
+    setAdvice(null);
+    try {
+      let prompt = `Ti je një ekspert mode për meshkuj. Jep këshilla të detajuara në shqip për çfarë të veshë një djalë për: ${occasions.find((o) => o.value === occasion)?.label}. KRITIKE: Nëse ka foto të ngarkuar, SHIKO dhe ANALIZO foton. MOS thuaj "nuk kam mundësi të shoh foto" - ti MUND ta shohësh dhe duhet ta analizosh. Përshkruaj çfarë sheh në foto dhe jep këshilla bazuar në veshjen që sheh.
+
+
+
+${description ? `Konteksti shtesë: ${description}` : ""}
+
+
+
+Jep këshilla specifike për:
+
+- Veshje (çfarë lloj, ngjyra, stil)
+
+- Këpucë
+
+- Aksesorë
+
+- Parfum (nëse është e rëndësishme)
+
+- Flokë dhe stil i përgjithshëm
+
+- Tips për konfidencë
+
+
+
+Bëji këshillat praktike dhe moderne. Jep 3-4 opsione të ndryshme në varësi të stilit personal.`;
+      if (uploadedImage) {
+        prompt += `
+
+KRITIKE: Shiko foton e ngarkuar dhe analizo atë që sheh në foto. Jep këshilla specifike bazuar në veshjen që sheh në foto. MOS thuaj "nuk kam mundësi të shoh foto" - ti MUND ta shohësh dhe duhet ta analizosh. Përshkruaj çfarë sheh në foto dhe jep këshilla bazuar në atë.`;
+      }
+      const response = await base44.integrations.Core.InvokeLLM({
+        prompt,
+        file_urls: uploadedImage ? [uploadedImage] : void 0
+      });
+      setAdvice(response);
+      await base44.entities.StyleAdvice.create({
+        occasion,
+        description,
+        advice: response,
+        image_url: uploadedImage
+      });
+    } catch (error) {
+      console.error("Error:", error);
+    }
+    setIsLoading(false);
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen pb-4", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-slate-900/50 backdrop-blur-lg border-b border-slate-800 px-6 py-4 sticky top-0 z-10", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5 text-white" }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-xl font-bold text-white", children: t("styleAdvisor.title") }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-400", children: t("styleAdvisor.subtitle") })
+      ] })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-6 py-6 space-y-6", children: [
+      !advice && /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-800/50 border-slate-700 backdrop-blur-sm p-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-sm font-medium text-slate-300 mb-2 block", children: t("styleAdvisor.selectOccasion") }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(Select, { value: occasion, onValueChange: setOccasion, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(SelectTrigger, { className: "bg-slate-900 border-slate-700 text-white", children: /* @__PURE__ */ jsxRuntimeExports.jsx(SelectValue, { placeholder: t("styleAdvisor.selectOccasion") }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(SelectContent, { children: occasions.map((occ) => /* @__PURE__ */ jsxRuntimeExports.jsx(SelectItem, { value: occ.value, children: occ.label }, occ.value)) })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-sm font-medium text-slate-300 mb-2 block", children: t("styleAdvisor.additionalContext") }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Textarea,
+            {
+              value: description,
+              onChange: (e) => setDescription(e.target.value),
+              placeholder: t("styleAdvisor.placeholder"),
+              className: "bg-slate-900 border-slate-700 text-white min-h-[100px]"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-sm font-medium text-slate-300 mb-2 block", children: t("styleAdvisor.uploadPhoto") }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                type: "file",
+                accept: "image/*",
+                onChange: handleFileUpload,
+                className: "hidden",
+                id: "file-upload"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { htmlFor: "file-upload", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "border-2 border-dashed border-slate-700 rounded-xl p-6 text-center cursor-pointer hover:border-slate-600 transition-colors", children: uploadedImage ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "img",
+                {
+                  src: uploadedImage,
+                  alt: "Uploaded",
+                  className: "w-full h-48 object-cover rounded-lg"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-green-400", children: [
+                "✓ ",
+                t("common.uploaded", "Photo uploaded")
+              ] })
+            ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Upload, { className: "w-8 h-8 mx-auto mb-2 text-slate-500" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-slate-400", children: t("styleAdvisor.uploadPhotoDesc") })
+            ] }) }) })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Button,
+          {
+            onClick: getAdvice,
+            disabled: !occasion || isLoading,
+            className: "w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-semibold h-12",
+            children: isLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("styleAdvisor.generating") })
+            ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5 mr-2" }),
+              t("styleAdvisor.getAdvice")
+            ] })
+          }
+        )
+      ] }) }),
+      advice && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-gradient-to-br from-purple-500/10 to-pink-600/10 border-purple-500/30 backdrop-blur-sm p-6", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5 text-purple-400" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-lg font-bold text-white", children: t("styleAdvisor.yourAdvice") })
+          ] }),
+          uploadedImage && /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "img",
+            {
+              src: uploadedImage,
+              alt: "Reference",
+              className: "w-full h-48 object-cover rounded-lg mb-4"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "prose prose-invert prose-sm max-w-none", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-200 whitespace-pre-wrap leading-relaxed", children: advice }) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Button,
+          {
+            onClick: () => {
+              setAdvice(null);
+              setOccasion("");
+              setDescription("");
+              setUploadedImage(null);
+            },
+            variant: "outline",
+            className: "w-full border-slate-700 text-white hover:bg-slate-800",
+            children: t("styleAdvisor.getAdvice")
+          }
+        )
+      ] })
+    ] })
   ] });
 }
 const callAIWithRetry = async (prompt, maxRetries = 3) => {
@@ -22470,7 +22770,7 @@ ${langInstruction}`;
           ),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "font-semibold text-white mb-1.5 flex items-center gap-2 text-sm", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-xs", children: "2" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-4 h-4 text-purple-400" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(User$1, { className: "w-4 h-4 text-purple-400" }),
             getNameLabel()
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs mb-3", children: t("rehearsal.enterTheirName", "Enter the name for the roleplay") }),
@@ -23130,7 +23430,9 @@ function App() {
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/text-helper", element: /* @__PURE__ */ jsxRuntimeExports.jsx(TextResponseHelper, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/progress", element: /* @__PURE__ */ jsxRuntimeExports.jsx(ProgressTracking, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/mood", element: /* @__PURE__ */ jsxRuntimeExports.jsx(MoodCheck, {}) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/moodcheck", element: /* @__PURE__ */ jsxRuntimeExports.jsx(MoodCheck, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/profileoptimizer", element: /* @__PURE__ */ jsxRuntimeExports.jsx(ProfileOptimizer, {}) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/styleadvisor", element: /* @__PURE__ */ jsxRuntimeExports.jsx(StyleAdvisor, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/rehearsal", element: /* @__PURE__ */ jsxRuntimeExports.jsx(DateRehearsal, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/profile", element: /* @__PURE__ */ jsxRuntimeExports.jsx(UserProfile, { onLogout: handleLogout }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/subscription/success", element: /* @__PURE__ */ jsxRuntimeExports.jsx(SubscriptionSuccess, {}) }),

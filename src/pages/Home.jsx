@@ -118,6 +118,34 @@ export default function Home() {
       description: t('home.features.gifts.desc'),
       color: 'from-rose-500 to-red-500',
       page: 'Gifts'
+    },
+    {
+      icon: Heart,
+      title: t('home.features.mood.title', 'Mood Check'),
+      description: t('home.features.mood.desc', 'Check your dating readiness'),
+      color: 'from-pink-500 to-rose-500',
+      page: 'MoodCheck'
+    },
+    {
+      icon: User,
+      title: t('home.features.profileOptimizer.title', 'Profile Optimizer'),
+      description: t('home.features.profileOptimizer.desc', 'Improve your dating profile'),
+      color: 'from-indigo-500 to-purple-500',
+      page: 'ProfileOptimizer'
+    },
+    {
+      icon: TrendingUp,
+      title: 'Progress Tracking',
+      description: 'Track your dating journey',
+      color: 'from-emerald-500 to-green-500',
+      page: 'progress'
+    },
+    {
+      icon: Sparkles,
+      title: t('home.features.styleAdvisor.title', 'Style Advisor'),
+      description: t('home.features.styleAdvisor.desc', 'Get fashion advice'),
+      color: 'from-cyan-500 to-blue-500',
+      page: 'StyleAdvisor'
     }
   ];
 
