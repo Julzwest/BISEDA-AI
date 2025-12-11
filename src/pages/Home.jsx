@@ -105,55 +105,12 @@ export default function Home() {
       isNew: true
     },
     {
-      icon: MessageSquare,
-      title: 'Conversation Starters',
-      description: 'Ready-to-use opening lines',
-      color: 'from-green-500 to-emerald-500',
-      page: 'starters'
-    },
-    {
       icon: Users,
       title: 'Date Rehearsal',
       description: 'Practice with AI roleplay',
       color: 'from-violet-500 to-fuchsia-500',
       page: 'Rehearsal',
       requiresProOrElite: true
-    },
-    {
-      icon: Calendar,
-      title: 'Find & Plan Dates',
-      description: 'Venues and date planning',
-      color: 'from-pink-500 to-rose-500',
-      page: 'dates'
-    },
-    {
-      icon: PartyPopper,
-      title: 'Events Near You',
-      description: 'Local events & activities',
-      color: 'from-yellow-500 to-orange-500',
-      page: 'Events'
-    },
-    {
-      icon: BookOpen,
-      title: t('home.features.datePlanner.title', 'Date Planner'),
-      description: t('home.features.datePlanner.desc', 'Plan dates & track what works'),
-      color: 'from-rose-500 to-pink-500',
-      page: 'DatePlanner',
-      isNew: true
-    },
-    {
-      icon: Calendar,
-      title: t('home.features.dates.title'),
-      description: t('home.features.dates.desc'),
-      color: 'from-pink-500 to-rose-500',
-      page: 'FirstDates'
-    },
-    {
-      icon: PartyPopper,
-      title: t('home.features.events.title'),
-      description: t('home.features.events.desc'),
-      color: 'from-yellow-500 to-orange-500',
-      page: 'Events'
     },
     {
       icon: Gift,

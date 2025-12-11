@@ -3,12 +3,9 @@ import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './Layout.jsx';
 import Home from './pages/Home.jsx';
 import Tips from './pages/Tips.jsx';
-import FirstDates from './pages/FirstDates.jsx';
 import Chat from './pages/Chat.jsx';
 import GiftSuggestions from './pages/GiftSuggestions.jsx';
-import Events from './pages/Events.jsx';
 import TextResponseHelper from './pages/TextResponseHelper.jsx';
-import ConversationStarters from './pages/ConversationStarters.jsx';
 import ProgressTracking from './pages/ProgressTracking.jsx';
 import SubscriptionSuccess from './pages/SubscriptionSuccess.jsx';
 import SubscriptionCancel from './pages/SubscriptionCancel.jsx';
@@ -18,7 +15,6 @@ import UserProfile from './pages/UserProfile.jsx';
 import PrivacyPolicy from './pages/PrivacyPolicy.jsx';
 import MoodCheck from './pages/MoodCheck.jsx';
 import ProfileOptimizer from './pages/ProfileOptimizer.jsx';
-import DatePlanner from './pages/DatePlanner.jsx';
 import DateRehearsal from './pages/DateRehearsal.jsx';
 import OnboardingTutorial from './components/OnboardingTutorial.jsx';
 import ScrollToTop from './components/ScrollToTop.jsx';
@@ -134,14 +130,11 @@ function App() {
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/home" element={<Home />} />
           <Route path="/tips" element={<Tips />} />
-          <Route path="/dates" element={<FirstDates />} />
-          <Route path="/events" element={<Events />} />
           <Route path="/gifts" element={<GiftSuggestions />} />
           <Route path="/chat" element={<Chat />} />
           
           {/* New Features */}
           <Route path="/text-helper" element={<TextResponseHelper />} />
-          <Route path="/starters" element={<ConversationStarters />} />
           <Route path="/progress" element={<ProgressTracking />} />
           
           {/* User & Tools */}
@@ -156,11 +149,6 @@ function App() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           
-          {/* Legacy redirects */}
-          <Route path="/firstdates" element={<Navigate to="/dates" replace />} />
-          <Route path="/dateplanner" element={<Navigate to="/dates" replace />} />
-          <Route path="/festivedates" element={<Navigate to="/events" replace />} />
-          <Route path="/clipboard" element={<Navigate to="/starters" replace />} />
         </Routes>
       </Layout>
     </Router>
