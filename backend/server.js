@@ -1909,7 +1909,7 @@ app.delete('/api/admin/users/:odId', checkAdminAuth, async (req, res) => {
   }
 });
 
-// Gift credits to user (admin only)
+// Gift credits to user (admin only) - Updates BOTH MongoDB AND in-memory
 app.post('/api/admin/users/:odId/gift-credits', checkAdminAuth, async (req, res) => {
   try {
     const { odId } = req.params;
@@ -1919,13 +1919,14 @@ app.post('/api/admin/users/:odId/gift-credits', checkAdminAuth, async (req, res)
       return res.status(400).json({ error: 'Invalid credit amount' });
     }
     
-    // Get user and add credits
+    // Get user and add credits (in-memory)
     const user = getUser(odId);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
     
-    user.credits = (user.credits || 0) + amount;
+    const oldBalance = user.credits || 0;
+    user.credits = oldBalance + amount;
     user.creditHistory = user.creditHistory || [];
     user.creditHistory.push({
       date: new Date(),
@@ -1936,17 +1937,39 @@ app.post('/api/admin/users/:odId/gift-credits', checkAdminAuth, async (req, res)
     
     saveUser(user);
     
-    console.log(`🎁 Gifted ${amount} credits to user: ${odId}`);
+    // Also update MongoDB if user exists there
+    try {
+      const mongoUser = await UserAccountModel.findOne({ odId });
+      if (mongoUser) {
+        await UserAccountModel.updateOne(
+          { odId },
+          {
+            $set: {
+              credits: user.credits,
+              lastCreditGift: new Date(),
+              updatedAt: new Date()
+            }
+          }
+        );
+        console.log(`💾 MongoDB: Updated credits for ${odId}: ${oldBalance} → ${user.credits}`);
+      }
+    } catch (mongoError) {
+      console.error('MongoDB credit update failed:', mongoError.message);
+    }
+    
+    console.log(`🎁 Gifted ${amount} credits to user: ${odId} (${oldBalance} → ${user.credits})`);
     
     res.json({
       success: true,
       message: `${amount} credits gifted successfully`,
       odId,
-      newBalance: user.credits
+      oldBalance,
+      newBalance: user.credits,
+      amountGifted: amount
     });
   } catch (error) {
     console.error('Gift credits error:', error);
-    res.status(500).json({ error: 'Failed to gift credits' });
+    res.status(500).json({ error: 'Failed to gift credits', details: error.message });
   }
 });
 
@@ -2013,7 +2036,7 @@ app.post('/api/admin/create-test-user', checkAdminAuth, async (req, res) => {
   }
 });
 
-// Update user subscription tier (admin only)
+// Update user subscription tier (admin only) - Updates BOTH MongoDB AND in-memory
 app.put('/api/admin/update-user-tier', checkAdminAuth, async (req, res) => {
   try {
     const { odId, tier } = req.body;
@@ -2027,33 +2050,62 @@ app.put('/api/admin/update-user-tier', checkAdminAuth, async (req, res) => {
       return res.status(400).json({ error: 'Invalid tier. Must be one of: ' + validTiers.join(', ') });
     }
     
-    // Get user
+    // Determine subscription status and expiration
+    const isPaidTier = ['starter', 'pro', 'elite', 'premium'].includes(tier);
+    const subscriptionStatus = isPaidTier ? 'active' : (tier === 'free_trial' ? 'active' : 'inactive');
+    const subscriptionExpiresAt = isPaidTier ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) : null; // 1 year for paid
+    
+    // UPDATE MONGODB FIRST (persistent storage)
+    let mongoUser = await UserAccountModel.findOne({ odId });
+    const oldTier = mongoUser?.subscriptionTier || 'free_trial';
+    
+    if (mongoUser) {
+      // Update existing user in MongoDB
+      await UserAccountModel.updateOne(
+        { odId },
+        {
+          $set: {
+            subscriptionTier: tier,
+            subscriptionStatus: subscriptionStatus,
+            subscriptionExpiresAt: subscriptionExpiresAt,
+            updatedAt: new Date()
+          }
+        }
+      );
+      console.log(`💾 MongoDB: Updated user ${odId} tier: ${oldTier} → ${tier}`);
+    } else {
+      console.log(`⚠️  User ${odId} not found in MongoDB, updating in-memory only`);
+    }
+    
+    // UPDATE IN-MEMORY USER (for immediate effect)
     const user = getUser(odId);
-    const oldTier = user.subscriptionTier;
-    
-    // Update tier
     user.subscriptionTier = tier;
-    user.subscriptionStatus = (tier === 'free' || tier === 'free_trial') ? 'inactive' : 'active';
+    user.subscriptionStatus = subscriptionStatus;
+    user.subscriptionExpiresAt = subscriptionExpiresAt;
     
-    // If upgrading to paid tier, extend expiration
-    if (['starter', 'pro', 'elite', 'premium'].includes(tier)) {
-      user.subscriptionExpiresAt = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000); // 1 year
+    // Reset screenshot counter if upgrading to paid
+    if (isPaidTier) {
+      user.screenshotAnalyses.monthlyUsed = 0;
+      user.screenshotAnalyses.currentMonth = new Date().getMonth();
+      user.screenshotAnalyses.currentYear = new Date().getFullYear();
     }
     
     saveUser(user);
-    
-    console.log(`✅ Admin updated user ${odId} tier: ${oldTier} → ${tier}`);
+    console.log(`⚡ In-Memory: Updated user ${odId} tier: ${oldTier} → ${tier}`);
     
     res.json({
       success: true,
       message: `User tier updated from ${oldTier} to ${tier}`,
       odId,
       oldTier,
-      newTier: tier
+      newTier: tier,
+      status: subscriptionStatus,
+      expiresAt: subscriptionExpiresAt,
+      updatedBoth: mongoUser ? 'MongoDB + In-Memory' : 'In-Memory Only'
     });
   } catch (error) {
     console.error('Update user tier error:', error);
-    res.status(500).json({ error: 'Failed to update user tier' });
+    res.status(500).json({ error: 'Failed to update user tier', details: error.message });
   }
 });
 
