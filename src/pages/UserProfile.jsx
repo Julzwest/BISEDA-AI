@@ -99,12 +99,14 @@ export default function UserProfile({ onLogout }) {
 
   const getTierBadge = (tier) => {
     const badges = {
-      free: { label: 'Falas', color: 'bg-slate-500/20 text-slate-300', icon: Shield },
+      free: { label: 'Free', color: 'bg-slate-500/20 text-slate-300', icon: Shield },
+      free_trial: { label: 'Free Trial', color: 'bg-emerald-500/20 text-emerald-300', icon: Star },
       starter: { label: 'Starter', color: 'bg-blue-500/20 text-blue-300', icon: Zap },
       pro: { label: 'Pro', color: 'bg-purple-500/20 text-purple-300', icon: Crown },
+      elite: { label: 'Elite', color: 'bg-amber-500/20 text-amber-300', icon: Crown },
       premium: { label: 'Premium', color: 'bg-amber-500/20 text-amber-300', icon: Star }
     };
-    return badges[tier] || badges.free;
+    return badges[tier?.toLowerCase()] || badges.free;
   };
 
   if (loading) {
@@ -112,13 +114,15 @@ export default function UserProfile({ onLogout }) {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-slate-400">Duke ngarkuar profilin...</p>
+          <p className="text-slate-400">Loading profile...</p>
         </div>
       </div>
     );
   }
 
-  const tierBadge = usage ? getTierBadge(usage.tier) : getTierBadge('free');
+  // Get tier from usage API or localStorage as fallback
+  const currentTier = usage?.tier || localStorage.getItem('userSubscriptionTier') || 'free';
+  const tierBadge = getTierBadge(currentTier);
   const TierIcon = tierBadge.icon;
 
   return (
@@ -142,7 +146,7 @@ export default function UserProfile({ onLogout }) {
               : 'text-slate-400 hover:text-white'
           }`}
         >
-          Përmbledhje
+          Overview
         </button>
         <button
           onClick={() => setActiveTab('saved')}
@@ -154,7 +158,7 @@ export default function UserProfile({ onLogout }) {
         >
           <div className="flex items-center justify-center gap-2">
             <Bookmark className="w-4 h-4" />
-            <span>Të Ruajtura</span>
+            <span>Saved</span>
             {(localFavorites.venues.length + localFavorites.dateIdeas.length + localFavorites.tips.length + localFavorites.gifts.length) > 0 && (
               <span className="px-1.5 py-0.5 bg-pink-500 text-white text-xs rounded-full">
                 {localFavorites.venues.length + localFavorites.dateIdeas.length + localFavorites.tips.length + localFavorites.gifts.length}
@@ -176,17 +180,17 @@ export default function UserProfile({ onLogout }) {
                     <TierIcon className="w-6 h-6" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-white">Plani: {tierBadge.label}</h2>
-                    <p className="text-slate-400 text-sm">Anëtarësia aktuale</p>
+                    <h2 className="text-xl font-bold text-white">Plan: {tierBadge.label}</h2>
+                    <p className="text-slate-400 text-sm">Current membership</p>
                   </div>
                 </div>
-                {usage.tier !== 'premium' && (
+                {currentTier !== 'premium' && currentTier !== 'elite' && (
                   <Button
                     onClick={() => setShowUpgradeModal(true)}
                     className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white"
                   >
                     <TrendingUp className="w-4 h-4 mr-2" />
-                    Përmirëso
+                    Upgrade
                   </Button>
                 )}
               </div>
@@ -195,7 +199,7 @@ export default function UserProfile({ onLogout }) {
               <div className="space-y-3">
                 <div>
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="text-slate-300">Mesazhe Sot</span>
+                    <span className="text-slate-300">Messages Today</span>
                     <span className="text-white font-semibold">
                       {usage.dailyUsage.messages} / {usage.dailyUsage.messagesLimit}
                     </span>
@@ -213,7 +217,7 @@ export default function UserProfile({ onLogout }) {
                     <div className="flex items-center justify-between">
                       <span className="text-purple-300 text-sm flex items-center gap-2">
                         <Zap className="w-4 h-4" />
-                        Kredite
+                        Credits
                       </span>
                       <span className="text-purple-300 font-bold">{usage.credits}</span>
                     </div>
@@ -227,13 +231,13 @@ export default function UserProfile({ onLogout }) {
           <Card className="bg-slate-800/80 border-slate-700 p-6 mb-6">
             <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
               <User className="w-5 h-5 text-purple-400" />
-              Informacioni i Llogarisë
+              Account Information
             </h2>
             <div className="space-y-3">
               <div className="flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg">
                 <User className="w-5 h-5 text-slate-400" />
                 <div>
-                  <p className="text-xs text-slate-500">Përdoruesi</p>
+                  <p className="text-xs text-slate-500">Username</p>
                   <p className="text-white font-medium">{userName}</p>
                 </div>
               </div>
@@ -248,7 +252,7 @@ export default function UserProfile({ onLogout }) {
                 <div className="flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg">
                   <Phone className="w-5 h-5 text-slate-400" />
                   <div>
-                    <p className="text-xs text-slate-500">Telefoni</p>
+                    <p className="text-xs text-slate-500">Phone</p>
                     <p className="text-white font-medium">{localStorage.getItem('userPhone')}</p>
                   </div>
                 </div>
@@ -261,14 +265,14 @@ export default function UserProfile({ onLogout }) {
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold text-white flex items-center gap-2">
                 <Globe className="w-5 h-5 text-cyan-400" />
-                Vendndodhja
+                Location
               </h2>
               {!isEditingLocation && (
                 <Button
                   onClick={() => setIsEditingLocation(true)}
                   className="bg-slate-700 hover:bg-slate-600 text-white text-sm h-8"
                 >
-                  Ndrysho
+                  Change
                 </Button>
               )}
             </div>
@@ -277,13 +281,13 @@ export default function UserProfile({ onLogout }) {
               <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-xl">
                 <span className="text-3xl">{currentCountry?.flag || '🌍'}</span>
                 <div>
-                  <p className="text-white font-bold">{currentCountry?.name || 'Pa vendosur'}</p>
-                  <p className="text-slate-400 text-sm">{userCity || 'Zgjidh qytetin'}</p>
+                  <p className="text-white font-bold">{currentCountry?.name || 'Not set'}</p>
+                  <p className="text-slate-400 text-sm">{userCity || 'Select city'}</p>
                 </div>
                 {locationSaved && (
                   <div className="ml-auto flex items-center gap-1 text-green-400">
                     <Check className="w-4 h-4" />
-                    <span className="text-sm">Ruajtur!</span>
+                    <span className="text-sm">Saved!</span>
                   </div>
                 )}
               </div>
@@ -291,7 +295,7 @@ export default function UserProfile({ onLogout }) {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-2">
-                    Shteti
+                    Country
                   </label>
                   <select
                     value={userCountry}
@@ -312,7 +316,7 @@ export default function UserProfile({ onLogout }) {
 
                 <div>
                   <label className="block text-sm font-medium text-slate-300 mb-2">
-                    Qyteti
+                    City
                   </label>
                   <select
                     value={userCity}
@@ -320,7 +324,7 @@ export default function UserProfile({ onLogout }) {
                     className="w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-purple-500"
                     style={{ fontSize: '16px' }}
                   >
-                    <option value="">Zgjidh qytetin...</option>
+                    <option value="">Select city...</option>
                     {getCitiesForCountry(userCountry).map((city) => (
                       <option key={city.nameEn} value={city.name}>
                         {city.name}
@@ -335,7 +339,7 @@ export default function UserProfile({ onLogout }) {
                     className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
                   >
                     <Check className="w-4 h-4 mr-2" />
-                    Ruaj Vendndodhjen
+                    Save Location
                   </Button>
                   <Button
                     onClick={() => {
@@ -345,7 +349,7 @@ export default function UserProfile({ onLogout }) {
                     }}
                     className="bg-slate-700 hover:bg-slate-600 text-white"
                   >
-                    Anulo
+                    Cancel
                   </Button>
                 </div>
               </div>
@@ -358,7 +362,7 @@ export default function UserProfile({ onLogout }) {
             className="w-full bg-red-600 hover:bg-red-700 text-white font-bold h-12"
           >
             <LogOut className="w-5 h-5 mr-2" />
-            Dil nga Llogaria
+            Logout
           </Button>
         </>
       )}

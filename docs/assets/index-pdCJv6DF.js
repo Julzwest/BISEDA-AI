@@ -13813,7 +13813,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-Co3hOK68.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-vzHcfKxw.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -16787,7 +16787,7 @@ function ClipboardSuggestions() {
       if (window.Capacitor && window.Capacitor.isNativePlatform()) {
         try {
           const { Clipboard: Clipboard2 } = await __vitePreload(async () => {
-            const { Clipboard: Clipboard22 } = await import("./index-DmQjIYtB.js");
+            const { Clipboard: Clipboard22 } = await import("./index-_9vMxMDv.js");
             return { Clipboard: Clipboard22 };
           }, true ? [] : void 0);
           const { value } = await Clipboard2.read();
@@ -22722,20 +22722,23 @@ function UserProfile({ onLogout }) {
   };
   const getTierBadge = (tier) => {
     const badges = {
-      free: { label: "Falas", color: "bg-slate-500/20 text-slate-300", icon: Shield },
+      free: { label: "Free", color: "bg-slate-500/20 text-slate-300", icon: Shield },
+      free_trial: { label: "Free Trial", color: "bg-emerald-500/20 text-emerald-300", icon: Star },
       starter: { label: "Starter", color: "bg-blue-500/20 text-blue-300", icon: Zap },
       pro: { label: "Pro", color: "bg-purple-500/20 text-purple-300", icon: Crown },
+      elite: { label: "Elite", color: "bg-amber-500/20 text-amber-300", icon: Crown },
       premium: { label: "Premium", color: "bg-amber-500/20 text-amber-300", icon: Star }
     };
-    return badges[tier] || badges.free;
+    return badges[tier?.toLowerCase()] || badges.free;
   };
   if (loading) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400", children: "Duke ngarkuar profilin..." })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400", children: "Loading profile..." })
     ] }) });
   }
-  const tierBadge = usage2 ? getTierBadge(usage2.tier) : getTierBadge("free");
+  const currentTier = usage2?.tier || localStorage.getItem("userSubscriptionTier") || "free";
+  const tierBadge = getTierBadge(currentTier);
   const TierIcon = tierBadge.icon;
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-6 pt-20 pb-32 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-6", children: [
@@ -22749,7 +22752,7 @@ function UserProfile({ onLogout }) {
         {
           onClick: () => setActiveTab("overview"),
           className: `flex-1 py-2 px-4 rounded-lg text-sm font-semibold transition-all ${activeTab === "overview" ? "bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-lg" : "text-slate-400 hover:text-white"}`,
-          children: "Përmbledhje"
+          children: "Overview"
         }
       ),
       /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -22759,7 +22762,7 @@ function UserProfile({ onLogout }) {
           className: `flex-1 py-2 px-4 rounded-lg text-sm font-semibold transition-all ${activeTab === "saved" ? "bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-lg" : "text-slate-400 hover:text-white"}`,
           children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Bookmark, { className: "w-4 h-4" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Të Ruajtura" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Saved" }),
             localFavorites.venues.length + localFavorites.dateIdeas.length + localFavorites.tips.length + localFavorites.gifts.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "px-1.5 py-0.5 bg-pink-500 text-white text-xs rounded-full", children: localFavorites.venues.length + localFavorites.dateIdeas.length + localFavorites.tips.length + localFavorites.gifts.length })
           ] })
         }
@@ -22772,20 +22775,20 @@ function UserProfile({ onLogout }) {
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-12 h-12 ${tierBadge.color} rounded-xl flex items-center justify-center`, children: /* @__PURE__ */ jsxRuntimeExports.jsx(TierIcon, { className: "w-6 h-6" }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white", children: [
-                "Plani: ",
+                "Plan: ",
                 tierBadge.label
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: "Anëtarësia aktuale" })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: "Current membership" })
             ] })
           ] }),
-          usage2.tier !== "premium" && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          currentTier !== "premium" && currentTier !== "elite" && /* @__PURE__ */ jsxRuntimeExports.jsxs(
             Button,
             {
               onClick: () => setShowUpgradeModal(true),
               className: "bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(TrendingUp, { className: "w-4 h-4 mr-2" }),
-                "Përmirëso"
+                "Upgrade"
               ]
             }
           )
@@ -22793,7 +22796,7 @@ function UserProfile({ onLogout }) {
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm mb-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-slate-300", children: "Mesazhe Sot" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-slate-300", children: "Messages Today" }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-white font-semibold", children: [
                 usage2.dailyUsage.messages,
                 " / ",
@@ -22811,7 +22814,7 @@ function UserProfile({ onLogout }) {
           usage2.credits > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-3 bg-purple-500/10 border border-purple-500/30 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-purple-300 text-sm flex items-center gap-2", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-4 h-4" }),
-              "Kredite"
+              "Credits"
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-purple-300 font-bold", children: usage2.credits })
           ] }) })
@@ -22820,13 +22823,13 @@ function UserProfile({ onLogout }) {
       /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/80 border-slate-700 p-6 mb-6", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white mb-4 flex items-center gap-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-5 h-5 text-purple-400" }),
-          "Informacioni i Llogarisë"
+          "Account Information"
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-5 h-5 text-slate-400" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-500", children: "Përdoruesi" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-500", children: "Username" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-medium", children: userName })
             ] })
           ] }),
@@ -22840,7 +22843,7 @@ function UserProfile({ onLogout }) {
           localStorage.getItem("userPhone") && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Phone, { className: "w-5 h-5 text-slate-400" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-500", children: "Telefoni" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-500", children: "Phone" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-medium", children: localStorage.getItem("userPhone") })
             ] })
           ] })
@@ -22850,30 +22853,30 @@ function UserProfile({ onLogout }) {
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-4", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white flex items-center gap-2", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Globe, { className: "w-5 h-5 text-cyan-400" }),
-            "Vendndodhja"
+            "Location"
           ] }),
           !isEditingLocation && /* @__PURE__ */ jsxRuntimeExports.jsx(
             Button,
             {
               onClick: () => setIsEditingLocation(true),
               className: "bg-slate-700 hover:bg-slate-600 text-white text-sm h-8",
-              children: "Ndrysho"
+              children: "Change"
             }
           )
         ] }),
         !isEditingLocation ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 p-4 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-xl", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-3xl", children: currentCountry?.flag || "🌍" }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-bold", children: currentCountry?.name || "Pa vendosur" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: userCity || "Zgjidh qytetin" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-bold", children: currentCountry?.name || "Not set" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: userCity || "Select city" })
           ] }),
           locationSaved && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "ml-auto flex items-center gap-1 text-green-400", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm", children: "Ruajtur!" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm", children: "Saved!" })
           ] })
         ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: "Shteti" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: "Country" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "select",
               {
@@ -22893,7 +22896,7 @@ function UserProfile({ onLogout }) {
             )
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: "Qyteti" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: "City" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "select",
               {
@@ -22902,7 +22905,7 @@ function UserProfile({ onLogout }) {
                 className: "w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-purple-500",
                 style: { fontSize: "16px" },
                 children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: "Zgjidh qytetin..." }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: "Select city..." }),
                   getCitiesForCountry(userCountry).map((city) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: city.name, children: city.name }, city.nameEn))
                 ]
               }
@@ -22916,7 +22919,7 @@ function UserProfile({ onLogout }) {
                 className: "flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white",
                 children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 mr-2" }),
-                  "Ruaj Vendndodhjen"
+                  "Save Location"
                 ]
               }
             ),
@@ -22929,7 +22932,7 @@ function UserProfile({ onLogout }) {
                   setIsEditingLocation(false);
                 },
                 className: "bg-slate-700 hover:bg-slate-600 text-white",
-                children: "Anulo"
+                children: "Cancel"
               }
             )
           ] })
@@ -22942,7 +22945,7 @@ function UserProfile({ onLogout }) {
           className: "w-full bg-red-600 hover:bg-red-700 text-white font-bold h-12",
           children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { className: "w-5 h-5 mr-2" }),
-            "Dil nga Llogaria"
+            "Logout"
           ]
         }
       )
