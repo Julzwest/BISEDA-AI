@@ -3,8 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { createPageUrl } from './utils';
 import { Lightbulb, Home, Calendar, Bot, Flag, User, PartyPopper, Sparkles, MessageCircle, Heart, MapPin } from 'lucide-react';
-import CountrySwitcher from '@/components/CountrySwitcher';
-import LanguageSwitcher from '@/components/LanguageSwitcher';
+import RegionSwitcher from '@/components/RegionSwitcher';
 import GuestBanner from '@/components/GuestBanner';
 import { clearGuestSession } from '@/pages/AuthComponent';
 import { trackPageView } from '@/utils/analytics';
@@ -149,14 +148,9 @@ export default function Layout({ children, onLogout }) {
             </div>
           )}
           
-          {/* Right side - Language, Country Switcher & Profile */}
-          <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
-            <div className="scale-90 sm:scale-100 origin-right">
-              <LanguageSwitcher />
-            </div>
-            <div className="scale-90 sm:scale-100 origin-right">
-              <CountrySwitcher />
-            </div>
+          {/* Right side - Region Switcher & Profile */}
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+            <RegionSwitcher />
             <Link to="/profile">
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg hover:scale-105 hover:shadow-purple-500/30 transition-all duration-200">
                 <User className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
