@@ -13957,7 +13957,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-B91_NFo1.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-BsWWf0rk.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -16975,7 +16975,7 @@ function ClipboardSuggestions() {
       if (window.Capacitor && window.Capacitor.isNativePlatform()) {
         try {
           const { Clipboard: Clipboard2 } = await __vitePreload(async () => {
-            const { Clipboard: Clipboard22 } = await import("./index-B5SEA-et.js");
+            const { Clipboard: Clipboard22 } = await import("./index-BxBEvZvF.js");
             return { Clipboard: Clipboard22 };
           }, true ? [] : void 0);
           const { value } = await Clipboard2.read();
@@ -22246,70 +22246,101 @@ function Admin() {
     )) }),
     activeTab === "overview" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-blue-900/40 to-cyan-900/40 border-blue-500/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Users, { className: "w-6 h-6 text-white" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Total Përdorues" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-2xl font-bold", children: registeredUsers.length || stats?.overview?.totalUsers || 0 })
-          ] })
-        ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-green-900/40 to-emerald-900/40 border-green-500/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg relative", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Activity, { className: "w-6 h-6 text-white" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-slate-900 animate-pulse" })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Online Tani" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-2xl font-bold", children: registeredUsers.filter((u) => u.onlineStatus === "online").length })
-          ] })
-        ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-purple-900/40 to-pink-900/40 border-purple-500/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(MessageSquare, { className: "w-6 h-6 text-white" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Total Mesazhe" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-2xl font-bold", children: stats?.overview?.totalMessages || 0 })
-          ] })
-        ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-amber-900/40 to-orange-900/40 border-amber-500/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(DollarSign, { className: "w-6 h-6 text-white" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Të Ardhura/Muaj" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-white text-2xl font-bold", children: [
-              "€",
-              stats?.overview?.monthlyRevenue || "0.00"
-            ] })
-          ] })
-        ] }) })
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setActiveTab("users"),
+            className: "text-left transition-all hover:scale-[1.02] active:scale-[0.98]",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-blue-900/40 to-cyan-900/40 border-blue-500/30 hover:border-blue-400/50 p-4 h-full", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Users, { className: "w-5 h-5 sm:w-6 sm:h-6 text-white" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-[10px] sm:text-xs", children: "Total Users" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-xl sm:text-2xl font-bold", children: registeredUsers.length || stats?.overview?.totalUsers || 0 })
+              ] })
+            ] }) })
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setActiveTab("activity"),
+            className: "text-left transition-all hover:scale-[1.02] active:scale-[0.98]",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-green-900/40 to-emerald-900/40 border-green-500/30 hover:border-green-400/50 p-4 h-full", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg relative", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Activity, { className: "w-5 h-5 sm:w-6 sm:h-6 text-white" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 bg-green-400 rounded-full border-2 border-slate-900 animate-pulse" })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-[10px] sm:text-xs", children: "Online Now" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-xl sm:text-2xl font-bold", children: registeredUsers.filter((u) => u.onlineStatus === "online").length })
+              ] })
+            ] }) })
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => {
+              setActiveTab("conversations");
+              fetchConversations();
+            },
+            className: "text-left transition-all hover:scale-[1.02] active:scale-[0.98]",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-purple-900/40 to-pink-900/40 border-purple-500/30 hover:border-purple-400/50 p-4 h-full", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(MessageSquare, { className: "w-5 h-5 sm:w-6 sm:h-6 text-white" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-[10px] sm:text-xs", children: "Total Messages" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-xl sm:text-2xl font-bold", children: stats?.overview?.totalMessages || 0 })
+              ] })
+            ] }) })
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setActiveTab("subscriptions"),
+            className: "text-left transition-all hover:scale-[1.02] active:scale-[0.98]",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-amber-900/40 to-orange-900/40 border-amber-500/30 hover:border-amber-400/50 p-4 h-full", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(DollarSign, { className: "w-5 h-5 sm:w-6 sm:h-6 text-white" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-[10px] sm:text-xs", children: "Revenue/Month" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-white text-xl sm:text-2xl font-bold", children: [
+                  "€",
+                  stats?.overview?.monthlyRevenue || "0.00"
+                ] })
+              ] })
+            ] }) })
+          }
+        )
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700/50 p-5 mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-lg font-bold text-white mb-4 flex items-center gap-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700/50 p-4 sm:p-5 mb-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-base sm:text-lg font-bold text-white mb-4 flex items-center gap-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(TrendingUp, { className: "w-5 h-5 text-green-400" }),
-          " Pasqyra Financiare"
+          " Financial Overview"
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 md:grid-cols-4 gap-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-slate-700/30 p-4 rounded-xl", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm mb-1", children: "Të Ardhura Mujore" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-white text-xl font-bold", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-slate-700/30 p-3 sm:p-4 rounded-xl", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs sm:text-sm mb-1", children: "Monthly Revenue" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-white text-lg sm:text-xl font-bold", children: [
               "€",
               stats?.overview?.monthlyRevenue || "0.00"
             ] })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-slate-700/30 p-4 rounded-xl", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm mb-1", children: "Kosto API (OpenAI)" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs sm:text-sm mb-1", children: "API Cost (OpenAI)" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-white text-xl font-bold", children: [
               "$",
               stats?.overview?.totalCost || "0.00"
             ] })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-slate-700/30 p-4 rounded-xl", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm mb-1", children: "Fitimi Neto" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs sm:text-sm mb-1", children: "Net Profit" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-green-400 text-xl font-bold", children: [
               "€",
               stats?.overview?.profit || "0.00"
             ] })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-slate-700/30 p-4 rounded-xl", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm mb-1", children: "Kredite Aktive" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs sm:text-sm mb-1", children: "Active Credits" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-purple-400 text-xl font-bold", children: stats?.overview?.totalCreditsBalance || 0 })
           ] })
         ] })
@@ -22800,7 +22831,7 @@ function Admin() {
             ] })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-gradient-to-br from-purple-900/30 to-pink-900/30 border border-purple-500/30 p-5 rounded-xl", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-purple-300 text-sm mb-2", children: "Fitimi Neto/Muaj" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-purple-300 text-xs sm:text-sm mb-2", children: "Net Profit/Month" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-white text-3xl font-bold", children: [
               "€",
               stats?.overview?.profit || "0.00"
@@ -22945,7 +22976,7 @@ function Admin() {
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-purple-400 font-semibold", children: selectedUser.credits || 0 })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-slate-800/50 rounded-xl", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm mb-1", children: "Kosto API" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs sm:text-sm mb-1", children: "API Cost" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-green-400 font-semibold", children: [
               "$",
               selectedUser.costTracking?.totalSpent?.toFixed(4) || "0.00"
