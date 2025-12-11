@@ -11145,6 +11145,15 @@ const DollarSign = createLucideIcon("DollarSign", [
   ["line", { x1: "12", x2: "12", y1: "2", y2: "22", key: "7eqyqh" }],
   ["path", { d: "M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6", key: "1b0p4s" }]
 ]);
+const Dumbbell = createLucideIcon("Dumbbell", [
+  ["path", { d: "m6.5 6.5 11 11", key: "f7oqzb" }],
+  ["path", { d: "m21 21-1-1", key: "cpc6if" }],
+  ["path", { d: "m3 3 1 1", key: "d3rpuf" }],
+  ["path", { d: "m18 22 4-4", key: "1e32o6" }],
+  ["path", { d: "m2 6 4-4", key: "189tqz" }],
+  ["path", { d: "m3 10 7-7", key: "1bxui2" }],
+  ["path", { d: "m14 21 7-7", key: "16x78n" }]
+]);
 const ExternalLink = createLucideIcon("ExternalLink", [
   ["path", { d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6", key: "a6xqqp" }],
   ["polyline", { points: "15 3 21 3 21 9", key: "mznyad" }],
@@ -11179,6 +11188,20 @@ const FileText = createLucideIcon("FileText", [
   ["line", { x1: "16", x2: "8", y1: "17", y2: "17", key: "17nazh" }],
   ["line", { x1: "10", x2: "8", y1: "9", y2: "9", key: "1a5vjj" }]
 ]);
+const Film = createLucideIcon("Film", [
+  ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", key: "afitv7" }],
+  ["path", { d: "M7 3v18", key: "bbkbws" }],
+  ["path", { d: "M3 7.5h4", key: "zfgn84" }],
+  ["path", { d: "M3 12h18", key: "1i2n21" }],
+  ["path", { d: "M3 16.5h4", key: "1230mu" }],
+  ["path", { d: "M17 3v18", key: "in4fa5" }],
+  ["path", { d: "M17 7.5h4", key: "myr1c1" }],
+  ["path", { d: "M17 16.5h4", key: "go4c1d" }]
+]);
+const Flag = createLucideIcon("Flag", [
+  ["path", { d: "M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z", key: "i9b6wo" }],
+  ["line", { x1: "4", x2: "4", y1: "22", y2: "15", key: "1cm3nv" }]
+]);
 const Flame = createLucideIcon("Flame", [
   [
     "path",
@@ -11187,6 +11210,19 @@ const Flame = createLucideIcon("Flame", [
       key: "96xj49"
     }
   ]
+]);
+const Flower2 = createLucideIcon("Flower2", [
+  [
+    "path",
+    {
+      d: "M12 5a3 3 0 1 1 3 3m-3-3a3 3 0 1 0-3 3m3-3v1M9 8a3 3 0 1 0 3 3M9 8h1m5 0a3 3 0 1 1-3 3m3-3h-1m-2 3v-1",
+      key: "3pnvol"
+    }
+  ],
+  ["circle", { cx: "12", cy: "8", r: "2", key: "1822b1" }],
+  ["path", { d: "M12 10v12", key: "6ubwww" }],
+  ["path", { d: "M12 22c4.2 0 7-1.667 7-5-4.2 0-7 1.667-7 5Z", key: "9hd38g" }],
+  ["path", { d: "M12 22c-4.2 0-7-1.667-7-5 4.2 0 7 1.667 7 5Z", key: "ufn41s" }]
 ]);
 const Frown = createLucideIcon("Frown", [
   ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
@@ -11211,6 +11247,24 @@ const Globe = createLucideIcon("Globe", [
   ["path", { d: "M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20", key: "13o1zl" }],
   ["path", { d: "M2 12h20", key: "9i4pu4" }]
 ]);
+const HeartHandshake = createLucideIcon("HeartHandshake", [
+  [
+    "path",
+    {
+      d: "M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z",
+      key: "c3ymky"
+    }
+  ],
+  [
+    "path",
+    {
+      d: "M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08v0c.82.82 2.13.85 3 .07l2.07-1.9a2.82 2.82 0 0 1 3.79 0l2.96 2.66",
+      key: "12sd6o"
+    }
+  ],
+  ["path", { d: "m18 15-2-2", key: "60u0ii" }],
+  ["path", { d: "m15 18-2-2", key: "6p76be" }]
+]);
 const Heart = createLucideIcon("Heart", [
   [
     "path",
@@ -11234,6 +11288,11 @@ const Image = createLucideIcon("Image", [
   ["circle", { cx: "9", cy: "9", r: "2", key: "af1f0g" }],
   ["path", { d: "m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21", key: "1xmnt7" }]
 ]);
+const Instagram = createLucideIcon("Instagram", [
+  ["rect", { width: "20", height: "20", x: "2", y: "2", rx: "5", ry: "5", key: "2e1cvw" }],
+  ["path", { d: "M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z", key: "9exkf1" }],
+  ["line", { x1: "17.5", x2: "17.51", y1: "6.5", y2: "6.5", key: "r4j83e" }]
+]);
 const KeyRound = createLucideIcon("KeyRound", [
   ["path", { d: "M2 18v3c0 .6.4 1 1 1h4v-3h3v-3h2l1.4-1.4a6.5 6.5 0 1 0-4-4Z", key: "167ctg" }],
   ["circle", { cx: "16.5", cy: "7.5", r: ".5", key: "1kog09" }]
@@ -11246,6 +11305,12 @@ const Languages = createLucideIcon("Languages", [
   ["path", { d: "m22 22-5-10-5 10", key: "don7ne" }],
   ["path", { d: "M14 18h6", key: "1m8k6r" }]
 ]);
+const Laugh = createLucideIcon("Laugh", [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "M18 13a6 6 0 0 1-6 5 6 6 0 0 1-6-5h12Z", key: "b2q4dd" }],
+  ["line", { x1: "9", x2: "9.01", y1: "9", y2: "9", key: "yxxnd0" }],
+  ["line", { x1: "15", x2: "15.01", y1: "9", y2: "9", key: "1p4y9e" }]
+]);
 const Lightbulb = createLucideIcon("Lightbulb", [
   [
     "path",
@@ -11256,6 +11321,11 @@ const Lightbulb = createLucideIcon("Lightbulb", [
   ],
   ["path", { d: "M9 18h6", key: "x1upvd" }],
   ["path", { d: "M10 22h4", key: "ceow96" }]
+]);
+const Link2 = createLucideIcon("Link2", [
+  ["path", { d: "M9 17H7A5 5 0 0 1 7 7h2", key: "8i5ue5" }],
+  ["path", { d: "M15 7h2a5 5 0 1 1 0 10h-2", key: "1b9ql8" }],
+  ["line", { x1: "8", x2: "16", y1: "12", y2: "12", key: "1jonct" }]
 ]);
 const Lock = createLucideIcon("Lock", [
   ["rect", { width: "18", height: "11", x: "3", y: "11", rx: "2", ry: "2", key: "1w4ew1" }],
@@ -11293,10 +11363,26 @@ const MessagesSquare = createLucideIcon("MessagesSquare", [
 const Moon = createLucideIcon("Moon", [
   ["path", { d: "M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z", key: "a7tn18" }]
 ]);
+const Mountain = createLucideIcon("Mountain", [
+  ["path", { d: "m8 3 4 8 5-5 5 15H2L8 3z", key: "otkl63" }]
+]);
 const Music = createLucideIcon("Music", [
   ["path", { d: "M9 18V5l12-2v13", key: "1jmyc2" }],
   ["circle", { cx: "6", cy: "18", r: "3", key: "fqmcym" }],
   ["circle", { cx: "18", cy: "16", r: "3", key: "1hluhg" }]
+]);
+const Palette = createLucideIcon("Palette", [
+  ["circle", { cx: "13.5", cy: "6.5", r: ".5", key: "1xcu5" }],
+  ["circle", { cx: "17.5", cy: "10.5", r: ".5", key: "736e4u" }],
+  ["circle", { cx: "8.5", cy: "7.5", r: ".5", key: "clrty" }],
+  ["circle", { cx: "6.5", cy: "12.5", r: ".5", key: "1s4xz9" }],
+  [
+    "path",
+    {
+      d: "M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z",
+      key: "12rzf8"
+    }
+  ]
 ]);
 const PartyPopper = createLucideIcon("PartyPopper", [
   ["path", { d: "M5.8 11.3 2 22l10.7-3.79", key: "gwxi1d" }],
@@ -11353,6 +11439,13 @@ const Search = createLucideIcon("Search", [
 const Send = createLucideIcon("Send", [
   ["path", { d: "m22 2-7 20-4-9-9-4Z", key: "1q3vgg" }],
   ["path", { d: "M22 2 11 13", key: "nzbqef" }]
+]);
+const Share2 = createLucideIcon("Share2", [
+  ["circle", { cx: "18", cy: "5", r: "3", key: "gq8acd" }],
+  ["circle", { cx: "6", cy: "12", r: "3", key: "w7nqdw" }],
+  ["circle", { cx: "18", cy: "19", r: "3", key: "1xt0gg" }],
+  ["line", { x1: "8.59", x2: "15.42", y1: "13.51", y2: "17.49", key: "47mynk" }],
+  ["line", { x1: "15.41", x2: "8.59", y1: "6.51", y2: "10.49", key: "1n3mei" }]
 ]);
 const Shield = createLucideIcon("Shield", [
   ["path", { d: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10", key: "1irkt0" }]
@@ -11419,12 +11512,40 @@ const Target = createLucideIcon("Target", [
   ["circle", { cx: "12", cy: "12", r: "6", key: "1vlfrh" }],
   ["circle", { cx: "12", cy: "12", r: "2", key: "1c9p78" }]
 ]);
+const Tent = createLucideIcon("Tent", [
+  ["path", { d: "M3.5 21 14 3", key: "1szst5" }],
+  ["path", { d: "M20.5 21 10 3", key: "1310c3" }],
+  ["path", { d: "M15.5 21 12 15l-3.5 6", key: "1ddtfw" }],
+  ["path", { d: "M2 21h20", key: "1nyx9w" }]
+]);
+const Ticket = createLucideIcon("Ticket", [
+  [
+    "path",
+    {
+      d: "M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z",
+      key: "qn84l0"
+    }
+  ],
+  ["path", { d: "M13 5v2", key: "dyzc3o" }],
+  ["path", { d: "M13 17v2", key: "1ont0d" }],
+  ["path", { d: "M13 11v2", key: "1wjjxi" }]
+]);
 const Trash2 = createLucideIcon("Trash2", [
   ["path", { d: "M3 6h18", key: "d0wm0j" }],
   ["path", { d: "M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6", key: "4alrt4" }],
   ["path", { d: "M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2", key: "v07s0e" }],
   ["line", { x1: "10", x2: "10", y1: "11", y2: "17", key: "1uufr5" }],
   ["line", { x1: "14", x2: "14", y1: "11", y2: "17", key: "xtxkd" }]
+]);
+const TreePine = createLucideIcon("TreePine", [
+  [
+    "path",
+    {
+      d: "m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z",
+      key: "cpyugq"
+    }
+  ],
+  ["path", { d: "M12 22v-3", key: "kmzjlo" }]
 ]);
 const TrendingUp = createLucideIcon("TrendingUp", [
   ["polyline", { points: "22 7 13.5 15.5 8.5 10.5 2 17", key: "126l90" }],
@@ -11468,6 +11589,15 @@ const Users = createLucideIcon("Users", [
   ["circle", { cx: "9", cy: "7", r: "4", key: "nufk8" }],
   ["path", { d: "M22 21v-2a4 4 0 0 0-3-3.87", key: "kshegd" }],
   ["path", { d: "M16 3.13a4 4 0 0 1 0 7.75", key: "1da9ce" }]
+]);
+const UtensilsCrossed = createLucideIcon("UtensilsCrossed", [
+  ["path", { d: "m16 2-2.3 2.3a3 3 0 0 0 0 4.2l1.8 1.8a3 3 0 0 0 4.2 0L22 8", key: "n7qcjb" }],
+  [
+    "path",
+    { d: "M15 15 3.3 3.3a4.2 4.2 0 0 0 0 6l7.3 7.3c.7.7 2 .7 2.8 0L15 15Zm0 0 7 7", key: "d0u48b" }
+  ],
+  ["path", { d: "m2.1 21.8 6.4-6.3", key: "yn04lh" }],
+  ["path", { d: "m19 5-7 7", key: "194lzd" }]
 ]);
 const XCircle = createLucideIcon("XCircle", [
   ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
@@ -13654,13 +13784,13 @@ function Auth({ onAuthSuccess }) {
   const [newPassword, setNewPassword] = reactExports.useState("");
   const [showAgeVerification, setShowAgeVerification] = reactExports.useState(false);
   const [selectedAge, setSelectedAge] = reactExports.useState("");
-  const backendUrl = getBackendUrl();
+  const backendUrl2 = getBackendUrl();
   const isNativeIOS = Capacitor.isNativePlatform() && Capacitor.getPlatform() === "ios";
   const handleAppleSignIn = async () => {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-Cye1H1V8.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-C2VXLZCM.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -13671,7 +13801,7 @@ function Auth({ onAuthSuccess }) {
           nonce: Math.random().toString(36).substring(2, 15)
         });
         if (result.response) {
-          const response = await fetch(`${backendUrl}/api/auth/apple`, {
+          const response = await fetch(`${backendUrl2}/api/auth/apple`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -13774,7 +13904,7 @@ function Auth({ onAuthSuccess }) {
         password,
         country: "AL"
       };
-      const response = await fetch(`${backendUrl}${endpoint}`, {
+      const response = await fetch(`${backendUrl2}${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
@@ -13863,7 +13993,7 @@ function Auth({ onAuthSuccess }) {
                 }
                 setLoading(true);
                 try {
-                  const response = await fetch(`${backendUrl}/api/auth/forgot-password`, {
+                  const response = await fetch(`${backendUrl2}/api/auth/forgot-password`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email: resetEmail.trim() })
@@ -13910,7 +14040,7 @@ function Auth({ onAuthSuccess }) {
                 }
                 setLoading(true);
                 try {
-                  const response = await fetch(`${backendUrl}/api/auth/verify-reset-code`, {
+                  const response = await fetch(`${backendUrl2}/api/auth/verify-reset-code`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email: resetEmail.trim(), code: resetCode })
@@ -13955,7 +14085,7 @@ function Auth({ onAuthSuccess }) {
                 }
                 setLoading(true);
                 try {
-                  const response = await fetch(`${backendUrl}/api/auth/reset-password`, {
+                  const response = await fetch(`${backendUrl2}/api/auth/reset-password`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -14383,6 +14513,14 @@ const trackFeatureUse = (featureName, action = "use") => {
   saveAnalytics(analytics);
   console.log(`📊 Feature use: ${featureName} - ${action}`);
 };
+const trackAction = (actionName) => {
+  const analytics = getAnalytics();
+  if (analytics.actions[actionName] !== void 0) {
+    analytics.actions[actionName]++;
+  }
+  saveAnalytics(analytics);
+  console.log(`📊 Action: ${actionName}`);
+};
 const trackSessionStart = () => {
   const analytics = getAnalytics();
   analytics.totalSessions++;
@@ -14575,7 +14713,7 @@ function CreditsModal({ isOpen, onClose }) {
   const [packages, setPackages] = reactExports.useState(null);
   const [balance, setBalance] = reactExports.useState(0);
   const [loading, setLoading] = reactExports.useState(false);
-  const backendUrl = getBackendUrl();
+  const backendUrl2 = getBackendUrl();
   const userId = localStorage.getItem("userId") || "anonymous";
   reactExports.useEffect(() => {
     if (isOpen) {
@@ -14584,7 +14722,7 @@ function CreditsModal({ isOpen, onClose }) {
   }, [isOpen]);
   const fetchCredits = async () => {
     try {
-      const response = await fetch(`${backendUrl}/api/credits/balance`, {
+      const response = await fetch(`${backendUrl2}/api/credits/balance`, {
         headers: {
           "x-user-id": userId
         }
@@ -14601,7 +14739,7 @@ function CreditsModal({ isOpen, onClose }) {
   const handlePurchase = async (packageId) => {
     setLoading(true);
     try {
-      const response = await fetch(`${backendUrl}/api/credits/purchase`, {
+      const response = await fetch(`${backendUrl2}/api/credits/purchase`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -14696,7 +14834,7 @@ function UsageDisplay({ onUpgrade, onLimitReached }) {
   const [usage2, setUsage] = reactExports.useState(null);
   const [loading, setLoading] = reactExports.useState(true);
   const [showCreditsModal, setShowCreditsModal] = reactExports.useState(false);
-  const backendUrl = getBackendUrl();
+  const backendUrl2 = getBackendUrl();
   reactExports.useEffect(() => {
     fetchUsage();
     const interval = setInterval(fetchUsage, 3e4);
@@ -14709,7 +14847,7 @@ function UsageDisplay({ onUpgrade, onLimitReached }) {
       if (userId) {
         headers["x-user-id"] = userId;
       }
-      const response = await fetch(`${backendUrl}/api/usage`, { headers });
+      const response = await fetch(`${backendUrl2}/api/usage`, { headers });
       if (response.ok) {
         const data = await response.json();
         setUsage(data);
@@ -14840,8 +14978,8 @@ function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
       return;
     }
     try {
-      const backendUrl = getBackendUrl();
-      const response = await fetch(`${backendUrl}/api/stripe/create-checkout-session`, {
+      const backendUrl2 = getBackendUrl();
+      const response = await fetch(`${backendUrl2}/api/stripe/create-checkout-session`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -15010,6 +15148,20 @@ function Home() {
       requiresProOrElite: true
     },
     {
+      icon: Calendar,
+      title: "Date Ideas",
+      description: "Discover perfect venues for dates",
+      color: "from-pink-500 to-rose-500",
+      page: "dates"
+    },
+    {
+      icon: PartyPopper,
+      title: "Events Near You",
+      description: "Local events & activities",
+      color: "from-yellow-500 to-orange-500",
+      page: "Events"
+    },
+    {
       icon: Gift,
       title: t("home.features.gifts.title"),
       description: t("home.features.gifts.desc"),
@@ -15163,7 +15315,7 @@ function SaveButton({ item, type, onSaved, className = "" }) {
   const { t } = useTranslation();
   const [saving, setSaving] = reactExports.useState(false);
   const [saved, setSaved] = reactExports.useState(false);
-  const backendUrl = getBackendUrl();
+  const backendUrl2 = getBackendUrl();
   const userId = localStorage.getItem("userId");
   const handleSave = async (e) => {
     e.stopPropagation();
@@ -15173,7 +15325,7 @@ function SaveButton({ item, type, onSaved, className = "" }) {
     }
     setSaving(true);
     try {
-      const response = await fetch(`${backendUrl}/api/user/saved`, {
+      const response = await fetch(`${backendUrl2}/api/user/saved`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -15232,12 +15384,12 @@ function Input({ className = "", ...props }) {
   );
 }
 const callOpenAI = async (prompt, conversationHistory = [], customSystemPrompt = null, fileUrls = []) => {
-  const backendUrl = getBackendUrl();
+  const backendUrl2 = getBackendUrl();
   try {
-    console.log("🚀 Calling backend API...", { backendUrl, promptLength: prompt?.length });
+    console.log("🚀 Calling backend API...", { backendUrl: backendUrl2, promptLength: prompt?.length });
     const sessionId = window.chatSessionId || `session_${Date.now()}`;
     if (!window.chatSessionId) window.chatSessionId = sessionId;
-    const response = await fetch(`${backendUrl}/api/chat`, {
+    const response = await fetch(`${backendUrl2}/api/chat`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -15280,7 +15432,7 @@ const callOpenAI = async (prompt, conversationHistory = [], customSystemPrompt =
   } catch (error) {
     console.error("❌ Backend API unavailable:", error);
     if (error.message.includes("Failed to fetch") || error.message.includes("NetworkError") || error.message.includes("Load failed")) {
-      const errorMsg = `Cannot connect to backend at ${backendUrl}. `;
+      const errorMsg = `Cannot connect to backend at ${backendUrl2}. `;
       const simulatorHint = window.Capacitor ? "Make sure backend is running on your Mac and accessible from the simulator." : "Make sure the backend server is running.";
       throw new Error(errorMsg + simulatorHint);
     }
@@ -15394,7 +15546,7 @@ function Tips() {
   const [showUpgradeModal, setShowUpgradeModal] = reactExports.useState(false);
   const [visibleCount, setVisibleCount] = reactExports.useState(5);
   const [copiedIndex, setCopiedIndex] = reactExports.useState(null);
-  const backendUrl = getBackendUrl();
+  const backendUrl2 = getBackendUrl();
   const getPrompt = (type) => {
     const langInstruction = isAlbanian2 ? "Shkruaj në shqip." : `Write in ${currentLang === "en" ? "English" : currentLang}.`;
     const prompts = {
@@ -15589,7 +15741,7 @@ Specific question: ${customQuestion}` : ""}`,
   };
   const checkUsage = async () => {
     try {
-      const response = await fetch(`${backendUrl}/api/usage`);
+      const response = await fetch(`${backendUrl2}/api/usage`);
       if (response.ok) {
         const data = await response.json();
         const isBlocked = data.dailyUsage.remainingMessages === 0 && (!data.credits || data.credits === 0);
@@ -16983,7 +17135,7 @@ function Chat() {
   const [showAdultVerificationModal, setShowAdultVerificationModal] = reactExports.useState(false);
   const [pendingCategorySwitch, setPendingCategorySwitch] = reactExports.useState(null);
   const [subscriptionTier, setSubscriptionTier] = reactExports.useState(localStorage.getItem("userSubscriptionTier") || "");
-  const backendUrl = getBackendUrl();
+  const backendUrl2 = getBackendUrl();
   reactExports.useEffect(() => {
     const handleStorageChange = () => {
       const newTier = localStorage.getItem("userSubscriptionTier") || "";
@@ -17077,7 +17229,7 @@ function Chat() {
       try {
         const userId = localStorage.getItem("userId");
         const headers = userId ? { "x-user-id": userId } : {};
-        const response = await fetch(`${backendUrl}/api/usage`, { headers });
+        const response = await fetch(`${backendUrl2}/api/usage`, { headers });
         if (response.ok) {
           const data = await response.json();
           if (data.tier) {
@@ -17306,7 +17458,7 @@ function Chat() {
       if (userId) {
         headers["x-user-id"] = userId;
       }
-      const response = await fetch(`${backendUrl}/api/usage`, { headers });
+      const response = await fetch(`${backendUrl2}/api/usage`, { headers });
       if (response.ok) {
         const data = await response.json();
         setUsage(data);
@@ -18001,9 +18153,2049 @@ CRITICAL REMINDER: The user has shared a screenshot of a conversation earlier in
     )
   ] });
 }
+const backendUrl = getBackendUrl();
+function FirstDates() {
+  const { t, i18n } = useTranslation();
+  const [selectedCity, setSelectedCity] = reactExports.useState("");
+  const [selectedCategory, setSelectedCategory] = reactExports.useState(null);
+  const [selectedTimeOfDay, setSelectedTimeOfDay] = reactExports.useState("");
+  const [suggestions, setSuggestions] = reactExports.useState([]);
+  const [loading, setLoading] = reactExports.useState(false);
+  const [loadingMore, setLoadingMore] = reactExports.useState(false);
+  const [showCityModal, setShowCityModal] = reactExports.useState(false);
+  const [customCityInput, setCustomCityInput] = reactExports.useState("");
+  const [showMoreCities, setShowMoreCities] = reactExports.useState(false);
+  const userCountry = localStorage.getItem("userCountry") || "AL";
+  const currentCountry = getCountryByCode(userCountry);
+  const localizedCities = React.useMemo(() => {
+    return getLocalizedCitiesForCountry(userCountry);
+  }, [userCountry, i18n.language]);
+  const localizedCountryName = React.useMemo(() => {
+    return getLocalizedCountryName(userCountry);
+  }, [userCountry, i18n.language]);
+  const cities = localizedCities.map((c) => c.displayName);
+  const timeOfDayOptions = [
+    { id: "morning", label: "Morning", emoji: "🌅", color: "from-yellow-400 to-orange-400" },
+    { id: "afternoon", label: "Afternoon", emoji: "☀️", color: "from-orange-400 to-amber-500" },
+    { id: "evening", label: "Evening", emoji: "🌆", color: "from-purple-500 to-pink-500" },
+    { id: "night", label: "Night", emoji: "🌙", color: "from-indigo-600 to-purple-600" },
+    { id: "anytime", label: "Any Time", emoji: "⏰", color: "from-slate-600 to-slate-700" }
+  ];
+  const categories = [
+    {
+      id: "restaurants",
+      name: t("dates.restaurants"),
+      icon: UtensilsCrossed,
+      color: "from-red-500 to-orange-500",
+      description: t("dates.restaurantsDesc")
+    },
+    {
+      id: "cafes",
+      name: t("dates.cafes"),
+      icon: Coffee,
+      color: "from-amber-500 to-yellow-500",
+      description: t("dates.cafesDesc")
+    },
+    {
+      id: "bars",
+      name: t("dates.bars"),
+      icon: Sparkles,
+      color: "from-purple-500 to-pink-500",
+      description: t("dates.barsDesc")
+    },
+    {
+      id: "cinema",
+      name: t("dates.cinema"),
+      icon: Film,
+      color: "from-blue-500 to-indigo-500",
+      description: t("dates.cinemaDesc")
+    },
+    {
+      id: "music",
+      name: t("dates.music"),
+      icon: Music,
+      color: "from-pink-500 to-rose-500",
+      description: t("dates.musicDesc")
+    },
+    {
+      id: "activities",
+      name: t("dates.activities"),
+      icon: Dumbbell,
+      color: "from-green-500 to-emerald-500",
+      description: t("dates.activitiesDesc")
+    },
+    {
+      id: "culture",
+      name: t("dates.culture"),
+      icon: Palette,
+      color: "from-violet-500 to-purple-500",
+      description: t("dates.cultureDesc")
+    },
+    {
+      id: "nature",
+      name: t("dates.nature"),
+      icon: TreePine,
+      color: "from-green-600 to-teal-500",
+      description: t("dates.natureDesc")
+    }
+  ];
+  const businessSuggestions = {
+    tiranë: {
+      restaurants: [
+        { name: "Mulliri i Vjetër", description: "Restorant tradicionale me atmosferë shqiptare", rating: "4.5", price: "$$", featured: true, sponsored: true },
+        { name: "Oda", description: "Restorant modern me kuzhinë mediterane", rating: "4.7", price: "$$$", featured: true },
+        { name: "Padam Boutique Hotel Restaurant", description: "Restorant elegant me pamje të bukur", rating: "4.6", price: "$$$", featured: true, sponsored: true },
+        { name: "Artigiano", description: "Pizzeria italiane autentike", rating: "4.4", price: "$$" },
+        { name: "Salt", description: "Restorant me kuzhinë fusion", rating: "4.5", price: "$$" }
+      ],
+      cafes: [
+        { name: "Komiteti Kafe-Muzeum", description: "Kafene unike me atmosferë vintage", rating: "4.6", price: "$", featured: true, sponsored: true },
+        { name: "Mulliri i Vjetër", description: "Kafene e madhe me ambiente të ndryshme", rating: "4.5", price: "$", featured: true },
+        { name: "Sofra e Ariut", description: "Kafene me design modern dhe kafe të shkëlqyer", rating: "4.4", price: "$$" },
+        { name: "Bunker 1944", description: "Kafene tematike me historikë unike", rating: "4.3", price: "$" },
+        { name: "Colonial Café", description: "Kafene elegante në qendër", rating: "4.5", price: "$$", featured: true }
+      ],
+      bars: [
+        { name: "Radio Bar", description: "Rooftop bar me pamje të qytetit", rating: "4.6", price: "$$", featured: true, sponsored: true },
+        { name: "Nouvelle Vague", description: "Bar me cocktail kreative", rating: "4.5", price: "$$", featured: true },
+        { name: "Colonial Café Rooftop", description: "Rooftop me atmosferë romantike", rating: "4.7", price: "$$", featured: true },
+        { name: "Bunker Bar", description: "Bar tematike në bunker", rating: "4.4", price: "$$" },
+        { name: "Sky Club", description: "Rooftop bar me muzikë live", rating: "4.5", price: "$$$", featured: true }
+      ],
+      cinema: [
+        { name: "Cineplexx", description: "Kinema moderne me shumë salla", rating: "4.5", price: "$$" },
+        { name: "Kinema Millennium", description: "Kinema në qendër të qytetit", rating: "4.3", price: "$$" }
+      ],
+      music: [
+        { name: "Tirana Jazz Club", description: "Jazz live dhe atmosferë intime", rating: "4.6", price: "$$" },
+        { name: "Folie Terrace", description: "Live music dhe dj sets", rating: "4.4", price: "$$" }
+      ],
+      activities: [
+        { name: "Escape Room Albania", description: "Escape rooms me tema të ndryshme", rating: "4.7", price: "$$" },
+        { name: "Bowling Center", description: "Bowling dhe lojëra të tjera", rating: "4.3", price: "$$" },
+        { name: "Paint & Sip Studio", description: "Pikturë dhe verë për çiftet", rating: "4.5", price: "$$" }
+      ],
+      culture: [
+        { name: "Muzeu Historik Kombëtar", description: "Muzeu më i madh në Shqipëri", rating: "4.6", price: "$" },
+        { name: "Bunk'Art", description: "Muzeu në bunker me art bashkëkohor", rating: "4.7", price: "$" },
+        { name: "Galeria Kombëtare e Arteve", description: "Ekspozita arti bashkëkohor", rating: "4.5", price: "$" }
+      ],
+      nature: [
+        { name: "Parku i Madh", description: "Shëtitje dhe piknik në natyrë", rating: "4.4", price: "Gratis" },
+        { name: "Dajti", description: "Teleferik dhe pamje panoramike", rating: "4.6", price: "$$" },
+        { name: "Lacit", description: "Liqen artificial për shëtitje", rating: "4.3", price: "Gratis" }
+      ]
+    },
+    durrës: {
+      restaurants: [
+        { name: "Restorant Rozafa", description: "Restorant me det dhe kuzhinë deti", rating: "4.5", price: "$$" },
+        { name: "Restorant Taverna", description: "Kuzhinë tradicionale shqiptare", rating: "4.4", price: "$$" }
+      ],
+      cafes: [
+        { name: "Café de Paris", description: "Kafene me pamje deti", rating: "4.5", price: "$$" }
+      ],
+      bars: [
+        { name: "Beach Bar", description: "Bar në plazh me atmosferë relaksuese", rating: "4.4", price: "$$" }
+      ],
+      nature: [
+        { name: "Plazhi i Durrësit", description: "Shëtitje në plazh dhe promenadë", rating: "4.5", price: "Gratis" }
+      ]
+    },
+    vlorë: {
+      restaurants: [
+        { name: "Restorant Tradita", description: "Kuzhinë tradicionale me det", rating: "4.6", price: "$$" }
+      ],
+      nature: [
+        { name: "Plazhi i Vlorës", description: "Plazh i bukur për shëtitje", rating: "4.5", price: "Gratis" },
+        { name: "Llogara Pass", description: "Shëtitje në mal me pamje të bukura", rating: "4.7", price: "Gratis" }
+      ]
+    }
+  };
+  const getSuggestions = (city, category) => {
+    const cityData = businessSuggestions[city.toLowerCase()];
+    if (!cityData || !cityData[category]) {
+      return getGenericSuggestions(category);
+    }
+    const suggestions2 = cityData[category];
+    return suggestions2.sort((a, b) => {
+      if (a.sponsored && !b.sponsored) return -1;
+      if (!a.sponsored && b.sponsored) return 1;
+      if (a.featured && !b.featured) return -1;
+      if (!a.featured && b.featured) return 1;
+      return parseFloat(b.rating || 0) - parseFloat(a.rating || 0);
+    });
+  };
+  const getGenericSuggestions = (category) => {
+    const generic = {
+      restaurants: [
+        { name: "Restorant Tradicional", description: "Shkoni në një restorant me kuzhinë tradicionale shqiptare", rating: "4.5", price: "$$" },
+        { name: "Restorant Italian", description: "Pizzeria ose restorant italian për një darkë romantike", rating: "4.4", price: "$$" },
+        { name: "Restorant Me Pamje", description: "Restorant me pamje të bukur për atmosferë romantike", rating: "4.6", price: "$$$" }
+      ],
+      cafes: [
+        { name: "Kafene Tradicionale", description: "Kafene me atmosferë shqiptare për biseda", rating: "4.4", price: "$" },
+        { name: "Kafene Moderne", description: "Kafene me design modern dhe kafe të shkëlqyer", rating: "4.5", price: "$$" }
+      ],
+      bars: [
+        { name: "Rooftop Bar", description: "Rooftop bar me pamje për një mbrëmje romantike", rating: "4.6", price: "$$" },
+        { name: "Cocktail Bar", description: "Bar me cocktail kreative dhe atmosferë intime", rating: "4.5", price: "$$" }
+      ],
+      cinema: [
+        { name: "Kinema Lokale", description: "Shkoni në kinema për një film bashkë", rating: "4.3", price: "$$" }
+      ],
+      music: [
+        { name: "Live Music Venue", description: "Vend me muzikë live për një mbrëmje muzikore", rating: "4.5", price: "$$" }
+      ],
+      activities: [
+        { name: "Escape Room", description: "Escape room për një sfidë bashkë", rating: "4.7", price: "$$" },
+        { name: "Bowling", description: "Bowling për lojë dhe argëtim", rating: "4.3", price: "$$" }
+      ],
+      culture: [
+        { name: "Muzeu Lokal", description: "Shkoni në muzeu për të mësuar dhe diskutuar", rating: "4.5", price: "$" },
+        { name: "Galeri Arti", description: "Galeri arti për ekspozita interesante", rating: "4.4", price: "$" }
+      ],
+      nature: [
+        { name: "Parku Lokal", description: "Shëtitje në park për biseda dhe relaksim", rating: "4.4", price: "Gratis" },
+        { name: "Shëtitje në Natyrë", description: "Shëtitje në natyrë për një takim aktiv", rating: "4.6", price: "Gratis" }
+      ]
+    };
+    return generic[category] || [];
+  };
+  const handleCategorySelect = (category) => {
+    setSelectedCategory(category);
+  };
+  const handleCitySelect = (city) => {
+    setSelectedCity(city);
+  };
+  const handleSearch = async () => {
+    if (!selectedCity || !selectedCategory) {
+      alert(t("dates.selectCityAndCategory"));
+      return;
+    }
+    await generateAISuggestions(selectedCity, selectedCategory, false);
+  };
+  const handleLoadMore = async () => {
+    if (!selectedCity || !selectedCategory) return;
+    await generateAISuggestions(selectedCity, selectedCategory, true);
+  };
+  const generateAISuggestions = async (city, category, isLoadMore = false) => {
+    if (isLoadMore) {
+      setLoadingMore(true);
+    } else {
+      setLoading(true);
+      setSuggestions([]);
+    }
+    try {
+      console.log(`🔍 Searching Google Places for ${category.name} in ${city}...`);
+      const categoryNames = {
+        restaurants: "restorante romantike",
+        cafes: "kafene të bukura",
+        bars: "bare dhe rooftop bar",
+        cinema: "kinema dhe aktivitete kinematografike",
+        music: "vende me muzikë live",
+        activities: "aktivitete si bowling, escape room",
+        culture: "muzee, galeri arti",
+        nature: "parqe dhe vende në natyrë"
+      };
+      let googlePlaces = [];
+      let useGooglePlaces = true;
+      try {
+        const cityNameEn2 = getCityNameEn(userCountry, city) || city;
+        const countryNameEn2 = currentCountry?.nameEn || "Albania";
+        const locationQuery = `${cityNameEn2}, ${countryNameEn2}`;
+        console.log(`🔍 Searching in: ${locationQuery}`);
+        const placesResponse = await fetch(`${backendUrl}/api/places/search`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            query: `${categoryNames[category.id] || category.name} in ${cityNameEn2}`,
+            location: locationQuery,
+            category: category.id,
+            strictLocation: true,
+            cityName: cityNameEn2,
+            countryName: countryNameEn2
+          })
+        });
+        if (placesResponse.ok) {
+          const data = await placesResponse.json();
+          if (data.source === "google-places" && data.places && data.places.length > 0) {
+            console.log(`✅ Got ${data.places.length} results from Google Places`);
+            const filteredPlaces = data.places.filter((place) => {
+              const address = (place.location || "").toLowerCase();
+              const cityLower = cityNameEn2.toLowerCase();
+              const selectedCityLower = city.toLowerCase();
+              return address.includes(cityLower) || address.includes(selectedCityLower) || // Also check for common Albanian city name variations
+              address.includes(cityLower.replace("ë", "e")) || address.includes(selectedCityLower.replace("ë", "e"));
+            });
+            googlePlaces = filteredPlaces.length > 0 ? filteredPlaces : data.places;
+            if (isLoadMore) {
+              const existingNames = suggestions.map((s) => s.name.toLowerCase());
+              googlePlaces = googlePlaces.filter(
+                (p) => !existingNames.includes(p.name.toLowerCase())
+              );
+            }
+          } else {
+            console.log("⚠️ Google Places not available, falling back to AI");
+            useGooglePlaces = false;
+          }
+        } else {
+          console.log("⚠️ Google Places API error, falling back to AI");
+          useGooglePlaces = false;
+        }
+      } catch (googleError) {
+        console.error("❌ Google Places fetch error:", googleError);
+        useGooglePlaces = false;
+      }
+      if (useGooglePlaces && googlePlaces.length > 0) {
+        const formattedSuggestions2 = googlePlaces.map((place, index) => ({
+          name: place.name,
+          description: place.description,
+          location: place.location,
+          rating: place.rating,
+          price: place.price,
+          googleMapsLink: place.googleMapsLink,
+          isOpen: place.isOpen,
+          featured: index === 0 && !isLoadMore,
+          sponsored: false,
+          source: "google"
+        }));
+        if (isLoadMore) {
+          setSuggestions((prev) => [...prev, ...formattedSuggestions2]);
+        } else {
+          setSuggestions(formattedSuggestions2);
+        }
+        setLoading(false);
+        setLoadingMore(false);
+        return;
+      }
+      console.log("📝 Using AI fallback...");
+      const alreadyShown = isLoadMore ? suggestions.map((s) => s.name).join(", ") : "";
+      const excludeText = alreadyShown ? `
+
+MOS përfshi këto biznese që u treguan më parë: ${alreadyShown}
+
+Gjej biznese të REJA dhe të ndryshme!` : "";
+      const prompt = `Biznese REALE në ${cityNameEn}, ${countryNameEn} për takime të para: ${categoryNames[category.id] || category.name}${excludeText}
+
+Listoni 5-7 vende që ekzistojnë realisht. Ktheni VETËM JSON array:
+[{"name":"Emri","description":"Përshkrim","location":"Adresa","rating":"4.5","price":"$$"}]
+
+Mos shtoni tekst tjetër, VETËM JSON.`;
+      const systemPromptExtra = isLoadMore ? " Generate DIFFERENT businesses than before. Do NOT repeat any business names that were already mentioned." : "";
+      const response = await base44.integrations.Core.InvokeLLM({
+        prompt,
+        conversationHistory: [],
+        systemPrompt: `Ti njeh ${cityNameEn}, ${countryNameEn} shumë mirë. Return ONLY a JSON array of REAL businesses that exist in ${cityNameEn}. No explanations, no markdown, just the JSON array.${systemPromptExtra}`
+      });
+      let aiSuggestions = [];
+      try {
+        const jsonMatch = response.match(/\[[\s\S]*\]/);
+        if (jsonMatch) {
+          aiSuggestions = JSON.parse(jsonMatch[0]);
+        } else {
+          aiSuggestions = JSON.parse(response);
+        }
+      } catch (parseError) {
+        console.error("Failed to parse AI response as JSON, using fallback:", parseError);
+        const fallback = getSuggestions(city, category.id);
+        setSuggestions(fallback);
+        setLoading(false);
+        return;
+      }
+      const formattedSuggestions = aiSuggestions.map((suggestion, index) => ({
+        name: suggestion.name || "Biznes Lokal",
+        description: suggestion.description || "Vend i mirë për takim të parë",
+        location: suggestion.location || city,
+        rating: suggestion.rating || "4.5",
+        price: suggestion.price || "$$",
+        googleMapsLink: `https://maps.google.com/?q=${encodeURIComponent(suggestion.name || "Biznes")},${encodeURIComponent(cityNameEn)},${encodeURIComponent(countryNameEn)}`,
+        featured: index === 0 && !isLoadMore,
+        // Mark first as featured only on initial load
+        sponsored: false,
+        source: "ai"
+      }));
+      if (isLoadMore) {
+        setSuggestions((prev) => [...prev, ...formattedSuggestions]);
+      } else {
+        setSuggestions(formattedSuggestions);
+      }
+    } catch (error) {
+      console.error("Error generating AI suggestions:", error);
+      const fallbackSuggestions = getSuggestions(city, category.id);
+      if (isLoadMore) {
+        setSuggestions((prev) => [...prev, ...fallbackSuggestions]);
+      } else {
+        setSuggestions(fallbackSuggestions);
+      }
+    } finally {
+      setLoading(false);
+      setLoadingMore(false);
+    }
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 pt-6 pb-32 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950 w-full max-w-full overflow-x-hidden", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6 text-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-block mb-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 bg-gradient-to-br from-pink-500 via-rose-500 to-red-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-pink-500/50 animate-pulse", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-10 h-10 text-white", fill: "currentColor" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center animate-bounce", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-3 h-3 text-slate-900" }) })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-3xl font-extrabold bg-gradient-to-r from-pink-300 via-rose-300 to-red-300 bg-clip-text text-transparent mb-2", children: "Date Ideas" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: "Discover the perfect venues for your dates" })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-5 h-5 text-purple-400" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-lg font-bold text-white", children: t("dates.selectCity") }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs text-slate-500 ml-auto", children: [
+          currentCountry?.flag,
+          " ",
+          localizedCountryName
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-2", children: [
+        cities.slice(0, showMoreCities ? cities.length : 12).map((city) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => handleCitySelect(city),
+            className: `px-4 py-2.5 rounded-xl font-semibold text-sm transition-all ${selectedCity === city ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/40" : "bg-slate-800/70 text-slate-300 hover:bg-slate-700/70 border border-slate-700/50 hover:border-purple-500/50"}`,
+            children: city
+          },
+          city
+        )),
+        cities.length > 12 && !showMoreCities && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => setShowMoreCities(true),
+            className: "px-4 py-2.5 rounded-xl font-semibold text-sm transition-all bg-slate-700/50 text-slate-300 hover:bg-slate-600/50 border border-slate-600/50 flex items-center gap-1.5",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "w-4 h-4" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                "+",
+                cities.length - 12,
+                " ",
+                t("dates.more")
+              ] })
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => setShowCityModal(true),
+            className: "px-4 py-2.5 rounded-xl font-semibold text-sm transition-all bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-400 border border-cyan-500/30 hover:border-cyan-400/50 hover:bg-cyan-500/30 flex items-center gap-1.5",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "w-4 h-4" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("dates.otherCity") })
+            ]
+          }
+        )
+      ] }),
+      selectedCity && !cities.includes(selectedCity) && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 flex items-center gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sm text-slate-400", children: [
+          t("dates.selectedCity"),
+          ":"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm font-semibold", children: selectedCity }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setSelectedCity(""),
+            className: "p-1 text-slate-400 hover:text-white",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-4 h-4" })
+          }
+        )
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-lg font-bold text-white mb-3", children: "⏰ Time of Day" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: timeOfDayOptions.map((time) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          onClick: () => setSelectedTimeOfDay(time.id),
+          className: `px-4 py-2.5 rounded-xl font-semibold text-sm transition-all ${selectedTimeOfDay === time.id ? `bg-gradient-to-r ${time.color} text-white shadow-lg` : "bg-slate-800/70 text-slate-300 hover:bg-slate-700/70 border border-slate-700/50 hover:border-purple-500/50"}`,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mr-1.5", children: time.emoji }),
+            time.label
+          ]
+        },
+        time.id
+      )) })
+    ] }),
+    showCityModal && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-md bg-slate-900 rounded-3xl border border-slate-700 shadow-2xl overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 border-b border-slate-700", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xl font-bold text-white flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-5 h-5 text-purple-400" }),
+            t("dates.selectCity")
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => setShowCityModal(false),
+              className: "p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5" })
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 relative", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "text",
+              value: customCityInput,
+              onChange: (e) => setCustomCityInput(e.target.value),
+              placeholder: t("dates.searchCity"),
+              className: "w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-purple-500",
+              style: { fontSize: "16px" },
+              autoFocus: true
+            }
+          )
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 max-h-[50vh] overflow-y-auto", children: [
+        customCityInput.trim() && !cities.some((c) => c.toLowerCase() === customCityInput.toLowerCase()) && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => {
+              handleCitySelect(customCityInput.trim());
+              setShowCityModal(false);
+              setCustomCityInput("");
+            },
+            className: "w-full p-3 mb-3 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/40 rounded-xl text-left hover:from-purple-500/30 hover:to-pink-500/30 transition-all",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "w-5 h-5 text-white" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-white font-semibold", children: [
+                  '"',
+                  customCityInput.trim(),
+                  '"'
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-purple-300 text-sm", children: t("dates.searchInCity") })
+              ] })
+            ] })
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-2", children: cities.filter(
+          (city) => !customCityInput || city.toLowerCase().includes(customCityInput.toLowerCase())
+        ).map((city) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => {
+              handleCitySelect(city);
+              setShowCityModal(false);
+              setCustomCityInput("");
+            },
+            className: `w-full p-3 rounded-xl text-left transition-all ${selectedCity === city ? "bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/40" : "bg-slate-800/50 border border-slate-700/50 hover:border-purple-500/30 hover:bg-slate-800"}`,
+            children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-10 h-10 rounded-xl flex items-center justify-center ${selectedCity === city ? "bg-gradient-to-br from-purple-500 to-pink-500" : "bg-slate-700"}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: `w-5 h-5 ${selectedCity === city ? "text-white" : "text-slate-400"}` }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: `font-semibold ${selectedCity === city ? "text-purple-300" : "text-white"}`, children: city }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-500 text-sm", children: localizedCountryName })
+              ] })
+            ] })
+          },
+          city
+        )) }),
+        customCityInput && !cities.some((c) => c.toLowerCase().includes(customCityInput.toLowerCase())) && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-slate-400 text-sm mt-4", children: t("dates.cityNotInList", { city: customCityInput }) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 border-t border-slate-700 bg-slate-800/50", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Button,
+        {
+          onClick: () => {
+            if (customCityInput.trim()) {
+              handleCitySelect(customCityInput.trim());
+            }
+            setShowCityModal(false);
+            setCustomCityInput("");
+          },
+          disabled: !customCityInput.trim() && !selectedCity,
+          className: "w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-xl",
+          children: customCityInput.trim() ? t("dates.searchInCityName", { city: customCityInput.trim() }) : t("dates.close")
+        }
+      ) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-lg font-bold text-white mb-4 flex items-center gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5 text-purple-400" }),
+        t("dates.selectCategory")
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 gap-3", children: categories.map((category) => {
+        const Icon = category.icon;
+        const isSelected = selectedCategory?.id === category.id;
+        return /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => handleCategorySelect(category),
+            className: `p-4 rounded-2xl border-2 transition-all text-left ${isSelected ? `bg-gradient-to-br ${category.color} border-transparent shadow-lg scale-105` : "bg-slate-800/50 border-slate-700 hover:border-purple-500/50"}`,
+            children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `p-2 rounded-xl ${isSelected ? "bg-white/20" : "bg-slate-700/50"}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { className: `w-6 h-6 ${isSelected ? "text-white" : "text-slate-400"}` }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: `font-bold text-sm mb-1 ${isSelected ? "text-white" : "text-slate-300"}`, children: category.name }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: `text-xs ${isSelected ? "text-white/80" : "text-slate-400"}`, children: category.description })
+              ] })
+            ] })
+          },
+          category.id
+        );
+      }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Button,
+        {
+          onClick: handleSearch,
+          disabled: !selectedCity || !selectedCategory || loading,
+          className: `w-full py-6 rounded-2xl font-bold text-lg transition-all ${selectedCity && selectedCategory && !loading ? "bg-gradient-to-r from-purple-500 via-pink-500 to-rose-500 text-white shadow-2xl shadow-pink-500/50 hover:scale-[1.02] active:scale-95" : "bg-slate-700/50 text-slate-400 cursor-not-allowed"}`,
+          children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("dates.generating") })
+          ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("dates.generateSuggestions") })
+          ] })
+        }
+      ),
+      !selectedCity && !selectedCategory && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-center text-slate-400 text-sm mt-3", children: [
+        "👆 ",
+        t("dates.selectCityAndCategoryAbove")
+      ] }),
+      selectedCity && !selectedCategory && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-center text-pink-400 text-sm mt-3 animate-pulse", children: [
+        "✨ ",
+        t("dates.nowSelectCategory")
+      ] }),
+      !selectedCity && selectedCategory && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-center text-pink-400 text-sm mt-3 animate-pulse", children: [
+        "📍 ",
+        t("dates.nowSelectCity")
+      ] })
+    ] }),
+    suggestions.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 mb-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-px flex-1 bg-gradient-to-r from-transparent via-pink-500 to-transparent" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-lg font-bold text-white flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: "✨" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "bg-gradient-to-r from-pink-300 to-rose-300 bg-clip-text text-transparent", children: t("dates.suggestions") }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: "✨" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-px flex-1 bg-gradient-to-r from-transparent via-pink-500 to-transparent" })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-4", children: suggestions.map((suggestion, index) => {
+        const isFeatured = suggestion.featured;
+        const isSponsored = suggestion.sponsored;
+        return /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Card,
+          {
+            className: `group overflow-hidden transition-all duration-300 hover:scale-[1.01] ${isSponsored ? "bg-gradient-to-r from-amber-900/40 via-yellow-900/30 to-orange-900/40 border border-yellow-500/40 shadow-lg shadow-yellow-500/10" : isFeatured ? "bg-gradient-to-r from-purple-900/40 via-pink-900/30 to-rose-900/40 border border-pink-500/40 shadow-lg shadow-pink-500/10" : "bg-slate-800/60 border border-slate-700/50 hover:border-purple-500/40"}`,
+            children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between mb-3", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 flex-wrap", children: [
+                  isSponsored && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-yellow-500 to-amber-500 rounded-full text-xs font-bold text-slate-900", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(Crown, { className: "w-3.5 h-3.5" }),
+                    t("dates.sponsored")
+                  ] }),
+                  isFeatured && !isSponsored && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full text-xs font-bold text-white", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(Star, { className: "w-3.5 h-3.5 fill-white" }),
+                    "Top Pick"
+                  ] }),
+                  suggestion.source === "google" && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex items-center gap-1 px-2.5 py-1 bg-blue-500/20 border border-blue-500/40 rounded-full text-xs font-semibold text-blue-300", children: "✓ Verified" })
+                ] }),
+                suggestion.rating && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5 px-2.5 py-1 bg-slate-900/60 rounded-full", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Star, { className: "w-4 h-4 text-yellow-400 fill-yellow-400" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-bold text-white", children: suggestion.rating })
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-4", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 text-white font-bold text-lg ${isSponsored ? "bg-gradient-to-br from-yellow-500 to-orange-600" : isFeatured ? "bg-gradient-to-br from-pink-500 to-rose-600" : "bg-gradient-to-br from-purple-500 to-indigo-600"}`, children: isSponsored ? /* @__PURE__ */ jsxRuntimeExports.jsx(Crown, { className: "w-6 h-6" }) : index + 1 }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold text-lg mb-1 truncate", children: suggestion.name }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm mb-3 line-clamp-2", children: suggestion.description }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 flex-wrap mb-3", children: [
+                    suggestion.price && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `text-xs font-bold px-2.5 py-1 rounded-full ${suggestion.price === "Gratis" ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40" : suggestion.price === "$" ? "bg-blue-500/20 text-blue-400 border border-blue-500/40" : suggestion.price === "$$" ? "bg-amber-500/20 text-amber-400 border border-amber-500/40" : "bg-purple-500/20 text-purple-400 border border-purple-500/40"}`, children: suggestion.price }),
+                    suggestion.location && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs text-slate-500 flex items-center gap-1", children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-3 h-3" }),
+                      suggestion.location
+                    ] })
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 flex-wrap", children: [
+                    suggestion.googleMapsLink && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                      "a",
+                      {
+                        href: suggestion.googleMapsLink,
+                        target: "_blank",
+                        rel: "noopener noreferrer",
+                        className: "inline-flex items-center gap-1.5 px-4 py-2 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/40 rounded-xl text-xs font-bold text-blue-300 transition-all hover:scale-105",
+                        children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-3.5 h-3.5" }),
+                          "Google Maps"
+                        ]
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      SaveButton,
+                      {
+                        item: suggestion,
+                        type: "date",
+                        className: "text-xs"
+                      }
+                    )
+                  ] })
+                ] })
+              ] })
+            ] })
+          },
+          index
+        );
+      }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-6", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Button,
+        {
+          onClick: handleLoadMore,
+          disabled: loadingMore,
+          className: "w-full py-4 rounded-2xl font-bold text-base bg-gradient-to-r from-purple-600/80 via-pink-600/80 to-rose-600/80 text-white hover:from-purple-600 hover:via-pink-600 hover:to-rose-600 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed",
+          children: loadingMore ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("dates.loadingMore") })
+          ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(TrendingUp, { className: "w-5 h-5" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("dates.loadMoreResults") })
+          ] })
+        }
+      ) })
+    ] }),
+    suggestions.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-6 mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-slate-800/50 to-slate-900/50 border-2 border-purple-500/30 backdrop-blur-sm", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500", children: /* @__PURE__ */ jsxRuntimeExports.jsx(TrendingUp, { className: "w-5 h-5 text-white" }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold text-sm mb-1", children: t("dates.yourBusinessHere") }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 text-xs mb-2", children: t("dates.businessPartnershipDesc") }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "a",
+          {
+            href: "mailto:partnerships@biseda.ai?subject=Business Partnership",
+            className: "inline-flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg text-xs font-semibold text-white hover:from-purple-600 hover:to-pink-600 transition-all",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-3 h-3" }),
+              t("dates.becomePartner")
+            ]
+          }
+        )
+      ] })
+    ] }) }) }) }),
+    suggestions.length === 0 && selectedCategory && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center py-12", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-6xl mb-3 animate-bounce", children: "💕" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400", children: t("dates.selectCityForSuggestions") })
+    ] }),
+    !selectedCategory && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center py-12", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-6xl mb-3 animate-pulse", children: "💭" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400", children: t("dates.selectCategoryToStart") })
+    ] })
+  ] });
+}
+function ShareButton({
+  title,
+  text,
+  url = window.location.href,
+  variant = "icon",
+  // 'icon' | 'button' | 'mini'
+  className = ""
+}) {
+  const [showModal, setShowModal] = reactExports.useState(false);
+  const [copied, setCopied] = reactExports.useState(false);
+  const shareData = {
+    title: title || "Biseda.ai",
+    text: text || "Shiko këtë në Biseda.ai!",
+    url
+  };
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        trackAction("shares");
+        return;
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          console.log("Native share failed, showing modal");
+        }
+      }
+    }
+    setShowModal(true);
+  };
+  const shareToWhatsApp = () => {
+    const message = `${shareData.text}
+
+${shareData.url}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank");
+    trackAction("shares");
+    setShowModal(false);
+  };
+  const shareToInstagram = () => {
+    copyToClipboard();
+    alert("Linku u kopjua! Ngjite në Instagram Stories ose DM.");
+  };
+  const shareToMessenger = () => {
+    window.open(`fb-messenger://share/?link=${encodeURIComponent(shareData.url)}`, "_blank");
+    trackAction("shares");
+    setShowModal(false);
+  };
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(`${shareData.text}
+${shareData.url}`);
+      setCopied(true);
+      trackAction("shares");
+      setTimeout(() => setCopied(false), 2e3);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
+  };
+  if (variant === "mini") {
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: handleShare,
+          className: `p-1.5 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-slate-400 hover:text-white transition-all ${className}`,
+          title: "Shpërndaj",
+          children: /* @__PURE__ */ jsxRuntimeExports.jsx(Share2, { className: "w-4 h-4" })
+        }
+      ),
+      showModal && /* @__PURE__ */ jsxRuntimeExports.jsx(ShareModal, {})
+    ] });
+  }
+  if (variant === "button") {
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          onClick: handleShare,
+          className: `flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 hover:from-purple-500/30 hover:to-pink-500/30 border border-purple-500/50 rounded-xl text-purple-300 font-semibold transition-all ${className}`,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Share2, { className: "w-4 h-4" }),
+            "Shpërndaj"
+          ]
+        }
+      ),
+      showModal && /* @__PURE__ */ jsxRuntimeExports.jsx(ShareModal, {})
+    ] });
+  }
+  const ShareModal = () => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "fixed inset-0 z-[10001] flex items-end sm:items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "div",
+      {
+        className: "w-full max-w-sm bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50 rounded-t-3xl sm:rounded-3xl p-6 animate-slideUp",
+        onClick: (e) => e.stopPropagation(),
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-6", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-lg font-bold text-white flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Share2, { className: "w-5 h-5 text-purple-400" }),
+              "Shpërndaj"
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => setShowModal(false),
+                className: "p-2 rounded-full bg-slate-700/50 hover:bg-slate-600/50 text-slate-400 hover:text-white transition-all",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-4 h-4" })
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-4 gap-4 mb-6", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                onClick: shareToWhatsApp,
+                className: "flex flex-col items-center gap-2 p-3 rounded-2xl bg-green-500/10 hover:bg-green-500/20 border border-green-500/30 transition-all group",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 rounded-full bg-green-500 flex items-center justify-center group-hover:scale-110 transition-transform", children: /* @__PURE__ */ jsxRuntimeExports.jsx(MessageCircle, { className: "w-6 h-6 text-white", fill: "white" }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-slate-400", children: "WhatsApp" })
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                onClick: shareToInstagram,
+                className: "flex flex-col items-center gap-2 p-3 rounded-2xl bg-pink-500/10 hover:bg-pink-500/20 border border-pink-500/30 transition-all group",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 flex items-center justify-center group-hover:scale-110 transition-transform", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Instagram, { className: "w-6 h-6 text-white" }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-slate-400", children: "Instagram" })
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                onClick: shareToMessenger,
+                className: "flex flex-col items-center gap-2 p-3 rounded-2xl bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 transition-all group",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center group-hover:scale-110 transition-transform", children: /* @__PURE__ */ jsxRuntimeExports.jsx(MessageCircle, { className: "w-6 h-6 text-white" }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-slate-400", children: "Messenger" })
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                onClick: copyToClipboard,
+                className: "flex flex-col items-center gap-2 p-3 rounded-2xl bg-slate-500/10 hover:bg-slate-500/20 border border-slate-500/30 transition-all group",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-12 h-12 rounded-full ${copied ? "bg-green-500" : "bg-slate-600"} flex items-center justify-center group-hover:scale-110 transition-all`, children: copied ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check$1, { className: "w-6 h-6 text-white" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Copy$1, { className: "w-6 h-6 text-white" }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-slate-400", children: copied ? "Kopjuar!" : "Kopjo" })
+                ]
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-3 bg-slate-800/50 rounded-xl border border-slate-700/50", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-slate-400 text-sm", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Link2, { className: "w-4 h-4 flex-shrink-0" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", children: shareData.url })
+          ] }) })
+        ]
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes slideUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn { animation: fadeIn 0.2s ease-out; }
+        .animate-slideUp { animation: slideUp 0.3s ease-out; }
+      ` })
+  ] });
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "button",
+      {
+        onClick: handleShare,
+        className: `p-2 rounded-xl bg-slate-700/50 hover:bg-slate-600/50 text-slate-400 hover:text-white transition-all ${className}`,
+        title: "Shpërndaj",
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx(Share2, { className: "w-5 h-5" })
+      }
+    ),
+    showModal && /* @__PURE__ */ jsxRuntimeExports.jsx(ShareModal, {})
+  ] });
+}
+function PullToRefresh({ onRefresh, children, disabled = false }) {
+  const [pullDistance, setPullDistance] = reactExports.useState(0);
+  const [isRefreshing, setIsRefreshing] = reactExports.useState(false);
+  const [isPulling, setIsPulling] = reactExports.useState(false);
+  const containerRef = reactExports.useRef(null);
+  const startY = reactExports.useRef(0);
+  const currentY = reactExports.useRef(0);
+  const THRESHOLD = 80;
+  const MAX_PULL = 120;
+  reactExports.useEffect(() => {
+    const container = containerRef.current;
+    if (!container || disabled) return;
+    const handleTouchStart = (e) => {
+      if (container.scrollTop === 0) {
+        startY.current = e.touches[0].clientY;
+        setIsPulling(true);
+      }
+    };
+    const handleTouchMove = (e) => {
+      if (!isPulling || isRefreshing) return;
+      currentY.current = e.touches[0].clientY;
+      const diff = currentY.current - startY.current;
+      if (diff > 0 && container.scrollTop === 0) {
+        e.preventDefault();
+        const resistance = 0.5;
+        const distance = Math.min(diff * resistance, MAX_PULL);
+        setPullDistance(distance);
+      }
+    };
+    const handleTouchEnd = async () => {
+      if (!isPulling) return;
+      setIsPulling(false);
+      if (pullDistance >= THRESHOLD && onRefresh && !isRefreshing) {
+        setIsRefreshing(true);
+        setPullDistance(60);
+        try {
+          await onRefresh();
+        } catch (err) {
+          console.error("Refresh failed:", err);
+        }
+        setIsRefreshing(false);
+      }
+      setPullDistance(0);
+    };
+    container.addEventListener("touchstart", handleTouchStart, { passive: true });
+    container.addEventListener("touchmove", handleTouchMove, { passive: false });
+    container.addEventListener("touchend", handleTouchEnd, { passive: true });
+    return () => {
+      container.removeEventListener("touchstart", handleTouchStart);
+      container.removeEventListener("touchmove", handleTouchMove);
+      container.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [isPulling, isRefreshing, pullDistance, onRefresh, disabled]);
+  const progress = Math.min(pullDistance / THRESHOLD, 1);
+  const rotation = progress * 180;
+  const shouldTrigger = pullDistance >= THRESHOLD;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { ref: containerRef, className: "relative overflow-auto h-full", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: "absolute left-0 right-0 flex justify-center items-center pointer-events-none z-50 transition-transform",
+        style: {
+          transform: `translateY(${pullDistance - 60}px)`,
+          opacity: pullDistance > 10 ? 1 : 0
+        },
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `p-3 rounded-full ${shouldTrigger || isRefreshing ? "bg-gradient-to-r from-purple-500 to-pink-500" : "bg-slate-700"} shadow-lg transition-colors`, children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          RefreshCw,
+          {
+            className: `w-6 h-6 text-white transition-transform ${isRefreshing ? "animate-spin" : ""}`,
+            style: { transform: isRefreshing ? void 0 : `rotate(${rotation}deg)` }
+          }
+        ) })
+      }
+    ),
+    pullDistance > 20 && !isRefreshing && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: "absolute left-0 right-0 text-center pointer-events-none z-50 transition-opacity",
+        style: {
+          top: pullDistance + 10,
+          opacity: pullDistance > 30 ? 1 : 0
+        },
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `text-sm font-medium ${shouldTrigger ? "text-purple-400" : "text-slate-500"}`, children: shouldTrigger ? "Lësho për rifreskim" : "Tërhiq për rifreskim" })
+      }
+    ),
+    isRefreshing && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        className: "absolute left-0 right-0 text-center pointer-events-none z-50",
+        style: { top: 70 },
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-medium text-purple-400", children: "Duke rifreskuar..." })
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "div",
+      {
+        style: {
+          transform: `translateY(${pullDistance}px)`,
+          transition: isPulling ? "none" : "transform 0.3s ease-out"
+        },
+        children
+      }
+    )
+  ] });
+}
+const FAVORITES_KEY = "biseda_favorites";
+const getFavorites = () => {
+  try {
+    const data = localStorage.getItem(FAVORITES_KEY);
+    return data ? JSON.parse(data) : {
+      venues: [],
+      dateIdeas: [],
+      tips: [],
+      gifts: [],
+      events: []
+    };
+  } catch {
+    return {
+      venues: [],
+      dateIdeas: [],
+      tips: [],
+      gifts: [],
+      events: []
+    };
+  }
+};
+const saveFavorites = (favorites) => {
+  try {
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+    window.dispatchEvent(new CustomEvent("favoritesChanged", { detail: favorites }));
+  } catch (e) {
+    console.warn("Failed to save favorites:", e);
+  }
+};
+const addVenueFavorite = (venue) => {
+  const favorites = getFavorites();
+  if (favorites.venues.some((v) => v.id === venue.id || v.name === venue.name)) {
+    return false;
+  }
+  favorites.venues.unshift({
+    ...venue,
+    savedAt: Date.now()
+  });
+  saveFavorites(favorites);
+  return true;
+};
+const removeVenueFavorite = (venueId) => {
+  const favorites = getFavorites();
+  favorites.venues = favorites.venues.filter((v) => v.id !== venueId && v.name !== venueId);
+  saveFavorites(favorites);
+  return true;
+};
+const isVenueFavorited = (venueId, venueName) => {
+  const favorites = getFavorites();
+  return favorites.venues.some((v) => v.id === venueId || v.name === venueName);
+};
+const toggleVenueFavorite = (venue) => {
+  if (isVenueFavorited(venue.id, venue.name)) {
+    removeVenueFavorite(venue.id || venue.name);
+    return false;
+  } else {
+    addVenueFavorite(venue);
+    return true;
+  }
+};
+const removeDateIdeaFavorite = (ideaId) => {
+  const favorites = getFavorites();
+  favorites.dateIdeas = favorites.dateIdeas.filter((i) => i.id !== ideaId);
+  saveFavorites(favorites);
+  return true;
+};
+const removeTipFavorite = (tipId) => {
+  const favorites = getFavorites();
+  favorites.tips = favorites.tips.filter((t) => t.id !== tipId);
+  saveFavorites(favorites);
+  return true;
+};
+const removeGiftFavorite = (giftId) => {
+  const favorites = getFavorites();
+  favorites.gifts = favorites.gifts.filter((g) => g.id !== giftId);
+  saveFavorites(favorites);
+  return true;
+};
+const festiveDatesByCountry = {
+  // Albania - Full list of holidays and celebrations
+  AL: [
+    { month: 0, date: 1, name: "Dita e Vitit të Ri", icon: Sparkles, color: "from-blue-500 to-cyan-500", emoji: "🎆" },
+    { month: 0, date: 2, name: "Dita e Dytë e Vitit të Ri", icon: Sparkles, color: "from-blue-500 to-cyan-500", emoji: "🎊" },
+    { month: 0, date: 11, name: "Dita e Republikës", icon: Flag, color: "from-red-500 to-orange-500", emoji: "🇦🇱" },
+    { month: 1, date: 14, name: "Dita e Dashurisë", icon: Heart, color: "from-pink-500 to-rose-500", emoji: "💕" },
+    { month: 2, date: 7, name: "Dita e Mësuesit", icon: Star, color: "from-yellow-500 to-amber-500", emoji: "📚" },
+    { month: 2, date: 8, name: "Dita Ndërkombëtare e Gruas", icon: Heart, color: "from-purple-500 to-pink-500", emoji: "👩" },
+    { month: 2, date: 14, name: "Dita e Verës", icon: Sparkles, color: "from-green-500 to-emerald-500", emoji: "🌸" },
+    { month: 2, date: 22, name: "Dita e Nevruzit", icon: Sparkles, color: "from-purple-500 to-pink-500", emoji: "🌷" },
+    { month: 3, date: 1, name: "Dita e Shakave (April Fools)", icon: Sparkles, color: "from-yellow-500 to-orange-500", emoji: "🃏" },
+    { month: 4, date: 1, name: "Dita Ndërkombëtare e Punëtorëve", icon: Star, color: "from-red-500 to-orange-500", emoji: "✊" },
+    { month: 4, date: 5, name: "Dita e Dëshmorëve", icon: Flag, color: "from-red-500 to-black-500", emoji: "🎖️" },
+    { month: 4, date: 12, name: "Dita e Nënës", icon: Heart, color: "from-pink-500 to-rose-500", emoji: "💐" },
+    { month: 5, date: 1, name: "Dita Ndërkombëtare e Fëmijëve", icon: Gift, color: "from-yellow-500 to-orange-500", emoji: "🎈" },
+    { month: 5, date: 16, name: "Dita e Babait", icon: Heart, color: "from-blue-500 to-cyan-500", emoji: "👨" },
+    { month: 5, date: 21, name: "Dita e Muzikës", icon: Music, color: "from-purple-500 to-pink-500", emoji: "🎵" },
+    { month: 8, date: 5, name: "Dita e Nënë Terezës", icon: Heart, color: "from-blue-500 to-white-500", emoji: "🙏" },
+    { month: 9, date: 19, name: "Dita e Lumturisë së Nënë Terezës", icon: Heart, color: "from-blue-500 to-white-500", emoji: "✨" },
+    { month: 9, date: 31, name: "Halloween", icon: Sparkles, color: "from-orange-500 to-purple-500", emoji: "🎃" },
+    { month: 10, date: 28, name: "Dita e Flamurit", icon: Flag, color: "from-red-500 to-black-500", emoji: "🇦🇱" },
+    { month: 10, date: 29, name: "Dita e Çlirimit", icon: Flag, color: "from-red-500 to-orange-500", emoji: "🎖️" },
+    { month: 11, date: 8, name: "Dita e Rinisë", icon: Star, color: "from-blue-500 to-cyan-500", emoji: "🎓" },
+    { month: 11, date: 24, name: "Nata e Krishtlindjeve", icon: Gift, color: "from-green-500 to-red-500", emoji: "🌟" },
+    { month: 11, date: 25, name: "Krishtlindjet", icon: Gift, color: "from-green-500 to-red-500", emoji: "🎄" },
+    { month: 11, date: 26, name: "Dita e Dytë e Krishtlindjeve", icon: Gift, color: "from-green-500 to-red-500", emoji: "🎁" },
+    { month: 11, date: 31, name: "Nata e Vitit të Ri", icon: Sparkles, color: "from-purple-500 to-pink-500", emoji: "🎉" }
+  ],
+  // Kosovo
+  XK: [
+    { month: 0, date: 1, name: "Dita e Vitit të Ri", icon: Sparkles, color: "from-blue-500 to-cyan-500", emoji: "🎆" },
+    { month: 0, date: 2, name: "Dita e Dytë e Vitit të Ri", icon: Sparkles, color: "from-blue-500 to-cyan-500", emoji: "🎊" },
+    { month: 1, date: 14, name: "Dita e Dashurisë", icon: Heart, color: "from-pink-500 to-rose-500", emoji: "💕" },
+    { month: 1, date: 17, name: "Dita e Pavarësisë", icon: Flag, color: "from-blue-500 to-yellow-500", emoji: "🇽🇰" },
+    { month: 2, date: 8, name: "Dita Ndërkombëtare e Gruas", icon: Heart, color: "from-purple-500 to-pink-500", emoji: "👩" },
+    { month: 3, date: 9, name: "Dita e Kushtetutës", icon: Flag, color: "from-blue-500 to-yellow-500", emoji: "📜" },
+    { month: 4, date: 1, name: "Dita e Punëtorëve", icon: Star, color: "from-red-500 to-orange-500", emoji: "✊" },
+    { month: 4, date: 9, name: "Dita e Evropës", icon: Flag, color: "from-blue-500 to-yellow-500", emoji: "🇪🇺" },
+    { month: 5, date: 12, name: "Dita e Çlirimit", icon: Flag, color: "from-blue-500 to-yellow-500", emoji: "🎖️" },
+    { month: 9, date: 31, name: "Halloween", icon: Sparkles, color: "from-orange-500 to-purple-500", emoji: "🎃" },
+    { month: 10, date: 28, name: "Dita e Flamurit", icon: Flag, color: "from-red-500 to-black-500", emoji: "🇦🇱" },
+    { month: 11, date: 24, name: "Nata e Krishtlindjeve", icon: Gift, color: "from-green-500 to-red-500", emoji: "🌟" },
+    { month: 11, date: 25, name: "Krishtlindjet", icon: Gift, color: "from-green-500 to-red-500", emoji: "🎄" },
+    { month: 11, date: 31, name: "Nata e Vitit të Ri", icon: Sparkles, color: "from-purple-500 to-pink-500", emoji: "🎉" }
+  ],
+  // United Kingdom
+  GB: [
+    { month: 0, date: 1, name: "New Year's Day", icon: Sparkles, color: "from-blue-500 to-cyan-500", emoji: "🎆" },
+    { month: 0, date: 25, name: "Burns Night (Scotland)", icon: Star, color: "from-blue-500 to-white-500", emoji: "🏴󠁧󠁢󠁳󠁣󠁴󠁿" },
+    { month: 1, date: 14, name: "Valentine's Day", icon: Heart, color: "from-pink-500 to-rose-500", emoji: "💕" },
+    { month: 2, date: 1, name: "St David's Day (Wales)", icon: Flag, color: "from-green-500 to-white-500", emoji: "🏴󠁧󠁢󠁷󠁬󠁳󠁿" },
+    { month: 2, date: 17, name: "St Patrick's Day", icon: Star, color: "from-green-500 to-emerald-500", emoji: "☘️" },
+    { month: 3, date: 23, name: "St George's Day (England)", icon: Flag, color: "from-red-500 to-white-500", emoji: "🏴󠁧󠁢󠁥󠁮󠁧󠁿" },
+    { month: 4, date: 5, name: "May Day Bank Holiday", icon: Sparkles, color: "from-green-500 to-emerald-500", emoji: "🌸" },
+    { month: 5, date: 16, name: "Father's Day", icon: Heart, color: "from-blue-500 to-cyan-500", emoji: "👨" },
+    { month: 9, date: 31, name: "Halloween", icon: Sparkles, color: "from-orange-500 to-purple-500", emoji: "🎃" },
+    { month: 10, date: 5, name: "Bonfire Night", icon: Sparkles, color: "from-orange-500 to-red-500", emoji: "🎆" },
+    { month: 10, date: 11, name: "Remembrance Day", icon: Heart, color: "from-red-500 to-black-500", emoji: "🌺" },
+    { month: 10, date: 30, name: "St Andrew's Day (Scotland)", icon: Flag, color: "from-blue-500 to-white-500", emoji: "🏴󠁧󠁢󠁳󠁣󠁴󠁿" },
+    { month: 11, date: 24, name: "Christmas Eve", icon: Gift, color: "from-green-500 to-red-500", emoji: "🌟" },
+    { month: 11, date: 25, name: "Christmas Day", icon: Gift, color: "from-green-500 to-red-500", emoji: "🎄" },
+    { month: 11, date: 26, name: "Boxing Day", icon: Gift, color: "from-green-500 to-red-500", emoji: "🎁" },
+    { month: 11, date: 31, name: "New Year's Eve", icon: Sparkles, color: "from-purple-500 to-pink-500", emoji: "🎉" }
+  ],
+  // Germany
+  DE: [
+    { month: 0, date: 1, name: "Neujahr", icon: Sparkles, color: "from-blue-500 to-cyan-500", emoji: "🎆" },
+    { month: 0, date: 6, name: "Heilige Drei Könige", icon: Star, color: "from-yellow-500 to-amber-500", emoji: "👑" },
+    { month: 1, date: 14, name: "Valentinstag", icon: Heart, color: "from-pink-500 to-rose-500", emoji: "💕" },
+    { month: 4, date: 1, name: "Tag der Arbeit", icon: Star, color: "from-red-500 to-orange-500", emoji: "✊" },
+    { month: 4, date: 12, name: "Muttertag", icon: Heart, color: "from-pink-500 to-rose-500", emoji: "💐" },
+    { month: 9, date: 3, name: "Tag der Deutschen Einheit", icon: Flag, color: "from-black-500 to-yellow-500", emoji: "🇩🇪" },
+    { month: 9, date: 31, name: "Halloween", icon: Sparkles, color: "from-orange-500 to-purple-500", emoji: "🎃" },
+    { month: 10, date: 11, name: "St. Martin", icon: Star, color: "from-orange-500 to-red-500", emoji: "🏮" },
+    { month: 11, date: 6, name: "Nikolaustag", icon: Gift, color: "from-red-500 to-white-500", emoji: "🎅" },
+    { month: 11, date: 24, name: "Heiligabend", icon: Gift, color: "from-green-500 to-red-500", emoji: "🌟" },
+    { month: 11, date: 25, name: "Weihnachten", icon: Gift, color: "from-green-500 to-red-500", emoji: "🎄" },
+    { month: 11, date: 26, name: "Zweiter Weihnachtstag", icon: Gift, color: "from-green-500 to-red-500", emoji: "🎁" },
+    { month: 11, date: 31, name: "Silvester", icon: Sparkles, color: "from-purple-500 to-pink-500", emoji: "🎉" }
+  ],
+  // United States
+  US: [
+    { month: 0, date: 1, name: "New Year's Day", icon: Sparkles, color: "from-blue-500 to-cyan-500", emoji: "🎆" },
+    { month: 0, date: 20, name: "Martin Luther King Jr. Day", icon: Star, color: "from-blue-500 to-red-500", emoji: "✊" },
+    { month: 1, date: 2, name: "Groundhog Day", icon: Sparkles, color: "from-amber-500 to-brown-500", emoji: "🦫" },
+    { month: 1, date: 14, name: "Valentine's Day", icon: Heart, color: "from-pink-500 to-rose-500", emoji: "💕" },
+    { month: 2, date: 17, name: "St. Patrick's Day", icon: Star, color: "from-green-500 to-emerald-500", emoji: "☘️" },
+    { month: 3, date: 1, name: "April Fools' Day", icon: Sparkles, color: "from-yellow-500 to-orange-500", emoji: "🃏" },
+    { month: 4, date: 5, name: "Cinco de Mayo", icon: Star, color: "from-green-500 to-red-500", emoji: "🇲🇽" },
+    { month: 4, date: 12, name: "Mother's Day", icon: Heart, color: "from-pink-500 to-rose-500", emoji: "💐" },
+    { month: 5, date: 16, name: "Father's Day", icon: Heart, color: "from-blue-500 to-cyan-500", emoji: "👨" },
+    { month: 6, date: 4, name: "Independence Day", icon: Flag, color: "from-red-500 to-blue-500", emoji: "🇺🇸" },
+    { month: 9, date: 31, name: "Halloween", icon: Sparkles, color: "from-orange-500 to-purple-500", emoji: "🎃" },
+    { month: 10, date: 11, name: "Veterans Day", icon: Flag, color: "from-red-500 to-blue-500", emoji: "🎖️" },
+    { month: 10, date: 28, name: "Thanksgiving", icon: Gift, color: "from-orange-500 to-amber-500", emoji: "🦃" },
+    { month: 11, date: 24, name: "Christmas Eve", icon: Gift, color: "from-green-500 to-red-500", emoji: "🌟" },
+    { month: 11, date: 25, name: "Christmas Day", icon: Gift, color: "from-green-500 to-red-500", emoji: "🎄" },
+    { month: 11, date: 31, name: "New Year's Eve", icon: Sparkles, color: "from-purple-500 to-pink-500", emoji: "🎉" }
+  ],
+  // Italy
+  IT: [
+    { month: 0, date: 1, name: "Capodanno", icon: Sparkles, color: "from-blue-500 to-cyan-500", emoji: "🎆" },
+    { month: 0, date: 6, name: "Epifania", icon: Star, color: "from-yellow-500 to-amber-500", emoji: "👑" },
+    { month: 1, date: 14, name: "San Valentino", icon: Heart, color: "from-pink-500 to-rose-500", emoji: "💕" },
+    { month: 2, date: 8, name: "Festa della Donna", icon: Heart, color: "from-yellow-500 to-orange-500", emoji: "🌼" },
+    { month: 3, date: 25, name: "Festa della Liberazione", icon: Flag, color: "from-green-500 to-red-500", emoji: "🇮🇹" },
+    { month: 4, date: 1, name: "Festa dei Lavoratori", icon: Star, color: "from-red-500 to-orange-500", emoji: "✊" },
+    { month: 4, date: 12, name: "Festa della Mamma", icon: Heart, color: "from-pink-500 to-rose-500", emoji: "💐" },
+    { month: 5, date: 2, name: "Festa della Repubblica", icon: Flag, color: "from-green-500 to-red-500", emoji: "🇮🇹" },
+    { month: 7, date: 15, name: "Ferragosto", icon: Sparkles, color: "from-yellow-500 to-orange-500", emoji: "☀️" },
+    { month: 9, date: 31, name: "Halloween", icon: Sparkles, color: "from-orange-500 to-purple-500", emoji: "🎃" },
+    { month: 10, date: 1, name: "Ognissanti", icon: Star, color: "from-purple-500 to-white-500", emoji: "🕯️" },
+    { month: 11, date: 8, name: "Immacolata Concezione", icon: Star, color: "from-blue-500 to-white-500", emoji: "🙏" },
+    { month: 11, date: 24, name: "Vigilia di Natale", icon: Gift, color: "from-green-500 to-red-500", emoji: "🌟" },
+    { month: 11, date: 25, name: "Natale", icon: Gift, color: "from-green-500 to-red-500", emoji: "🎄" },
+    { month: 11, date: 26, name: "Santo Stefano", icon: Gift, color: "from-green-500 to-red-500", emoji: "🎁" },
+    { month: 11, date: 31, name: "San Silvestro", icon: Sparkles, color: "from-purple-500 to-pink-500", emoji: "🎉" }
+  ],
+  // France
+  FR: [
+    { month: 0, date: 1, name: "Jour de l'An", icon: Sparkles, color: "from-blue-500 to-cyan-500", emoji: "🎆" },
+    { month: 1, date: 14, name: "Saint-Valentin", icon: Heart, color: "from-pink-500 to-rose-500", emoji: "💕" },
+    { month: 4, date: 1, name: "Fête du Travail", icon: Star, color: "from-red-500 to-orange-500", emoji: "✊" },
+    { month: 4, date: 8, name: "Victoire 1945", icon: Flag, color: "from-blue-500 to-red-500", emoji: "🇫🇷" },
+    { month: 5, date: 21, name: "Fête de la Musique", icon: Music, color: "from-purple-500 to-pink-500", emoji: "🎵" },
+    { month: 6, date: 14, name: "Fête Nationale", icon: Flag, color: "from-blue-500 to-red-500", emoji: "🇫🇷" },
+    { month: 9, date: 31, name: "Halloween", icon: Sparkles, color: "from-orange-500 to-purple-500", emoji: "🎃" },
+    { month: 10, date: 1, name: "La Toussaint", icon: Star, color: "from-purple-500 to-white-500", emoji: "🕯️" },
+    { month: 10, date: 11, name: "Armistice", icon: Flag, color: "from-blue-500 to-red-500", emoji: "🎖️" },
+    { month: 11, date: 24, name: "Réveillon de Noël", icon: Gift, color: "from-green-500 to-red-500", emoji: "🌟" },
+    { month: 11, date: 25, name: "Noël", icon: Gift, color: "from-green-500 to-red-500", emoji: "🎄" },
+    { month: 11, date: 31, name: "Saint-Sylvestre", icon: Sparkles, color: "from-purple-500 to-pink-500", emoji: "🎉" }
+  ],
+  // Spain
+  ES: [
+    { month: 0, date: 1, name: "Año Nuevo", icon: Sparkles, color: "from-blue-500 to-cyan-500", emoji: "🎆" },
+    { month: 0, date: 6, name: "Día de Reyes", icon: Gift, color: "from-yellow-500 to-amber-500", emoji: "👑" },
+    { month: 1, date: 14, name: "San Valentín", icon: Heart, color: "from-pink-500 to-rose-500", emoji: "💕" },
+    { month: 4, date: 1, name: "Día del Trabajo", icon: Star, color: "from-red-500 to-orange-500", emoji: "✊" },
+    { month: 4, date: 5, name: "Día de la Madre", icon: Heart, color: "from-pink-500 to-rose-500", emoji: "💐" },
+    { month: 5, date: 24, name: "San Juan", icon: Sparkles, color: "from-orange-500 to-yellow-500", emoji: "🔥" },
+    { month: 9, date: 12, name: "Fiesta Nacional de España", icon: Flag, color: "from-red-500 to-yellow-500", emoji: "🇪🇸" },
+    { month: 9, date: 31, name: "Halloween", icon: Sparkles, color: "from-orange-500 to-purple-500", emoji: "🎃" },
+    { month: 10, date: 1, name: "Día de Todos los Santos", icon: Star, color: "from-purple-500 to-white-500", emoji: "🕯️" },
+    { month: 11, date: 6, name: "Día de la Constitución", icon: Flag, color: "from-red-500 to-yellow-500", emoji: "📜" },
+    { month: 11, date: 24, name: "Nochebuena", icon: Gift, color: "from-green-500 to-red-500", emoji: "🌟" },
+    { month: 11, date: 25, name: "Navidad", icon: Gift, color: "from-green-500 to-red-500", emoji: "🎄" },
+    { month: 11, date: 31, name: "Nochevieja", icon: Sparkles, color: "from-purple-500 to-pink-500", emoji: "🎉" }
+  ],
+  // Greece
+  GR: [
+    { month: 0, date: 1, name: "Πρωτοχρονιά", icon: Sparkles, color: "from-blue-500 to-cyan-500", emoji: "🎆" },
+    { month: 0, date: 6, name: "Θεοφάνεια", icon: Star, color: "from-blue-500 to-white-500", emoji: "💧" },
+    { month: 1, date: 14, name: "Αγίου Βαλεντίνου", icon: Heart, color: "from-pink-500 to-rose-500", emoji: "💕" },
+    { month: 2, date: 25, name: "Εθνική Επέτειος", icon: Flag, color: "from-blue-500 to-white-500", emoji: "🇬🇷" },
+    { month: 4, date: 1, name: "Πρωτομαγιά", icon: Star, color: "from-red-500 to-orange-500", emoji: "✊" },
+    { month: 9, date: 28, name: "Επέτειος του Όχι", icon: Flag, color: "from-blue-500 to-white-500", emoji: "🇬🇷" },
+    { month: 9, date: 31, name: "Halloween", icon: Sparkles, color: "from-orange-500 to-purple-500", emoji: "🎃" },
+    { month: 11, date: 24, name: "Παραμονή Χριστουγέννων", icon: Gift, color: "from-green-500 to-red-500", emoji: "🌟" },
+    { month: 11, date: 25, name: "Χριστούγεννα", icon: Gift, color: "from-green-500 to-red-500", emoji: "🎄" },
+    { month: 11, date: 31, name: "Παραμονή Πρωτοχρονιάς", icon: Sparkles, color: "from-purple-500 to-pink-500", emoji: "🎉" }
+  ],
+  // Switzerland
+  CH: [
+    { month: 0, date: 1, name: "Neujahr", icon: Sparkles, color: "from-blue-500 to-cyan-500", emoji: "🎆" },
+    { month: 1, date: 14, name: "Valentinstag", icon: Heart, color: "from-pink-500 to-rose-500", emoji: "💕" },
+    { month: 7, date: 1, name: "Schweizer Nationalfeiertag", icon: Flag, color: "from-red-500 to-white-500", emoji: "🇨🇭" },
+    { month: 9, date: 31, name: "Halloween", icon: Sparkles, color: "from-orange-500 to-purple-500", emoji: "🎃" },
+    { month: 11, date: 24, name: "Heiligabend", icon: Gift, color: "from-green-500 to-red-500", emoji: "🌟" },
+    { month: 11, date: 25, name: "Weihnachten", icon: Gift, color: "from-green-500 to-red-500", emoji: "🎄" },
+    { month: 11, date: 26, name: "Stephanstag", icon: Gift, color: "from-green-500 to-red-500", emoji: "🎁" },
+    { month: 11, date: 31, name: "Silvester", icon: Sparkles, color: "from-purple-500 to-pink-500", emoji: "🎉" }
+  ],
+  // Austria
+  AT: [
+    { month: 0, date: 1, name: "Neujahr", icon: Sparkles, color: "from-blue-500 to-cyan-500", emoji: "🎆" },
+    { month: 0, date: 6, name: "Heilige Drei Könige", icon: Star, color: "from-yellow-500 to-amber-500", emoji: "👑" },
+    { month: 1, date: 14, name: "Valentinstag", icon: Heart, color: "from-pink-500 to-rose-500", emoji: "💕" },
+    { month: 4, date: 1, name: "Staatsfeiertag", icon: Star, color: "from-red-500 to-orange-500", emoji: "✊" },
+    { month: 9, date: 26, name: "Nationalfeiertag", icon: Flag, color: "from-red-500 to-white-500", emoji: "🇦🇹" },
+    { month: 9, date: 31, name: "Halloween", icon: Sparkles, color: "from-orange-500 to-purple-500", emoji: "🎃" },
+    { month: 11, date: 24, name: "Heiliger Abend", icon: Gift, color: "from-green-500 to-red-500", emoji: "🌟" },
+    { month: 11, date: 25, name: "Weihnachten", icon: Gift, color: "from-green-500 to-red-500", emoji: "🎄" },
+    { month: 11, date: 26, name: "Stefanitag", icon: Gift, color: "from-green-500 to-red-500", emoji: "🎁" },
+    { month: 11, date: 31, name: "Silvester", icon: Sparkles, color: "from-purple-500 to-pink-500", emoji: "🎉" }
+  ],
+  // North Macedonia
+  MK: [
+    { month: 0, date: 1, name: "Nova Godina", icon: Sparkles, color: "from-blue-500 to-cyan-500", emoji: "🎆" },
+    { month: 0, date: 7, name: "Božik (Orthodox)", icon: Gift, color: "from-green-500 to-red-500", emoji: "🎄" },
+    { month: 1, date: 14, name: "Den na Vljubenite", icon: Heart, color: "from-pink-500 to-rose-500", emoji: "💕" },
+    { month: 4, date: 1, name: "Den na Trudot", icon: Star, color: "from-red-500 to-orange-500", emoji: "✊" },
+    { month: 4, date: 24, name: "Sv. Kiril i Metodij", icon: Star, color: "from-yellow-500 to-amber-500", emoji: "📜" },
+    { month: 7, date: 2, name: "Den na Republikata", icon: Flag, color: "from-red-500 to-yellow-500", emoji: "🇲🇰" },
+    { month: 8, date: 8, name: "Den na Nezavisnosta", icon: Flag, color: "from-red-500 to-yellow-500", emoji: "🇲🇰" },
+    { month: 9, date: 31, name: "Halloween", icon: Sparkles, color: "from-orange-500 to-purple-500", emoji: "🎃" },
+    { month: 11, date: 31, name: "Nova Godina Eve", icon: Sparkles, color: "from-purple-500 to-pink-500", emoji: "🎉" }
+  ],
+  // Montenegro
+  ME: [
+    { month: 0, date: 1, name: "Nova Godina", icon: Sparkles, color: "from-blue-500 to-cyan-500", emoji: "🎆" },
+    { month: 0, date: 7, name: "Božić (Orthodox)", icon: Gift, color: "from-green-500 to-red-500", emoji: "🎄" },
+    { month: 1, date: 14, name: "Dan Zaljubljenih", icon: Heart, color: "from-pink-500 to-rose-500", emoji: "💕" },
+    { month: 4, date: 1, name: "Praznik Rada", icon: Star, color: "from-red-500 to-orange-500", emoji: "✊" },
+    { month: 4, date: 21, name: "Dan Nezavisnosti", icon: Flag, color: "from-red-500 to-gold-500", emoji: "🇲🇪" },
+    { month: 6, date: 13, name: "Dan Državnosti", icon: Flag, color: "from-red-500 to-gold-500", emoji: "🇲🇪" },
+    { month: 9, date: 31, name: "Halloween", icon: Sparkles, color: "from-orange-500 to-purple-500", emoji: "🎃" },
+    { month: 11, date: 31, name: "Doček Nove Godine", icon: Sparkles, color: "from-purple-500 to-pink-500", emoji: "🎉" }
+  ]
+};
+const defaultFestiveDates = [
+  { month: 0, date: 1, name: "Dita e Vitit të Ri", icon: Sparkles, color: "from-blue-500 to-cyan-500", emoji: "🎆" },
+  { month: 0, date: 6, name: "Epifania / Tre Mbretërit", icon: Star, color: "from-yellow-500 to-amber-500", emoji: "👑" },
+  { month: 1, date: 14, name: "Dita e Dashurisë", icon: Heart, color: "from-pink-500 to-rose-500", emoji: "💕" },
+  { month: 2, date: 8, name: "Dita Ndërkombëtare e Gruas", icon: Heart, color: "from-purple-500 to-pink-500", emoji: "👩" },
+  { month: 3, date: 1, name: "Dita e Shakave", icon: Sparkles, color: "from-yellow-500 to-orange-500", emoji: "🃏" },
+  { month: 4, date: 1, name: "Dita e Punëtorëve", icon: Star, color: "from-red-500 to-orange-500", emoji: "✊" },
+  { month: 4, date: 12, name: "Dita e Nënës", icon: Heart, color: "from-pink-500 to-rose-500", emoji: "💐" },
+  { month: 5, date: 1, name: "Dita e Fëmijëve", icon: Gift, color: "from-yellow-500 to-orange-500", emoji: "🎈" },
+  { month: 5, date: 16, name: "Dita e Babait", icon: Heart, color: "from-blue-500 to-cyan-500", emoji: "👨" },
+  { month: 5, date: 21, name: "Dita e Muzikës", icon: Music, color: "from-purple-500 to-pink-500", emoji: "🎵" },
+  { month: 9, date: 31, name: "Halloween", icon: Sparkles, color: "from-orange-500 to-purple-500", emoji: "🎃" },
+  { month: 10, date: 1, name: "Dita e të Gjithë Shenjtorëve", icon: Star, color: "from-purple-500 to-white-500", emoji: "🕯️" },
+  { month: 11, date: 24, name: "Nata e Krishtlindjeve", icon: Gift, color: "from-green-500 to-red-500", emoji: "🌟" },
+  { month: 11, date: 25, name: "Krishtlindjet", icon: Gift, color: "from-green-500 to-red-500", emoji: "🎄" },
+  { month: 11, date: 26, name: "Dita e Dytë e Krishtlindjeve", icon: Gift, color: "from-green-500 to-red-500", emoji: "🎁" },
+  { month: 11, date: 31, name: "Nata e Vitit të Ri", icon: Sparkles, color: "from-purple-500 to-pink-500", emoji: "🎉" }
+];
+function Events() {
+  const { t, i18n } = useTranslation();
+  const backendUrl2 = getBackendUrl();
+  const [userCountry, setUserCountry] = reactExports.useState(localStorage.getItem("userCountry") || "AL");
+  const currentCountry = getCountryByCode(userCountry);
+  const localizedCities = React.useMemo(() => {
+    return getLocalizedCitiesForCountry(userCountry);
+  }, [userCountry, i18n.language]);
+  const localizedCountryName = React.useMemo(() => {
+    return getLocalizedCountryName(userCountry);
+  }, [userCountry, i18n.language]);
+  const cities = localizedCities.map((c) => c.displayName);
+  const [selectedCity, setSelectedCity] = reactExports.useState("");
+  const [localEvents, setLocalEvents] = reactExports.useState([]);
+  const [isLoadingEvents, setIsLoadingEvents] = reactExports.useState(false);
+  const [eventType, setEventType] = reactExports.useState("all");
+  const [showAllFestive, setShowAllFestive] = reactExports.useState(false);
+  const [visibleCount, setVisibleCount] = reactExports.useState(5);
+  const [isLoadingMore, setIsLoadingMore] = reactExports.useState(false);
+  const [favoriteIds, setFavoriteIds] = reactExports.useState(/* @__PURE__ */ new Set());
+  const [showCityModal, setShowCityModal] = reactExports.useState(false);
+  const [customCityInput, setCustomCityInput] = reactExports.useState("");
+  const [showMoreCities, setShowMoreCities] = reactExports.useState(false);
+  reactExports.useEffect(() => {
+    const handleCountryChange = (event) => {
+      const newCountry = event.detail?.countryCode || localStorage.getItem("userCountry") || "AL";
+      setUserCountry(newCountry);
+      setSelectedCity("");
+      setLocalEvents([]);
+    };
+    window.addEventListener("countryChanged", handleCountryChange);
+    const storedCountry = localStorage.getItem("userCountry") || "AL";
+    if (storedCountry !== userCountry) {
+      setUserCountry(storedCountry);
+    }
+    return () => {
+      window.removeEventListener("countryChanged", handleCountryChange);
+    };
+  }, []);
+  const getUpcomingFestiveDates = () => {
+    const festiveDates2 = festiveDatesByCountry[userCountry] || defaultFestiveDates;
+    const today = /* @__PURE__ */ new Date();
+    const currentYear = today.getFullYear();
+    const upcomingDates = festiveDates2.map((festive) => {
+      let festiveDate = new Date(currentYear, festive.month, festive.date);
+      if (festiveDate < today) {
+        festiveDate = new Date(currentYear + 1, festive.month, festive.date);
+      }
+      const diffTime = festiveDate - today;
+      const diffDays = Math.ceil(diffTime / (1e3 * 60 * 60 * 24));
+      return {
+        ...festive,
+        daysUntil: diffDays,
+        fullDate: festiveDate
+      };
+    });
+    return upcomingDates.sort((a, b) => a.daysUntil - b.daysUntil);
+  };
+  const upcomingFestiveDates = getUpcomingFestiveDates();
+  const nextFestive = upcomingFestiveDates[0];
+  const getLocalizedMonths = () => {
+    const lang = localStorage.getItem("i18nextLng") || "en";
+    const monthsMap = {
+      en: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      sq: ["Jan", "Shk", "Mar", "Pri", "Maj", "Qer", "Kor", "Gus", "Sht", "Tet", "Nën", "Dhj"],
+      de: ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"],
+      fr: ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"],
+      it: ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"],
+      es: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+      el: ["Ιαν", "Φεβ", "Μαρ", "Απρ", "Μαι", "Ιον", "Ιολ", "Αυγ", "Σεπ", "Οκτ", "Νοε", "Δεκ"],
+      nl: ["Jan", "Feb", "Mrt", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"]
+    };
+    return monthsMap[lang] || monthsMap.en;
+  };
+  const months = getLocalizedMonths();
+  const eventTypes = [
+    { id: "all", name: t("events.allEvents"), icon: PartyPopper },
+    { id: "music", name: t("events.music"), icon: Music },
+    { id: "nightlife", name: t("events.nightlife"), icon: Sparkles },
+    { id: "culture", name: t("events.culture"), icon: Calendar },
+    { id: "sports", name: t("events.sports"), icon: Dumbbell },
+    { id: "food", name: t("events.food"), icon: UtensilsCrossed },
+    { id: "comedy", name: t("events.comedy"), icon: Laugh },
+    { id: "cinema", name: t("events.cinema"), icon: Film },
+    { id: "outdoor", name: t("events.adventure"), icon: Mountain },
+    { id: "art", name: t("events.art"), icon: Palette },
+    { id: "wellness", name: "Wellness", icon: Flower2 },
+    { id: "festivals", name: "Festivals", icon: Tent },
+    { id: "romantic", name: "Romantic", icon: HeartHandshake }
+  ];
+  const getSearchQuery = (type) => {
+    switch (type) {
+      case "music":
+        return "live music concerts music venues bands DJ";
+      case "nightlife":
+        return "nightclubs bars pubs night entertainment lounge";
+      case "culture":
+        return "theaters museums cultural centers heritage sites";
+      case "sports":
+        return "sports stadium gym fitness center football basketball tennis";
+      case "food":
+        return "restaurants wine bar food festival tasting cooking class";
+      case "comedy":
+        return "comedy club stand up comedy show entertainment venue";
+      case "cinema":
+        return "cinema movie theater film screening";
+      case "outdoor":
+        return "hiking trails outdoor activities adventure park beach nature";
+      case "art":
+        return "art gallery exhibition museum contemporary art studio";
+      case "wellness":
+        return "spa wellness center yoga studio massage meditation retreat";
+      case "festivals":
+        return "festival fair carnival seasonal events market";
+      case "romantic":
+        return "romantic restaurant rooftop bar scenic viewpoint date night couples";
+      default:
+        return "events venues concert halls theaters nightclubs entertainment";
+    }
+  };
+  const getTicketSearchUrl = (cityName) => {
+    const cityNameEn2 = getCityNameEn(userCountry, cityName) || cityName;
+    const countryNameEn2 = currentCountry?.nameEn || "Albania";
+    return `https://www.google.com/search?q=events+tickets+${encodeURIComponent(cityNameEn2)}+${encodeURIComponent(countryNameEn2)}+2024`;
+  };
+  const searchLocalEvents = async () => {
+    if (!selectedCity) return;
+    setIsLoadingEvents(true);
+    setLocalEvents([]);
+    setVisibleCount(10);
+    try {
+      const cityNameEn2 = getCityNameEn(userCountry, selectedCity) || selectedCity;
+      const countryNameEn2 = currentCountry?.nameEn || "Albania";
+      const locationQuery = `${cityNameEn2}, ${countryNameEn2}`;
+      console.log("🎉 Searching for events in", locationQuery);
+      const response = await fetch(`${backendUrl2}/api/places/search`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          query: `${getSearchQuery(eventType)} in ${cityNameEn2}`,
+          location: locationQuery,
+          category: "events",
+          maxResults: 20,
+          // Add strict location filtering
+          strictLocation: true,
+          cityName: cityNameEn2,
+          countryName: countryNameEn2
+        })
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (data.source === "google-places" && data.places && data.places.length > 0) {
+          console.log("✅ Found", data.places.length, "event venues from Google Places");
+          const filteredPlaces = data.places.filter((place) => {
+            const address = (place.location || "").toLowerCase();
+            const cityLower = cityNameEn2.toLowerCase();
+            const selectedCityLower = selectedCity.toLowerCase();
+            return address.includes(cityLower) || address.includes(selectedCityLower) || // Also check for common Albanian city name variations
+            address.includes(cityLower.replace("ë", "e")) || address.includes(selectedCityLower.replace("ë", "e"));
+          });
+          const placesToShow = filteredPlaces.length > 0 ? filteredPlaces : data.places;
+          const formattedEvents = placesToShow.map((place, index) => ({
+            id: index + 1,
+            name: place.name,
+            description: place.description,
+            location: place.location,
+            rating: place.rating,
+            googleMapsLink: place.googleMapsLink,
+            isOpen: place.isOpen,
+            type: "venue",
+            reviewCount: place.reviewCount,
+            // Flag if this venue might not be in the exact city
+            possibleMismatch: filteredPlaces.length === 0,
+            // Add ticket search link
+            ticketSearchUrl: `https://www.google.com/search?q=${encodeURIComponent(place.name)}+tickets+events+${encodeURIComponent(cityNameEn2)}`
+          }));
+          setLocalEvents(formattedEvents);
+        } else if (data.source === "fallback") {
+          console.log("⚠️ Google Places API not configured");
+          setLocalEvents([]);
+        } else {
+          setLocalEvents([]);
+        }
+      }
+    } catch (error) {
+      console.error("❌ Error searching events:", error);
+      setLocalEvents([]);
+    } finally {
+      setIsLoadingEvents(false);
+    }
+  };
+  reactExports.useEffect(() => {
+    if (selectedCity) {
+      searchLocalEvents();
+      trackFeatureUse("events", "search");
+    }
+  }, [selectedCity, eventType]);
+  const handleFavoriteToggle = (venue) => {
+    const isFavorited = toggleVenueFavorite(venue);
+    setFavoriteIds((prev) => {
+      const newSet = new Set(prev);
+      if (isFavorited) {
+        newSet.add(venue.id || venue.name);
+      } else {
+        newSet.delete(venue.id || venue.name);
+      }
+      return newSet;
+    });
+    trackFeatureUse("events", "venueClick");
+  };
+  const checkFavorite = (venue) => {
+    return favoriteIds.has(venue.id || venue.name) || isVenueFavorited(venue.id, venue.name);
+  };
+  const handleRefresh = async () => {
+    if (selectedCity) {
+      await searchLocalEvents();
+    }
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(PullToRefresh, { onRefresh: handleRefresh, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 pt-6 pb-32 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950 w-full max-w-full overflow-x-hidden", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6 text-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-block mb-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 bg-gradient-to-br from-yellow-500 via-orange-500 to-red-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-yellow-500/50 animate-pulse", children: /* @__PURE__ */ jsxRuntimeExports.jsx(PartyPopper, { className: "w-10 h-10 text-white" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -top-1 -right-1 w-6 h-6 bg-pink-400 rounded-full flex items-center justify-center animate-bounce", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Music, { className: "w-3 h-3 text-slate-900" }) })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-3xl font-extrabold bg-gradient-to-r from-yellow-300 via-orange-300 to-red-300 bg-clip-text text-transparent mb-2", children: t("events.title") }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: t("events.subtitle") })
+    ] }),
+    nextFestive && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "div",
+        {
+          className: "relative overflow-hidden rounded-3xl cursor-pointer group",
+          onClick: () => setShowAllFestive(!showAllFestive),
+          style: {
+            background: "linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(16, 185, 129, 0.1) 50%, rgba(20, 184, 166, 0.15) 100%)",
+            border: "1px solid rgba(34, 197, 94, 0.3)"
+          },
+          children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative p-5", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-0 right-0 w-32 h-32 bg-emerald-500/20 rounded-full blur-3xl" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative flex items-center gap-4", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-3xl", children: nextFestive.emoji }) }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-emerald-400 font-semibold uppercase tracking-wider", children: t("events.upcomingHoliday") }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold text-xl mt-1 truncate", children: nextFestive.name }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mt-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Calendar, { className: "w-4 h-4 text-emerald-400" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-emerald-200 text-sm font-medium", children: [
+                    nextFestive.date,
+                    " ",
+                    months[nextFestive.month]
+                  ] })
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center shrink-0", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-4xl font-black text-emerald-400", children: nextFestive.daysUntil }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-emerald-300/70 font-semibold uppercase tracking-wider", children: t("events.days") })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: `w-6 h-6 text-emerald-400/60 transition-transform duration-300 ${showAllFestive ? "rotate-90" : ""}` })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 pt-3 border-t border-emerald-500/20 space-y-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-emerald-300/60 flex items-center gap-2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-3 h-3" }),
+                t("events.planSpecialDate")
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                Link,
+                {
+                  to: "/festive-dates",
+                  className: "flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 rounded-xl text-white font-semibold text-sm transition-all hover:scale-[1.02] shadow-lg shadow-emerald-500/30",
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(Calendar, { className: "w-4 h-4" }),
+                    t("events.viewMoreFestiveDates"),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "w-4 h-4" })
+                  ]
+                }
+              )
+            ] })
+          ] })
+        }
+      ),
+      showAllFestive && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 space-y-2 animate-fadeIn", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "w-4 h-4 text-purple-400" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-semibold text-white", children: t("events.upcomingFestiveDates") })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-2", children: upcomingFestiveDates.slice(1, 7).map((festive, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: `flex items-center gap-3 p-3 rounded-xl bg-slate-800/50 border border-slate-700/50 hover:border-slate-600 transition-all`,
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xl", children: festive.emoji }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-medium text-sm truncate", children: festive.name }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-400 text-xs", children: [
+                  festive.date,
+                  " ",
+                  months[festive.month]
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `px-2 py-1 rounded-lg bg-gradient-to-r ${festive.color} bg-opacity-20`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs font-bold text-white", children: [
+                festive.daysUntil,
+                "d"
+              ] }) })
+            ]
+          },
+          index
+        )) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          Link,
+          {
+            to: "/festive-dates",
+            className: "mt-4 w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-emerald-500/20 to-cyan-500/20 hover:from-emerald-500/30 hover:to-cyan-500/30 border border-emerald-500/30 rounded-xl text-emerald-300 font-semibold transition-all hover:scale-[1.02]",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Calendar, { className: "w-4 h-4" }),
+              t("events.viewAllFestiveDates"),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "w-4 h-4" })
+            ]
+          }
+        )
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5 text-yellow-400" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-lg font-bold text-white", children: t("events.eventType") })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: eventTypes.map((type) => {
+        const Icon = type.icon;
+        return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => setEventType(type.id),
+            className: `flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${eventType === type.id ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg shadow-yellow-500/30 scale-105" : "bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white"}`,
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { className: "w-4 h-4" }),
+              type.name
+            ]
+          },
+          type.id
+        );
+      }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-5 h-5 text-purple-400" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-lg font-bold text-white", children: t("events.selectCity") }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs text-slate-500 ml-auto", children: [
+          currentCountry?.flag,
+          " ",
+          localizedCountryName
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-2", children: [
+        cities.slice(0, showMoreCities ? cities.length : 12).map((city) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setSelectedCity(selectedCity === city ? "" : city),
+            className: `px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${selectedCity === city ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg shadow-yellow-500/40" : "bg-slate-800/70 text-slate-300 hover:bg-slate-700/70 border border-slate-700/50 hover:border-yellow-500/50"}`,
+            children: city
+          },
+          city
+        )),
+        cities.length > 12 && !showMoreCities && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => setShowMoreCities(true),
+            className: "px-4 py-2.5 rounded-xl font-semibold text-sm transition-all bg-slate-700/50 text-slate-300 hover:bg-slate-600/50 border border-slate-600/50 flex items-center gap-1.5",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "w-4 h-4" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                "+",
+                cities.length - 12,
+                " ",
+                t("events.more")
+              ] })
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => setShowCityModal(true),
+            className: "px-4 py-2.5 rounded-xl font-semibold text-sm transition-all bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-400 border border-cyan-500/30 hover:border-cyan-400/50 hover:bg-cyan-500/30 flex items-center gap-1.5",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "w-4 h-4" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("events.otherCity") })
+            ]
+          }
+        )
+      ] }),
+      selectedCity && !cities.includes(selectedCity) && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 flex items-center gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sm text-slate-400", children: [
+          t("events.selectedCity"),
+          ":"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-yellow-500/20 text-yellow-300 rounded-full text-sm font-semibold", children: selectedCity }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setSelectedCity(""),
+            className: "p-1 text-slate-400 hover:text-white",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-4 h-4" })
+          }
+        )
+      ] })
+    ] }),
+    showCityModal && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-md bg-slate-900 rounded-3xl border border-slate-700 shadow-2xl overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 border-b border-slate-700", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xl font-bold text-white flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-5 h-5 text-purple-400" }),
+            t("events.selectCity")
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => setShowCityModal(false),
+              className: "p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5" })
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 relative", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "text",
+              value: customCityInput,
+              onChange: (e) => setCustomCityInput(e.target.value),
+              placeholder: t("events.searchCity"),
+              className: "w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-purple-500",
+              style: { fontSize: "16px" },
+              autoFocus: true
+            }
+          )
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 max-h-[50vh] overflow-y-auto", children: [
+        customCityInput.trim() && !cities.some((c) => c.toLowerCase() === customCityInput.toLowerCase()) && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => {
+              setSelectedCity(customCityInput.trim());
+              setShowCityModal(false);
+              setCustomCityInput("");
+            },
+            className: "w-full p-3 mb-3 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/40 rounded-xl text-left hover:from-purple-500/30 hover:to-pink-500/30 transition-all",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "w-5 h-5 text-white" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-white font-semibold", children: [
+                  '"',
+                  customCityInput.trim(),
+                  '"'
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-purple-300 text-sm", children: t("events.searchInCity") })
+              ] })
+            ] })
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-2", children: cities.filter(
+          (city) => !customCityInput || city.toLowerCase().includes(customCityInput.toLowerCase())
+        ).map((city) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => {
+              setSelectedCity(city);
+              setShowCityModal(false);
+              setCustomCityInput("");
+            },
+            className: `w-full p-3 rounded-xl text-left transition-all ${selectedCity === city ? "bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/40" : "bg-slate-800/50 border border-slate-700/50 hover:border-yellow-500/30 hover:bg-slate-800"}`,
+            children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-10 h-10 rounded-xl flex items-center justify-center ${selectedCity === city ? "bg-gradient-to-br from-yellow-500 to-orange-500" : "bg-slate-700"}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: `w-5 h-5 ${selectedCity === city ? "text-white" : "text-slate-400"}` }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: `font-semibold ${selectedCity === city ? "text-yellow-300" : "text-white"}`, children: city }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-500 text-sm", children: localizedCountryName })
+              ] })
+            ] })
+          },
+          city
+        )) }),
+        customCityInput && !cities.some((c) => c.toLowerCase().includes(customCityInput.toLowerCase())) && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-slate-400 text-sm mt-4", children: t("events.cityNotInList", { city: customCityInput }) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 border-t border-slate-700 bg-slate-800/50", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Button,
+        {
+          onClick: () => {
+            if (customCityInput.trim()) {
+              setSelectedCity(customCityInput.trim());
+            }
+            setShowCityModal(false);
+            setCustomCityInput("");
+          },
+          disabled: !customCityInput.trim() && !selectedCity,
+          className: "w-full py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold rounded-xl",
+          children: customCityInput.trim() ? t("events.searchInCityName", { city: customCityInput.trim() }) : t("events.close")
+        }
+      ) })
+    ] }) }),
+    selectedCity && /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Button,
+      {
+        onClick: searchLocalEvents,
+        disabled: isLoadingEvents,
+        className: "w-full mb-6 py-6 rounded-2xl font-bold text-lg bg-gradient-to-r from-yellow-500 via-orange-500 to-red-500 text-white shadow-2xl shadow-orange-500/50 hover:scale-[1.02] active:scale-95",
+        children: isLoadingEvents ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("events.searching") })
+        ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "w-5 h-5" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("events.searchEventsIn", { city: selectedCity }) })
+        ] })
+      }
+    ),
+    isLoadingEvents && selectedCity && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center py-6 mb-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-block w-8 h-8 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 mt-3 text-sm", children: t("events.searchingVenuesIn", { city: selectedCity }) })
+    ] }),
+    selectedCity && !isLoadingEvents && localEvents.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-8", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2 mb-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-px flex-1 bg-gradient-to-r from-transparent via-yellow-500 to-transparent" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-base font-bold text-white flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Music, { className: "w-5 h-5 text-yellow-400" }),
+          localEvents.length,
+          " ",
+          t("events.venuesIn", { city: selectedCity })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-px flex-1 bg-gradient-to-r from-transparent via-yellow-500 to-transparent" })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-4", children: localEvents.slice(0, visibleCount).map((venue, index) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          className: "group relative overflow-hidden rounded-2xl transition-all duration-300 hover:scale-[1.01]",
+          style: {
+            background: "linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(168, 85, 247, 0.05) 50%, rgba(192, 132, 252, 0.1) 100%)",
+            border: "1px solid rgba(168, 85, 247, 0.25)",
+            animationDelay: `${index * 50}ms`,
+            animation: "fadeInUp 0.3s ease-out forwards"
+          },
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-0 left-0 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative p-4", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-3", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                  venue.isOpen !== void 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `px-3 py-1 rounded-full text-xs font-bold ${venue.isOpen ? "bg-emerald-500/20 text-emerald-400" : "bg-red-500/20 text-red-400"}`, children: venue.isOpen ? `● ${t("events.open")}` : `○ ${t("events.closed")}` }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-purple-500/20 rounded-full text-xs font-semibold text-purple-300", children: "✓ Verified" })
+                ] }),
+                venue.rating && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/20 rounded-full", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Star, { className: "w-4 h-4 text-amber-400 fill-amber-400" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-bold text-amber-300", children: venue.rating })
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-4", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shrink-0 text-white font-bold text-lg shadow-lg shadow-purple-500/30", children: index + 1 }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold text-lg mb-1", children: venue.name }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm mb-2 line-clamp-2", children: venue.description }),
+                  venue.location && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5 text-xs text-slate-500 mb-3", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-3.5 h-3.5 text-purple-400" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", children: venue.location })
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 flex-wrap", children: [
+                    venue.googleMapsLink && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                      "a",
+                      {
+                        href: venue.googleMapsLink,
+                        target: "_blank",
+                        rel: "noopener noreferrer",
+                        className: "inline-flex items-center gap-1.5 px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 rounded-xl text-xs font-bold text-purple-300 transition-all hover:scale-105",
+                        children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-3.5 h-3.5" }),
+                          "Google Maps"
+                        ]
+                      }
+                    ),
+                    venue.ticketSearchUrl && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                      "a",
+                      {
+                        href: venue.ticketSearchUrl,
+                        target: "_blank",
+                        rel: "noopener noreferrer",
+                        className: "inline-flex items-center gap-1.5 px-4 py-2 bg-pink-500/20 hover:bg-pink-500/30 rounded-xl text-xs font-bold text-pink-300 transition-all hover:scale-105",
+                        children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(Ticket, { className: "w-3.5 h-3.5" }),
+                          t("events.tickets")
+                        ]
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      "button",
+                      {
+                        onClick: () => handleFavoriteToggle(venue),
+                        className: `p-2 rounded-xl transition-all ${checkFavorite(venue) ? "bg-pink-500/30 text-pink-300" : "bg-slate-700/30 text-slate-400 hover:text-pink-300 hover:bg-pink-500/20"}`,
+                        title: checkFavorite(venue) ? t("events.removeFromFavorites") : t("events.addToFavorites"),
+                        children: checkFavorite(venue) ? /* @__PURE__ */ jsxRuntimeExports.jsx(BookmarkCheck, { className: "w-4 h-4" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Bookmark, { className: "w-4 h-4" })
+                      }
+                    ),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(
+                      ShareButton,
+                      {
+                        variant: "mini",
+                        title: venue.name,
+                        text: t("events.checkOutVenue", { venue: venue.name, city: selectedCity }),
+                        url: venue.googleMapsLink || window.location.href
+                      }
+                    )
+                  ] })
+                ] })
+              ] })
+            ] })
+          ]
+        },
+        venue.id
+      )) }),
+      localEvents.length > visibleCount && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-6 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          onClick: () => {
+            setIsLoadingMore(true);
+            setTimeout(() => {
+              setVisibleCount((prev) => prev + 5);
+              setIsLoadingMore(false);
+            }, 300);
+          },
+          disabled: isLoadingMore,
+          className: "group relative px-8 py-3 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 hover:from-yellow-500/30 hover:to-orange-500/30 border-2 border-yellow-500/50 hover:border-yellow-400 rounded-2xl text-yellow-300 font-bold transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-yellow-500/20 disabled:opacity-50 disabled:cursor-not-allowed",
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex items-center gap-2", children: isLoadingMore ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-5 h-5 border-2 border-yellow-300 border-t-transparent rounded-full animate-spin" }),
+              t("events.loadingMore")
+            ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "w-5 h-5 group-hover:translate-x-1 transition-transform" }),
+              t("events.showMore", { count: localEvents.length - visibleCount })
+            ] }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 rounded-2xl bg-gradient-to-r from-yellow-500/0 via-yellow-500/10 to-yellow-500/0 opacity-0 group-hover:opacity-100 transition-opacity" })
+          ]
+        }
+      ) }),
+      localEvents.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-center text-slate-500 text-sm mt-4", children: t("events.showingCount", { showing: Math.min(visibleCount, localEvents.length), total: localEvents.length }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-6 p-4 bg-gradient-to-r from-purple-900/30 via-pink-900/20 to-purple-900/30 border border-purple-500/30 rounded-2xl", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 mb-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Ticket, { className: "w-5 h-5 text-white" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold", children: t("events.searchTicketsOnline") }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: t("events.findTicketsIn", { city: selectedCity }) })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "a",
+          {
+            href: getTicketSearchUrl(selectedCity),
+            target: "_blank",
+            rel: "noopener noreferrer",
+            className: "w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 rounded-xl text-white font-bold transition-all hover:scale-[1.02]",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Search, { className: "w-4 h-4" }),
+              t("events.searchTicketsFor", { city: selectedCity }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ExternalLink, { className: "w-4 h-4" })
+            ]
+          }
+        )
+      ] })
+    ] }),
+    selectedCity && !isLoadingEvents && localEvents.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center py-12 mb-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-6xl mb-4", children: "🎭" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold text-lg mb-2", children: t("events.noVenuesFound") }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400", children: t("events.noVenuesFoundIn", { city: selectedCity }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-500 text-sm mt-1", children: t("events.tryAnotherCity") })
+    ] }),
+    !selectedCity && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center py-12", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-6xl mb-4", children: "🎉" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold text-lg mb-2", children: t("events.selectACity") }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400", children: t("events.selectCityToSeeEvents") })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-2 border-yellow-500/30 backdrop-blur-sm", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-lg font-bold text-white mb-2 flex items-center gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5 text-yellow-400" }),
+        t("events.eventTips")
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "space-y-2 text-slate-300 text-sm", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { children: [
+          "• ",
+          t("events.tip1")
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { children: [
+          "• ",
+          t("events.tip2")
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { children: [
+          "• ",
+          t("events.tip3")
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { children: [
+          "• ",
+          t("events.tip4")
+        ] })
+      ] })
+    ] }) })
+  ] }) });
+}
 function GiftSuggestions() {
   const { t, i18n } = useTranslation();
-  const backendUrl = "https://biseda-ai.onrender.com";
+  const backendUrl2 = "https://biseda-ai.onrender.com";
   const userCountry = localStorage.getItem("userCountry") || "AL";
   const currentCountry = getCountryByCode(userCountry);
   const currencySymbol = getCurrencySymbol(userCountry);
@@ -18279,18 +20471,18 @@ Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
       setLocalShops([]);
     }
     try {
-      const cityNameEn = getCityNameEn(userCountry, selectedCity);
-      const countryNameEn = currentCountry?.nameEn || "Albania";
-      console.log("🏪 Searching for local shops in", cityNameEn, countryNameEn, isLoadMore ? "(loading more)" : "");
+      const cityNameEn2 = getCityNameEn(userCountry, selectedCity);
+      const countryNameEn2 = currentCountry?.nameEn || "Albania";
+      console.log("🏪 Searching for local shops in", cityNameEn2, countryNameEn2, isLoadMore ? "(loading more)" : "");
       const shopQuery = `gift shops jewelry stores flower shops boutiques bookstores ${partnerInterests || ""}`;
-      const response = await fetch(`${backendUrl}/api/places/search`, {
+      const response = await fetch(`${backendUrl2}/api/places/search`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
           query: shopQuery,
-          location: `${cityNameEn}, ${countryNameEn}`,
+          location: `${cityNameEn2}, ${countryNameEn2}`,
           category: "gifts"
         })
       });
@@ -19145,7 +21337,7 @@ function Admin() {
   const [selectedConversation, setSelectedConversation] = reactExports.useState(null);
   const [showConversationModal, setShowConversationModal] = reactExports.useState(false);
   const [loadingConversations, setLoadingConversations] = reactExports.useState(false);
-  const backendUrl = getBackendUrl();
+  const backendUrl2 = getBackendUrl();
   const adminToken = localStorage.getItem("adminToken");
   reactExports.useEffect(() => {
     if (adminToken) {
@@ -19158,7 +21350,7 @@ function Admin() {
     setAuthError("");
     setLoading(true);
     try {
-      const response = await fetch(`${backendUrl}/api/admin/auth`, {
+      const response = await fetch(`${backendUrl2}/api/admin/auth`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password })
@@ -19185,9 +21377,9 @@ function Admin() {
     setRefreshing(true);
     try {
       const [statsRes, usersRes, registeredRes] = await Promise.all([
-        fetch(`${backendUrl}/api/admin/stats`, { headers: { "Authorization": `Bearer ${token}` } }),
-        fetch(`${backendUrl}/api/admin/users`, { headers: { "Authorization": `Bearer ${token}` } }),
-        fetch(`${backendUrl}/api/admin/registered-users`, { headers: { "Authorization": `Bearer ${token}` } })
+        fetch(`${backendUrl2}/api/admin/stats`, { headers: { "Authorization": `Bearer ${token}` } }),
+        fetch(`${backendUrl2}/api/admin/users`, { headers: { "Authorization": `Bearer ${token}` } }),
+        fetch(`${backendUrl2}/api/admin/registered-users`, { headers: { "Authorization": `Bearer ${token}` } })
       ]);
       if (statsRes.ok) setStats(await statsRes.json());
       if (usersRes.ok) setUsers((await usersRes.json()).users || []);
@@ -19201,7 +21393,7 @@ function Admin() {
   const handleBlockUser = async (odId, blocked) => {
     const token = localStorage.getItem("adminToken");
     try {
-      const response = await fetch(`${backendUrl}/api/admin/users/${odId}/block`, {
+      const response = await fetch(`${backendUrl2}/api/admin/users/${odId}/block`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify({ blocked })
@@ -19216,7 +21408,7 @@ function Admin() {
     const token = localStorage.getItem("adminToken");
     setDeleteLoading(true);
     try {
-      const response = await fetch(`${backendUrl}/api/admin/users/${userToDelete.odId}`, {
+      const response = await fetch(`${backendUrl2}/api/admin/users/${userToDelete.odId}`, {
         method: "DELETE",
         headers: { "Authorization": `Bearer ${token}` }
       });
@@ -19235,7 +21427,7 @@ function Admin() {
     if (!giftCreditsUser) return;
     const token = localStorage.getItem("adminToken");
     try {
-      const response = await fetch(`${backendUrl}/api/admin/users/${giftCreditsUser.odId}/gift-credits`, {
+      const response = await fetch(`${backendUrl2}/api/admin/users/${giftCreditsUser.odId}/gift-credits`, {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify({ amount: giftCreditsAmount })
@@ -19262,7 +21454,7 @@ function Admin() {
     if (!token) return;
     setLoadingConversations(true);
     try {
-      const response = await fetch(`${backendUrl}/api/admin/conversations?limit=100`, {
+      const response = await fetch(`${backendUrl2}/api/admin/conversations?limit=100`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       if (response.ok) {
@@ -19279,7 +21471,7 @@ function Admin() {
     const token = localStorage.getItem("adminToken");
     if (!token) return [];
     try {
-      const response = await fetch(`${backendUrl}/api/admin/users/${odId}/conversations`, {
+      const response = await fetch(`${backendUrl2}/api/admin/users/${odId}/conversations`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       if (response.ok) {
@@ -20131,59 +22323,6 @@ function Admin() {
     ] }) })
   ] });
 }
-const FAVORITES_KEY = "biseda_favorites";
-const getFavorites = () => {
-  try {
-    const data = localStorage.getItem(FAVORITES_KEY);
-    return data ? JSON.parse(data) : {
-      venues: [],
-      dateIdeas: [],
-      tips: [],
-      gifts: [],
-      events: []
-    };
-  } catch {
-    return {
-      venues: [],
-      dateIdeas: [],
-      tips: [],
-      gifts: [],
-      events: []
-    };
-  }
-};
-const saveFavorites = (favorites) => {
-  try {
-    localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
-    window.dispatchEvent(new CustomEvent("favoritesChanged", { detail: favorites }));
-  } catch (e) {
-    console.warn("Failed to save favorites:", e);
-  }
-};
-const removeVenueFavorite = (venueId) => {
-  const favorites = getFavorites();
-  favorites.venues = favorites.venues.filter((v) => v.id !== venueId && v.name !== venueId);
-  saveFavorites(favorites);
-  return true;
-};
-const removeDateIdeaFavorite = (ideaId) => {
-  const favorites = getFavorites();
-  favorites.dateIdeas = favorites.dateIdeas.filter((i) => i.id !== ideaId);
-  saveFavorites(favorites);
-  return true;
-};
-const removeTipFavorite = (tipId) => {
-  const favorites = getFavorites();
-  favorites.tips = favorites.tips.filter((t) => t.id !== tipId);
-  saveFavorites(favorites);
-  return true;
-};
-const removeGiftFavorite = (giftId) => {
-  const favorites = getFavorites();
-  favorites.gifts = favorites.gifts.filter((g) => g.id !== giftId);
-  saveFavorites(favorites);
-  return true;
-};
 function UserProfile({ onLogout }) {
   const [userInfo, setUserInfo] = reactExports.useState(null);
   const [usage2, setUsage] = reactExports.useState(null);
@@ -20196,7 +22335,7 @@ function UserProfile({ onLogout }) {
   const [userCity, setUserCity] = reactExports.useState(localStorage.getItem("userCity") || "");
   const [isEditingLocation, setIsEditingLocation] = reactExports.useState(false);
   const [locationSaved, setLocationSaved] = reactExports.useState(false);
-  const backendUrl = getBackendUrl();
+  const backendUrl2 = getBackendUrl();
   const userId = localStorage.getItem("userId");
   const userName = localStorage.getItem("userName") || "User";
   const userEmail = localStorage.getItem("userEmail") || "";
@@ -20220,14 +22359,14 @@ function UserProfile({ onLogout }) {
   }, []);
   const fetchData = async () => {
     try {
-      const usageRes = await fetch(`${backendUrl}/api/usage`, {
+      const usageRes = await fetch(`${backendUrl2}/api/usage`, {
         headers: { "x-user-id": userId }
       });
       if (usageRes.ok) {
         const usageData = await usageRes.json();
         setUsage(usageData);
       }
-      const savedRes = await fetch(`${backendUrl}/api/user/saved`, {
+      const savedRes = await fetch(`${backendUrl2}/api/user/saved`, {
         headers: { "x-user-id": userId }
       });
       if (savedRes.ok) {
@@ -23425,6 +25564,8 @@ function App() {
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/", element: /* @__PURE__ */ jsxRuntimeExports.jsx(Navigate, { to: "/home", replace: true }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/home", element: /* @__PURE__ */ jsxRuntimeExports.jsx(Home, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/tips", element: /* @__PURE__ */ jsxRuntimeExports.jsx(Tips, {}) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/dates", element: /* @__PURE__ */ jsxRuntimeExports.jsx(FirstDates, {}) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/events", element: /* @__PURE__ */ jsxRuntimeExports.jsx(Events, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/gifts", element: /* @__PURE__ */ jsxRuntimeExports.jsx(GiftSuggestions, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/chat", element: /* @__PURE__ */ jsxRuntimeExports.jsx(Chat, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/text-helper", element: /* @__PURE__ */ jsxRuntimeExports.jsx(TextResponseHelper, {}) }),

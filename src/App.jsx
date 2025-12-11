@@ -4,6 +4,8 @@ import Layout from './Layout.jsx';
 import Home from './pages/Home.jsx';
 import Tips from './pages/Tips.jsx';
 import Chat from './pages/Chat.jsx';
+import FirstDates from './pages/FirstDates.jsx';
+import Events from './pages/Events.jsx';
 import GiftSuggestions from './pages/GiftSuggestions.jsx';
 import TextResponseHelper from './pages/TextResponseHelper.jsx';
 import ProgressTracking from './pages/ProgressTracking.jsx';
@@ -131,6 +133,8 @@ function App() {
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/home" element={<Home />} />
           <Route path="/tips" element={<Tips />} />
+          <Route path="/dates" element={<FirstDates />} />
+          <Route path="/events" element={<Events />} />
           <Route path="/gifts" element={<GiftSuggestions />} />
           <Route path="/chat" element={<Chat />} />
           

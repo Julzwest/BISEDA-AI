@@ -113,6 +113,20 @@ export default function Home() {
       requiresProOrElite: true
     },
     {
+      icon: Calendar,
+      title: 'Date Ideas',
+      description: 'Discover perfect venues for dates',
+      color: 'from-pink-500 to-rose-500',
+      page: 'dates'
+    },
+    {
+      icon: PartyPopper,
+      title: 'Events Near You',
+      description: 'Local events & activities',
+      color: 'from-yellow-500 to-orange-500',
+      page: 'Events'
+    },
+    {
       icon: Gift,
       title: t('home.features.gifts.title'),
       description: t('home.features.gifts.desc'),
