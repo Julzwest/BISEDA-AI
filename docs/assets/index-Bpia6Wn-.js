@@ -13483,7 +13483,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-CKOmMzYF.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-C2k9ccZk.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -16393,7 +16393,7 @@ function ClipboardSuggestions() {
       if (window.Capacitor && window.Capacitor.isNativePlatform()) {
         try {
           const { Clipboard: Clipboard2 } = await __vitePreload(async () => {
-            const { Clipboard: Clipboard22 } = await import("./index-BGMMkeeI.js");
+            const { Clipboard: Clipboard22 } = await import("./index-B6PfI803.js");
             return { Clipboard: Clipboard22 };
           }, true ? [] : void 0);
           const { value } = await Clipboard2.read();
@@ -20953,60 +20953,75 @@ function Admin() {
         /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { onClick: handleLogout, className: "bg-red-600 hover:bg-red-700 text-white", children: "Dil" })
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-2 mb-6 overflow-x-auto pb-2", children: [
-      { id: "overview", label: "📊 Përmbledhje" },
-      { id: "users", label: "👥 Përdoruesit" },
-      { id: "conversations", label: "💬 Bisedat" },
-      { id: "subscriptions", label: "💎 Abonimet" },
-      { id: "activity", label: "📈 Aktiviteti" }
-    ].map((tab) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "button",
-      {
-        onClick: () => {
-          setActiveTab(tab.id);
-          if (tab.id === "conversations") fetchConversations();
-        },
-        className: `px-4 py-2 rounded-xl font-medium text-sm whitespace-nowrap transition-all ${activeTab === tab.id ? "bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-lg" : "bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-700/50"}`,
-        children: tab.label
-      },
-      tab.id
-    )) }),
     activeTab === "overview" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-blue-900/40 to-cyan-900/40 border-blue-500/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setActiveTab("users"), className: "text-left transition-all hover:scale-[1.02] active:scale-[0.98]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-blue-900/40 to-cyan-900/40 border-blue-500/30 p-4 hover:border-blue-400/50 transition-all h-full", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Users, { className: "w-6 h-6 text-white" }) }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Total Përdorues" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Total Users" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-2xl font-bold", children: registeredUsers.length || stats?.overview?.totalUsers || 0 })
           ] })
-        ] }) }),
+        ] }) }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-green-900/40 to-emerald-900/40 border-green-500/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg relative", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(Activity, { className: "w-6 h-6 text-white" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-slate-900 animate-pulse" })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Online Tani" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Online Now" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-2xl font-bold", children: registeredUsers.filter((u) => u.onlineStatus === "online").length })
           ] })
         ] }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-purple-900/40 to-pink-900/40 border-purple-500/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(MessageSquare, { className: "w-6 h-6 text-white" }) }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Total Mesazhe" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Total Messages" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-2xl font-bold", children: stats?.overview?.totalMessages || 0 })
           ] })
         ] }) }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-amber-900/40 to-orange-900/40 border-amber-500/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(DollarSign, { className: "w-6 h-6 text-white" }) }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Të Ardhura/Muaj" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Revenue/Month" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-white text-2xl font-bold", children: [
               "€",
               stats?.overview?.monthlyRevenue || "0.00"
             ] })
           ] })
         ] }) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setActiveTab("create"), className: "text-left transition-all hover:scale-[1.02] active:scale-[0.98]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-indigo-900/40 to-violet-900/40 border-indigo-500/30 p-4 hover:border-indigo-400/50 transition-all h-full", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 bg-gradient-to-br from-indigo-500 to-violet-500 rounded-xl flex items-center justify-center shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(UserPlus, { className: "w-6 h-6 text-white" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Create" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-lg font-bold", children: "New User" })
+          ] })
+        ] }) }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => {
+          setActiveTab("conversations");
+          fetchConversations();
+        }, className: "text-left transition-all hover:scale-[1.02] active:scale-[0.98]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-cyan-900/40 to-teal-900/40 border-cyan-500/30 p-4 hover:border-cyan-400/50 transition-all h-full", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-xl flex items-center justify-center shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(MessageSquare, { className: "w-6 h-6 text-white" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "View" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-lg font-bold", children: "Chats" })
+          ] })
+        ] }) }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setActiveTab("subscriptions"), className: "text-left transition-all hover:scale-[1.02] active:scale-[0.98]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-rose-900/40 to-pink-900/40 border-rose-500/30 p-4 hover:border-rose-400/50 transition-all h-full", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 bg-gradient-to-br from-rose-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Crown, { className: "w-6 h-6 text-white" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Manage" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-lg font-bold", children: "Subs" })
+          ] })
+        ] }) }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setActiveTab("activity"), className: "text-left transition-all hover:scale-[1.02] active:scale-[0.98]", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-lime-900/40 to-green-900/40 border-lime-500/30 p-4 hover:border-lime-400/50 transition-all h-full", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 bg-gradient-to-br from-lime-500 to-green-500 rounded-xl flex items-center justify-center shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(TrendingUp, { className: "w-6 h-6 text-white" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "View" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-lg font-bold", children: "Activity" })
+          ] })
+        ] }) }) })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700/50 p-5 mb-6", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-lg font-bold text-white mb-4 flex items-center gap-2", children: [

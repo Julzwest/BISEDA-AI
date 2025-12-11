@@ -1182,9 +1182,6 @@ video {
 .overflow-hidden {
   overflow: hidden;
 }
-.overflow-x-auto {
-  overflow-x: auto;
-}
 .overflow-y-auto {
   overflow-y: auto;
 }
@@ -1311,8 +1308,14 @@ video {
   --tw-border-opacity: 1;
   border-color: rgb(99 102 241 / var(--tw-border-opacity, 1));
 }
+.border-indigo-500\/30 {
+  border-color: rgb(99 102 241 / 0.3);
+}
 .border-indigo-500\/40 {
   border-color: rgb(99 102 241 / 0.4);
+}
+.border-lime-500\/30 {
+  border-color: rgb(132 204 22 / 0.3);
 }
 .border-orange-500\/30 {
   border-color: rgb(249 115 22 / 0.3);
@@ -1768,6 +1771,11 @@ video {
   --tw-gradient-to: rgb(22 78 99 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
+.from-cyan-900\/40 {
+  --tw-gradient-from: rgb(22 78 99 / 0.4) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(22 78 99 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
 .from-emerald-400 {
   --tw-gradient-from: #34d399 var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(52 211 153 / 0) var(--tw-gradient-to-position);
@@ -1836,6 +1844,21 @@ video {
 .from-indigo-500\/20 {
   --tw-gradient-from: rgb(99 102 241 / 0.2) var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(99 102 241 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-indigo-900\/40 {
+  --tw-gradient-from: rgb(49 46 129 / 0.4) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(49 46 129 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-lime-500 {
+  --tw-gradient-from: #84cc16 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(132 204 22 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-lime-900\/40 {
+  --tw-gradient-from: rgb(54 83 20 / 0.4) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(54 83 20 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 .from-orange-500 {
@@ -1946,6 +1969,11 @@ video {
 .from-rose-500\/20 {
   --tw-gradient-from: rgb(244 63 94 / 0.2) var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(244 63 94 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.from-rose-900\/40 {
+  --tw-gradient-from: rgb(136 19 55 / 0.4) var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(136 19 55 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 .from-slate-300 {
@@ -2213,6 +2241,9 @@ video {
 .to-green-500 {
   --tw-gradient-to: #22c55e var(--tw-gradient-to-position);
 }
+.to-green-900\/40 {
+  --tw-gradient-to: rgb(20 83 45 / 0.4) var(--tw-gradient-to-position);
+}
 .to-indigo-500 {
   --tw-gradient-to: #6366f1 var(--tw-gradient-to-position);
 }
@@ -2351,8 +2382,17 @@ video {
 .to-teal-500 {
   --tw-gradient-to: #14b8a6 var(--tw-gradient-to-position);
 }
+.to-teal-900\/40 {
+  --tw-gradient-to: rgb(19 78 74 / 0.4) var(--tw-gradient-to-position);
+}
 .to-transparent {
   --tw-gradient-to: transparent var(--tw-gradient-to-position);
+}
+.to-violet-500 {
+  --tw-gradient-to: #8b5cf6 var(--tw-gradient-to-position);
+}
+.to-violet-900\/40 {
+  --tw-gradient-to: rgb(76 29 149 / 0.4) var(--tw-gradient-to-position);
 }
 .to-yellow-300 {
   --tw-gradient-to: #fde047 var(--tw-gradient-to-position);
@@ -2505,9 +2545,6 @@ video {
 }
 .pb-16 {
   padding-bottom: 4rem;
-}
-.pb-2 {
-  padding-bottom: 0.5rem;
 }
 .pb-20 {
   padding-bottom: 5rem;
@@ -3463,11 +3500,20 @@ select::-webkit-scrollbar-thumb {
   --tw-scale-y: 1.02;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
+.hover\:border-blue-400\/50:hover {
+  border-color: rgb(96 165 250 / 0.5);
+}
 .hover\:border-cyan-400\/50:hover {
   border-color: rgb(34 211 238 / 0.5);
 }
 .hover\:border-cyan-500\/30:hover {
   border-color: rgb(6 182 212 / 0.3);
+}
+.hover\:border-indigo-400\/50:hover {
+  border-color: rgb(129 140 248 / 0.5);
+}
+.hover\:border-lime-400\/50:hover {
+  border-color: rgb(163 230 53 / 0.5);
 }
 .hover\:border-purple-400:hover {
   --tw-border-opacity: 1;
@@ -3481,6 +3527,9 @@ select::-webkit-scrollbar-thumb {
 }
 .hover\:border-purple-500\/50:hover {
   border-color: rgb(168 85 247 / 0.5);
+}
+.hover\:border-rose-400\/50:hover {
+  border-color: rgb(251 113 133 / 0.5);
 }
 .hover\:border-slate-600:hover {
   --tw-border-opacity: 1;
