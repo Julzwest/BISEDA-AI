@@ -11133,7 +11133,7 @@ const CheckCircle = createLucideIcon("CheckCircle", [
   ["path", { d: "M22 11.08V12a10 10 0 1 1-5.93-9.14", key: "g774vq" }],
   ["path", { d: "m9 11 3 3L22 4", key: "1pflzl" }]
 ]);
-const Check = createLucideIcon("Check", [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]]);
+const Check$1 = createLucideIcon("Check", [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]]);
 const ChevronDown = createLucideIcon("ChevronDown", [
   ["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]
 ]);
@@ -11154,7 +11154,7 @@ const Coffee = createLucideIcon("Coffee", [
   ["line", { x1: "10", x2: "10", y1: "2", y2: "4", key: "170wym" }],
   ["line", { x1: "14", x2: "14", y1: "2", y2: "4", key: "1c5f70" }]
 ]);
-const Copy = createLucideIcon("Copy", [
+const Copy$1 = createLucideIcon("Copy", [
   ["rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2", key: "17jyea" }],
   ["path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2", key: "zix9uf" }]
 ]);
@@ -12967,7 +12967,7 @@ function RegionSwitcher() {
                         ] }),
                         isSelected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
                           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-400 font-medium", children: "Active" }),
-                          /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-purple-400 flex-shrink-0" })
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(Check$1, { className: "w-5 h-5 text-purple-400 flex-shrink-0" })
                         ] })
                       ]
                     },
@@ -13001,7 +13001,7 @@ function RegionSwitcher() {
                         ] }),
                         isSelected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
                           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-400 font-medium", children: "Active" }),
-                          /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-purple-400 flex-shrink-0" })
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(Check$1, { className: "w-5 h-5 text-purple-400 flex-shrink-0" })
                         ] })
                       ]
                     },
@@ -13751,7 +13751,7 @@ function LanguageSwitcher() {
                       ] }),
                       isSelected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
                         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-400 font-medium", children: t("common.active") }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-purple-400 flex-shrink-0" })
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(Check$1, { className: "w-5 h-5 text-purple-400 flex-shrink-0" })
                       ] })
                     ]
                   },
@@ -13810,7 +13810,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-BbTnvPTU.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-BZlN1Hee.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -15059,7 +15059,7 @@ function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
                 ] })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "space-y-2 mb-6", children: plan.features.map((feature, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2 text-sm text-slate-300", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 text-green-400 shrink-0 mt-0.5" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Check$1, { className: "w-4 h-4 text-green-400 shrink-0 mt-0.5" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: feature })
               ] }, idx)) }),
               /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -15573,6 +15573,7 @@ function Tips() {
   const [isLimitReached, setIsLimitReached] = reactExports.useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = reactExports.useState(false);
   const [visibleCount, setVisibleCount] = reactExports.useState(5);
+  const [copiedIndex, setCopiedIndex] = reactExports.useState(null);
   const backendUrl2 = getBackendUrl();
   const getPrompt = (type) => {
     const langInstruction = isAlbanian2 ? "Shkruaj në shqip." : `Write in ${currentLang === "en" ? "English" : currentLang}.`;
@@ -15744,6 +15745,27 @@ Specific question: ${customQuestion}` : ""}`,
       }
     }
     setIsLoading(false);
+  };
+  const copyToClipboard = async (text, index) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedIndex(index);
+      setTimeout(() => setCopiedIndex(null), 2e3);
+    } catch (error) {
+      console.error("Failed to copy:", error);
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand("copy");
+        setCopiedIndex(index);
+        setTimeout(() => setCopiedIndex(null), 2e3);
+      } catch (err) {
+        console.error("Fallback copy failed:", err);
+      }
+      document.body.removeChild(textArea);
+    }
   };
   const checkUsage = async () => {
     try {
@@ -16096,9 +16118,19 @@ Now write 10 COMPLETELY new messages:`
                 const colors = colorSchemes[sIndex % colorSchemes.length];
                 const cleanText = section.trim().replace(/^\d+[\.\)]\s*/, "").replace(/^[""]|[""]$/g, "").trim();
                 const displayNumber = sIndex + 1;
+                const uniqueIndex = `${index}-${sIndex}`;
                 return /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: `bg-gradient-to-br ${colors.bg} ${colors.border} backdrop-blur-sm p-4 hover:scale-[1.01] transition-transform`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3", children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-8 h-8 bg-gradient-to-br ${colors.dot} rounded-full flex items-center justify-center shrink-0`, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white font-bold text-xs", children: displayNumber }) }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white leading-relaxed flex-1", children: cleanText || section.trim() })
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white leading-relaxed flex-1", children: cleanText || section.trim() }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      onClick: () => copyToClipboard(cleanText || section.trim(), uniqueIndex),
+                      className: "flex-shrink-0 p-2 hover:bg-white/10 rounded-lg transition-colors",
+                      title: "Copy to clipboard",
+                      children: copiedIndex === uniqueIndex ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 text-green-400" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-4 h-4 text-slate-400 hover:text-white" })
+                    }
+                  )
                 ] }) }, sIndex);
               }
               return null;
@@ -17310,7 +17342,7 @@ function AdultVerificationModal({ isOpen, onClose, onConfirm }) {
                     className: "sr-only"
                   }
                 ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${hasAccepted ? "bg-pink-500 border-pink-500" : "border-slate-500 hover:border-pink-400"}`, children: hasAccepted && /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-3 h-3 text-white" }) })
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${hasAccepted ? "bg-pink-500 border-pink-500" : "border-slate-500 hover:border-pink-400"}`, children: hasAccepted && /* @__PURE__ */ jsxRuntimeExports.jsx(Check$1, { className: "w-3 h-3 text-white" }) })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-slate-300 text-sm", children: t("intimacy.ageVerification.confirm", "I confirm that I am 18 years of age or older and consent to viewing adult educational content.") })
             ] })
@@ -19781,7 +19813,7 @@ ${shareData.url}`);
                 onClick: copyToClipboard,
                 className: "flex flex-col items-center gap-2 p-3 rounded-2xl bg-slate-500/10 hover:bg-slate-500/20 border border-slate-500/30 transition-all group",
                 children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-12 h-12 rounded-full ${copied ? "bg-green-500" : "bg-slate-600"} flex items-center justify-center group-hover:scale-110 transition-all`, children: copied ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-6 h-6 text-white" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-6 h-6 text-white" }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-12 h-12 rounded-full ${copied ? "bg-green-500" : "bg-slate-600"} flex items-center justify-center group-hover:scale-110 transition-all`, children: copied ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check$1, { className: "w-6 h-6 text-white" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Copy$1, { className: "w-6 h-6 text-white" }) }),
                   /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-slate-400", children: copied ? "Kopjuar!" : "Kopjo" })
                 ]
               }
@@ -21109,10 +21141,10 @@ Format as JSON array with "type" and "message" fields.`;
               onClick: () => copyToClipboard(suggestion.message, index),
               className: "bg-slate-700 hover:bg-slate-600 text-white h-8 px-3",
               children: copiedIndex === index ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-3 h-3 mr-1" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Check$1, { className: "w-3 h-3 mr-1" }),
                 "Copied!"
               ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-3 h-3 mr-1" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Copy$1, { className: "w-3 h-3 mr-1" }),
                 "Copy"
               ] })
             }
@@ -21324,10 +21356,10 @@ function ConversationStarters() {
             onClick: () => copyToClipboard(starter, index),
             className: "w-full bg-slate-700 hover:bg-slate-600 text-white h-9",
             children: copiedIndex === index ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 mr-2" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Check$1, { className: "w-4 h-4 mr-2" }),
               "Copied!"
             ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Copy, { className: "w-4 h-4 mr-2" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Copy$1, { className: "w-4 h-4 mr-2" }),
               "Copy to Clipboard"
             ] })
           }
@@ -22968,7 +23000,7 @@ function UserProfile({ onLogout }) {
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: userCity || "Select city" })
           ] }),
           locationSaved && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "ml-auto flex items-center gap-1 text-green-400", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Check$1, { className: "w-4 h-4" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm", children: "Saved!" })
           ] })
         ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
@@ -23015,7 +23047,7 @@ function UserProfile({ onLogout }) {
                 onClick: handleSaveLocation,
                 className: "flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white",
                 children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 mr-2" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Check$1, { className: "w-4 h-4 mr-2" }),
                   "Save Location"
                 ]
               }
@@ -25456,7 +25488,7 @@ function OnboardingTutorial({ onComplete, isGuest = false }) {
                 className: "flex items-center gap-3 p-3 bg-slate-800/50 rounded-xl border border-slate-700/50",
                 style: { animationDelay: `${index * 100}ms` },
                 children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-6 h-6 rounded-full bg-gradient-to-r ${step.color} flex items-center justify-center flex-shrink-0`, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-3 h-3 text-white" }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-6 h-6 rounded-full bg-gradient-to-r ${step.color} flex items-center justify-center flex-shrink-0`, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Check$1, { className: "w-3 h-3 text-white" }) }),
                   /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-slate-300 text-sm", children: feature })
                 ]
               },

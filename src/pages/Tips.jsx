@@ -26,6 +26,7 @@ export default function Tips() {
   const [isLimitReached, setIsLimitReached] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [visibleCount, setVisibleCount] = useState(5); // Initially show 5 tips for faster loading
+  const [copiedIndex, setCopiedIndex] = useState(null); // Track which item was copied
   const backendUrl = getBackendUrl();
 
   // Language-aware prompts
@@ -227,6 +228,30 @@ ${customQuestion ? `\nSpecific question: ${customQuestion}` : ''}`,
       }
     }
     setIsLoading(false);
+  };
+
+  // Copy to clipboard function
+  const copyToClipboard = async (text, index) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedIndex(index);
+      setTimeout(() => setCopiedIndex(null), 2000);
+    } catch (error) {
+      console.error('Failed to copy:', error);
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        setCopiedIndex(index);
+        setTimeout(() => setCopiedIndex(null), 2000);
+      } catch (err) {
+        console.error('Fallback copy failed:', err);
+      }
+      document.body.removeChild(textArea);
+    }
   };
 
   // Check usage limits
@@ -669,6 +694,7 @@ Now write 10 COMPLETELY new messages:`
                         const cleanText = section.trim().replace(/^\d+[\.\)]\s*/, '').replace(/^[""]|[""]$/g, '').trim();
                         // Use sequential numbering (sIndex + 1) instead of extracted number
                         const displayNumber = sIndex + 1;
+                        const uniqueIndex = `${index}-${sIndex}`; // Unique index for each message
                         
                         return (
                           <Card key={sIndex} className={`bg-gradient-to-br ${colors.bg} ${colors.border} backdrop-blur-sm p-4 hover:scale-[1.01] transition-transform`}>
@@ -677,6 +703,17 @@ Now write 10 COMPLETELY new messages:`
                                 <span className="text-white font-bold text-xs">{displayNumber}</span>
                               </div>
                               <p className="text-white leading-relaxed flex-1">{cleanText || section.trim()}</p>
+                              <button
+                                onClick={() => copyToClipboard(cleanText || section.trim(), uniqueIndex)}
+                                className="flex-shrink-0 p-2 hover:bg-white/10 rounded-lg transition-colors"
+                                title="Copy to clipboard"
+                              >
+                                {copiedIndex === uniqueIndex ? (
+                                  <Check className="w-4 h-4 text-green-400" />
+                                ) : (
+                                  <Copy className="w-4 h-4 text-slate-400 hover:text-white" />
+                                )}
+                              </button>
                             </div>
                           </Card>
                         );
