@@ -16037,7 +16037,7 @@ function ClipboardSuggestions() {
       if (window.Capacitor && window.Capacitor.isNativePlatform()) {
         try {
           const { Clipboard: Clipboard2 } = await __vitePreload(async () => {
-            const { Clipboard: Clipboard22 } = await import("./index-BKjtgTlu.js");
+            const { Clipboard: Clipboard22 } = await import("./index-CxVRufsO.js");
             return { Clipboard: Clipboard22 };
           }, true ? [] : void 0);
           const { value } = await Clipboard2.read();
@@ -21374,6 +21374,66 @@ function Admin() {
           }
         )
       ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-3 sm:grid-cols-5 gap-3 mb-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setActiveTab("users"),
+            className: "transition-all hover:scale-[1.02] active:scale-[0.98]",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-blue-600/30 to-blue-800/30 border-blue-500/40 hover:border-blue-400/60 p-4 sm:p-5 h-full", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Users, { className: "w-6 h-6 sm:w-7 sm:h-7 text-white" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-xs sm:text-sm font-semibold", children: "Users" })
+            ] }) })
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setActiveTab("createUser"),
+            className: "transition-all hover:scale-[1.02] active:scale-[0.98]",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-emerald-600/30 to-emerald-800/30 border-emerald-500/40 hover:border-emerald-400/60 p-4 sm:p-5 h-full", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(UserPlus, { className: "w-6 h-6 sm:w-7 sm:h-7 text-white" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-xs sm:text-sm font-semibold", children: "Create" })
+            ] }) })
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => {
+              setActiveTab("conversations");
+              fetchConversations();
+            },
+            className: "transition-all hover:scale-[1.02] active:scale-[0.98]",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-purple-600/30 to-purple-800/30 border-purple-500/40 hover:border-purple-400/60 p-4 sm:p-5 h-full", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(MessageSquare, { className: "w-6 h-6 sm:w-7 sm:h-7 text-white" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-xs sm:text-sm font-semibold", children: "Chats" })
+            ] }) })
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setActiveTab("subscriptions"),
+            className: "transition-all hover:scale-[1.02] active:scale-[0.98]",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-cyan-600/30 to-cyan-800/30 border-cyan-500/40 hover:border-cyan-400/60 p-4 sm:p-5 h-full", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Crown, { className: "w-6 h-6 sm:w-7 sm:h-7 text-white" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-xs sm:text-sm font-semibold", children: "Subs" })
+            ] }) })
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setActiveTab("activity"),
+            className: "transition-all hover:scale-[1.02] active:scale-[0.98]",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-gradient-to-br from-orange-600/30 to-orange-800/30 border-orange-500/40 hover:border-orange-400/60 p-4 sm:p-5 h-full", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Activity, { className: "w-6 h-6 sm:w-7 sm:h-7 text-white" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-xs sm:text-sm font-semibold", children: "Activity" })
+            ] }) })
+          }
+        )
+      ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700/50 p-4 sm:p-5 mb-6", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-base sm:text-lg font-bold text-white mb-4 flex items-center gap-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(TrendingUp, { className: "w-5 h-5 text-green-400" }),
@@ -22534,7 +22594,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-C7UkSEYX.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-D8wVLsnS.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
