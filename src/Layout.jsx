@@ -128,7 +128,7 @@ export default function Layout({ children, onLogout }) {
               <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
-              <span className="font-bold text-white text-lg hidden sm:block">Biseda<span className="text-purple-400">.ai</span></span>
+              <span className="font-bold text-white text-lg">Biseda<span className="text-purple-400">.ai</span></span>
             </Link>
           </div>
           

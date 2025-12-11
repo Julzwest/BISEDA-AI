@@ -13660,7 +13660,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-7MRnDmhv.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-B3vnZ-Cs.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -14509,7 +14509,7 @@ function Layout({ children, onLogout }) {
         children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-14 px-4 flex items-center justify-between max-w-screen-xl mx-auto", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, { to: "/home", className: "flex items-center gap-2", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 text-white" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-bold text-white text-lg hidden sm:block", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-bold text-white text-lg", children: [
               "Biseda",
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-purple-400", children: ".ai" })
             ] })
