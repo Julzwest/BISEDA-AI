@@ -16037,7 +16037,7 @@ function ClipboardSuggestions() {
       if (window.Capacitor && window.Capacitor.isNativePlatform()) {
         try {
           const { Clipboard: Clipboard2 } = await __vitePreload(async () => {
-            const { Clipboard: Clipboard22 } = await import("./index-CcWY8Ewg.js");
+            const { Clipboard: Clipboard22 } = await import("./index-Bs9eKYkG.js");
             return { Clipboard: Clipboard22 };
           }, true ? [] : void 0);
           const { value } = await Clipboard2.read();
@@ -22586,15 +22586,13 @@ function Auth({ onAuthSuccess }) {
   const [resetEmail, setResetEmail] = reactExports.useState("");
   const [resetCode, setResetCode] = reactExports.useState("");
   const [newPassword, setNewPassword] = reactExports.useState("");
-  const [showAgeVerification, setShowAgeVerification] = reactExports.useState(false);
-  const [selectedAge, setSelectedAge] = reactExports.useState("");
   const backendUrl2 = getBackendUrl();
   const isNativeIOS = Capacitor.isNativePlatform() && Capacitor.getPlatform() === "ios";
   const handleAppleSignIn = async () => {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-COiG_GG6.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-CyVo8c5T.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -22664,21 +22662,6 @@ function Auth({ onAuthSuccess }) {
     }, 4e3);
     return () => clearInterval(interval);
   }, []);
-  const handleGuestLogin = () => {
-    if (!selectedAge || parseInt(selectedAge) < 18) {
-      return;
-    }
-    const guestId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    clearAllUserData();
-    localStorage.setItem("isGuest", "true");
-    localStorage.setItem("guestId", guestId);
-    localStorage.setItem("isAuthenticated", "true");
-    localStorage.setItem("userCountry", "AL");
-    localStorage.setItem("userAge", selectedAge);
-    console.log("👤 Guest session started:", guestId, "Age:", selectedAge);
-    setShowAgeVerification(false);
-    if (onAuthSuccess) onAuthSuccess({ isGuest: true, guestId });
-  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -23139,55 +23122,6 @@ function Auth({ onAuthSuccess }) {
         ] }) })
       ] })
     ] }),
-    showAgeVerification && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-900/95 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20 max-w-md w-full", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-3xl", children: "🔞" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white mb-2", children: t("ageVerification.title") }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: t("ageVerification.subtitle") })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-slate-300 text-sm font-medium mb-2", children: t("ageVerification.selectAge") }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "select",
-            {
-              value: selectedAge,
-              onChange: (e) => setSelectedAge(e.target.value),
-              className: "flex-1 px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white text-lg focus:outline-none focus:border-purple-500/50 transition-all appearance-none cursor-pointer",
-              style: { fontSize: "18px" },
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", disabled: true, children: t("ageVerification.chooseAge") }),
-                Array.from({ length: 83 }, (_, i) => i + 18).map((age) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: age, children: age }, age))
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-slate-300 text-lg font-medium whitespace-nowrap", children: t("ageVerification.yearsOld") })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          Button,
-          {
-            onClick: handleGuestLogin,
-            disabled: !selectedAge || parseInt(selectedAge) < 18,
-            className: "w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl text-base shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed",
-            children: [
-              "✅ ",
-              t("ageVerification.confirm")
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            onClick: () => setShowAgeVerification(false),
-            className: "w-full text-slate-400 hover:text-white py-3 transition-colors text-sm",
-            children: t("common.cancel")
-          }
-        )
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-4 text-center text-xs text-slate-500", children: t("ageVerification.disclaimer") })
-    ] }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `
         @keyframes bounce-slow {
           0%, 100% { transform: translateY(0); }
