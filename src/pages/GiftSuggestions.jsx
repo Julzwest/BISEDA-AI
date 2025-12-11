@@ -34,6 +34,7 @@ export default function GiftSuggestions() {
   const [suggestions, setSuggestions] = useState([]);
   const [localShops, setLocalShops] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [isLoadingShops, setIsLoadingShops] = useState(false);
   const [isLoadingMoreShops, setIsLoadingMoreShops] = useState(false);
   const [showLocalShops, setShowLocalShops] = useState(false); // Toggle for local shops
@@ -95,18 +96,22 @@ export default function GiftSuggestions() {
   
   const budgets = getBudgets();
 
-  const generateGiftSuggestions = async () => {
+  const generateGiftSuggestions = async (isLoadMore = false) => {
     if (!partnerInterests.trim()) {
       alert(t('gifts.enterInterests'));
       return;
     }
 
-    setIsLoading(true);
-    setSuggestions([]);
-    
-    // If city is selected AND user wants local shops, search for them
-    if (selectedCity && showLocalShops) {
-      searchLocalShops();
+    if (isLoadMore) {
+      setIsLoadingMore(true);
+    } else {
+      setIsLoading(true);
+      setSuggestions([]);
+      
+      // If city is selected AND user wants local shops, search for them
+      if (selectedCity && showLocalShops) {
+        searchLocalShops();
+      }
     }
 
     try {
@@ -196,12 +201,13 @@ Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
       }
 
       // Add IDs and multiple shopping links
+      const startId = isLoadMore ? suggestions.length + 1 : 1;
       const suggestionsWithIds = aiSuggestions.slice(0, 6).map((suggestion, index) => {
         const searchTerm = suggestion.searchTerm || suggestion.name || partnerInterests;
         const encodedSearch = encodeURIComponent(searchTerm);
         
         return {
-          id: index + 1,
+          id: startId + index,
           name: suggestion.name || 'Gift Idea',
           description: suggestion.description || 'Perfect gift for your loved one',
           price: suggestion.price || `${currencySymbol}50-100`,
@@ -218,14 +224,28 @@ Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
       });
 
       console.log('🎁 Final suggestions:', suggestionsWithIds);
-      setSuggestions(suggestionsWithIds);
+      
+      if (isLoadMore) {
+        setSuggestions(prev => [...prev, ...suggestionsWithIds]);
+      } else {
+        setSuggestions(suggestionsWithIds);
+      }
     } catch (error) {
       console.error('Error generating suggestions:', error);
       const fallback = generateSmartFallback(partnerInterests, occasion, budget);
-      setSuggestions(fallback);
+      if (isLoadMore) {
+        setSuggestions(prev => [...prev, ...fallback]);
+      } else {
+        setSuggestions(fallback);
+      }
     } finally {
       setIsLoading(false);
+      setIsLoadingMore(false);
     }
+  };
+
+  const handleLoadMoreGifts = () => {
+    generateGiftSuggestions(true);
   };
 
   // Smart fallback that actually matches the interests
@@ -778,6 +798,30 @@ Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
                 </div>
               </Card>
             ))}
+          </div>
+
+          {/* Load More Gifts Button */}
+          <div className="mt-4">
+            <Button
+              onClick={handleLoadMoreGifts}
+              disabled={isLoadingMore}
+              className="w-full py-3 rounded-2xl font-bold text-sm bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 hover:from-pink-600 hover:via-rose-600 hover:to-red-600 text-white transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50"
+            >
+              {isLoadingMore ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  <span>{t('gifts.loadingMore', 'Loading More...')}</span>
+                </div>
+              ) : (
+                <div className="flex items-center justify-center gap-2">
+                  <Gift className="w-5 h-5" />
+                  <span>{t('gifts.loadMoreGifts', 'Load More Gift Ideas')} 🎁</span>
+                </div>
+              )}
+            </Button>
+            <p className="text-center text-slate-500 text-xs mt-2">
+              {suggestions.length} {t('gifts.ideasSoFar', 'gift ideas loaded')}
+            </p>
           </div>
         </div>
       )}

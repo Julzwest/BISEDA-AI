@@ -13810,7 +13810,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-BZlN1Hee.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-5mIe812j.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -19074,6 +19074,7 @@ function GiftSuggestions() {
   const [suggestions, setSuggestions] = reactExports.useState([]);
   const [localShops, setLocalShops] = reactExports.useState([]);
   const [isLoading, setIsLoading] = reactExports.useState(false);
+  const [isLoadingMore, setIsLoadingMore] = reactExports.useState(false);
   const [isLoadingShops, setIsLoadingShops] = reactExports.useState(false);
   const [isLoadingMoreShops, setIsLoadingMoreShops] = reactExports.useState(false);
   const [showLocalShops, setShowLocalShops] = reactExports.useState(false);
@@ -19128,15 +19129,19 @@ function GiftSuggestions() {
     ];
   };
   const budgets = getBudgets();
-  const generateGiftSuggestions = async () => {
+  const generateGiftSuggestions = async (isLoadMore = false) => {
     if (!partnerInterests.trim()) {
       alert(t("gifts.enterInterests"));
       return;
     }
-    setIsLoading(true);
-    setSuggestions([]);
-    if (selectedCity && showLocalShops) {
-      searchLocalShops();
+    if (isLoadMore) {
+      setIsLoadingMore(true);
+    } else {
+      setIsLoading(true);
+      setSuggestions([]);
+      if (selectedCity && showLocalShops) {
+        searchLocalShops();
+      }
     }
     try {
       const budgetRanges = {
@@ -19201,11 +19206,12 @@ Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
         console.error("❌ Parsing failed:", parseError.message);
         aiSuggestions = generateSmartFallback(partnerInterests, occasion, budget);
       }
+      const startId = isLoadMore ? suggestions.length + 1 : 1;
       const suggestionsWithIds = aiSuggestions.slice(0, 6).map((suggestion, index) => {
         const searchTerm = suggestion.searchTerm || suggestion.name || partnerInterests;
         const encodedSearch = encodeURIComponent(searchTerm);
         return {
-          id: index + 1,
+          id: startId + index,
           name: suggestion.name || "Gift Idea",
           description: suggestion.description || "Perfect gift for your loved one",
           price: suggestion.price || `${currencySymbol}50-100`,
@@ -19221,14 +19227,26 @@ Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
         };
       });
       console.log("🎁 Final suggestions:", suggestionsWithIds);
-      setSuggestions(suggestionsWithIds);
+      if (isLoadMore) {
+        setSuggestions((prev) => [...prev, ...suggestionsWithIds]);
+      } else {
+        setSuggestions(suggestionsWithIds);
+      }
     } catch (error) {
       console.error("Error generating suggestions:", error);
       const fallback = generateSmartFallback(partnerInterests);
-      setSuggestions(fallback);
+      if (isLoadMore) {
+        setSuggestions((prev) => [...prev, ...fallback]);
+      } else {
+        setSuggestions(fallback);
+      }
     } finally {
       setIsLoading(false);
+      setIsLoadingMore(false);
     }
+  };
+  const handleLoadMoreGifts = () => {
+    generateGiftSuggestions(true);
   };
   const generateSmartFallback = (interests, occasion2, budget2) => {
     const interestLower = interests.toLowerCase();
@@ -19655,7 +19673,32 @@ Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
           ] }) })
         },
         gift.id
-      )) })
+      )) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Button,
+          {
+            onClick: handleLoadMoreGifts,
+            disabled: isLoadingMore,
+            className: "w-full py-3 rounded-2xl font-bold text-sm bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 hover:from-pink-600 hover:via-rose-600 hover:to-red-600 text-white transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50",
+            children: isLoadingMore ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("gifts.loadingMore", "Loading More...") })
+            ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Gift, { className: "w-5 h-5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                t("gifts.loadMoreGifts", "Load More Gift Ideas"),
+                " 🎁"
+              ] })
+            ] })
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-center text-slate-500 text-xs mt-2", children: [
+          suggestions.length,
+          " ",
+          t("gifts.ideasSoFar", "gift ideas loaded")
+        ] })
+      ] })
     ] }),
     !isLoading && !isLoadingShops && suggestions.length === 0 && localShops.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center py-12", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-6xl mb-3", children: "🎁" }),
