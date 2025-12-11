@@ -149,7 +149,7 @@ export default function RegionSwitcher() {
               <div className="flex items-center justify-between px-4 py-2">
                 <div className="flex items-center gap-2">
                   <Globe className="w-4 h-4 text-purple-400" />
-                  <p className="text-sm font-semibold text-white">{t('common.regionSettings') || 'Region Settings'}</p>
+                  <p className="text-sm font-semibold text-white">Region Settings</p>
                 </div>
                 <button
                   onClick={(e) => {
@@ -176,7 +176,7 @@ export default function RegionSwitcher() {
                   type="button"
                 >
                   <Languages className="w-4 h-4" />
-                  <span>{t('language.language') || 'Language'}</span>
+                  <span>Language</span>
                   <span className="text-lg">{currentLanguage?.flag}</span>
                 </button>
                 <button
@@ -189,7 +189,7 @@ export default function RegionSwitcher() {
                   type="button"
                 >
                   <MapPin className="w-4 h-4" />
-                  <span>{t('country.region') || 'Region'}</span>
+                  <span>Region</span>
                   <span className="text-lg">{currentCountry?.flag}</span>
                 </button>
               </div>
@@ -227,7 +227,7 @@ export default function RegionSwitcher() {
                       
                       {isSelected && (
                         <div className="flex items-center gap-2">
-                          <span className="text-xs text-purple-400 font-medium">{t('common.active')}</span>
+                          <span className="text-xs text-purple-400 font-medium">Active</span>
                           <Check className="w-5 h-5 text-purple-400 flex-shrink-0" />
                         </div>
                       )}
@@ -258,13 +258,13 @@ export default function RegionSwitcher() {
                         <span className="text-2xl">{country.flag}</span>
                         <div>
                           <div className="text-sm font-medium">{getLocalizedCountryName(country.code)}</div>
-                          <div className="text-xs text-slate-500">{country.cities?.length || 0} {t('country.cities') || 'cities'}</div>
+                          <div className="text-xs text-slate-500">{country.cities?.length || 0} cities</div>
                         </div>
                       </div>
                       
                       {isSelected && (
                         <div className="flex items-center gap-2">
-                          <span className="text-xs text-purple-400 font-medium">{t('common.active')}</span>
+                          <span className="text-xs text-purple-400 font-medium">Active</span>
                           <Check className="w-5 h-5 text-purple-400 flex-shrink-0" />
                         </div>
                       )}
@@ -278,8 +278,8 @@ export default function RegionSwitcher() {
             <div className="px-4 py-2 border-t border-slate-700/50 bg-slate-800/30">
               <p className="text-[10px] text-slate-500 text-center">
                 {activeTab === 'language' 
-                  ? (t('language.hint') || 'Language affects app text and AI responses')
-                  : (t('country.hint') || 'Region affects local recommendations')}
+                  ? 'Language affects app text and AI responses'
+                  : 'Region affects local recommendations'}
               </p>
             </div>
           </div>

@@ -12901,7 +12901,7 @@ function RegionSwitcher() {
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-2", children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsx(Globe, { className: "w-4 h-4 text-purple-400" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-white", children: t("common.regionSettings") || "Region Settings" })
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-white", children: "Region Settings" })
                   ] }),
                   /* @__PURE__ */ jsxRuntimeExports.jsx(
                     "button",
@@ -12926,7 +12926,7 @@ function RegionSwitcher() {
                       type: "button",
                       children: [
                         /* @__PURE__ */ jsxRuntimeExports.jsx(Languages, { className: "w-4 h-4" }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("language.language") || "Language" }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Language" }),
                         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg", children: currentLanguage?.flag })
                       ]
                     }
@@ -12939,7 +12939,7 @@ function RegionSwitcher() {
                       type: "button",
                       children: [
                         /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-4 h-4" }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("country.region") || "Region" }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Region" }),
                         /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg", children: currentCountry?.flag })
                       ]
                     }
@@ -12969,7 +12969,7 @@ function RegionSwitcher() {
                           ] })
                         ] }),
                         isSelected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-400 font-medium", children: t("common.active") }),
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-400 font-medium", children: "Active" }),
                           /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-purple-400 flex-shrink-0" })
                         ] })
                       ]
@@ -12998,13 +12998,12 @@ function RegionSwitcher() {
                             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-medium", children: getLocalizedCountryName(country2.code) }),
                             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-xs text-slate-500", children: [
                               country2.cities?.length || 0,
-                              " ",
-                              t("country.cities") || "cities"
+                              " cities"
                             ] })
                           ] })
                         ] }),
                         isSelected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-400 font-medium", children: t("common.active") }),
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-400 font-medium", children: "Active" }),
                           /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-purple-400 flex-shrink-0" })
                         ] })
                       ]
@@ -13013,7 +13012,7 @@ function RegionSwitcher() {
                   );
                 })
               ) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-4 py-2 border-t border-slate-700/50 bg-slate-800/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-slate-500 text-center", children: activeTab === "language" ? t("language.hint") || "Language affects app text and AI responses" : t("country.hint") || "Region affects local recommendations" }) })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-4 py-2 border-t border-slate-700/50 bg-slate-800/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-slate-500 text-center", children: activeTab === "language" ? "Language affects app text and AI responses" : "Region affects local recommendations" }) })
             ]
           }
         )
@@ -13814,7 +13813,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-C3ClzE3N.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-Co3hOK68.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -16788,7 +16787,7 @@ function ClipboardSuggestions() {
       if (window.Capacitor && window.Capacitor.isNativePlatform()) {
         try {
           const { Clipboard: Clipboard2 } = await __vitePreload(async () => {
-            const { Clipboard: Clipboard22 } = await import("./index-BFYHrBmA.js");
+            const { Clipboard: Clipboard22 } = await import("./index-DmQjIYtB.js");
             return { Clipboard: Clipboard22 };
           }, true ? [] : void 0);
           const { value } = await Clipboard2.read();
