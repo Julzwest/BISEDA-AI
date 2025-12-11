@@ -77,9 +77,6 @@ export default function Auth({ onAuthSuccess }) {
   const [resetCode, setResetCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
   
-  // Age verification state
-  const [showAgeVerification, setShowAgeVerification] = useState(false);
-  const [selectedAge, setSelectedAge] = useState('');
 
   const backendUrl = getBackendUrl();
   
@@ -169,29 +166,6 @@ export default function Auth({ onAuthSuccess }) {
     return () => clearInterval(interval);
   }, []);
 
-  // Show age verification modal when guest button is clicked
-  const handleGuestButtonClick = () => {
-    setShowAgeVerification(true);
-    setSelectedAge('');
-  };
-
-  // Proceed with guest login after age verification
-  const handleGuestLogin = () => {
-    if (!selectedAge || parseInt(selectedAge) < 18) {
-      return;
-    }
-    
-    const guestId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    clearAllUserData();
-    localStorage.setItem('isGuest', 'true');
-    localStorage.setItem('guestId', guestId);
-    localStorage.setItem('isAuthenticated', 'true');
-    localStorage.setItem('userCountry', 'AL');
-    localStorage.setItem('userAge', selectedAge);
-    console.log('👤 Guest session started:', guestId, 'Age:', selectedAge);
-    setShowAgeVerification(false);
-    if (onAuthSuccess) onAuthSuccess({ isGuest: true, guestId });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -710,62 +684,6 @@ export default function Auth({ onAuthSuccess }) {
         </Card>
       </div>
 
-      {/* Age Verification Modal */}
-      {showAgeVerification && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <Card className="bg-slate-900/95 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20 max-w-md w-full">
-            <div className="text-center mb-6">
-              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">🔞</span>
-              </div>
-              <h2 className="text-2xl font-bold text-white mb-2">{t('ageVerification.title')}</h2>
-              <p className="text-slate-400 text-sm">{t('ageVerification.subtitle')}</p>
-            </div>
-
-            <div className="mb-6">
-              <label className="block text-slate-300 text-sm font-medium mb-2">
-                {t('ageVerification.selectAge')}
-              </label>
-              <div className="flex items-center gap-3">
-                <select
-                  value={selectedAge}
-                  onChange={(e) => setSelectedAge(e.target.value)}
-                  className="flex-1 px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white text-lg focus:outline-none focus:border-purple-500/50 transition-all appearance-none cursor-pointer"
-                  style={{ fontSize: '18px' }}
-                >
-                  <option value="" disabled>{t('ageVerification.chooseAge')}</option>
-                  {Array.from({ length: 83 }, (_, i) => i + 18).map(age => (
-                    <option key={age} value={age}>{age}</option>
-                  ))}
-                </select>
-                <span className="text-slate-300 text-lg font-medium whitespace-nowrap">
-                  {t('ageVerification.yearsOld')}
-                </span>
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <Button
-                onClick={handleGuestLogin}
-                disabled={!selectedAge || parseInt(selectedAge) < 18}
-                className="w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl text-base shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                ✅ {t('ageVerification.confirm')}
-              </Button>
-              <button
-                onClick={() => setShowAgeVerification(false)}
-                className="w-full text-slate-400 hover:text-white py-3 transition-colors text-sm"
-              >
-                {t('common.cancel')}
-              </button>
-            </div>
-
-            <p className="mt-4 text-center text-xs text-slate-500">
-              {t('ageVerification.disclaimer')}
-            </p>
-          </Card>
-        </div>
-      )}
 
       {/* Custom animations */}
       <style>{`
