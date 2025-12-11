@@ -106,7 +106,7 @@ export default function Admin() {
       }
     } catch (error) {
       console.error('Login error:', error);
-      setAuthError('Gabim lidhje me serverin');
+      setAuthError('Server connection error');
     } finally {
       setLoading(false);
     }
@@ -212,7 +212,7 @@ export default function Admin() {
         setChangeTierUser(null);
         setSelectedTier('starter');
         fetchData();
-        alert(`✅ Plani u ndryshua në ${selectedTier.toUpperCase()}!\n\n📊 Mesazhe/ditë: ${selectedTier === 'elite' ? 500 : selectedTier === 'pro' ? 200 : selectedTier === 'starter' ? 75 : 3}\n💰 Kredite të shtuara: +${data.creditsAdded || 0}\n💎 Balanca e re: ${data.newCreditsBalance || 0} kredite`);
+        alert(`✅ Plan changed to ${selectedTier.toUpperCase()}!\n\n📊 Messages/day: ${selectedTier === 'elite' ? 500 : selectedTier === 'pro' ? 200 : selectedTier === 'starter' ? 75 : 3}\n💰 Credits added: +${data.creditsAdded || 0}\n💎 New balance: ${data.newCreditsBalance || 0} credits`);
       } else {
         const data = await response.json();
         alert(data.error || 'Failed to change tier');
@@ -664,7 +664,7 @@ export default function Admin() {
           {/* App Features */}
           <Card className="bg-slate-800/50 border-slate-700/50 p-5 mb-6">
             <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <Zap className="w-5 h-5 text-yellow-400" /> Veçoritë e Aplikacionit
+              <Zap className="w-5 h-5 text-yellow-400" /> App Features
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
               {[
@@ -685,7 +685,7 @@ export default function Admin() {
           {/* Recent Signups */}
           <Card className="bg-slate-800/50 border-slate-700/50 p-5">
             <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <UserPlus className="w-5 h-5 text-blue-400" /> Regjistrimet e Fundit
+              <UserPlus className="w-5 h-5 text-blue-400" /> Recent Registrations
             </h2>
             <div className="space-y-2">
               {registeredUsers.slice(0, 5).map((user, i) => (
@@ -796,7 +796,7 @@ export default function Admin() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-white flex items-center gap-2">
               <Users className="w-5 h-5 text-blue-400" /> 
-              Përdoruesit ({filteredUsers.length})
+              Users ({filteredUsers.length})
             </h2>
           </div>
           
@@ -885,13 +885,13 @@ export default function Admin() {
                         onClick={() => viewUserConversations(user)}
                         className="bg-cyan-600 hover:bg-cyan-500 text-white text-xs h-9 px-3"
                       >
-                        <MessageSquare className="w-3 h-3 mr-1" /> Bisedat
+                        <MessageSquare className="w-3 h-3 mr-1" /> Chats
                       </Button>
                       <Button
                         onClick={() => { setGiftCreditsUser(user); setShowGiftCredits(true); }}
                         className="bg-purple-600 hover:bg-purple-500 text-white text-xs h-9 px-3"
                       >
-                        <Gift className="w-3 h-3 mr-1" /> Kredite
+                        <Gift className="w-3 h-3 mr-1" /> Credits
                       </Button>
                       <Button
                         onClick={() => { setChangeTierUser(user); setSelectedTier(user.subscriptionTier || 'free'); setShowChangeTier(true); }}
@@ -904,13 +904,13 @@ export default function Admin() {
                         className={`${user.isBlocked ? 'bg-green-600 hover:bg-green-500' : 'bg-orange-600 hover:bg-orange-500'} text-white text-xs h-9 px-3`}
                       >
                         {user.isBlocked ? <Unlock className="w-3 h-3 mr-1" /> : <Lock className="w-3 h-3 mr-1" />}
-                        {user.isBlocked ? 'Zhblloko' : 'Blloko'}
+                        {user.isBlocked ? 'Unblock' : 'Block'}
                       </Button>
                       <Button
                         onClick={() => { setUserToDelete(user); setShowDeleteConfirm(true); }}
                         className="bg-red-600 hover:bg-red-500 text-white text-xs h-9 px-3"
                       >
-                        <Trash2 className="w-3 h-3 mr-1" /> Fshi
+                        <Trash2 className="w-3 h-3 mr-1" /> Delete
                       </Button>
                     </div>
                   </div>
@@ -933,7 +933,7 @@ export default function Admin() {
             <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-green-500/30">
               <UserPlus className="w-8 h-8 text-white" />
             </div>
-            <h2 className="text-2xl font-bold text-white mb-2">Krijo Përdorues të Ri</h2>
+            <h2 className="text-2xl font-bold text-white mb-2">Create New User</h2>
             <p className="text-slate-400">Krijo llogari të re me planin e dëshiruar</p>
           </div>
 
@@ -1023,7 +1023,7 @@ export default function Admin() {
 
             {/* Subscription Tier */}
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">💎 Plani i Abonimit</label>
+              <label className="block text-sm font-medium text-slate-300 mb-2">💎 Subscription Plan</label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {[
                   { id: 'free', name: 'Falas', price: '€0', color: 'slate', icon: '🆓' },
@@ -1081,7 +1081,7 @@ export default function Admin() {
               ) : (
                 <>
                   <UserPlus className="w-5 h-5 mr-2" />
-                  Krijo Përdoruesin
+                  Create User
                 </>
               )}
             </Button>
@@ -1150,7 +1150,7 @@ export default function Admin() {
 
           <Card className="bg-slate-800/50 border-slate-700/50 p-5">
             <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <DollarSign className="w-5 h-5 text-green-400" /> Të Ardhura nga Abonime
+              <DollarSign className="w-5 h-5 text-green-400" /> Subscription Revenue
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-gradient-to-br from-green-900/30 to-emerald-900/30 border border-green-500/30 p-5 rounded-xl">
@@ -1176,7 +1176,7 @@ export default function Admin() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-white flex items-center gap-2">
               <MessagesSquare className="w-5 h-5 text-cyan-400" />
-              {selectedUser ? `Bisedat e ${selectedUser.firstName || selectedUser.email}` : 'Të Gjitha Bisedat'}
+              {selectedUser ? `Chats by ${selectedUser.firstName || selectedUser.email}` : 'All Chats'}
             </h2>
             {selectedUser && (
               <Button onClick={() => { setSelectedUser(null); fetchConversations(); }} className="bg-slate-600 hover:bg-slate-500 text-white text-xs">
@@ -1244,7 +1244,7 @@ export default function Admin() {
             <div className="text-center py-12">
               <MessagesSquare className="w-16 h-16 text-slate-600 mx-auto mb-4" />
               <p className="text-slate-400 text-lg mb-2">Asnjë bisedë ende</p>
-              <p className="text-slate-500 text-sm">Bisedat e përdoruesve do të shfaqen këtu</p>
+              <p className="text-slate-500 text-sm">User conversations will appear here</p>
             </div>
           )}
         </Card>
@@ -1254,7 +1254,7 @@ export default function Admin() {
       {activeTab === 'activity' && (
         <Card className="bg-slate-800/50 border-slate-700/50 p-5">
           <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-            <Activity className="w-5 h-5 text-green-400" /> Aktiviteti i Fundit
+            <Activity className="w-5 h-5 text-green-400" /> Recent Activity
           </h2>
           <div className="space-y-3">
             {stats?.topUsers?.map((user, i) => (
@@ -1290,7 +1290,7 @@ export default function Admin() {
           <Card className="bg-slate-900 border-slate-700 p-6 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                <Eye className="w-5 h-5 text-purple-400" /> Detajet e Përdoruesit
+                <Eye className="w-5 h-5 text-purple-400" /> User Details
               </h2>
               <button onClick={() => setShowUserModal(false)} className="text-slate-400 hover:text-white">
                 <X className="w-6 h-6" />
@@ -1333,7 +1333,7 @@ export default function Admin() {
                 <div className="p-4 bg-slate-800/50 rounded-xl">
                   <p className="text-slate-400 text-sm mb-1">Status</p>
                   <p className={`font-semibold ${selectedUser.isBlocked ? 'text-red-400' : 'text-green-400'}`}>
-                    {selectedUser.isBlocked ? 'Bllokuar' : 'Aktiv'}
+                    {selectedUser.isBlocked ? 'Blocked' : 'Active'}
                   </p>
                 </div>
                 <div className="p-4 bg-slate-800/50 rounded-xl">
@@ -1341,7 +1341,7 @@ export default function Admin() {
                   <p className="text-white font-semibold">{selectedUser.monthlyUsage?.totalMessages || 0}</p>
                 </div>
                 <div className="p-4 bg-slate-800/50 rounded-xl">
-                  <p className="text-slate-400 text-sm mb-1">Kredite</p>
+                  <p className="text-slate-400 text-sm mb-1">Credits</p>
                   <p className="text-purple-400 font-semibold">{selectedUser.credits || 0}</p>
                 </div>
                 <div className="p-4 bg-slate-800/50 rounded-xl">
@@ -1357,16 +1357,16 @@ export default function Admin() {
               <div className="flex gap-2 pt-4">
                 <Button onClick={() => { setGiftCreditsUser(selectedUser); setShowGiftCredits(true); setShowUserModal(false); }}
                   className="flex-1 bg-purple-600 hover:bg-purple-500 text-white">
-                  <Gift className="w-4 h-4 mr-2" /> Dhuro Kredite
+                  <Gift className="w-4 h-4 mr-2" /> Gift Credits
                 </Button>
                 <Button onClick={() => { handleBlockUser(selectedUser.odId, !selectedUser.isBlocked); setShowUserModal(false); }}
                   className={`flex-1 ${selectedUser.isBlocked ? 'bg-green-600 hover:bg-green-500' : 'bg-orange-600 hover:bg-orange-500'} text-white`}>
                   {selectedUser.isBlocked ? <Unlock className="w-4 h-4 mr-2" /> : <Lock className="w-4 h-4 mr-2" />}
-                  {selectedUser.isBlocked ? 'Zhblloko' : 'Blloko'}
+                  {selectedUser.isBlocked ? 'Unblock' : 'Block'}
                 </Button>
                 <Button onClick={() => { setUserToDelete(selectedUser); setShowDeleteConfirm(true); setShowUserModal(false); }}
                   className="flex-1 bg-red-600 hover:bg-red-500 text-white">
-                  <Trash2 className="w-4 h-4 mr-2" /> Fshi
+                  <Trash2 className="w-4 h-4 mr-2" /> Delete
                 </Button>
               </div>
             </div>
@@ -1382,7 +1382,7 @@ export default function Admin() {
               <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <AlertTriangle className="w-8 h-8 text-red-400" />
               </div>
-              <h2 className="text-xl font-bold text-white mb-2">Fshi Llogarinë?</h2>
+              <h2 className="text-xl font-bold text-white mb-2">Delete Account?</h2>
               <p className="text-slate-400">
                 Je i sigurt që dëshiron të fshish llogarinë e <span className="text-white font-semibold">{userToDelete.email}</span>?
                 Ky veprim nuk mund të kthehet!
@@ -1391,11 +1391,11 @@ export default function Admin() {
             <div className="flex gap-3">
               <Button onClick={() => { setShowDeleteConfirm(false); setUserToDelete(null); }}
                 className="flex-1 bg-slate-700 hover:bg-slate-600 text-white">
-                Anulo
+                Cancel
               </Button>
               <Button onClick={handleDeleteUser} disabled={deleteLoading}
                 className="flex-1 bg-red-600 hover:bg-red-500 text-white">
-                {deleteLoading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <><Trash2 className="w-4 h-4 mr-2" /> Fshi Përgjithmonë</>}
+                {deleteLoading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <><Trash2 className="w-4 h-4 mr-2" /> Delete Permanently</>}
               </Button>
             </div>
           </Card>
@@ -1410,14 +1410,14 @@ export default function Admin() {
               <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Gift className="w-8 h-8 text-purple-400" />
               </div>
-              <h2 className="text-xl font-bold text-white mb-2">Dhuro Kredite</h2>
+              <h2 className="text-xl font-bold text-white mb-2">Gift Credits</h2>
               <p className="text-slate-400">
-                Dhuro kredite për <span className="text-white font-semibold">{giftCreditsUser.email}</span>
+                Gift credits to <span className="text-white font-semibold">{giftCreditsUser.email}</span>
               </p>
             </div>
             
             <div className="mb-6">
-              <label className="block text-sm font-medium text-slate-300 mb-2">Sasia e Krediteve</label>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Credit Amount</label>
               <input
                 type="number"
                 value={giftCreditsAmount}
@@ -1441,11 +1441,11 @@ export default function Admin() {
             <div className="flex gap-3">
               <Button onClick={() => { setShowGiftCredits(false); setGiftCreditsUser(null); }}
                 className="flex-1 bg-slate-700 hover:bg-slate-600 text-white">
-                Anulo
+                Cancel
               </Button>
               <Button onClick={handleGiftCredits}
                 className="flex-1 bg-purple-600 hover:bg-purple-500 text-white">
-                <Gift className="w-4 h-4 mr-2" /> Dhuro {giftCreditsAmount} Kredite
+                <Gift className="w-4 h-4 mr-2" /> Gift {giftCreditsAmount} Credits
               </Button>
             </div>
           </Card>
@@ -1460,17 +1460,17 @@ export default function Admin() {
               <div className="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Crown className="w-8 h-8 text-amber-400" />
               </div>
-              <h2 className="text-xl font-bold text-white mb-2">Ndrysho Planin</h2>
+              <h2 className="text-xl font-bold text-white mb-2">Change Plan</h2>
               <p className="text-slate-400">
-                Ndrysho planin për <span className="text-white font-semibold">{changeTierUser.email}</span>
+                Change plan for <span className="text-white font-semibold">{changeTierUser.email}</span>
               </p>
               <p className="text-slate-500 text-sm mt-1">
-                Plani aktual: <span className="text-amber-400 font-semibold">{changeTierUser.subscriptionTier || 'free'}</span>
+                Current plan: <span className="text-amber-400 font-semibold">{changeTierUser.subscriptionTier || 'free'}</span>
               </p>
             </div>
             
             <div className="mb-6">
-              <label className="block text-sm font-medium text-slate-300 mb-3">Zgjidh Planin e Ri</label>
+              <label className="block text-sm font-medium text-slate-300 mb-3">Select New Plan</label>
               <div className="grid grid-cols-2 gap-3">
                 {[
                   { id: 'free', name: 'Falas', price: '€0', credits: 0, messages: 3 },
@@ -1502,11 +1502,11 @@ export default function Admin() {
             <div className="flex gap-3">
               <Button onClick={() => { setShowChangeTier(false); setChangeTierUser(null); }}
                 className="flex-1 bg-slate-700 hover:bg-slate-600 text-white">
-                Anulo
+                Cancel
               </Button>
               <Button onClick={handleChangeTier} disabled={changeTierLoading}
                 className="flex-1 bg-amber-600 hover:bg-amber-500 text-white">
-                {changeTierLoading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <><Crown className="w-4 h-4 mr-2" /> Ndrysho Planin</>}
+                {changeTierLoading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <><Crown className="w-4 h-4 mr-2" /> Change Plan</>}
               </Button>
             </div>
           </Card>
@@ -1549,7 +1549,7 @@ export default function Admin() {
                         <Bot className="w-4 h-4" />
                       )}
                       <span className="text-xs opacity-75">
-                        {msg.role === 'user' ? 'Përdoruesi' : 'AI Coach'}
+                        {msg.role === 'user' ? 'User' : 'AI Coach'}
                       </span>
                       {msg.hasImages && <Image className="w-3 h-3" />}
                     </div>
