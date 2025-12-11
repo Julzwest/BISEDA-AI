@@ -13810,7 +13810,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-CEnJZTnG.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-Co2yVstJ.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -15204,13 +15204,6 @@ function Home() {
       page: "FirstDates"
     },
     {
-      icon: Lightbulb,
-      title: t("home.features.tips.title"),
-      description: t("home.features.tips.desc"),
-      color: "from-amber-500 to-orange-600",
-      page: "Tips"
-    },
-    {
       icon: PartyPopper,
       title: t("home.features.events.title"),
       description: t("home.features.events.desc"),
@@ -16247,16 +16240,12 @@ Now write 10 COMPLETELY new messages:`
 const backendUrl = getBackendUrl();
 function FirstDates() {
   const { t, i18n } = useTranslation();
-  const [activeTab, setActiveTab] = reactExports.useState("venues");
   const [selectedCity, setSelectedCity] = reactExports.useState("");
   const [selectedCategory, setSelectedCategory] = reactExports.useState(null);
   const [selectedTimeOfDay, setSelectedTimeOfDay] = reactExports.useState("");
   const [suggestions, setSuggestions] = reactExports.useState([]);
   const [loading, setLoading] = reactExports.useState(false);
   const [loadingMore, setLoadingMore] = reactExports.useState(false);
-  const [dateIdea, setDateIdea] = reactExports.useState("");
-  const [plannerLoading, setPlannerLoading] = reactExports.useState(false);
-  const [plannedDate, setPlannedDate] = reactExports.useState(null);
   const [showCityModal, setShowCityModal] = reactExports.useState(false);
   const [customCityInput, setCustomCityInput] = reactExports.useState("");
   const [showMoreCities, setShowMoreCities] = reactExports.useState(false);
@@ -16636,222 +16625,86 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center animate-bounce", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-3 h-3 text-slate-900" }) })
       ] }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-3xl font-extrabold bg-gradient-to-r from-pink-300 via-rose-300 to-red-300 bg-clip-text text-transparent mb-2", children: "Date Ideas" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: "Find venues or plan your perfect date" })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: "Discover the perfect venues for your dates" })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 mb-6 bg-slate-900/50 p-1 rounded-xl", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "button",
-        {
-          onClick: () => setActiveTab("venues"),
-          className: `flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all ${activeTab === "venues" ? "bg-gradient-to-r from-pink-500 to-rose-600 text-white shadow-lg" : "text-slate-400 hover:text-white"}`,
-          children: "🗺️ Find Venues"
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "button",
-        {
-          onClick: () => setActiveTab("planner"),
-          className: `flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all ${activeTab === "planner" ? "bg-gradient-to-r from-pink-500 to-rose-600 text-white shadow-lg" : "text-slate-400 hover:text-white"}`,
-          children: "📅 Plan Date"
-        }
-      )
-    ] }),
-    activeTab === "venues" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-5 h-5 text-purple-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-lg font-bold text-white", children: t("dates.selectCity") }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs text-slate-500 ml-auto", children: [
-            currentCountry?.flag,
-            " ",
-            localizedCountryName
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-2", children: [
-          cities.slice(0, showMoreCities ? cities.length : 12).map((city) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: () => handleCitySelect(city),
-              className: `px-4 py-2.5 rounded-xl font-semibold text-sm transition-all ${selectedCity === city ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/40" : "bg-slate-800/70 text-slate-300 hover:bg-slate-700/70 border border-slate-700/50 hover:border-purple-500/50"}`,
-              children: city
-            },
-            city
-          )),
-          cities.length > 12 && !showMoreCities && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              onClick: () => setShowMoreCities(true),
-              className: "px-4 py-2.5 rounded-xl font-semibold text-sm transition-all bg-slate-700/50 text-slate-300 hover:bg-slate-600/50 border border-slate-600/50 flex items-center gap-1.5",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "w-4 h-4" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-                  "+",
-                  cities.length - 12,
-                  " ",
-                  t("dates.more")
-                ] })
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              onClick: () => setShowCityModal(true),
-              className: "px-4 py-2.5 rounded-xl font-semibold text-sm transition-all bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-400 border border-cyan-500/30 hover:border-cyan-400/50 hover:bg-cyan-500/30 flex items-center gap-1.5",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "w-4 h-4" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("dates.otherCity") })
-              ]
-            }
-          )
-        ] }),
-        selectedCity && !cities.includes(selectedCity) && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sm text-slate-400", children: [
-            t("dates.selectedCity"),
-            ":"
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm font-semibold", children: selectedCity }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: () => setSelectedCity(""),
-              className: "p-1 text-slate-400 hover:text-white",
-              children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-4 h-4" })
-            }
-          )
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-5 h-5 text-purple-400" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-lg font-bold text-white", children: t("dates.selectCity") }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs text-slate-500 ml-auto", children: [
+          currentCountry?.flag,
+          " ",
+          localizedCountryName
         ] })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-lg font-bold text-white mb-3", children: "⏰ Time of Day" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: timeOfDayOptions.map((time) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-2", children: [
+        cities.slice(0, showMoreCities ? cities.length : 12).map((city) => /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
           {
-            onClick: () => setSelectedTimeOfDay(time.id),
-            className: `px-4 py-2.5 rounded-xl font-semibold text-sm transition-all ${selectedTimeOfDay === time.id ? `bg-gradient-to-r ${time.color} text-white shadow-lg` : "bg-slate-800/70 text-slate-300 hover:bg-slate-700/70 border border-slate-700/50 hover:border-purple-500/50"}`,
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mr-1.5", children: time.emoji }),
-              time.label
-            ]
+            onClick: () => handleCitySelect(city),
+            className: `px-4 py-2.5 rounded-xl font-semibold text-sm transition-all ${selectedCity === city ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/40" : "bg-slate-800/70 text-slate-300 hover:bg-slate-700/70 border border-slate-700/50 hover:border-purple-500/50"}`,
+            children: city
           },
-          time.id
-        )) })
-      ] })
-    ] }),
-    activeTab === "planner" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold mb-4", children: "Plan Your Perfect Date" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: "What kind of date are you thinking?" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "textarea",
-              {
-                value: dateIdea,
-                onChange: (e) => setDateIdea(e.target.value),
-                placeholder: "E.g., 'romantic dinner with live music', 'fun outdoor adventure', 'cozy coffee date'",
-                className: "w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder:text-slate-500 min-h-[100px]",
-                style: { fontSize: "16px" }
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Button,
-            {
-              onClick: async () => {
-                if (!dateIdea.trim()) return;
-                setPlannerLoading(true);
-                try {
-                  const prompt = `Plan a complete date based on this idea: "${dateIdea}"
-                    
-Location: ${selectedCity || userCountry}
-
-Provide a detailed date plan with:
-1. Date title (creative and exciting)
-2. Full step-by-step itinerary (at least 3-4 activities/stops)
-3. Estimated timeline
-4. Estimated total cost
-5. What to wear
-6. Conversation topics to prepare
-7. Pro tips to make it special
-
-Format as JSON with: title, itinerary (array of {time, activity, description}), duration, cost, dress_code, conversation_topics (array), pro_tips (array)`;
-                  const response = await base44.generateResponse(prompt, "gpt-4o-mini");
-                  const content = response.choices?.[0]?.message?.content || "";
-                  const jsonMatch = content.match(/\{[\s\S]*\}/);
-                  if (jsonMatch) {
-                    setPlannedDate(JSON.parse(jsonMatch[0]));
-                  }
-                } catch (error) {
-                  console.error("Error:", error);
-                  alert("Failed to plan date. Please try again.");
-                } finally {
-                  setPlannerLoading(false);
-                }
-              },
-              disabled: plannerLoading || !dateIdea.trim(),
-              className: "w-full bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white",
-              children: plannerLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" }),
-                "Planning Your Date..."
-              ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 mr-2" }),
-                "Plan My Date"
-              ] })
-            }
-          )
-        ] })
-      ] }),
-      plannedDate && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-gradient-to-br from-pink-500/20 to-rose-500/20 border-pink-500/30 p-5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white mb-2", children: plannedDate.title }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-2 text-sm", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "px-2 py-1 bg-slate-900 rounded text-slate-300", children: [
-              "⏰ ",
-              plannedDate.duration
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "px-2 py-1 bg-slate-900 rounded text-slate-300", children: [
-              "💰 ",
-              plannedDate.cost
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "px-2 py-1 bg-slate-900 rounded text-slate-300", children: [
-              "👔 ",
-              plannedDate.dress_code
-            ] })
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold mb-3", children: "📋 Itinerary" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: plannedDate.itinerary?.map((item, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-3 p-3 bg-slate-900 rounded-lg", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-shrink-0 w-16 text-purple-400 font-semibold text-sm", children: item.time }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-white font-semibold mb-1", children: item.activity }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: item.description })
-            ] })
-          ] }, i)) })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold mb-3", children: "💬 Conversation Topics" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "space-y-2", children: plannedDate.conversation_topics?.map((topic, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2 text-slate-300 text-sm", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-pink-400 flex-shrink-0", children: "•" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: topic })
-          ] }, i)) })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-yellow-500/30 p-5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold mb-3", children: "💡 Pro Tips" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "space-y-2", children: plannedDate.pro_tips?.map((tip, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2 text-slate-300 text-sm", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-yellow-400 flex-shrink-0", children: "✨" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: tip })
-          ] }, i)) })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          Button,
+          city
+        )),
+        cities.length > 12 && !showMoreCities && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
           {
-            onClick: () => setPlannedDate(null),
-            className: "w-full bg-slate-700 hover:bg-slate-600 text-white",
-            children: "Plan Another Date"
+            onClick: () => setShowMoreCities(true),
+            className: "px-4 py-2.5 rounded-xl font-semibold text-sm transition-all bg-slate-700/50 text-slate-300 hover:bg-slate-600/50 border border-slate-600/50 flex items-center gap-1.5",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "w-4 h-4" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
+                "+",
+                cities.length - 12,
+                " ",
+                t("dates.more")
+              ] })
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => setShowCityModal(true),
+            className: "px-4 py-2.5 rounded-xl font-semibold text-sm transition-all bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-400 border border-cyan-500/30 hover:border-cyan-400/50 hover:bg-cyan-500/30 flex items-center gap-1.5",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "w-4 h-4" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("dates.otherCity") })
+            ]
+          }
+        )
+      ] }),
+      selectedCity && !cities.includes(selectedCity) && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 flex items-center gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sm text-slate-400", children: [
+          t("dates.selectedCity"),
+          ":"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm font-semibold", children: selectedCity }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setSelectedCity(""),
+            className: "p-1 text-slate-400 hover:text-white",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-4 h-4" })
           }
         )
       ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-lg font-bold text-white mb-3", children: "⏰ Time of Day" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: timeOfDayOptions.map((time) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          onClick: () => setSelectedTimeOfDay(time.id),
+          className: `px-4 py-2.5 rounded-xl font-semibold text-sm transition-all ${selectedTimeOfDay === time.id ? `bg-gradient-to-r ${time.color} text-white shadow-lg` : "bg-slate-800/70 text-slate-300 hover:bg-slate-700/70 border border-slate-700/50 hover:border-purple-500/50"}`,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "mr-1.5", children: time.emoji }),
+            time.label
+          ]
+        },
+        time.id
+      )) })
     ] }),
     showCityModal && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-md bg-slate-900 rounded-3xl border border-slate-700 shadow-2xl overflow-hidden", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 border-b border-slate-700", children: [

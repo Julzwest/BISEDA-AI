@@ -149,13 +149,6 @@ export default function Home() {
       page: 'FirstDates'
     },
     {
-      icon: Lightbulb,
-      title: t('home.features.tips.title'),
-      description: t('home.features.tips.desc'),
-      color: 'from-amber-500 to-orange-600',
-      page: 'Tips'
-    },
-    {
       icon: PartyPopper,
       title: t('home.features.events.title'),
       description: t('home.features.events.desc'),
