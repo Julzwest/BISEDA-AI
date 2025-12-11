@@ -122,38 +122,44 @@ export default function Layout({ children, onLogout }) {
           borderBottom: '1px solid var(--border-color, rgba(148, 163, 184, 0.1))'
         }}
       >
-        <div className="h-14 px-4 flex items-center justify-between max-w-screen-xl mx-auto">
+        <div className="h-14 px-2 sm:px-4 flex items-center justify-between max-w-screen-xl mx-auto">
           {/* Left side - Logo/Brand */}
-          <div className="flex items-center">
-            <Link to="/home" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-white" />
+          <div className="flex items-center flex-shrink-0">
+            <Link to="/home" className="flex items-center gap-1.5 sm:gap-2">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
               </div>
-              <span className="font-bold text-white text-lg hidden sm:block">Biseda<span className="text-purple-400">.ai</span></span>
+              <span className="font-bold text-white text-base sm:text-lg hidden sm:block">Biseda<span className="text-purple-400">.ai</span></span>
             </Link>
           </div>
           
-          {/* Center - Guest Banner (if guest) */}
+          {/* Center - Guest Banner (if guest) - Hidden on very small screens */}
           {isGuest && (
-            <GuestBanner 
-              onExpired={() => {
-                clearGuestSession();
-                if (onLogout) onLogout();
-              }}
-              onSignUp={() => {
-                clearGuestSession();
-                if (onLogout) onLogout();
-              }}
-            />
+            <div className="hidden xs:block flex-shrink mx-1">
+              <GuestBanner 
+                onExpired={() => {
+                  clearGuestSession();
+                  if (onLogout) onLogout();
+                }}
+                onSignUp={() => {
+                  clearGuestSession();
+                  if (onLogout) onLogout();
+                }}
+              />
+            </div>
           )}
           
           {/* Right side - Language, Country Switcher & Profile */}
-          <div className="flex items-center gap-2">
-            <LanguageSwitcher />
-            <CountrySwitcher />
+          <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+            <div className="scale-90 sm:scale-100 origin-right">
+              <LanguageSwitcher />
+            </div>
+            <div className="scale-90 sm:scale-100 origin-right">
+              <CountrySwitcher />
+            </div>
             <Link to="/profile">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg hover:scale-105 hover:shadow-purple-500/30 transition-all duration-200">
-                <User className="w-5 h-5 text-white" />
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg hover:scale-105 hover:shadow-purple-500/30 transition-all duration-200">
+                <User className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
             </Link>
           </div>
