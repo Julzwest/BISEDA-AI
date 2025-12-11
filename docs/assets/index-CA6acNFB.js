@@ -16037,7 +16037,7 @@ function ClipboardSuggestions() {
       if (window.Capacitor && window.Capacitor.isNativePlatform()) {
         try {
           const { Clipboard: Clipboard2 } = await __vitePreload(async () => {
-            const { Clipboard: Clipboard22 } = await import("./index-CxVRufsO.js");
+            const { Clipboard: Clipboard22 } = await import("./index-CcWY8Ewg.js");
             return { Clipboard: Clipboard22 };
           }, true ? [] : void 0);
           const { value } = await Clipboard2.read();
@@ -20976,7 +20976,7 @@ function Admin() {
       }
     } catch (error) {
       console.error("Login error:", error);
-      setAuthError("Gabim lidhje me serverin");
+      setAuthError("Server connection error");
     } finally {
       setLoading(false);
     }
@@ -21068,11 +21068,11 @@ function Admin() {
         setChangeTierUser(null);
         setSelectedTier("starter");
         fetchData();
-        alert(`✅ Plani u ndryshua në ${selectedTier.toUpperCase()}!
+        alert(`✅ Plan changed to ${selectedTier.toUpperCase()}!
 
-📊 Mesazhe/ditë: ${selectedTier === "elite" ? 500 : selectedTier === "pro" ? 200 : selectedTier === "starter" ? 75 : 3}
-💰 Kredite të shtuara: +${data.creditsAdded || 0}
-💎 Balanca e re: ${data.newCreditsBalance || 0} kredite`);
+📊 Messages/day: ${selectedTier === "elite" ? 500 : selectedTier === "pro" ? 200 : selectedTier === "starter" ? 75 : 3}
+💰 Credits added: +${data.creditsAdded || 0}
+💎 New balance: ${data.newCreditsBalance || 0} credits`);
       } else {
         const data = await response.json();
         alert(data.error || "Failed to change tier");
@@ -21470,7 +21470,7 @@ function Admin() {
       /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700/50 p-5 mb-6", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-lg font-bold text-white mb-4 flex items-center gap-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-5 h-5 text-yellow-400" }),
-          " Veçoritë e Aplikacionit"
+          " App Features"
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 md:grid-cols-5 gap-3", children: [
           { icon: Bot, name: "AI Coach", color: "purple" },
@@ -21486,7 +21486,7 @@ function Admin() {
       /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700/50 p-5", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-lg font-bold text-white mb-4 flex items-center gap-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(UserPlus, { className: "w-5 h-5 text-blue-400" }),
-          " Regjistrimet e Fundit"
+          " Recent Registrations"
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-2", children: registeredUsers.slice(0, 5).map((user, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between p-3 bg-slate-700/30 rounded-xl", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
@@ -21585,7 +21585,7 @@ function Admin() {
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-between mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-lg font-bold text-white flex items-center gap-2", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(Users, { className: "w-5 h-5 text-blue-400" }),
-        "Përdoruesit (",
+        "Users (",
         filteredUsers.length,
         ")"
       ] }) }),
@@ -21670,7 +21670,7 @@ function Admin() {
               className: "bg-cyan-600 hover:bg-cyan-500 text-white text-xs h-9 px-3",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(MessageSquare, { className: "w-3 h-3 mr-1" }),
-                " Bisedat"
+                " Chats"
               ]
             }
           ),
@@ -21684,7 +21684,7 @@ function Admin() {
               className: "bg-purple-600 hover:bg-purple-500 text-white text-xs h-9 px-3",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(Gift, { className: "w-3 h-3 mr-1" }),
-                " Kredite"
+                " Credits"
               ]
             }
           ),
@@ -21710,7 +21710,7 @@ function Admin() {
               className: `${user.isBlocked ? "bg-green-600 hover:bg-green-500" : "bg-orange-600 hover:bg-orange-500"} text-white text-xs h-9 px-3`,
               children: [
                 user.isBlocked ? /* @__PURE__ */ jsxRuntimeExports.jsx(Unlock, { className: "w-3 h-3 mr-1" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Lock, { className: "w-3 h-3 mr-1" }),
-                user.isBlocked ? "Zhblloko" : "Blloko"
+                user.isBlocked ? "Unblock" : "Block"
               ]
             }
           ),
@@ -21724,7 +21724,7 @@ function Admin() {
               className: "bg-red-600 hover:bg-red-500 text-white text-xs h-9 px-3",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-3 h-3 mr-1" }),
-                " Fshi"
+                " Delete"
               ]
             }
           )
@@ -21737,7 +21737,7 @@ function Admin() {
     activeTab === "createUser" && /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700/50 p-6 max-w-2xl mx-auto", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-6", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-green-500/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx(UserPlus, { className: "w-8 h-8 text-white" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white mb-2", children: "Krijo Përdorues të Ri" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white mb-2", children: "Create New User" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400", children: "Krijo llogari të re me planin e dëshiruar" })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleCreateUser, className: "space-y-4", children: [
@@ -21829,7 +21829,7 @@ function Admin() {
           )
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: "💎 Plani i Abonimit" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: "💎 Subscription Plan" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 md:grid-cols-4 gap-3", children: [
             { id: "free", name: "Falas", price: "€0", color: "slate", icon: "🆓" },
             { id: "starter", name: "Starter", price: "€6.99", color: "blue", icon: "⭐" },
@@ -21871,7 +21871,7 @@ function Admin() {
             className: "w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold h-14 rounded-xl text-base shadow-lg shadow-green-500/20 transition-all",
             children: createUserLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { className: "w-5 h-5 animate-spin" }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(UserPlus, { className: "w-5 h-5 mr-2" }),
-              "Krijo Përdoruesin"
+              "Create User"
             ] })
           }
         )
@@ -21935,7 +21935,7 @@ function Admin() {
       /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700/50 p-5", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-lg font-bold text-white mb-4 flex items-center gap-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(DollarSign, { className: "w-5 h-5 text-green-400" }),
-          " Të Ardhura nga Abonime"
+          " Subscription Revenue"
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-4", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-gradient-to-br from-green-900/30 to-emerald-900/30 border border-green-500/30 p-5 rounded-xl", children: [
@@ -21966,7 +21966,7 @@ function Admin() {
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-4", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-lg font-bold text-white flex items-center gap-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(MessagesSquare, { className: "w-5 h-5 text-cyan-400" }),
-          selectedUser ? `Bisedat e ${selectedUser.firstName || selectedUser.email}` : "Të Gjitha Bisedat"
+          selectedUser ? `Chats by ${selectedUser.firstName || selectedUser.email}` : "All Chats"
         ] }),
         selectedUser && /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { onClick: () => {
           setSelectedUser(null);
@@ -22022,13 +22022,13 @@ function Admin() {
       )) }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center py-12", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(MessagesSquare, { className: "w-16 h-16 text-slate-600 mx-auto mb-4" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-lg mb-2", children: "Asnjë bisedë ende" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-500 text-sm", children: "Bisedat e përdoruesve do të shfaqen këtu" })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-500 text-sm", children: "User conversations will appear here" })
       ] })
     ] }),
     activeTab === "activity" && /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700/50 p-5", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-lg font-bold text-white mb-4 flex items-center gap-2", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(Activity, { className: "w-5 h-5 text-green-400" }),
-        " Aktiviteti i Fundit"
+        " Recent Activity"
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: stats?.topUsers?.map((user, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4 p-3 bg-slate-700/30 rounded-xl", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-10 h-10 rounded-full flex items-center justify-center font-bold ${i === 0 ? "bg-yellow-500 text-black" : i === 1 ? "bg-slate-300 text-black" : i === 2 ? "bg-amber-600 text-white" : "bg-slate-600 text-white"}`, children: i + 1 }),
@@ -22051,7 +22051,7 @@ function Admin() {
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-6", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white flex items-center gap-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(Eye, { className: "w-5 h-5 text-purple-400" }),
-          " Detajet e Përdoruesit"
+          " User Details"
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowUserModal(false), className: "text-slate-400 hover:text-white", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-6 h-6" }) })
       ] }),
@@ -22087,14 +22087,14 @@ function Admin() {
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-slate-800/50 rounded-xl", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm mb-1", children: "Status" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: `font-semibold ${selectedUser.isBlocked ? "text-red-400" : "text-green-400"}`, children: selectedUser.isBlocked ? "Bllokuar" : "Aktiv" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: `font-semibold ${selectedUser.isBlocked ? "text-red-400" : "text-green-400"}`, children: selectedUser.isBlocked ? "Blocked" : "Active" })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-slate-800/50 rounded-xl", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm mb-1", children: "Mesazhe Total" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-semibold", children: selectedUser.monthlyUsage?.totalMessages || 0 })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-slate-800/50 rounded-xl", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm mb-1", children: "Kredite" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm mb-1", children: "Credits" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-purple-400 font-semibold", children: selectedUser.credits || 0 })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-slate-800/50 rounded-xl", children: [
@@ -22121,7 +22121,7 @@ function Admin() {
               className: "flex-1 bg-purple-600 hover:bg-purple-500 text-white",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(Gift, { className: "w-4 h-4 mr-2" }),
-                " Dhuro Kredite"
+                " Gift Credits"
               ]
             }
           ),
@@ -22135,7 +22135,7 @@ function Admin() {
               className: `flex-1 ${selectedUser.isBlocked ? "bg-green-600 hover:bg-green-500" : "bg-orange-600 hover:bg-orange-500"} text-white`,
               children: [
                 selectedUser.isBlocked ? /* @__PURE__ */ jsxRuntimeExports.jsx(Unlock, { className: "w-4 h-4 mr-2" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Lock, { className: "w-4 h-4 mr-2" }),
-                selectedUser.isBlocked ? "Zhblloko" : "Blloko"
+                selectedUser.isBlocked ? "Unblock" : "Block"
               ]
             }
           ),
@@ -22150,7 +22150,7 @@ function Admin() {
               className: "flex-1 bg-red-600 hover:bg-red-500 text-white",
               children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4 mr-2" }),
-                " Fshi"
+                " Delete"
               ]
             }
           )
@@ -22160,7 +22160,7 @@ function Admin() {
     showDeleteConfirm && userToDelete && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-900 border-red-500/30 p-6 rounded-2xl max-w-md w-full", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-6", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(AlertTriangle, { className: "w-8 h-8 text-red-400" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-xl font-bold text-white mb-2", children: "Fshi Llogarinë?" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-xl font-bold text-white mb-2", children: "Delete Account?" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-400", children: [
           "Je i sigurt që dëshiron të fshish llogarinë e ",
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white font-semibold", children: userToDelete.email }),
@@ -22176,7 +22176,7 @@ function Admin() {
               setUserToDelete(null);
             },
             className: "flex-1 bg-slate-700 hover:bg-slate-600 text-white",
-            children: "Anulo"
+            children: "Cancel"
           }
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -22187,7 +22187,7 @@ function Admin() {
             className: "flex-1 bg-red-600 hover:bg-red-500 text-white",
             children: deleteLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { className: "w-4 h-4 animate-spin" }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4 mr-2" }),
-              " Fshi Përgjithmonë"
+              " Delete Permanently"
             ] })
           }
         )
@@ -22196,14 +22196,14 @@ function Admin() {
     showGiftCredits && giftCreditsUser && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-900 border-purple-500/30 p-6 rounded-2xl max-w-md w-full", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-6", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Gift, { className: "w-8 h-8 text-purple-400" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-xl font-bold text-white mb-2", children: "Dhuro Kredite" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-xl font-bold text-white mb-2", children: "Gift Credits" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-400", children: [
-          "Dhuro kredite për ",
+          "Gift credits to ",
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white font-semibold", children: giftCreditsUser.email })
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: "Sasia e Krediteve" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: "Credit Amount" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
           "input",
           {
@@ -22234,7 +22234,7 @@ function Admin() {
               setGiftCreditsUser(null);
             },
             className: "flex-1 bg-slate-700 hover:bg-slate-600 text-white",
-            children: "Anulo"
+            children: "Cancel"
           }
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
@@ -22244,9 +22244,9 @@ function Admin() {
             className: "flex-1 bg-purple-600 hover:bg-purple-500 text-white",
             children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(Gift, { className: "w-4 h-4 mr-2" }),
-              " Dhuro ",
+              " Gift ",
               giftCreditsAmount,
-              " Kredite"
+              " Credits"
             ]
           }
         )
@@ -22255,18 +22255,18 @@ function Admin() {
     showChangeTier && changeTierUser && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-900 border-amber-500/30 p-6 rounded-2xl max-w-md w-full", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-6", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Crown, { className: "w-8 h-8 text-amber-400" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-xl font-bold text-white mb-2", children: "Ndrysho Planin" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-xl font-bold text-white mb-2", children: "Change Plan" }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-400", children: [
-          "Ndrysho planin për ",
+          "Change plan for ",
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white font-semibold", children: changeTierUser.email })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-500 text-sm mt-1", children: [
-          "Plani aktual: ",
+          "Current plan: ",
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-amber-400 font-semibold", children: changeTierUser.subscriptionTier || "free" })
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-3", children: "Zgjidh Planin e Ri" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-3", children: "Select New Plan" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 gap-3", children: [
           { id: "free", name: "Falas", price: "€0", credits: 0, messages: 3 },
           { id: "starter", name: "Starter", price: "€6.99", credits: 25, messages: 75 },
@@ -22306,7 +22306,7 @@ function Admin() {
               setChangeTierUser(null);
             },
             className: "flex-1 bg-slate-700 hover:bg-slate-600 text-white",
-            children: "Anulo"
+            children: "Cancel"
           }
         ),
         /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -22317,7 +22317,7 @@ function Admin() {
             className: "flex-1 bg-amber-600 hover:bg-amber-500 text-white",
             children: changeTierLoading ? /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { className: "w-4 h-4 animate-spin" }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(Crown, { className: "w-4 h-4 mr-2" }),
-              " Ndrysho Planin"
+              " Change Plan"
             ] })
           }
         )
@@ -22344,7 +22344,7 @@ function Admin() {
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-4 space-y-4", children: selectedConversation.messages?.map((msg, i) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `flex ${msg.role === "user" ? "justify-end" : "justify-start"}`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `max-w-[80%] p-3 rounded-2xl ${msg.role === "user" ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-br-md" : "bg-slate-700 text-slate-200 rounded-bl-md"}`, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-1", children: [
           msg.role === "user" ? /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-4 h-4" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Bot, { className: "w-4 h-4" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs opacity-75", children: msg.role === "user" ? "Përdoruesi" : "AI Coach" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs opacity-75", children: msg.role === "user" ? "User" : "AI Coach" }),
           msg.hasImages && /* @__PURE__ */ jsxRuntimeExports.jsx(Image, { className: "w-3 h-3" })
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm whitespace-pre-wrap", children: msg.content }),
@@ -22594,7 +22594,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-D8wVLsnS.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-COiG_GG6.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
