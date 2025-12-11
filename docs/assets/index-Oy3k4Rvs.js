@@ -13742,7 +13742,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-BQGKlW_-.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-D5QNJzWT.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -16717,7 +16717,7 @@ function ClipboardSuggestions() {
       if (window.Capacitor && window.Capacitor.isNativePlatform()) {
         try {
           const { Clipboard: Clipboard2 } = await __vitePreload(async () => {
-            const { Clipboard: Clipboard22 } = await import("./index-D4PMZ4WK.js");
+            const { Clipboard: Clipboard22 } = await import("./index-BgaDgGIl.js");
             return { Clipboard: Clipboard22 };
           }, true ? [] : void 0);
           const { value } = await Clipboard2.read();
@@ -25227,15 +25227,15 @@ ${langInstruction}`;
         },
         s
       )) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-6", children: [
-        setupStep === 1 && /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 backdrop-blur-sm p-5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "font-semibold text-white mb-2 flex items-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-xs", children: "1" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-5 h-5 text-pink-400" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
+        setupStep === 1 && /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 backdrop-blur-sm p-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "font-semibold text-white mb-1.5 flex items-center gap-2 text-sm", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-xs", children: "1" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-4 h-4 text-pink-400" }),
             t("rehearsal.chooseScenario", "Choose a scenario")
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs mb-4", children: t("rehearsal.selectScenario", "What situation do you want to practice?") }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: scenarios.map((s) => {
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs mb-3", children: t("rehearsal.selectScenario", "What situation do you want to practice?") }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-2", children: scenarios.map((s) => {
             s.icon;
             return /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "button",
@@ -25244,12 +25244,12 @@ ${langInstruction}`;
                   setSelectedScenarioId(s.id);
                   if (setupStep === 1) setSetupStep(2);
                 },
-                className: `w-full p-4 rounded-xl border-2 transition-all text-left flex items-center gap-4 ${selectedScenarioId === s.id ? "border-purple-500 bg-purple-500/20" : "border-slate-700 bg-slate-800/50 hover:border-slate-600"}`,
+                className: `w-full p-3 rounded-xl border-2 transition-all text-left flex items-center gap-3 ${selectedScenarioId === s.id ? "border-purple-500 bg-purple-500/20" : "border-slate-700 bg-slate-800/50 hover:border-slate-600"}`,
                 children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-12 h-12 bg-gradient-to-br ${s.color} rounded-xl flex items-center justify-center shrink-0`, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: s.emoji }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-10 h-10 bg-gradient-to-br ${s.color} rounded-xl flex items-center justify-center shrink-0`, children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xl", children: s.emoji }) }),
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "font-semibold text-white", children: s.title }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: s.description })
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "font-semibold text-white text-sm", children: s.title }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: s.description })
                   ] })
                 ]
               },
@@ -25257,7 +25257,7 @@ ${langInstruction}`;
             );
           }) })
         ] }),
-        setupStep === 2 && selectedScenarioId && /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 backdrop-blur-sm p-5", children: [
+        setupStep === 2 && selectedScenarioId && /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 backdrop-blur-sm p-4", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
@@ -25265,20 +25265,20 @@ ${langInstruction}`;
                 setSetupStep(1);
                 setSelectedScenarioId(null);
               },
-              className: "text-slate-400 hover:text-white text-sm mb-4 flex items-center gap-1",
+              className: "text-slate-400 hover:text-white text-xs mb-3 flex items-center gap-1",
               children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-3 h-3" }),
                 " ",
                 t("common.back", "Back")
               ]
             }
           ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "font-semibold text-white mb-2 flex items-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-xs", children: "2" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-5 h-5 text-purple-400" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "font-semibold text-white mb-1.5 flex items-center gap-2 text-sm", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-xs", children: "2" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-4 h-4 text-purple-400" }),
             getNameLabel()
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs mb-4", children: t("rehearsal.enterTheirName", "Enter the name for the roleplay") }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs mb-3", children: t("rehearsal.enterTheirName", "Enter the name for the roleplay") }),
           selectedScenarioId === "approaching" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-4", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-500 text-xs mb-2", children: t("rehearsal.quickSelect", "Quick select:") }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap gap-2", children: [
@@ -25352,7 +25352,7 @@ ${langInstruction}`;
                   value: dateName,
                   onChange: (e) => setDateName(e.target.value),
                   placeholder: getNamePlaceholder(),
-                  className: "bg-slate-900 border-slate-700 text-white flex-1"
+                  className: "bg-slate-900 border-slate-700 text-white flex-1 text-sm h-10"
                 }
               ),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1", children: [
@@ -25376,19 +25376,19 @@ ${langInstruction}`;
                 )
               ] })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "pt-4 border-t border-slate-700", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("h4", { className: "font-medium text-white mb-2 flex items-center gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-4 h-4 text-pink-400" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "pt-3 border-t border-slate-700", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("h4", { className: "font-medium text-white mb-1.5 flex items-center gap-2 text-sm", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-3.5 h-3.5 text-pink-400" }),
                 t("rehearsal.partnerNameLabel", "Your partner's name (their child)")
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs mb-3", children: t("rehearsal.partnerNameHint", "The person you're dating - their son/daughter") }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs mb-2", children: t("rehearsal.partnerNameHint", "The person you're dating - their son/daughter") }),
               /* @__PURE__ */ jsxRuntimeExports.jsx(
                 Input,
                 {
                   value: partnerName,
                   onChange: (e) => setPartnerName(e.target.value),
                   placeholder: t("rehearsal.enterPartnerNamePlaceholder", "e.g. Sarah, Mike..."),
-                  className: "bg-slate-900 border-slate-700 text-white"
+                  className: "bg-slate-900 border-slate-700 text-white text-sm h-10"
                 }
               )
             ] })
@@ -25398,37 +25398,37 @@ ${langInstruction}`;
               value: dateName,
               onChange: (e) => setDateName(e.target.value),
               placeholder: getNamePlaceholder(),
-              className: "bg-slate-900 border-slate-700 text-white mb-3"
+              className: "bg-slate-900 border-slate-700 text-white text-sm h-10 mb-2"
             }
           ),
           dateName.trim() && (selectedScenarioId !== "meet_parents" || partnerName.trim() && personGender) && /* @__PURE__ */ jsxRuntimeExports.jsx(
             Button,
             {
               onClick: () => selectedScenarioId === "meet_parents" ? setSetupStep(4) : setSetupStep(3),
-              className: "w-full mt-4 bg-purple-500 hover:bg-purple-600",
+              className: "w-full mt-3 bg-purple-500 hover:bg-purple-600 h-10 text-sm",
               children: t("common.continue", "Continue")
             }
           )
         ] }),
-        setupStep === 3 && dateName.trim() && /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 backdrop-blur-sm p-5", children: [
+        setupStep === 3 && dateName.trim() && /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 backdrop-blur-sm p-4", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {
               onClick: () => setSetupStep(2),
-              className: "text-slate-400 hover:text-white text-sm mb-4 flex items-center gap-1",
+              className: "text-slate-400 hover:text-white text-xs mb-3 flex items-center gap-1",
               children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-3 h-3" }),
                 " ",
                 t("common.back", "Back")
               ]
             }
           ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "font-semibold text-white mb-2 flex items-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-xs", children: "3" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Users, { className: "w-5 h-5 text-purple-400" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "font-semibold text-white mb-1.5 flex items-center gap-2 text-sm", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-xs", children: "3" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Users, { className: "w-4 h-4 text-purple-400" }),
             getGenderLabel()
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs mb-4", children: t("rehearsal.selectGender", "Who will you be talking to?") }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs mb-3", children: t("rehearsal.selectGender", "Who will you be talking to?") }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-3 gap-3", children: genderOptions.map((g) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
             "button",
             {

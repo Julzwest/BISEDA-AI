@@ -1207,17 +1207,17 @@ ${langInstruction}`;
         </div>
 
         {/* Setup */}
-        <div className="space-y-6">
+        <div className="space-y-3">
           {/* Step 1: Scenario Selection (FIRST - so we know the context) */}
           {setupStep === 1 && (
-            <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm p-5">
-              <h3 className="font-semibold text-white mb-2 flex items-center gap-2">
-                <span className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-xs">1</span>
-                <Heart className="w-5 h-5 text-pink-400" />
+            <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm p-4">
+              <h3 className="font-semibold text-white mb-1.5 flex items-center gap-2 text-sm">
+                <span className="w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-xs">1</span>
+                <Heart className="w-4 h-4 text-pink-400" />
                 {t('rehearsal.chooseScenario', 'Choose a scenario')}
               </h3>
-              <p className="text-slate-400 text-xs mb-4">{t('rehearsal.selectScenario', 'What situation do you want to practice?')}</p>
-              <div className="space-y-3">
+              <p className="text-slate-400 text-xs mb-3">{t('rehearsal.selectScenario', 'What situation do you want to practice?')}</p>
+              <div className="space-y-2">
                 {scenarios.map((s) => {
                   const Icon = s.icon;
                   return (
@@ -1227,18 +1227,18 @@ ${langInstruction}`;
                         setSelectedScenarioId(s.id);
                         if (setupStep === 1) setSetupStep(2);
                       }}
-                      className={`w-full p-4 rounded-xl border-2 transition-all text-left flex items-center gap-4 ${
+                      className={`w-full p-3 rounded-xl border-2 transition-all text-left flex items-center gap-3 ${
                         selectedScenarioId === s.id
                           ? 'border-purple-500 bg-purple-500/20'
                           : 'border-slate-700 bg-slate-800/50 hover:border-slate-600'
                       }`}
                     >
-                      <div className={`w-12 h-12 bg-gradient-to-br ${s.color} rounded-xl flex items-center justify-center shrink-0`}>
-                        <span className="text-2xl">{s.emoji}</span>
+                      <div className={`w-10 h-10 bg-gradient-to-br ${s.color} rounded-xl flex items-center justify-center shrink-0`}>
+                        <span className="text-xl">{s.emoji}</span>
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-semibold text-white">{s.title}</h4>
-                        <p className="text-slate-400 text-sm">{s.description}</p>
+                        <h4 className="font-semibold text-white text-sm">{s.title}</h4>
+                        <p className="text-slate-400 text-xs">{s.description}</p>
                       </div>
                     </button>
                   );
@@ -1249,19 +1249,19 @@ ${langInstruction}`;
 
           {/* Step 2: Names (with dynamic labels based on scenario) */}
           {setupStep === 2 && selectedScenarioId && (
-            <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm p-5">
+            <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm p-4">
               <button
                 onClick={() => { setSetupStep(1); setSelectedScenarioId(null); }}
-                className="text-slate-400 hover:text-white text-sm mb-4 flex items-center gap-1"
+                className="text-slate-400 hover:text-white text-xs mb-3 flex items-center gap-1"
               >
-                <ArrowLeft className="w-4 h-4" /> {t('common.back', 'Back')}
+                <ArrowLeft className="w-3 h-3" /> {t('common.back', 'Back')}
               </button>
-              <h3 className="font-semibold text-white mb-2 flex items-center gap-2">
-                <span className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-xs">2</span>
-                <User className="w-5 h-5 text-purple-400" />
+              <h3 className="font-semibold text-white mb-1.5 flex items-center gap-2 text-sm">
+                <span className="w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-xs">2</span>
+                <User className="w-4 h-4 text-purple-400" />
                 {getNameLabel()}
               </h3>
-              <p className="text-slate-400 text-xs mb-4">{t('rehearsal.enterTheirName', 'Enter the name for the roleplay')}</p>
+              <p className="text-slate-400 text-xs mb-3">{t('rehearsal.enterTheirName', 'Enter the name for the roleplay')}</p>
               
               {/* Quick name options for approaching strangers */}
               {selectedScenarioId === 'approaching' && (
@@ -1327,7 +1327,7 @@ ${langInstruction}`;
                       value={dateName}
                       onChange={(e) => setDateName(e.target.value)}
                       placeholder={getNamePlaceholder()}
-                      className="bg-slate-900 border-slate-700 text-white flex-1"
+                      className="bg-slate-900 border-slate-700 text-white flex-1 text-sm h-10"
                     />
                     <div className="flex gap-1">
                       <button
@@ -1356,17 +1356,17 @@ ${langInstruction}`;
                   </div>
                   
                   {/* Partner name section */}
-                  <div className="pt-4 border-t border-slate-700">
-                    <h4 className="font-medium text-white mb-2 flex items-center gap-2">
-                      <Heart className="w-4 h-4 text-pink-400" />
+                  <div className="pt-3 border-t border-slate-700">
+                    <h4 className="font-medium text-white mb-1.5 flex items-center gap-2 text-sm">
+                      <Heart className="w-3.5 h-3.5 text-pink-400" />
                       {t('rehearsal.partnerNameLabel', "Your partner's name (their child)")}
                     </h4>
-                    <p className="text-slate-400 text-xs mb-3">{t('rehearsal.partnerNameHint', "The person you're dating - their son/daughter")}</p>
+                    <p className="text-slate-400 text-xs mb-2">{t('rehearsal.partnerNameHint', "The person you're dating - their son/daughter")}</p>
                     <Input
                       value={partnerName}
                       onChange={(e) => setPartnerName(e.target.value)}
                       placeholder={t('rehearsal.enterPartnerNamePlaceholder', "e.g. Sarah, Mike...")}
-                      className="bg-slate-900 border-slate-700 text-white"
+                      className="bg-slate-900 border-slate-700 text-white text-sm h-10"
                     />
                   </div>
                 </div>
@@ -1375,7 +1375,7 @@ ${langInstruction}`;
                   value={dateName}
                   onChange={(e) => setDateName(e.target.value)}
                   placeholder={getNamePlaceholder()}
-                  className="bg-slate-900 border-slate-700 text-white mb-3"
+                  className="bg-slate-900 border-slate-700 text-white text-sm h-10 mb-2"
                 />
               )}
               
@@ -1383,7 +1383,7 @@ ${langInstruction}`;
               {dateName.trim() && (selectedScenarioId !== 'meet_parents' || (partnerName.trim() && personGender)) && (
                 <Button
                   onClick={() => selectedScenarioId === 'meet_parents' ? setSetupStep(4) : setSetupStep(3)}
-                  className="w-full mt-4 bg-purple-500 hover:bg-purple-600"
+                  className="w-full mt-3 bg-purple-500 hover:bg-purple-600 h-10 text-sm"
                 >
                   {t('common.continue', 'Continue')}
                 </Button>
@@ -1393,19 +1393,19 @@ ${langInstruction}`;
 
           {/* Step 3: Gender Selection */}
           {setupStep === 3 && dateName.trim() && (
-            <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm p-5">
+            <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm p-4">
               <button
                 onClick={() => setSetupStep(2)}
-                className="text-slate-400 hover:text-white text-sm mb-4 flex items-center gap-1"
+                className="text-slate-400 hover:text-white text-xs mb-3 flex items-center gap-1"
               >
-                <ArrowLeft className="w-4 h-4" /> {t('common.back', 'Back')}
+                <ArrowLeft className="w-3 h-3" /> {t('common.back', 'Back')}
               </button>
-              <h3 className="font-semibold text-white mb-2 flex items-center gap-2">
-                <span className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-xs">3</span>
-                <Users className="w-5 h-5 text-purple-400" />
+              <h3 className="font-semibold text-white mb-1.5 flex items-center gap-2 text-sm">
+                <span className="w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-xs">3</span>
+                <Users className="w-4 h-4 text-purple-400" />
                 {getGenderLabel()}
               </h3>
-              <p className="text-slate-400 text-xs mb-4">{t('rehearsal.selectGender', 'Who will you be talking to?')}</p>
+              <p className="text-slate-400 text-xs mb-3">{t('rehearsal.selectGender', 'Who will you be talking to?')}</p>
               <div className="grid grid-cols-3 gap-3">
                 {genderOptions.map((g) => (
                   <button
