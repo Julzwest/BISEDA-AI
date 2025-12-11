@@ -563,6 +563,79 @@ export default function Admin() {
             </button>
           </div>
 
+          {/* Quick Navigation - Large Icon Cards */}
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 mb-6">
+            <button 
+              onClick={() => setActiveTab('users')}
+              className="transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <Card className="bg-gradient-to-br from-blue-600/30 to-blue-800/30 border-blue-500/40 hover:border-blue-400/60 p-4 sm:p-5 h-full">
+                <div className="flex flex-col items-center justify-center gap-2">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+                    <Users className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+                  </div>
+                  <p className="text-white text-xs sm:text-sm font-semibold">Users</p>
+                </div>
+              </Card>
+            </button>
+
+            <button 
+              onClick={() => setActiveTab('createUser')}
+              className="transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <Card className="bg-gradient-to-br from-emerald-600/30 to-emerald-800/30 border-emerald-500/40 hover:border-emerald-400/60 p-4 sm:p-5 h-full">
+                <div className="flex flex-col items-center justify-center gap-2">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
+                    <UserPlus className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+                  </div>
+                  <p className="text-white text-xs sm:text-sm font-semibold">Create</p>
+                </div>
+              </Card>
+            </button>
+
+            <button 
+              onClick={() => { setActiveTab('conversations'); fetchConversations(); }}
+              className="transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <Card className="bg-gradient-to-br from-purple-600/30 to-purple-800/30 border-purple-500/40 hover:border-purple-400/60 p-4 sm:p-5 h-full">
+                <div className="flex flex-col items-center justify-center gap-2">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                    <MessageSquare className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+                  </div>
+                  <p className="text-white text-xs sm:text-sm font-semibold">Chats</p>
+                </div>
+              </Card>
+            </button>
+
+            <button 
+              onClick={() => setActiveTab('subscriptions')}
+              className="transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <Card className="bg-gradient-to-br from-cyan-600/30 to-cyan-800/30 border-cyan-500/40 hover:border-cyan-400/60 p-4 sm:p-5 h-full">
+                <div className="flex flex-col items-center justify-center gap-2">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg">
+                    <Crown className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+                  </div>
+                  <p className="text-white text-xs sm:text-sm font-semibold">Subs</p>
+                </div>
+              </Card>
+            </button>
+
+            <button 
+              onClick={() => setActiveTab('activity')}
+              className="transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <Card className="bg-gradient-to-br from-orange-600/30 to-orange-800/30 border-orange-500/40 hover:border-orange-400/60 p-4 sm:p-5 h-full">
+                <div className="flex flex-col items-center justify-center gap-2">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg">
+                    <Activity className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+                  </div>
+                  <p className="text-white text-xs sm:text-sm font-semibold">Activity</p>
+                </div>
+              </Card>
+            </button>
+          </div>
+
           {/* Financial Overview */}
           <Card className="bg-slate-800/50 border-slate-700/50 p-4 sm:p-5 mb-6">
             <h2 className="text-base sm:text-lg font-bold text-white mb-4 flex items-center gap-2">
