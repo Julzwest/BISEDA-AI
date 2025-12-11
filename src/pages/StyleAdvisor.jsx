@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -7,6 +8,7 @@ import { Sparkles, Upload } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
 export default function StyleAdvisor() {
+  const { t } = useTranslation();
   const [occasion, setOccasion] = useState('');
   const [description, setDescription] = useState('');
   const [advice, setAdvice] = useState(null);
@@ -14,12 +16,12 @@ export default function StyleAdvisor() {
   const [uploadedImage, setUploadedImage] = useState(null);
 
   const occasions = [
-    { value: 'coffee', label: 'Kafe e parë' },
-    { value: 'dinner', label: 'Darkë elegante' },
-    { value: 'casual', label: 'Dalje e thjeshtë' },
-    { value: 'club', label: 'Natë në klub' },
-    { value: 'movie', label: 'Kinema' },
-    { value: 'beach', label: 'Dalje në plazh' }
+    { value: 'coffee', label: t('styleAdvisor.occasions.coffee') },
+    { value: 'dinner', label: t('styleAdvisor.occasions.dinner') },
+    { value: 'casual', label: t('styleAdvisor.occasions.casual') },
+    { value: 'club', label: t('styleAdvisor.occasions.club') },
+    { value: 'movie', label: t('styleAdvisor.occasions.movie') },
+    { value: 'beach', label: t('styleAdvisor.occasions.beach') }
   ];
 
   const handleFileUpload = async (e) => {
@@ -103,8 +105,8 @@ Bëji këshillat praktike dhe moderne. Jep 3-4 opsione të ndryshme në varësi 
             <Sparkles className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white">Këshilltar Stili</h1>
-            <p className="text-xs text-slate-400">Dije çfarë të veshësh</p>
+            <h1 className="text-xl font-bold text-white">{t('styleAdvisor.title')}</h1>
+            <p className="text-xs text-slate-400">{t('styleAdvisor.subtitle')}</p>
           </div>
         </div>
       </div>
@@ -116,11 +118,11 @@ Bëji këshillat praktike dhe moderne. Jep 3-4 opsione të ndryshme në varësi 
             <div className="space-y-4">
               <div>
                 <label className="text-sm font-medium text-slate-300 mb-2 block">
-                  Lloji i takimit
+                  {t('styleAdvisor.selectOccasion')}
                 </label>
                 <Select value={occasion} onValueChange={setOccasion}>
                   <SelectTrigger className="bg-slate-900 border-slate-700 text-white">
-                    <SelectValue placeholder="Zgjidh llojin e takimit" />
+                    <SelectValue placeholder={t('styleAdvisor.selectOccasion')} />
                   </SelectTrigger>
                   <SelectContent>
                     {occasions.map(occ => (
@@ -134,19 +136,19 @@ Bëji këshillat praktike dhe moderne. Jep 3-4 opsione të ndryshme në varësi 
 
               <div>
                 <label className="text-sm font-medium text-slate-300 mb-2 block">
-                  Detaje shtesë (opsionale)
+                  {t('styleAdvisor.additionalContext')}
                 </label>
                 <Textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Shto detaje: ku do të shkoni, çfarë preferencash ke për stil, etj..."
+                  placeholder={t('styleAdvisor.placeholder')}
                   className="bg-slate-900 border-slate-700 text-white min-h-[100px]"
                 />
               </div>
 
               <div>
                 <label className="text-sm font-medium text-slate-300 mb-2 block">
-                  Ngarko foto (opsionale)
+                  {t('styleAdvisor.uploadPhoto')}
                 </label>
                 <div className="space-y-3">
                   <input
@@ -165,13 +167,13 @@ Bëji këshillat praktike dhe moderne. Jep 3-4 opsione të ndryshme në varësi 
                             alt="Uploaded" 
                             className="w-full h-48 object-cover rounded-lg"
                           />
-                          <p className="text-sm text-green-400">✓ Foto u ngarkua</p>
+                          <p className="text-sm text-green-400">✓ {t('common.uploaded', 'Photo uploaded')}</p>
                         </div>
                       ) : (
                         <div>
                           <Upload className="w-8 h-8 mx-auto mb-2 text-slate-500" />
                           <p className="text-sm text-slate-400">
-                            Kliko për të ngarkuar foto të veshjes tënde
+                            {t('styleAdvisor.uploadPhotoDesc')}
                           </p>
                         </div>
                       )}
@@ -188,12 +190,12 @@ Bëji këshillat praktike dhe moderne. Jep 3-4 opsione të ndryshme në varësi 
                 {isLoading ? (
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span>Duke analizuar...</span>
+                    <span>{t('styleAdvisor.generating')}</span>
                   </div>
                 ) : (
                   <>
                     <Sparkles className="w-5 h-5 mr-2" />
-                    Merr këshilla
+                    {t('styleAdvisor.getAdvice')}
                   </>
                 )}
               </Button>
@@ -207,7 +209,7 @@ Bëji këshillat praktike dhe moderne. Jep 3-4 opsione të ndryshme në varësi 
             <Card className="bg-gradient-to-br from-purple-500/10 to-pink-600/10 border-purple-500/30 backdrop-blur-sm p-6">
               <div className="flex items-center gap-2 mb-4">
                 <Sparkles className="w-5 h-5 text-purple-400" />
-                <h2 className="text-lg font-bold text-white">Këshillat e tua</h2>
+                <h2 className="text-lg font-bold text-white">{t('styleAdvisor.yourAdvice')}</h2>
               </div>
               {uploadedImage && (
                 <img 
@@ -233,7 +235,7 @@ Bëji këshillat praktike dhe moderne. Jep 3-4 opsione të ndryshme në varësi 
               variant="outline"
               className="w-full border-slate-700 text-white hover:bg-slate-800"
             >
-              Këshilla të reja
+              {t('styleAdvisor.getAdvice')}
             </Button>
           </div>
         )}

@@ -1,21 +1,33 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Gift, Heart, Sparkles, ShoppingBag, Star, TrendingUp, ExternalLink, MapPin, Store, Globe } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { SaveButton } from '@/components/SaveButton';
 import { base44 } from '@/api/base44Client';
-import { countries, getCitiesForCountry, getCountryByCode, getCityNameEn, getCurrencySymbol } from '@/config/countries';
+import { countries, getLocalizedCitiesForCountry, getCountryByCode, getCityNameEn, getCurrencySymbol, getLocalizedCountryName } from '@/config/countries';
 
 export default function GiftSuggestions() {
+  const { t, i18n } = useTranslation();
   const backendUrl = import.meta.env.VITE_BACKEND_URL || 'https://biseda-ai.onrender.com';
   
   // Get user's country from localStorage
   const userCountry = localStorage.getItem('userCountry') || 'AL';
   const currentCountry = getCountryByCode(userCountry);
   const currencySymbol = getCurrencySymbol(userCountry);
-  const cities = getCitiesForCountry(userCountry).map(c => c.name);
+  
+  // Get localized cities - depends on i18n.language for reactivity
+  const localizedCities = React.useMemo(() => {
+    return getLocalizedCitiesForCountry(userCountry);
+  }, [userCountry, i18n.language]);
+  
+  // Get localized country name - depends on i18n.language for reactivity
+  const localizedCountryName = React.useMemo(() => {
+    return getLocalizedCountryName(userCountry);
+  }, [userCountry, i18n.language]);
   
   const [partnerInterests, setPartnerInterests] = useState('');
+  const [partnerGender, setPartnerGender] = useState(''); // Gender of gift recipient
   const [occasion, setOccasion] = useState('');
   const [budget, setBudget] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
@@ -24,15 +36,22 @@ export default function GiftSuggestions() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingShops, setIsLoadingShops] = useState(false);
   const [isLoadingMoreShops, setIsLoadingMoreShops] = useState(false);
-  const [debugInfo, setDebugInfo] = useState('');
+  const [showLocalShops, setShowLocalShops] = useState(false); // Toggle for local shops
+
+  // Gender options for gift recipient
+  const genderOptions = [
+    { id: 'female', label: t('gifts.forHer', 'For Her'), emoji: '👩', color: 'from-pink-500 to-rose-500' },
+    { id: 'male', label: t('gifts.forHim', 'For Him'), emoji: '👨', color: 'from-blue-500 to-cyan-500' },
+    { id: 'nonbinary', label: t('gifts.forThem', 'For Them'), emoji: '🧑', color: 'from-purple-500 to-violet-500' }
+  ];
 
   const occasions = [
-    { id: 'birthday', name: 'Ditëlindje', icon: '🎂' },
-    { id: 'anniversary', name: 'Përvjetor', icon: '💕' },
-    { id: 'valentine', name: 'Dita e Dashurisë', icon: '💖' },
-    { id: 'christmas', name: 'Krishtlindje', icon: '🎄' },
-    { id: 'newyear', name: 'Viti i Ri', icon: '🎉' },
-    { id: 'justbecause', name: 'Thjesht sepse', icon: '💝' }
+    { id: 'birthday', name: t('gifts.occasions.birthday'), icon: '🎂' },
+    { id: 'anniversary', name: t('gifts.occasions.anniversary'), icon: '💕' },
+    { id: 'valentine', name: t('gifts.occasions.valentine'), icon: '💖' },
+    { id: 'christmas', name: t('gifts.occasions.christmas'), icon: '🎄' },
+    { id: 'newyear', name: t('gifts.occasions.newyear'), icon: '🎉' },
+    { id: 'justbecause', name: t('gifts.occasions.justbecause'), icon: '💝' }
   ];
 
   // Dynamic budgets based on currency
@@ -78,157 +97,217 @@ export default function GiftSuggestions() {
 
   const generateGiftSuggestions = async () => {
     if (!partnerInterests.trim()) {
-      alert('Ju lutem shkruani interesat e partnerit');
+      alert(t('gifts.enterInterests'));
       return;
     }
 
     setIsLoading(true);
     setSuggestions([]);
     
-    // If city is selected, also search for local shops
-    if (selectedCity) {
+    // If city is selected AND user wants local shops, search for them
+    if (selectedCity && showLocalShops) {
       searchLocalShops();
     }
 
     try {
-      // Create a simpler, more direct prompt for OpenAI
-      const budgetText = budget === 'low' ? '€10-30' : budget === 'medium' ? '€30-100' : budget === 'high' ? '€100-300' : budget === 'premium' ? '€300+' : 'çdo buxhet';
-      const occasionText = occasions.find(o => o.id === occasion)?.name || 'çdo rast';
+      // Get budget range based on currency
+      const budgetRanges = {
+        low: currencySymbol === '£' ? '£10-30' : currencySymbol === '$' ? '$15-40' : '€10-30',
+        medium: currencySymbol === '£' ? '£30-100' : currencySymbol === '$' ? '$40-120' : '€30-100',
+        high: currencySymbol === '£' ? '£100-250' : currencySymbol === '$' ? '$120-350' : '€100-300',
+        premium: currencySymbol === '£' ? '£250+' : currencySymbol === '$' ? '$350+' : '€300+'
+      };
+      const budgetText = budgetRanges[budget] || 'any budget';
+      const occasionText = occasions.find(o => o.id === occasion)?.name || 'any occasion';
+      const genderText = partnerGender === 'female' ? 'a woman/girlfriend/wife' : 
+                         partnerGender === 'male' ? 'a man/boyfriend/husband' : 
+                         'a person (gender-neutral)';
       
-      const prompt = `Gift ideas for someone who likes: ${partnerInterests}
+      // Improved prompt focused on REAL PURCHASABLE PRODUCTS with gender context
+      const prompt = `You are a gift recommendation expert. Suggest 6 SPECIFIC, REAL products that can be purchased ONLINE.
+
+RECIPIENT: ${genderText} who likes: "${partnerInterests}"
 Occasion: ${occasionText}
 Budget: ${budgetText}
 
-Return a simple JSON array with 5 gift ideas. Use this EXACT format:
+IMPORTANT RULES:
+1. Suggest REAL products that actually exist and can be bought online
+2. Be SPECIFIC - include brand names, model names, or specific product types
+3. Match the interests EXACTLY - if they like music, suggest music-related gifts
+4. TAILOR gifts to the recipient's gender where appropriate (e.g., jewelry styles, clothing, grooming products)
+5. Include a mix of: physical products, experiences, subscriptions, personalized items
+6. Prices should be realistic and within the budget range
+
+Return ONLY a JSON array with this EXACT format:
 [
-{"name":"Gift 1","description":"Simple description","price":"€10-20","category":"Books","rating":"4.5"},
-{"name":"Gift 2","description":"Simple description","price":"€20-30","category":"Tech","rating":"4.6"}
+{"name":"Specific Product Name","description":"Brief description of why this is perfect for them","price":"${currencySymbol}XX","category":"Category","searchTerm":"exact search term for finding this online"}
 ]
 
-RULES:
-- Use ONLY simple descriptions (no quotes, no special chars)
-- Keep it short
-- Return ONLY the JSON array, nothing else`;
+Example for "music lover" (woman):
+[
+{"name":"Rose Gold Wireless Headphones","description":"Stylish Bluetooth headphones with premium sound quality","price":"£89","category":"Electronics","searchTerm":"rose gold wireless headphones women"},
+{"name":"Spotify Premium 12-Month Subscription","description":"Ad-free music streaming with offline downloads","price":"£120","category":"Subscription","searchTerm":"spotify premium gift card 12 months"}
+]
+
+Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
 
       // Call the AI API
       const response = await base44.integrations.Core.InvokeLLM({ 
         prompt,
         conversationHistory: [],
-        systemPrompt: "Return ONLY a JSON array. No markdown. No explanations. Use simple English words in descriptions. Avoid quotes and special characters."
+        systemPrompt: "You are a gift recommendation expert. Return ONLY a valid JSON array with real, purchasable products. No markdown, no explanations. Be specific with product names and include realistic prices."
       });
 
       console.log('🎁 AI Raw Response:', response);
-      console.log('Response type:', typeof response);
-      console.log('Response length:', response?.length);
-      setDebugInfo('Parsing AI response...');
 
-      // Parse the response - EXTREME cleaning
+      // Parse the response
       let aiSuggestions = [];
-      let usedFallback = false;
       
       try {
         let cleanedResponse = String(response).trim();
         
-        // Log original
-        console.log('📝 Original response first 300 chars:', cleanedResponse.substring(0, 300));
-        
-        // Step 1: Remove markdown
+        // Remove markdown
         cleanedResponse = cleanedResponse.replace(/```json\s*/g, '').replace(/```\s*/g, '');
         
-        // Step 2: Extract JSON array (greedy match)
+        // Extract JSON array
         const arrayMatch = cleanedResponse.match(/\[[\s\S]*\]/);
         if (arrayMatch) {
           cleanedResponse = arrayMatch[0];
-          console.log('✂️ Extracted array');
         }
         
-        // Step 3: Fix newlines and weird whitespace
+        // Fix common issues
         cleanedResponse = cleanedResponse.replace(/\n/g, ' ').replace(/\r/g, '').replace(/\t/g, ' ');
-        
-        // Step 4: Fix quotes - AGGRESSIVE
-        // Replace smart quotes with regular quotes
         cleanedResponse = cleanedResponse.replace(/[""]/g, '"').replace(/['']/g, "'");
-        
-        // Step 5: Fix common issues with string values
-        // Find all string values and clean them
-        cleanedResponse = cleanedResponse.replace(/"([^"\\]*(\\.[^"\\]*)*)"/g, (match) => {
-          // Keep the outer quotes, clean the inside
-          let inner = match.substring(1, match.length - 1);
-          // Remove any stray quotes that aren't escaped
-          inner = inner.replace(/(?<!\\)"/g, '');
-          return `"${inner}"`;
-        });
-        
-        // Step 6: Remove trailing commas
         cleanedResponse = cleanedResponse.replace(/,(\s*[}\]])/g, '$1');
-        
-        // Step 7: Ensure proper spacing
         cleanedResponse = cleanedResponse.replace(/\s+/g, ' ');
         
-        console.log('🧹 Cleaned response first 300 chars:', cleanedResponse.substring(0, 300));
+        // Parse
+        aiSuggestions = JSON.parse(cleanedResponse);
         
-        // Try to parse
-        try {
-          aiSuggestions = JSON.parse(cleanedResponse);
-          console.log('✅ Parsed successfully!');
-        } catch (e) {
-          // Last resort: try to manually extract objects
-          console.log('⚠️ JSON.parse failed, trying manual extraction...');
-          const objPattern = /\{[^{}]*"name"[^{}]*\}/g;
-          const matches = cleanedResponse.match(objPattern);
-          if (matches && matches.length > 0) {
-            aiSuggestions = matches.map(m => {
-              try {
-                return JSON.parse(m);
-              } catch {
-                return null;
-              }
-            }).filter(x => x !== null);
-            console.log('✅ Manually extracted', aiSuggestions.length, 'objects');
-          } else {
-            throw e;
-          }
-        }
-        
-        // Validate
         if (!Array.isArray(aiSuggestions) || aiSuggestions.length === 0) {
           throw new Error('No valid suggestions found');
         }
         
-        console.log('✅ Final count:', aiSuggestions.length, 'suggestions');
-        setDebugInfo(`✅ Using Real AI suggestions! (${aiSuggestions.length} items)`);
+        console.log('✅ Parsed', aiSuggestions.length, 'suggestions');
         
       } catch (parseError) {
-        console.error('❌ All parsing attempts failed:', parseError.message);
-        console.error('📄 Full raw response:', response);
-        
-        // Fallback
-        aiSuggestions = generateMockSuggestions(partnerInterests, occasion, budget);
-        usedFallback = true;
-        setDebugInfo('⚠️ AI parsing failed - using fallback. Check console for details.');
+        console.error('❌ Parsing failed:', parseError.message);
+        aiSuggestions = generateSmartFallback(partnerInterests, occasion, budget);
       }
 
-      // Add IDs and affiliate links
-      const suggestionsWithIds = aiSuggestions.slice(0, 5).map((suggestion, index) => ({
-        id: index + 1,
-        name: suggestion.name || suggestion.title || 'Dhuratë',
-        description: suggestion.description || 'Përshkrim i dhuratës',
-        price: suggestion.price || '€50-100',
-        category: suggestion.category || 'General',
-        rating: String(suggestion.rating || '4.5'),
-        affiliateLink: `https://www.amazon.com/s?k=${encodeURIComponent(suggestion.name || suggestion.title || partnerInterests)}`
-      }));
+      // Add IDs and multiple shopping links
+      const suggestionsWithIds = aiSuggestions.slice(0, 6).map((suggestion, index) => {
+        const searchTerm = suggestion.searchTerm || suggestion.name || partnerInterests;
+        const encodedSearch = encodeURIComponent(searchTerm);
+        
+        return {
+          id: index + 1,
+          name: suggestion.name || 'Gift Idea',
+          description: suggestion.description || 'Perfect gift for your loved one',
+          price: suggestion.price || `${currencySymbol}50-100`,
+          category: suggestion.category || 'General',
+          rating: String(suggestion.rating || (4.0 + Math.random()).toFixed(1)),
+          // Multiple shopping options
+          shoppingLinks: {
+            amazon: `https://www.amazon.co.uk/s?k=${encodedSearch}`,
+            etsy: `https://www.etsy.com/search?q=${encodedSearch}`,
+            ebay: `https://www.ebay.co.uk/sch/i.html?_nkw=${encodedSearch}`,
+            google: `https://www.google.com/search?tbm=shop&q=${encodedSearch}`
+          }
+        };
+      });
 
-      console.log('🎁 Final suggestions to display:', suggestionsWithIds);
+      console.log('🎁 Final suggestions:', suggestionsWithIds);
       setSuggestions(suggestionsWithIds);
     } catch (error) {
       console.error('Error generating suggestions:', error);
-      // Fallback to mock suggestions on error
-      const mockSuggestions = generateMockSuggestions(partnerInterests, occasion, budget);
-      setSuggestions(mockSuggestions);
+      const fallback = generateSmartFallback(partnerInterests, occasion, budget);
+      setSuggestions(fallback);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Smart fallback that actually matches the interests
+  const generateSmartFallback = (interests, occasion, budget) => {
+    const interestLower = interests.toLowerCase();
+    const gender = partnerGender; // Use the selected gender
+    const genderSuffix = gender === 'female' ? ' for women' : gender === 'male' ? ' for men' : '';
+    
+    // Category-specific suggestions based on keywords AND gender
+    let suggestions = [];
+    
+    if (interestLower.includes('music') || interestLower.includes('guitar') || interestLower.includes('piano')) {
+      if (gender === 'female') {
+        suggestions = [
+          { name: 'Rose Gold Wireless Headphones', description: 'Stylish headphones with premium sound quality', price: `${currencySymbol}79`, category: 'Electronics', searchTerm: 'rose gold wireless headphones women' },
+          { name: 'Vinyl Record Subscription Box', description: 'Monthly delivery of curated vinyl records', price: `${currencySymbol}25/month`, category: 'Subscription', searchTerm: 'vinyl record subscription' },
+          { name: 'Concert Tickets Gift Card', description: 'Let her choose her own live music experience', price: `${currencySymbol}100`, category: 'Experience', searchTerm: 'concert tickets gift card' },
+          { name: 'Music Note Jewelry Set', description: 'Elegant necklace and earrings with music notes', price: `${currencySymbol}45`, category: 'Jewelry', searchTerm: 'music note jewelry set women' },
+          { name: 'Portable Bluetooth Speaker (Pink)', description: 'Take the music anywhere with style', price: `${currencySymbol}89`, category: 'Electronics', searchTerm: 'portable bluetooth speaker pink' },
+          { name: 'Personalized Song Print', description: 'Custom artwork of your special song', price: `${currencySymbol}45`, category: 'Personalized', searchTerm: 'personalized song print' }
+        ];
+      } else if (gender === 'male') {
+        suggestions = [
+          { name: 'Premium Over-Ear Headphones', description: 'Studio-quality sound for serious music lovers', price: `${currencySymbol}129`, category: 'Electronics', searchTerm: 'premium over ear headphones men' },
+          { name: 'Vinyl Record Subscription Box', description: 'Monthly delivery of curated vinyl records', price: `${currencySymbol}25/month`, category: 'Subscription', searchTerm: 'vinyl record subscription' },
+          { name: 'Concert Tickets Gift Card', description: 'Let him choose his own live music experience', price: `${currencySymbol}100`, category: 'Experience', searchTerm: 'concert tickets gift card' },
+          { name: 'Guitar Accessories Kit', description: 'Picks, capo, tuner and more for guitarists', price: `${currencySymbol}35`, category: 'Music', searchTerm: 'guitar accessories kit' },
+          { name: 'JBL Portable Bluetooth Speaker', description: 'Powerful sound in a rugged design', price: `${currencySymbol}89`, category: 'Electronics', searchTerm: 'JBL portable bluetooth speaker' },
+          { name: 'Band T-Shirt Collection', description: 'Official merchandise from favorite bands', price: `${currencySymbol}30`, category: 'Clothing', searchTerm: 'band t-shirt men' }
+        ];
+      } else {
+        suggestions = [
+          { name: 'Wireless Bluetooth Headphones', description: 'Premium sound quality for music lovers', price: `${currencySymbol}79`, category: 'Electronics', searchTerm: 'wireless bluetooth headphones' },
+          { name: 'Vinyl Record Subscription Box', description: 'Monthly delivery of curated vinyl records', price: `${currencySymbol}25/month`, category: 'Subscription', searchTerm: 'vinyl record subscription' },
+          { name: 'Concert Tickets Gift Card', description: 'Let them choose their own live music experience', price: `${currencySymbol}100`, category: 'Experience', searchTerm: 'concert tickets gift card' },
+          { name: 'Music Theory Book & Accessories', description: 'Learn music with this comprehensive guide', price: `${currencySymbol}35`, category: 'Books', searchTerm: 'music theory book' },
+          { name: 'Portable Bluetooth Speaker', description: 'Take the music anywhere with premium sound', price: `${currencySymbol}89`, category: 'Electronics', searchTerm: 'portable bluetooth speaker JBL' },
+          { name: 'Personalized Song Print', description: 'Custom artwork of their favorite song', price: `${currencySymbol}45`, category: 'Personalized', searchTerm: 'personalized song print' }
+        ];
+      }
+    } else if (interestLower.includes('gaming') || interestLower.includes('video game') || interestLower.includes('playstation') || interestLower.includes('xbox')) {
+      suggestions = [
+        { name: 'Gaming Headset', description: 'Immersive audio for the ultimate gaming experience', price: `${currencySymbol}89`, category: 'Gaming', searchTerm: `gaming headset${genderSuffix}` },
+        { name: 'PlayStation/Xbox Gift Card', description: 'Let them choose their next game', price: `${currencySymbol}50`, category: 'Gift Card', searchTerm: 'playstation gift card' },
+        { name: 'RGB Gaming Mouse', description: 'Precision gaming mouse with customizable lighting', price: `${currencySymbol}59`, category: 'Gaming', searchTerm: 'rgb gaming mouse' },
+        { name: 'Gaming Chair', description: 'Ergonomic comfort for long gaming sessions', price: `${currencySymbol}199`, category: 'Furniture', searchTerm: `gaming chair${genderSuffix}` },
+        { name: 'Game Merchandise', description: 'Collectibles from their favorite games', price: `${currencySymbol}35`, category: 'Collectibles', searchTerm: 'gaming merchandise' },
+        { name: 'Streaming Setup Kit', description: 'Everything needed to start streaming', price: `${currencySymbol}149`, category: 'Electronics', searchTerm: 'streaming starter kit' }
+      ];
+    } else if (interestLower.includes('book') || interestLower.includes('reading') || interestLower.includes('literature')) {
+      suggestions = [
+        { name: 'Kindle Paperwhite', description: 'Read anywhere with this waterproof e-reader', price: `${currencySymbol}129`, category: 'Electronics', searchTerm: 'kindle paperwhite' },
+        { name: 'Book Subscription Box', description: 'Monthly curated book deliveries', price: `${currencySymbol}30/month`, category: 'Subscription', searchTerm: `book subscription box${genderSuffix}` },
+        { name: 'Personalized Leather Bookmark', description: 'Handcrafted bookmark with their name', price: `${currencySymbol}25`, category: 'Personalized', searchTerm: 'personalized leather bookmark' },
+        { name: 'Book Lover Gift Set', description: 'Candle, mug, and reading accessories', price: `${currencySymbol}45`, category: 'Gift Set', searchTerm: `book lover gift set${genderSuffix}` },
+        { name: 'First Edition Book', description: 'Collectible first edition of a classic', price: `${currencySymbol}85`, category: 'Collectibles', searchTerm: 'first edition book' },
+        { name: 'Audible Gift Membership', description: '3-month audiobook subscription', price: `${currencySymbol}30`, category: 'Subscription', searchTerm: 'audible gift membership' }
+      ];
+    } else {
+      // Generic but gender-aware suggestions
+      const forText = gender === 'female' ? 'for her' : gender === 'male' ? 'for him' : '';
+      suggestions = [
+        { name: `${interests} Gift Set`, description: `Curated collection for ${interests} enthusiasts`, price: `${currencySymbol}55`, category: 'Gift Set', searchTerm: `${interests} gift set ${forText}`.trim() },
+        { name: `${interests} Experience`, description: `Memorable experience related to ${interests}`, price: `${currencySymbol}99`, category: 'Experience', searchTerm: `${interests} experience gift ${forText}`.trim() },
+        { name: `${interests} Accessories`, description: `Premium accessories for ${interests} lovers`, price: `${currencySymbol}45`, category: 'Accessories', searchTerm: `${interests} accessories ${forText}`.trim() },
+        { name: `Personalized ${interests} Gift`, description: `Custom-made gift celebrating their love of ${interests}`, price: `${currencySymbol}65`, category: 'Personalized', searchTerm: `personalized ${interests} gift ${forText}`.trim() },
+        { name: `${interests} Subscription`, description: `Monthly subscription for ${interests} enthusiasts`, price: `${currencySymbol}25/month`, category: 'Subscription', searchTerm: `${interests} subscription box ${forText}`.trim() },
+        { name: `${interests} Book/Guide`, description: `The ultimate guide to ${interests}`, price: `${currencySymbol}30`, category: 'Books', searchTerm: `${interests} book guide` }
+      ];
+    }
+    
+    return suggestions.map((s, i) => ({
+      id: i + 1,
+      ...s,
+      rating: (4.0 + Math.random()).toFixed(1),
+      shoppingLinks: {
+        amazon: `https://www.amazon.co.uk/s?k=${encodeURIComponent(s.searchTerm)}`,
+        etsy: `https://www.etsy.com/search?q=${encodeURIComponent(s.searchTerm)}`,
+        ebay: `https://www.ebay.co.uk/sch/i.html?_nkw=${encodeURIComponent(s.searchTerm)}`,
+        google: `https://www.google.com/search?tbm=shop&q=${encodeURIComponent(s.searchTerm)}`
+      }
+    }));
   };
 
   const searchLocalShops = async (isLoadMore = false) => {
@@ -308,60 +387,6 @@ RULES:
     searchLocalShops(true);
   };
 
-  const generateMockSuggestions = (interests, occasion, budget) => {
-    const lowBudgetGifts = [
-      { name: 'Libër Personalizuar', description: 'Libër me foto dhe kujtime të veçanta', price: '€15-25', category: 'Personal', affiliateLink: 'https://example.com/gift1' },
-      { name: 'Kuti Çokollatash Premium', description: 'Çokollata artizanale me shije të ndryshme', price: '€20-30', category: 'Food', affiliateLink: 'https://example.com/gift2' },
-      { name: 'Kuti Surprizë me Produkte Kujdesi', description: 'Produkte kujdesi dhe relaksimi', price: '€25-35', category: 'Wellness', affiliateLink: 'https://example.com/gift3' }
-    ];
-
-    const mediumBudgetGifts = [
-      { name: 'Orë Elegante', description: 'Orë me stil modern dhe elegant', price: '€50-80', category: 'Accessories', affiliateLink: 'https://example.com/gift4' },
-      { name: 'Parfum Premium', description: 'Parfum me erë të veçantë dhe elegante', price: '€60-100', category: 'Fragrance', affiliateLink: 'https://example.com/gift5' },
-      { name: 'Voucher Spa & Relaksim', description: 'Ditë relaksimi në spa lokale', price: '€70-100', category: 'Experience', affiliateLink: 'https://example.com/gift6' }
-    ];
-
-    const highBudgetGifts = [
-      { name: 'Bijuteri Elegante', description: 'Bijuteri me diamant ose ari', price: '€150-250', category: 'Jewelry', affiliateLink: 'https://example.com/gift7' },
-      { name: 'Voucher Udhëtim Romantik', description: 'Weekend romantik në destinacion të bukur', price: '€200-300', category: 'Experience', affiliateLink: 'https://example.com/gift8' },
-      { name: 'Teknologji Premium', description: 'Apple Watch, AirPods Pro, ose tablet', price: '€250-350', category: 'Electronics', affiliateLink: 'https://example.com/gift9' }
-    ];
-
-    const premiumGifts = [
-      { name: 'Bijuteri Luksoze', description: 'Bijuteri me diamant ose ari 18k', price: '€400+', category: 'Jewelry', affiliateLink: 'https://example.com/gift10' },
-      { name: 'Udhëtim Luksoz', description: 'Udhëtim në destinacion luksoz për 2-3 ditë', price: '€500+', category: 'Experience', affiliateLink: 'https://example.com/gift11' },
-      { name: 'Produkt Luksoz Personalizuar', description: 'Produkt luksoz i personalizuar me emër/initiale', price: '€300+', category: 'Luxury', affiliateLink: 'https://example.com/gift12' }
-    ];
-
-    let giftPool = [];
-    if (budget === 'low') giftPool = lowBudgetGifts;
-    else if (budget === 'medium') giftPool = mediumBudgetGifts;
-    else if (budget === 'high') giftPool = highBudgetGifts;
-    else if (budget === 'premium') giftPool = premiumGifts;
-    else giftPool = [...lowBudgetGifts, ...mediumBudgetGifts];
-
-    // Select 5 random gifts
-    const selected = [];
-    const pool = [...giftPool];
-    for (let i = 0; i < Math.min(5, pool.length); i++) {
-      const randomIndex = Math.floor(Math.random() * pool.length);
-      selected.push({
-        id: i + 1,
-        ...pool[randomIndex],
-        rating: (4.0 + Math.random() * 1.0).toFixed(1)
-      });
-      pool.splice(randomIndex, 1);
-    }
-
-    return selected;
-  };
-
-  const handleAffiliateClick = (link, giftName) => {
-    // Track affiliate click
-    console.log(`Affiliate click: ${giftName} - ${link}`);
-    // Open affiliate link in new tab
-    window.open(link, '_blank', 'noopener,noreferrer');
-  };
 
   return (
     <div className="px-6 pt-20 pb-32 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950">
@@ -378,35 +403,53 @@ RULES:
           </div>
         </div>
         <h1 className="text-3xl font-extrabold bg-gradient-to-r from-pink-300 via-rose-300 to-red-300 bg-clip-text text-transparent mb-2">
-          Sugjerime Dhuratash 🎁
+          {t('gifts.title')}
         </h1>
-        <p className="text-slate-400 text-sm">Gjej dhuratën perfekte bazuar në interesat e partnerit</p>
-        {debugInfo && (
-          <div className="mt-3 p-2 bg-blue-500/20 border border-blue-500/50 rounded-lg">
-            <p className="text-blue-300 text-xs font-mono">{debugInfo}</p>
-          </div>
-        )}
+        <p className="text-slate-400 text-sm">{t('gifts.subtitle')}</p>
       </div>
 
       {/* Partner Interests Input */}
       <div className="mb-6">
         <label className="block text-sm font-semibold text-white mb-2">
-          Çfarë i pëlqen partnerit tënd? (interesat, hobby-t, etj.)
+          {t('gifts.partnerInterests')}
         </label>
         <textarea
           value={partnerInterests}
           onChange={(e) => setPartnerInterests(e.target.value)}
-          placeholder="P.sh: I pëlqen muzika, futbolli, libra, teknologjia, moda..."
+          placeholder={t('gifts.partnerInterestsPlaceholder')}
           className="w-full p-4 bg-slate-800/80 border-2 border-purple-500/30 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-purple-500 resize-none"
           rows={3}
           style={{ fontSize: '16px' }}
         />
       </div>
 
+      {/* Gender Selection */}
+      <div className="mb-6">
+        <label className="block text-sm font-semibold text-white mb-3">
+          {t('gifts.giftFor', 'Gift for')}
+        </label>
+        <div className="grid grid-cols-3 gap-3">
+          {genderOptions.map((g) => (
+            <button
+              key={g.id}
+              onClick={() => setPartnerGender(g.id)}
+              className={`p-4 rounded-xl text-center transition-all ${
+                partnerGender === g.id
+                  ? `bg-gradient-to-r ${g.color} text-white shadow-lg scale-105`
+                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white border-2 border-slate-700'
+              }`}
+            >
+              <div className="text-3xl mb-1">{g.emoji}</div>
+              <div className="text-xs font-medium">{g.label}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Occasion Selection */}
       <div className="mb-6">
         <label className="block text-sm font-semibold text-white mb-3">
-          Rast special
+          {t('gifts.specialOccasion')}
         </label>
         <div className="grid grid-cols-3 gap-2">
           {occasions.map((occ) => (
@@ -429,7 +472,7 @@ RULES:
       {/* Budget Selection */}
       <div className="mb-6">
         <label className="block text-sm font-semibold text-white mb-3">
-          Buxheti
+          {t('gifts.budget')}
         </label>
         <div className="grid grid-cols-4 gap-2">
           {budgets.map((bud) => (
@@ -453,40 +496,54 @@ RULES:
         <div className="flex items-center gap-2">
           <Globe className="w-4 h-4 text-cyan-400" />
           <span className="text-cyan-300 text-sm font-medium">
-            Vendndodhja: {currentCountry?.flag} {currentCountry?.name}
+            {t('gifts.location')}: {currentCountry?.flag} {localizedCountryName}
           </span>
           <a href="#/profile" className="ml-auto text-xs text-cyan-400 hover:text-cyan-300 underline">
-            Ndrysho
+            {t('gifts.change')}
           </a>
         </div>
       </div>
 
-      {/* City Selection (Optional - for local shops) */}
+      {/* Local Shops Toggle (Optional) */}
       <div className="mb-6">
-        <label className="block text-sm font-semibold text-white mb-3 flex items-center gap-2">
-          <MapPin className="w-4 h-4 text-cyan-400" />
-          Qyteti (opsionale - për dyqane lokale)
-        </label>
-        <div className="flex flex-wrap gap-2">
-          {cities.map((city) => (
-            <button
-              key={city}
-              onClick={() => setSelectedCity(selectedCity === city ? '' : city)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-                selectedCity === city
-                  ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/30 scale-105'
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white'
-              }`}
-            >
-              {city}
-            </button>
-          ))}
-        </div>
-        {selectedCity && (
-          <p className="text-xs text-cyan-400 mt-2 flex items-center gap-1">
-            <Store className="w-3 h-3" />
-            Do të shfaqen edhe dyqane lokale në {selectedCity}
-          </p>
+        <button
+          onClick={() => setShowLocalShops(!showLocalShops)}
+          className={`w-full p-3 rounded-xl text-sm font-medium transition-all flex items-center justify-between ${
+            showLocalShops
+              ? 'bg-cyan-500/20 border-2 border-cyan-500/50 text-cyan-300'
+              : 'bg-slate-800/50 border-2 border-slate-700 text-slate-400 hover:border-slate-600'
+          }`}
+        >
+          <span className="flex items-center gap-2">
+            <Store className="w-4 h-4" />
+            {t('gifts.alsoShowLocalShops', 'Also show local shops near me')}
+          </span>
+          <span className={`w-10 h-6 rounded-full transition-all flex items-center ${showLocalShops ? 'bg-cyan-500 justify-end' : 'bg-slate-600 justify-start'}`}>
+            <span className="w-5 h-5 bg-white rounded-full mx-0.5 shadow-md"></span>
+          </span>
+        </button>
+        
+        {showLocalShops && (
+          <div className="mt-3 p-3 bg-slate-800/50 rounded-xl">
+            <label className="block text-xs font-medium text-slate-400 mb-2">
+              {t('gifts.selectCity', 'Select your city')}:
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {localizedCities.map((city) => (
+                <button
+                  key={city.nameEn}
+                  onClick={() => setSelectedCity(selectedCity === city.displayName ? '' : city.displayName)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                    selectedCity === city.displayName
+                      ? 'bg-cyan-500 text-white'
+                      : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                  }`}
+                >
+                  {city.displayName}
+                </button>
+              ))}
+            </div>
+          </div>
         )}
       </div>
 
@@ -500,12 +557,12 @@ RULES:
           {isLoading ? (
             <span className="flex items-center justify-center gap-2">
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              <span>Duke gjeneruar sugjerime...</span>
+              <span>{t('gifts.generating')}</span>
             </span>
           ) : (
             <span className="flex items-center justify-center gap-2">
               <Sparkles className="w-5 h-5" />
-              <span>Gjenero Sugjerime</span>
+              <span>{t('gifts.generateSuggestions')}</span>
             </span>
           )}
         </Button>
@@ -515,7 +572,7 @@ RULES:
       {isLoadingShops && selectedCity && (
         <div className="text-center py-6 mb-6">
           <div className="inline-block w-6 h-6 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-slate-400 mt-3 text-sm">Duke kërkuar dyqane lokale në {selectedCity}...</p>
+          <p className="text-slate-400 mt-3 text-sm">{t('gifts.searchingLocalShops', { city: selectedCity })}</p>
         </div>
       )}
 
@@ -526,7 +583,7 @@ RULES:
             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent"></div>
             <h2 className="text-base font-bold text-white flex items-center gap-2">
               <Store className="w-5 h-5 text-cyan-400" />
-              Dyqane Lokale në {selectedCity}
+              {t('gifts.localShopsIn', { city: selectedCity })}
             </h2>
             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent"></div>
           </div>
@@ -577,7 +634,7 @@ RULES:
                           className="inline-flex items-center gap-1 px-3 py-1.5 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/50 rounded-lg text-xs font-semibold text-cyan-300 transition-all"
                         >
                           <MapPin className="w-3 h-3" />
-                          Shiko në Google Maps
+                          {t('gifts.viewOnGoogleMaps')}
                         </a>
                       )}
                     </div>
@@ -597,12 +654,12 @@ RULES:
               {isLoadingMoreShops ? (
                 <div className="flex items-center justify-center gap-2">
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                  <span>Duke ngarkuar më shumë dyqane...</span>
+                  <span>{t('gifts.loadingMoreShops')}</span>
                 </div>
               ) : (
                 <div className="flex items-center justify-center gap-2">
                   <Store className="w-5 h-5" />
-                  <span>Ngarko Më Shumë Dyqane</span>
+                  <span>{t('gifts.loadMoreShops')}</span>
                 </div>
               )}
             </Button>
@@ -614,18 +671,18 @@ RULES:
       {isLoading && (
         <div className="text-center py-8">
           <div className="inline-block w-8 h-8 border-4 border-pink-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-slate-400 mt-4 text-sm">Duke gjeneruar ide dhuratash...</p>
+          <p className="text-slate-400 mt-4 text-sm">{t('gifts.generatingIdeas')}</p>
         </div>
       )}
 
-      {/* AI Gift Ideas - SHOWN SECOND (After Local Shops) */}
+      {/* Online Gift Suggestions */}
       {!isLoading && suggestions.length > 0 && (
         <div className="mb-6">
           <div className="flex items-center justify-center gap-2 mb-4">
             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-pink-500 to-transparent"></div>
             <h2 className="text-base font-bold text-white flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-pink-400" />
-              Ide Dhuratash (Online)
+              <ShoppingBag className="w-5 h-5 text-pink-400" />
+              {t('gifts.giftIdeasOnline', 'Online Gift Ideas')}
             </h2>
             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-pink-500 to-transparent"></div>
           </div>
@@ -634,53 +691,86 @@ RULES:
             {suggestions.map((gift) => (
               <Card
                 key={gift.id}
-                className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-2 border-pink-500/30 backdrop-blur-sm hover:scale-[1.02] transition-all"
+                className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-2 border-pink-500/30 backdrop-blur-sm hover:scale-[1.01] transition-all"
               >
-                <div className="p-5">
-                  <div className="flex items-start gap-4">
+                <div className="p-4">
+                  <div className="flex items-start gap-3">
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center shrink-0 shadow-lg">
                       <Gift className="w-6 h-6 text-white" />
                     </div>
                     <div className="flex-1">
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <h3 className="text-lg font-bold text-white mb-1">{gift.name}</h3>
-                          <div className="flex items-center gap-2 mb-2">
-                            {gift.rating && (
-                              <div className="flex items-center gap-1">
-                                <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                                <span className="text-xs text-slate-300">{gift.rating}</span>
-                              </div>
-                            )}
-                            {gift.category && (
-                              <span className="px-2 py-0.5 bg-pink-500/20 text-pink-300 rounded-lg text-xs font-semibold">
-                                {gift.category}
-                              </span>
-                            )}
-                          </div>
-                        </div>
+                      <div className="flex items-start justify-between mb-1">
+                        <h3 className="text-base font-bold text-white">{gift.name}</h3>
                         {gift.price && (
-                          <span className="text-sm font-bold text-pink-400 shrink-0">
+                          <span className="text-sm font-bold text-pink-400 shrink-0 ml-2">
                             {gift.price}
                           </span>
                         )}
                       </div>
-                      <p className="text-slate-300 text-sm mb-4 leading-relaxed">{gift.description}</p>
-                      <div className="space-y-2">
-                        <Button
-                          onClick={() => handleAffiliateClick(gift.affiliateLink, gift.name)}
-                          className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white"
-                        >
-                          <span className="flex items-center justify-center gap-2">
-                            <ShoppingBag className="w-4 h-4" />
-                            <span>Shiko dhe Blij</span>
-                            <ExternalLink className="w-4 h-4" />
+                      <div className="flex items-center gap-2 mb-2">
+                        {gift.rating && (
+                          <div className="flex items-center gap-1">
+                            <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+                            <span className="text-xs text-slate-400">{gift.rating}</span>
+                          </div>
+                        )}
+                        {gift.category && (
+                          <span className="px-2 py-0.5 bg-pink-500/20 text-pink-300 rounded text-xs">
+                            {gift.category}
                           </span>
-                        </Button>
+                        )}
+                      </div>
+                      <p className="text-slate-400 text-sm mb-3">{gift.description}</p>
+                      
+                      {/* Multiple Shopping Links */}
+                      <div className="space-y-2">
+                        <p className="text-xs text-slate-500 font-medium">{t('gifts.shopOn', 'Shop on')}:</p>
+                        <div className="grid grid-cols-2 gap-2">
+                          {gift.shoppingLinks?.amazon && (
+                            <a
+                              href={gift.shoppingLinks.amazon}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center justify-center gap-1.5 px-3 py-2 bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/50 rounded-lg text-xs font-semibold text-orange-300 transition-all"
+                            >
+                              🛒 Amazon
+                            </a>
+                          )}
+                          {gift.shoppingLinks?.etsy && (
+                            <a
+                              href={gift.shoppingLinks.etsy}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center justify-center gap-1.5 px-3 py-2 bg-orange-600/20 hover:bg-orange-600/30 border border-orange-600/50 rounded-lg text-xs font-semibold text-orange-200 transition-all"
+                            >
+                              🎨 Etsy
+                            </a>
+                          )}
+                          {gift.shoppingLinks?.ebay && (
+                            <a
+                              href={gift.shoppingLinks.ebay}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center justify-center gap-1.5 px-3 py-2 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/50 rounded-lg text-xs font-semibold text-blue-300 transition-all"
+                            >
+                              🏷️ eBay
+                            </a>
+                          )}
+                          {gift.shoppingLinks?.google && (
+                            <a
+                              href={gift.shoppingLinks.google}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center justify-center gap-1.5 px-3 py-2 bg-green-500/20 hover:bg-green-500/30 border border-green-500/50 rounded-lg text-xs font-semibold text-green-300 transition-all"
+                            >
+                              🔍 Google
+                            </a>
+                          )}
+                        </div>
                         <SaveButton 
                           item={gift} 
                           type="gift"
-                          className="w-full"
+                          className="w-full mt-2"
                         />
                       </div>
                     </div>
@@ -696,8 +786,8 @@ RULES:
       {!isLoading && !isLoadingShops && suggestions.length === 0 && localShops.length === 0 && (
         <div className="text-center py-12">
           <div className="text-6xl mb-3">🎁</div>
-          <p className="text-slate-400 text-sm mb-2">Shkruani interesat e partnerit dhe zgjidhni rastin</p>
-          <p className="text-slate-500 text-xs">AI do të gjenerojë sugjerime perfekte për dhuratë</p>
+          <p className="text-slate-400 text-sm mb-2">{t('gifts.emptyState')}</p>
+          <p className="text-slate-500 text-xs">{t('gifts.emptyStateSubtitle')}</p>
         </div>
       )}
 
@@ -706,7 +796,7 @@ RULES:
         <Card className="mt-6 bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-2 border-purple-500/30 backdrop-blur-sm">
           <div className="p-4">
             <p className="text-xs text-slate-400 text-center">
-              💡 Klikoni "Shiko dhe Blij" për të hapur lidhjen e partnerit. Biseda.ai merr komision të vogël për blerjet që bëni përmes lidhjeve tona.
+              {t('gifts.affiliateNote')}
             </p>
           </div>
         </Card>

@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MapPin, Coffee, UtensilsCrossed, Film, Music, Dumbbell, Palette, TreePine, Sparkles, Heart, Star, Crown, TrendingUp, Globe, X, Search, Plus, ChevronRight } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { SaveButton } from '@/components/SaveButton';
 import { getBackendUrl } from '@/utils/getBackendUrl';
 import { base44 } from '@/api/base44Client';
-import { countries, getCitiesForCountry, getCountryByCode, getCityNameEn } from '@/config/countries';
+import { countries, getLocalizedCitiesForCountry, getCountryByCode, getCityNameEn, getLocalizedCountryName } from '@/config/countries';
 
 const backendUrl = getBackendUrl();
 
 export default function FirstDates() {
+  const { t, i18n } = useTranslation();
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [suggestions, setSuggestions] = useState([]);
@@ -24,64 +26,75 @@ export default function FirstDates() {
   // Get user's country from localStorage
   const userCountry = localStorage.getItem('userCountry') || 'AL';
   const currentCountry = getCountryByCode(userCountry);
-  const cities = getCitiesForCountry(userCountry).map(c => c.name);
+  
+  // Get localized cities - depends on i18n.language for reactivity
+  const localizedCities = React.useMemo(() => {
+    return getLocalizedCitiesForCountry(userCountry);
+  }, [userCountry, i18n.language]);
+  
+  // Get localized country name - depends on i18n.language for reactivity
+  const localizedCountryName = React.useMemo(() => {
+    return getLocalizedCountryName(userCountry);
+  }, [userCountry, i18n.language]);
+  
+  const cities = localizedCities.map(c => c.displayName);
 
   const categories = [
     {
       id: 'restaurants',
-      name: 'Restorante',
+      name: t('dates.restaurants'),
       icon: UtensilsCrossed,
       color: 'from-red-500 to-orange-500',
-      description: 'Restorante romantike dhe me atmosferë të mirë'
+      description: t('dates.restaurantsDesc')
     },
     {
       id: 'cafes',
-      name: 'Kafene',
+      name: t('dates.cafes'),
       icon: Coffee,
       color: 'from-amber-500 to-yellow-500',
-      description: 'Kafene të bukura për biseda të rehatshme'
+      description: t('dates.cafesDesc')
     },
     {
       id: 'bars',
-      name: 'Bare & Rooftop',
+      name: t('dates.bars'),
       icon: Sparkles,
       color: 'from-purple-500 to-pink-500',
-      description: 'Bare dhe rooftop bars për një mbrëmje të këndshme'
+      description: t('dates.barsDesc')
     },
     {
       id: 'cinema',
-      name: 'Kinema',
+      name: t('dates.cinema'),
       icon: Film,
       color: 'from-blue-500 to-indigo-500',
-      description: 'Filma dhe aktivitete kinematografike'
+      description: t('dates.cinemaDesc')
     },
     {
       id: 'music',
-      name: 'Muzikë & Live',
+      name: t('dates.music'),
       icon: Music,
       color: 'from-pink-500 to-rose-500',
-      description: 'Koncerte dhe evente muzikore'
+      description: t('dates.musicDesc')
     },
     {
       id: 'activities',
-      name: 'Aktivitetet',
+      name: t('dates.activities'),
       icon: Dumbbell,
       color: 'from-green-500 to-emerald-500',
-      description: 'Bowling, escape rooms, dhe aktivitete të tjera'
+      description: t('dates.activitiesDesc')
     },
     {
       id: 'culture',
-      name: 'Kulturë & Art',
+      name: t('dates.culture'),
       icon: Palette,
       color: 'from-violet-500 to-purple-500',
-      description: 'Muzee, galeri, dhe evente kulturore'
+      description: t('dates.cultureDesc')
     },
     {
       id: 'nature',
-      name: 'Natyra & Parqe',
+      name: t('dates.nature'),
       icon: TreePine,
       color: 'from-green-600 to-teal-500',
-      description: 'Parqe, shëtitje, dhe aktivitete në natyrë'
+      description: t('dates.natureDesc')
     }
   ];
 
@@ -225,7 +238,7 @@ export default function FirstDates() {
 
   const handleSearch = async () => {
     if (!selectedCity || !selectedCategory) {
-      alert('Ju lutem zgjidhni qytetin dhe kategorinë!');
+      alert(t('dates.selectCityAndCategory'));
       return;
     }
     await generateAISuggestions(selectedCity, selectedCategory, false);
@@ -446,17 +459,17 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
           </div>
         </div>
         <h1 className="text-3xl font-extrabold bg-gradient-to-r from-pink-300 via-rose-300 to-red-300 bg-clip-text text-transparent mb-2">
-          Takime të Para 💕
+          {t('dates.title')}
         </h1>
-        <p className="text-slate-400 text-sm">Gjej ide perfekte për takimin e parë</p>
+        <p className="text-slate-400 text-sm">{t('dates.subtitle')}</p>
       </div>
 
       {/* City Selection - Modern Design */}
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-3">
           <MapPin className="w-5 h-5 text-purple-400" />
-          <h2 className="text-lg font-bold text-white">Zgjidh Qytetin</h2>
-          <span className="text-xs text-slate-500 ml-auto">{currentCountry?.flag} {currentCountry?.name}</span>
+          <h2 className="text-lg font-bold text-white">{t('dates.selectCity')}</h2>
+          <span className="text-xs text-slate-500 ml-auto">{currentCountry?.flag} {localizedCountryName}</span>
         </div>
         <div className="flex flex-wrap gap-2">
           {/* Show first 12 cities, or all if showMoreCities */}
@@ -481,7 +494,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
               className="px-4 py-2.5 rounded-xl font-semibold text-sm transition-all bg-slate-700/50 text-slate-300 hover:bg-slate-600/50 border border-slate-600/50 flex items-center gap-1.5"
             >
               <ChevronRight className="w-4 h-4" />
-              <span>+{cities.length - 12} të tjera</span>
+              <span>+{cities.length - 12} {t('dates.more')}</span>
             </button>
           )}
           
@@ -491,14 +504,14 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
             className="px-4 py-2.5 rounded-xl font-semibold text-sm transition-all bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-400 border border-cyan-500/30 hover:border-cyan-400/50 hover:bg-cyan-500/30 flex items-center gap-1.5"
           >
             <Plus className="w-4 h-4" />
-            <span>Tjetër qytet</span>
+            <span>{t('dates.otherCity')}</span>
           </button>
         </div>
         
         {/* Selected custom city indicator */}
         {selectedCity && !cities.includes(selectedCity) && (
           <div className="mt-3 flex items-center gap-2">
-            <span className="text-sm text-slate-400">Qyteti i zgjedhur:</span>
+            <span className="text-sm text-slate-400">{t('dates.selectedCity')}:</span>
             <span className="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm font-semibold">
               {selectedCity}
             </span>
@@ -521,7 +534,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
               <div className="flex items-center justify-between">
                 <h3 className="text-xl font-bold text-white flex items-center gap-2">
                   <MapPin className="w-5 h-5 text-purple-400" />
-                  Zgjidh Qytetin
+                  {t('dates.selectCity')}
                 </h3>
                 <button
                   onClick={() => setShowCityModal(false)}
@@ -538,7 +551,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                   type="text"
                   value={customCityInput}
                   onChange={(e) => setCustomCityInput(e.target.value)}
-                  placeholder="Kërko ose shkruaj qytetin..."
+                  placeholder={t('dates.searchCity')}
                   className="w-full pl-10 pr-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
                   style={{ fontSize: '16px' }}
                   autoFocus
@@ -564,7 +577,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                     </div>
                     <div>
                       <p className="text-white font-semibold">"{customCityInput.trim()}"</p>
-                      <p className="text-purple-300 text-sm">Kërko në këtë qytet</p>
+                      <p className="text-purple-300 text-sm">{t('dates.searchInCity')}</p>
                     </div>
                   </div>
                 </button>
@@ -601,7 +614,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                         </div>
                         <div>
                           <p className={`font-semibold ${selectedCity === city ? 'text-purple-300' : 'text-white'}`}>{city}</p>
-                          <p className="text-slate-500 text-sm">{currentCountry?.name}</p>
+                          <p className="text-slate-500 text-sm">{localizedCountryName}</p>
                         </div>
                       </div>
                     </button>
@@ -611,7 +624,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
               {/* No results message */}
               {customCityInput && !cities.some(c => c.toLowerCase().includes(customCityInput.toLowerCase())) && (
                 <p className="text-center text-slate-400 text-sm mt-4">
-                  Qyteti "{customCityInput}" nuk u gjet në listë, por mund ta kërkosh direkt.
+                  {t('dates.cityNotInList', { city: customCityInput })}
                 </p>
               )}
             </div>
@@ -629,7 +642,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                 disabled={!customCityInput.trim() && !selectedCity}
                 className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-xl"
               >
-                {customCityInput.trim() ? `Kërko në "${customCityInput.trim()}"` : 'Mbyll'}
+                {customCityInput.trim() ? t('dates.searchInCityName', { city: customCityInput.trim() }) : t('dates.close')}
               </Button>
             </div>
           </div>
@@ -640,7 +653,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
       <div className="mb-6">
         <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-purple-400" />
-          Zgjidh Kategorinë
+          {t('dates.selectCategory')}
         </h2>
         <div className="grid grid-cols-2 gap-3">
           {categories.map((category) => {
@@ -689,28 +702,28 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
           {loading ? (
             <div className="flex items-center justify-center gap-2">
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-              <span>Duke gjeneruar...</span>
+              <span>{t('dates.generating')}</span>
             </div>
           ) : (
             <div className="flex items-center justify-center gap-2">
               <Sparkles className="w-5 h-5" />
-              <span>Gjenero Sugjerime</span>
+              <span>{t('dates.generateSuggestions')}</span>
             </div>
           )}
         </Button>
         {!selectedCity && !selectedCategory && (
           <p className="text-center text-slate-400 text-sm mt-3">
-            👆 Zgjidhni qytetin dhe kategorinë më sipër
+            👆 {t('dates.selectCityAndCategoryAbove')}
           </p>
         )}
         {selectedCity && !selectedCategory && (
           <p className="text-center text-pink-400 text-sm mt-3 animate-pulse">
-            ✨ Tani zgjidhni një kategori!
+            ✨ {t('dates.nowSelectCategory')}
           </p>
         )}
         {!selectedCity && selectedCategory && (
           <p className="text-center text-pink-400 text-sm mt-3 animate-pulse">
-            📍 Tani zgjidhni një qytet!
+            📍 {t('dates.nowSelectCity')}
           </p>
         )}
       </div>
@@ -723,7 +736,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
             <h2 className="text-lg font-bold text-white flex items-center gap-2">
               <span className="text-2xl">✨</span>
               <span className="bg-gradient-to-r from-pink-300 to-rose-300 bg-clip-text text-transparent">
-                Sugjerime
+                {t('dates.suggestions')}
               </span>
               <span className="text-2xl">✨</span>
             </h2>
@@ -752,7 +765,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                         {isSponsored && (
                           <span className="flex items-center gap-1 px-2.5 py-1 bg-gradient-to-r from-yellow-500 to-amber-500 rounded-full text-xs font-bold text-slate-900">
                             <Crown className="w-3.5 h-3.5" />
-                            Sponsorizuar
+                            {t('dates.sponsored')}
                           </span>
                         )}
                         {isFeatured && !isSponsored && (
@@ -852,12 +865,12 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
               {loadingMore ? (
                 <div className="flex items-center justify-center gap-2">
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                  <span>Duke ngarkuar më shumë...</span>
+                  <span>{t('dates.loadingMore')}</span>
                 </div>
               ) : (
                 <div className="flex items-center justify-center gap-2">
                   <TrendingUp className="w-5 h-5" />
-                  <span>Ngarko Më Shumë Rezultate</span>
+                  <span>{t('dates.loadMoreResults')}</span>
                 </div>
               )}
             </Button>
@@ -875,16 +888,16 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                   <TrendingUp className="w-5 h-5 text-white" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-white font-bold text-sm mb-1">Biznesi Yt Këtu?</h3>
+                  <h3 className="text-white font-bold text-sm mb-1">{t('dates.yourBusinessHere')}</h3>
                   <p className="text-slate-300 text-xs mb-2">
-                    Dëshiron që biznesi yt të shfaqet si <span className="text-yellow-400 font-semibold">sponsorizuar</span> dhe të marrë më shumë klientë? Kontakto për partneritet!
+                    {t('dates.businessPartnershipDesc')}
                   </p>
                   <a 
-                    href="mailto:partnerships@biseda.ai?subject=Partneritet Biznesi" 
+                    href="mailto:partnerships@biseda.ai?subject=Business Partnership" 
                     className="inline-flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg text-xs font-semibold text-white hover:from-purple-600 hover:to-pink-600 transition-all"
                   >
                     <Sparkles className="w-3 h-3" />
-                    Bëhu Partner
+                    {t('dates.becomePartner')}
                   </a>
                 </div>
               </div>
@@ -897,14 +910,14 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
       {suggestions.length === 0 && selectedCategory && (
         <div className="text-center py-12">
           <div className="text-6xl mb-3 animate-bounce">💕</div>
-          <p className="text-slate-400">Zgjidh një qytet për të parë sugjerime specifike</p>
+          <p className="text-slate-400">{t('dates.selectCityForSuggestions')}</p>
         </div>
       )}
 
       {!selectedCategory && (
         <div className="text-center py-12">
           <div className="text-6xl mb-3 animate-pulse">💭</div>
-          <p className="text-slate-400">Zgjidh një kategori për të filluar</p>
+          <p className="text-slate-400">{t('dates.selectCategoryToStart')}</p>
         </div>
       )}
     </div>

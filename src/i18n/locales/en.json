@@ -395,8 +395,7 @@
     "active": "Active",
     "cities": "cities",
     "loginToSave": "Please log in to save",
-    "saveError": "Error saving",
-    "regionSettings": "Region Settings"
+    "saveError": "Error saving"
   },
   "ageVerification": {
     "title": "Age Verification",
@@ -574,14 +573,11 @@
   },
   "country": {
     "selectCountry": "Select Country",
-    "hint": "Region affects local recommendations",
-    "region": "Region",
-    "cities": "cities"
+    "hint": "Select country to see local events and dates"
   },
   "language": {
     "selectLanguage": "Select Language",
-    "hint": "Language affects app text and AI responses",
-    "language": "Language"
+    "hint": "Select app language"
   },
   "ageVerification": {
     "title": "Age Verification",
