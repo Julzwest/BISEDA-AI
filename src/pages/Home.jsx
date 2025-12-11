@@ -93,14 +93,14 @@ export default function Home() {
       icon: Bot,
       title: 'AI Coach',
       description: 'Get instant dating advice',
-      color: 'from-purple-500 to-pink-500',
+      color: 'from-purple-500 to-pink-500', // Purple-Pink gradient for AI/chat
       page: 'Chat'
     },
     {
       icon: MessageSquare,
       title: 'Text Response Helper',
       description: 'AI suggests perfect replies',
-      color: 'from-blue-500 to-cyan-500',
+      color: 'from-blue-500 to-cyan-400', // Blue-Cyan for messaging
       page: 'text-helper',
       isNew: true
     },
@@ -108,7 +108,7 @@ export default function Home() {
       icon: Users,
       title: 'Date Rehearsal',
       description: 'Practice with AI roleplay',
-      color: 'from-violet-500 to-fuchsia-500',
+      color: 'from-violet-600 to-fuchsia-500', // Violet-Fuchsia for roleplay
       page: 'Rehearsal',
       requiresProOrElite: true
     },
@@ -116,35 +116,35 @@ export default function Home() {
       icon: MapPin,
       title: 'Explore Dates & Events',
       description: 'Find venues and local events',
-      color: 'from-pink-500 via-purple-500 to-blue-500',
+      color: 'from-emerald-500 to-teal-500', // Green-Teal for location/exploration
       page: 'explore'
     },
     {
       icon: Gift,
       title: t('home.features.gifts.title'),
       description: t('home.features.gifts.desc'),
-      color: 'from-rose-500 to-red-500',
+      color: 'from-rose-500 to-red-600', // Rose-Red for gifts/love
       page: 'Gifts'
     },
     {
       icon: Heart,
       title: t('home.features.mood.title', 'Mood Check'),
       description: t('home.features.mood.desc', 'Check your dating readiness'),
-      color: 'from-pink-500 to-rose-500',
+      color: 'from-pink-500 to-rose-400', // Pink-Rose for emotions/mood
       page: 'MoodCheck'
     },
     {
       icon: User,
       title: t('home.features.profileOptimizer.title', 'Profile Optimizer'),
       description: t('home.features.profileOptimizer.desc', 'Improve your dating profile'),
-      color: 'from-indigo-500 to-purple-500',
+      color: 'from-indigo-500 to-blue-600', // Indigo-Blue for profile/optimization
       page: 'ProfileOptimizer'
     },
     {
       icon: Sparkles,
       title: t('home.features.styleAdvisor.title', 'Style Advisor'),
       description: t('home.features.styleAdvisor.desc', 'Get fashion advice'),
-      color: 'from-cyan-500 to-blue-500',
+      color: 'from-amber-500 to-orange-500', // Amber-Orange for style/fashion
       page: 'StyleAdvisor'
     }
   ];
