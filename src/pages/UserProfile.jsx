@@ -375,24 +375,59 @@ export default function UserProfile({ onLogout }) {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-2 mt-4">
-          {currentTier === 'free' && (
+        <div className="flex flex-col gap-2 mt-4">
+          {/* Exit Impersonation Button (Admin Only) */}
+          {localStorage.getItem('adminImpersonating') === 'true' && (
             <Button
-              onClick={() => setShowUpgradeModal(true)}
-              className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-2 rounded-xl text-sm font-semibold"
+              onClick={() => {
+                // Restore admin session
+                const originalUserId = localStorage.getItem('adminOriginalUserId');
+                const adminKey = localStorage.getItem('adminKey');
+                
+                // Clear user session
+                localStorage.removeItem('userId');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('userSubscriptionTier');
+                localStorage.removeItem('adminImpersonating');
+                localStorage.removeItem('adminOriginalUserId');
+                
+                // Restore admin key
+                if (adminKey) {
+                  localStorage.setItem('adminKey', adminKey);
+                }
+                
+                alert('👋 Exited impersonation mode!\n\nReturning to Admin Panel...');
+                
+                // Redirect to admin
+                window.location.hash = '#/admin';
+                window.location.reload();
+              }}
+              className="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white font-semibold py-3 rounded-xl"
             >
-              <Crown className="w-4 h-4 mr-1.5" />
-              Upgrade to Pro
+              🚪 Exit Impersonation (Return to Admin)
             </Button>
           )}
-          <Button
-            onClick={onLogout}
-            variant="outline"
-            className="px-4 py-2 bg-slate-800/50 border-slate-700 hover:bg-slate-700/50 text-slate-300 rounded-xl text-sm"
-          >
-            <LogOut className="w-4 h-4 mr-1.5" />
-            Logout
-          </Button>
+          
+          <div className="flex gap-2">
+            {currentTier === 'free' && (
+              <Button
+                onClick={() => setShowUpgradeModal(true)}
+                className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-2 rounded-xl text-sm font-semibold"
+              >
+                <Crown className="w-4 h-4 mr-1.5" />
+                Upgrade to Pro
+              </Button>
+            )}
+            <Button
+              onClick={onLogout}
+              variant="outline"
+              className="px-4 py-2 bg-slate-800/50 border-slate-700 hover:bg-slate-700/50 text-slate-300 rounded-xl text-sm"
+            >
+              <LogOut className="w-4 h-4 mr-1.5" />
+              Logout
+            </Button>
+          </div>
         </div>
       </Card>
 

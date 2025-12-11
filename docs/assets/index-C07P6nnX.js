@@ -13727,7 +13727,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-BKCcyUZA.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-eyZgBXNX.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -20651,51 +20651,80 @@ function Admin() {
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-semibold", children: selectedUser.createdAt ? new Date(selectedUser.createdAt).toLocaleDateString("sq-AL") : "N/A" })
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 pt-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2 pt-4", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs(
             Button,
             {
               onClick: () => {
-                setGiftCreditsUser(selectedUser);
-                setShowGiftCredits(true);
-                setShowUserModal(false);
+                localStorage.setItem("adminImpersonating", "true");
+                localStorage.setItem("adminOriginalUserId", localStorage.getItem("userId") || "");
+                localStorage.setItem("adminKey", localStorage.getItem("adminKey") || "");
+                localStorage.setItem("userId", selectedUser.odId);
+                localStorage.setItem("userEmail", selectedUser.email);
+                localStorage.setItem("userName", `${selectedUser.firstName} ${selectedUser.lastName}`);
+                localStorage.setItem("userSubscriptionTier", selectedUser.subscriptionTier || "free_trial");
+                localStorage.setItem("isAuthenticated", "true");
+                alert(`🎭 Now viewing as: ${selectedUser.firstName} ${selectedUser.lastName}
+
+You can see exactly what they see!
+
+Click "Exit Impersonation" in your profile to return to admin.`);
+                window.location.hash = "#/";
+                window.location.reload();
               },
-              className: "flex-1 bg-purple-600 hover:bg-purple-500 text-white",
+              className: "w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold",
               children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Gift, { className: "w-4 h-4 mr-2" }),
-                " Dhuro Kredite"
+                /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-4 h-4 mr-2" }),
+                " 🎭 Impersonate User (View as Them)"
               ]
             }
           ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            Button,
-            {
-              onClick: () => {
-                handleBlockUser(selectedUser.odId, !selectedUser.isBlocked);
-                setShowUserModal(false);
-              },
-              className: `flex-1 ${selectedUser.isBlocked ? "bg-green-600 hover:bg-green-500" : "bg-orange-600 hover:bg-orange-500"} text-white`,
-              children: [
-                selectedUser.isBlocked ? /* @__PURE__ */ jsxRuntimeExports.jsx(Unlock, { className: "w-4 h-4 mr-2" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Lock, { className: "w-4 h-4 mr-2" }),
-                selectedUser.isBlocked ? "Zhblloko" : "Blloko"
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            Button,
-            {
-              onClick: () => {
-                setUserToDelete(selectedUser);
-                setShowDeleteConfirm(true);
-                setShowUserModal(false);
-              },
-              className: "flex-1 bg-red-600 hover:bg-red-500 text-white",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4 mr-2" }),
-                " Fshi"
-              ]
-            }
-          )
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              Button,
+              {
+                onClick: () => {
+                  setGiftCreditsUser(selectedUser);
+                  setShowGiftCredits(true);
+                  setShowUserModal(false);
+                },
+                className: "flex-1 bg-purple-600 hover:bg-purple-500 text-white",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Gift, { className: "w-4 h-4 mr-2" }),
+                  " Dhuro Kredite"
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              Button,
+              {
+                onClick: () => {
+                  handleBlockUser(selectedUser.odId, !selectedUser.isBlocked);
+                  setShowUserModal(false);
+                },
+                className: `flex-1 ${selectedUser.isBlocked ? "bg-green-600 hover:bg-green-500" : "bg-orange-600 hover:bg-orange-500"} text-white`,
+                children: [
+                  selectedUser.isBlocked ? /* @__PURE__ */ jsxRuntimeExports.jsx(Unlock, { className: "w-4 h-4 mr-2" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Lock, { className: "w-4 h-4 mr-2" }),
+                  selectedUser.isBlocked ? "Zhblloko" : "Blloko"
+                ]
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              Button,
+              {
+                onClick: () => {
+                  setUserToDelete(selectedUser);
+                  setShowDeleteConfirm(true);
+                  setShowUserModal(false);
+                },
+                className: "flex-1 bg-red-600 hover:bg-red-500 text-white",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4 mr-2" }),
+                  " Fshi"
+                ]
+              }
+            )
+          ] })
         ] })
       ] })
     ] }) }),
@@ -21195,30 +21224,55 @@ function UserProfile({ onLogout }) {
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-bold", children: tierBadge.label })
         ] })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 mt-4", children: [
-        currentTier === "free" && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2 mt-4", children: [
+        localStorage.getItem("adminImpersonating") === "true" && /* @__PURE__ */ jsxRuntimeExports.jsx(
           Button,
           {
-            onClick: () => setShowUpgradeModal(true),
-            className: "flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-2 rounded-xl text-sm font-semibold",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Crown, { className: "w-4 h-4 mr-1.5" }),
-              "Upgrade to Pro"
-            ]
+            onClick: () => {
+              localStorage.getItem("adminOriginalUserId");
+              const adminKey = localStorage.getItem("adminKey");
+              localStorage.removeItem("userId");
+              localStorage.removeItem("userEmail");
+              localStorage.removeItem("userName");
+              localStorage.removeItem("userSubscriptionTier");
+              localStorage.removeItem("adminImpersonating");
+              localStorage.removeItem("adminOriginalUserId");
+              if (adminKey) {
+                localStorage.setItem("adminKey", adminKey);
+              }
+              alert("👋 Exited impersonation mode!\n\nReturning to Admin Panel...");
+              window.location.hash = "#/admin";
+              window.location.reload();
+            },
+            className: "w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white font-semibold py-3 rounded-xl",
+            children: "🚪 Exit Impersonation (Return to Admin)"
           }
         ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          Button,
-          {
-            onClick: onLogout,
-            variant: "outline",
-            className: "px-4 py-2 bg-slate-800/50 border-slate-700 hover:bg-slate-700/50 text-slate-300 rounded-xl text-sm",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { className: "w-4 h-4 mr-1.5" }),
-              "Logout"
-            ]
-          }
-        )
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+          currentTier === "free" && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            Button,
+            {
+              onClick: () => setShowUpgradeModal(true),
+              className: "flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-2 rounded-xl text-sm font-semibold",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Crown, { className: "w-4 h-4 mr-1.5" }),
+                "Upgrade to Pro"
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            Button,
+            {
+              onClick: onLogout,
+              variant: "outline",
+              className: "px-4 py-2 bg-slate-800/50 border-slate-700 hover:bg-slate-700/50 text-slate-300 rounded-xl text-sm",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { className: "w-4 h-4 mr-1.5" }),
+                "Logout"
+              ]
+            }
+          )
+        ] })
       ] })
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 mb-6 bg-slate-900/50 p-1.5 rounded-2xl border border-slate-700/50", children: [

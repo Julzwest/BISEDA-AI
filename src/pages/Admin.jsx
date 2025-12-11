@@ -1016,20 +1016,49 @@ export default function Admin() {
                 </div>
               </div>
 
-              <div className="flex gap-2 pt-4">
-                <Button onClick={() => { setGiftCreditsUser(selectedUser); setShowGiftCredits(true); setShowUserModal(false); }}
-                  className="flex-1 bg-purple-600 hover:bg-purple-500 text-white">
-                  <Gift className="w-4 h-4 mr-2" /> Dhuro Kredite
+              <div className="space-y-2 pt-4">
+                {/* Impersonate User Button */}
+                <Button 
+                  onClick={() => {
+                    // Save admin state
+                    localStorage.setItem('adminImpersonating', 'true');
+                    localStorage.setItem('adminOriginalUserId', localStorage.getItem('userId') || '');
+                    localStorage.setItem('adminKey', localStorage.getItem('adminKey') || '');
+                    
+                    // Set user session
+                    localStorage.setItem('userId', selectedUser.odId);
+                    localStorage.setItem('userEmail', selectedUser.email);
+                    localStorage.setItem('userName', `${selectedUser.firstName} ${selectedUser.lastName}`);
+                    localStorage.setItem('userSubscriptionTier', selectedUser.subscriptionTier || 'free_trial');
+                    localStorage.setItem('isAuthenticated', 'true');
+                    
+                    // Show success message
+                    alert(`🎭 Now viewing as: ${selectedUser.firstName} ${selectedUser.lastName}\n\nYou can see exactly what they see!\n\nClick "Exit Impersonation" in your profile to return to admin.`);
+                    
+                    // Redirect to home
+                    window.location.hash = '#/';
+                    window.location.reload();
+                  }}
+                  className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold"
+                >
+                  <User className="w-4 h-4 mr-2" /> 🎭 Impersonate User (View as Them)
                 </Button>
-                <Button onClick={() => { handleBlockUser(selectedUser.odId, !selectedUser.isBlocked); setShowUserModal(false); }}
-                  className={`flex-1 ${selectedUser.isBlocked ? 'bg-green-600 hover:bg-green-500' : 'bg-orange-600 hover:bg-orange-500'} text-white`}>
-                  {selectedUser.isBlocked ? <Unlock className="w-4 h-4 mr-2" /> : <Lock className="w-4 h-4 mr-2" />}
-                  {selectedUser.isBlocked ? 'Zhblloko' : 'Blloko'}
-                </Button>
-                <Button onClick={() => { setUserToDelete(selectedUser); setShowDeleteConfirm(true); setShowUserModal(false); }}
-                  className="flex-1 bg-red-600 hover:bg-red-500 text-white">
-                  <Trash2 className="w-4 h-4 mr-2" /> Fshi
-                </Button>
+
+                <div className="flex gap-2">
+                  <Button onClick={() => { setGiftCreditsUser(selectedUser); setShowGiftCredits(true); setShowUserModal(false); }}
+                    className="flex-1 bg-purple-600 hover:bg-purple-500 text-white">
+                    <Gift className="w-4 h-4 mr-2" /> Dhuro Kredite
+                  </Button>
+                  <Button onClick={() => { handleBlockUser(selectedUser.odId, !selectedUser.isBlocked); setShowUserModal(false); }}
+                    className={`flex-1 ${selectedUser.isBlocked ? 'bg-green-600 hover:bg-green-500' : 'bg-orange-600 hover:bg-orange-500'} text-white`}>
+                    {selectedUser.isBlocked ? <Unlock className="w-4 h-4 mr-2" /> : <Lock className="w-4 h-4 mr-2" />}
+                    {selectedUser.isBlocked ? 'Zhblloko' : 'Blloko'}
+                  </Button>
+                  <Button onClick={() => { setUserToDelete(selectedUser); setShowDeleteConfirm(true); setShowUserModal(false); }}
+                    className="flex-1 bg-red-600 hover:bg-red-500 text-white">
+                    <Trash2 className="w-4 h-4 mr-2" /> Fshi
+                  </Button>
+                </div>
               </div>
             </div>
           </Card>
