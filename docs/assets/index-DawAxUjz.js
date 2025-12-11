@@ -13957,7 +13957,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-B9IN57WC.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-B91_NFo1.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -14855,15 +14855,9 @@ function Layout({ children, onLogout }) {
           backdropFilter: "blur(12px)",
           borderBottom: "1px solid var(--border-color, rgba(148, 163, 184, 0.1))"
         },
-        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-14 px-2 sm:px-4 flex items-center justify-between max-w-screen-xl mx-auto", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center flex-shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, { to: "/home", className: "flex items-center gap-1.5 sm:gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-bold text-white text-base sm:text-lg hidden sm:block", children: [
-              "Biseda",
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-purple-400", children: ".ai" })
-            ] })
-          ] }) }),
-          isGuest && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hidden xs:block flex-shrink mx-1", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-12 sm:h-14 px-3 sm:px-4 flex items-center justify-between max-w-screen-xl mx-auto", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/home", className: "flex items-center gap-2 flex-shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 text-white" }) }) }),
+          isGuest && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex justify-center mx-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
             GuestBanner,
             {
               onExpired: () => {
@@ -14876,9 +14870,9 @@ function Layout({ children, onLogout }) {
               }
             }
           ) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5 sm:gap-2 flex-shrink-0", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 flex-shrink-0", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(RegionSwitcher, {}),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/profile", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg hover:scale-105 hover:shadow-purple-500/30 transition-all duration-200", children: /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-4 h-4 sm:w-5 sm:h-5 text-white" }) }) })
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/profile", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg hover:scale-105 hover:shadow-purple-500/30 transition-all duration-200", children: /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-4 h-4 sm:w-5 sm:h-5 text-white" }) }) })
           ] })
         ] })
       }
@@ -16981,7 +16975,7 @@ function ClipboardSuggestions() {
       if (window.Capacitor && window.Capacitor.isNativePlatform()) {
         try {
           const { Clipboard: Clipboard2 } = await __vitePreload(async () => {
-            const { Clipboard: Clipboard22 } = await import("./index-BDhyKVji.js");
+            const { Clipboard: Clipboard22 } = await import("./index-B5SEA-et.js");
             return { Clipboard: Clipboard22 };
           }, true ? [] : void 0);
           const { value } = await Clipboard2.read();
@@ -22213,28 +22207,31 @@ function Admin() {
   }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-gradient-to-br from-slate-950 via-purple-950/20 to-slate-950 p-4 md:p-6", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h1", { className: "text-2xl md:text-3xl font-bold text-white mb-1 flex items-center gap-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Shield, { className: "w-5 h-5 text-white" }) }),
-          "Biseda.ai Admin"
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h1", { className: "text-xl sm:text-2xl md:text-3xl font-bold text-white mb-1 flex items-center gap-2 sm:gap-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center flex-shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Shield, { className: "w-4 h-4 sm:w-5 sm:h-5 text-white" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate", children: "Admin" })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: "Menaxho aplikacionin dhe përdoruesit" })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs sm:text-sm truncate", children: "Manage app and users" })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { onClick: fetchData, disabled: refreshing, className: "bg-slate-700 hover:bg-slate-600 text-white", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { className: `w-4 h-4 mr-2 ${refreshing ? "animate-spin" : ""}` }),
-          " Rifresko"
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1.5 sm:gap-2 flex-shrink-0", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { onClick: fetchData, disabled: refreshing, className: "bg-slate-700 hover:bg-slate-600 text-white px-2 sm:px-4 py-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { className: `w-4 h-4 ${refreshing ? "animate-spin" : ""}` }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "hidden sm:inline ml-2", children: "Refresh" })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { onClick: handleLogout, className: "bg-red-600 hover:bg-red-700 text-white", children: "Dil" })
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Button, { onClick: handleLogout, className: "bg-red-600 hover:bg-red-700 text-white px-2 sm:px-4 py-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "sm:hidden", children: "Exit" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "hidden sm:inline", children: "Logout" })
+        ] })
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-2 mb-6 overflow-x-auto pb-2", children: [
-      { id: "overview", label: "📊 Përmbledhje" },
-      { id: "users", label: "👥 Përdoruesit" },
-      { id: "createUser", label: "➕ Krijo Përdorues" },
-      { id: "conversations", label: "💬 Bisedat" },
-      { id: "subscriptions", label: "💎 Abonimet" },
-      { id: "activity", label: "📈 Aktiviteti" }
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-2 mb-6 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide", style: { WebkitOverflowScrolling: "touch" }, children: [
+      { id: "overview", label: "📊 Overview", icon: "📊" },
+      { id: "users", label: "👥 Users", icon: "👥" },
+      { id: "createUser", label: "➕ Create", icon: "➕" },
+      { id: "conversations", label: "💬 Chats", icon: "💬" },
+      { id: "subscriptions", label: "💎 Subs", icon: "💎" },
+      { id: "activity", label: "📈 Activity", icon: "📈" }
     ].map((tab) => /* @__PURE__ */ jsxRuntimeExports.jsx(
       "button",
       {
@@ -22242,7 +22239,7 @@ function Admin() {
           setActiveTab(tab.id);
           if (tab.id === "conversations") fetchConversations();
         },
-        className: `px-4 py-2 rounded-xl font-medium text-sm whitespace-nowrap transition-all ${activeTab === tab.id ? "bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-lg" : "bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-700/50"}`,
+        className: `px-3 py-2 rounded-xl font-medium text-xs sm:text-sm whitespace-nowrap transition-all flex-shrink-0 ${activeTab === tab.id ? "bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-lg" : "bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-700/50"}`,
         children: tab.label
       },
       tab.id
