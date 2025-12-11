@@ -11149,6 +11149,11 @@ const DollarSign = createLucideIcon("DollarSign", [
   ["line", { x1: "12", x2: "12", y1: "2", y2: "22", key: "7eqyqh" }],
   ["path", { d: "M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6", key: "1b0p4s" }]
 ]);
+const Download = createLucideIcon("Download", [
+  ["path", { d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", key: "ih7n3h" }],
+  ["polyline", { points: "7 10 12 15 17 10", key: "2ggqvy" }],
+  ["line", { x1: "12", x2: "12", y1: "15", y2: "3", key: "1vk2je" }]
+]);
 const Dumbbell = createLucideIcon("Dumbbell", [
   ["path", { d: "m6.5 6.5 11 11", key: "f7oqzb" }],
   ["path", { d: "m21 21-1-1", key: "cpc6if" }],
@@ -11242,6 +11247,11 @@ const Heart = createLucideIcon("Heart", [
       key: "c3ymky"
     }
   ]
+]);
+const HelpCircle = createLucideIcon("HelpCircle", [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3", key: "1u773s" }],
+  ["path", { d: "M12 17h.01", key: "p32p05" }]
 ]);
 const History = createLucideIcon("History", [
   ["path", { d: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8", key: "1357e3" }],
@@ -13721,7 +13731,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-CltJo9AU.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-CHISrOe1.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -15097,13 +15107,6 @@ function Home() {
       description: t("home.features.profileOptimizer.desc", "Improve your dating profile"),
       color: "from-indigo-500 to-purple-500",
       page: "ProfileOptimizer"
-    },
-    {
-      icon: TrendingUp,
-      title: "Progress Tracking",
-      description: "Track your dating journey",
-      color: "from-emerald-500 to-green-500",
-      page: "progress"
     },
     {
       icon: Sparkles,
@@ -19850,140 +19853,6 @@ Format as JSON array with "type" and "message" fields.`;
     )
   ] });
 }
-function ProgressTracking() {
-  const [stats, setStats] = reactExports.useState({
-    totalMessages: 0,
-    messagesThisWeek: 0,
-    datesPlanned: 0,
-    rehearsalsSessions: 0,
-    tipsViewed: 0,
-    photosFeedback: 0,
-    conversationStartersUsed: 0,
-    currentStreak: 0,
-    level: 1
-  });
-  const [weeklyActivity, setWeeklyActivity] = reactExports.useState([0, 0, 0, 0, 0, 0, 0]);
-  reactExports.useEffect(() => {
-    const savedStats = localStorage.getItem("userProgressStats");
-    if (savedStats) {
-      setStats(JSON.parse(savedStats));
-    }
-    const activity = Array(7).fill(0).map((_, i) => Math.floor(Math.random() * 20));
-    setWeeklyActivity(activity);
-  }, []);
-  const achievements = [
-    { id: "first_message", title: "First Message", desc: "Sent your first AI chat", icon: "🎯", unlocked: stats.totalMessages > 0 },
-    { id: "conversationalist", title: "Conversationalist", desc: "Sent 50 messages", icon: "💬", unlocked: stats.totalMessages >= 50 },
-    { id: "date_planner", title: "Date Planner", desc: "Planned 5 dates", icon: "📅", unlocked: stats.datesPlanned >= 5 },
-    { id: "rehearsal_pro", title: "Rehearsal Pro", desc: "Completed 3 rehearsals", icon: "🎭", unlocked: stats.rehearsalsSessions >= 3 },
-    { id: "photo_perfectionist", title: "Photo Perfectionist", desc: "Got photo feedback", icon: "📸", unlocked: stats.photosFeedback > 0 },
-    { id: "smooth_talker", title: "Smooth Talker", desc: "Used 10 conversation starters", icon: "😎", unlocked: stats.conversationStartersUsed >= 10 },
-    { id: "wisdom_seeker", title: "Wisdom Seeker", desc: "Read 20 tips", icon: "📚", unlocked: stats.tipsViewed >= 20 },
-    { id: "on_fire", title: "On Fire", desc: "7-day streak", icon: "🔥", unlocked: stats.currentStreak >= 7 }
-  ];
-  const unlockedCount = achievements.filter((a) => a.unlocked).length;
-  const progressPercent = unlockedCount / achievements.length * 100;
-  const statCards = [
-    { label: "Total Messages", value: stats.totalMessages, icon: MessageSquare, color: "from-purple-500 to-pink-500" },
-    { label: "This Week", value: stats.messagesThisWeek, icon: Zap, color: "from-blue-500 to-cyan-500" },
-    { label: "Dates Planned", value: stats.datesPlanned, icon: Calendar, color: "from-rose-500 to-pink-500" },
-    { label: "Current Level", value: stats.level, icon: Star, color: "from-yellow-500 to-orange-500" }
-  ];
-  const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-  const maxActivity = Math.max(...weeklyActivity, 1);
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 pt-20 pb-32 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950 min-h-screen", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-xl flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trophy, { className: "w-5 h-5 text-white" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-white", children: "Your Progress" })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400", children: "Track your journey to dating success" })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 gap-3 mb-6", children: statCards.map((stat, i) => {
-      const Icon = stat.icon;
-      return /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-10 h-10 bg-gradient-to-r ${stat.color} bg-opacity-20 rounded-xl flex items-center justify-center mb-2`, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { className: "w-5 h-5 text-white" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-2xl font-bold text-white mb-1", children: stat.value }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-slate-400", children: stat.label })
-      ] }, i);
-    }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5 mb-6", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-white font-semibold mb-4 flex items-center gap-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Flame, { className: "w-5 h-5 text-orange-400" }),
-        "This Week's Activity"
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-end justify-between gap-2 h-32", children: weeklyActivity.map((activity, i) => {
-        const height = activity / maxActivity * 100;
-        return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full bg-slate-700 rounded-t relative", style: { height: `${height}%`, minHeight: "8px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-t from-purple-500 to-pink-500 rounded-t" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-slate-400", children: weekDays[i] })
-        ] }, i);
-      }) })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5 mb-4", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-3", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-white font-semibold flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Award, { className: "w-5 h-5 text-yellow-400" }),
-          "Achievements"
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sm text-slate-400", children: [
-          unlockedCount,
-          "/",
-          achievements.length
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full bg-slate-700 rounded-full h-3 overflow-hidden mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "div",
-        {
-          className: "h-3 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full transition-all duration-500",
-          style: { width: `${progressPercent}%` }
-        }
-      ) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 gap-3", children: achievements.map((achievement) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: `p-3 rounded-xl border-2 transition-all ${achievement.unlocked ? "bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border-yellow-500/30" : "bg-slate-900 border-slate-700 opacity-50"}`,
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-2xl mb-2", children: achievement.icon }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-semibold text-white mb-1", children: achievement.title }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-slate-400", children: achievement.desc }),
-            achievement.unlocked && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-2 text-xs text-green-400 font-semibold", children: "✓ Unlocked!" })
-          ]
-        },
-        achievement.id
-      )) })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-white font-semibold mb-3 flex items-center gap-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Target, { className: "w-5 h-5 text-cyan-400" }),
-        "Continue Your Journey"
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/chat", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "w-full p-3 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-xl text-left hover:scale-[1.02] transition-transform", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(MessageSquare, { className: "w-5 h-5 text-purple-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-white font-semibold text-sm", children: "Chat with AI Coach" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-slate-400 text-xs", children: "Get personalized advice" })
-          ] })
-        ] }) }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/rehearsal", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "w-full p-3 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-500/30 rounded-xl text-left hover:scale-[1.02] transition-transform", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Calendar, { className: "w-5 h-5 text-blue-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-white font-semibold text-sm", children: "Practice Date Scenarios" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-slate-400 text-xs", children: "Build confidence" })
-          ] })
-        ] }) }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/starters", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "w-full p-3 bg-gradient-to-r from-rose-500/20 to-pink-500/20 border border-rose-500/30 rounded-xl text-left hover:scale-[1.02] transition-transform", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-5 h-5 text-rose-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-white font-semibold text-sm", children: "Browse Conversation Starters" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-slate-400 text-xs", children: "Never run out of things to say" })
-          ] })
-        ] }) }) })
-      ] })
-    ] })
-  ] });
-}
 function SubscriptionSuccess() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -21191,12 +21060,19 @@ function UserProfile({ onLogout }) {
   const [userCity, setUserCity] = reactExports.useState(localStorage.getItem("userCity") || "");
   const [isEditingLocation, setIsEditingLocation] = reactExports.useState(false);
   const [locationSaved, setLocationSaved] = reactExports.useState(false);
+  const [showCancelModal, setShowCancelModal] = reactExports.useState(false);
+  const [cancelReason, setCancelReason] = reactExports.useState("");
+  const [cancelFeedback, setCancelFeedback] = reactExports.useState("");
+  const [cancelSubmitted, setCancelSubmitted] = reactExports.useState(false);
+  const [showDeleteModal, setShowDeleteModal] = reactExports.useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = reactExports.useState("");
   const backendUrl2 = getBackendUrl();
   const userId = localStorage.getItem("userId");
   const userName = localStorage.getItem("userName") || "User";
   const userEmail = localStorage.getItem("userEmail") || "";
   reactExports.useEffect(() => {
     fetchData();
+    trackUserActivity();
     const handleFavoritesChanged = () => {
       setLocalFavorites(getFavorites());
     };
@@ -21205,20 +21081,58 @@ function UserProfile({ onLogout }) {
       window.removeEventListener("favoritesChanged", handleFavoritesChanged);
     };
   }, []);
+  const trackUserActivity = () => {
+    localStorage.setItem("lastActive", (/* @__PURE__ */ new Date()).toISOString());
+    const profileViews = parseInt(localStorage.getItem("profileViews") || "0") + 1;
+    localStorage.setItem("profileViews", profileViews.toString());
+  };
   const fetchData = async () => {
     try {
       const savedStats = localStorage.getItem("userProgressStats");
       if (savedStats) {
-        setStats(JSON.parse(savedStats));
+        const parsedStats = JSON.parse(savedStats);
+        setStats(parsedStats);
+      } else {
+        const defaultStats = {
+          totalMessages: 0,
+          messagesThisWeek: 0,
+          datesPlanned: 0,
+          rehearsalsSessions: 0,
+          tipsViewed: 0,
+          photosFeedback: 0,
+          conversationStartersUsed: 0,
+          currentStreak: 0,
+          level: 1
+        };
+        setStats(defaultStats);
+        localStorage.setItem("userProgressStats", JSON.stringify(defaultStats));
       }
-      const activity = Array(7).fill(0).map((_, i) => Math.floor(Math.random() * 20));
-      setWeeklyActivity(activity);
+      const calculateWeeklyActivity = () => {
+        const activity = [];
+        const today = /* @__PURE__ */ new Date();
+        for (let i = 6; i >= 0; i--) {
+          const dayDate = new Date(today);
+          dayDate.setDate(today.getDate() - i);
+          const dayKey = `activity_${dayDate.toISOString().split("T")[0]}`;
+          const dayActivity = parseInt(localStorage.getItem(dayKey) || "0");
+          activity.push(dayActivity);
+        }
+        return activity;
+      };
+      setWeeklyActivity(calculateWeeklyActivity());
       const usageRes = await fetch(`${backendUrl2}/api/usage`, {
         headers: { "x-user-id": userId }
       });
       if (usageRes.ok) {
         const usageData = await usageRes.json();
         setUsage(usageData);
+        if (usageData.dailyUsage) {
+          setStats((prev) => ({
+            ...prev,
+            totalMessages: usageData.dailyUsage.messages || prev.totalMessages,
+            level: Math.floor((usageData.dailyUsage.messages || 0) / 10) + 1
+          }));
+        }
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -21250,6 +21164,127 @@ function UserProfile({ onLogout }) {
       setLocalFavorites(getFavorites());
     } catch (error) {
       console.error("Error removing favorite:", error);
+    }
+  };
+  const handleCancellationRequest = async () => {
+    if (!cancelReason) {
+      alert("Please select a reason for cancellation");
+      return;
+    }
+    try {
+      const response = await fetch(`${backendUrl2}/api/subscription/cancel-request`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": userId
+        },
+        body: JSON.stringify({
+          userId,
+          userName,
+          userEmail,
+          reason: cancelReason,
+          feedback: cancelFeedback,
+          requestDate: (/* @__PURE__ */ new Date()).toISOString(),
+          currentTier
+        })
+      });
+      if (response.ok) {
+        setCancelSubmitted(true);
+        setTimeout(() => {
+          setShowCancelModal(false);
+          setCancelReason("");
+          setCancelFeedback("");
+          setCancelSubmitted(false);
+        }, 3e3);
+      } else {
+        alert("Failed to submit cancellation request. Please try again or contact support.");
+      }
+    } catch (error) {
+      console.error("Error submitting cancellation:", error);
+      const cancellationRequest = {
+        userId,
+        userName,
+        userEmail,
+        reason: cancelReason,
+        feedback: cancelFeedback,
+        requestDate: (/* @__PURE__ */ new Date()).toISOString(),
+        status: "pending"
+      };
+      localStorage.setItem("cancellationRequest", JSON.stringify(cancellationRequest));
+      setCancelSubmitted(true);
+      setTimeout(() => {
+        setShowCancelModal(false);
+        setCancelReason("");
+        setCancelFeedback("");
+        setCancelSubmitted(false);
+      }, 3e3);
+    }
+  };
+  const handleAccountDeletion = async () => {
+    if (deleteConfirmText.toLowerCase() !== "delete my account") {
+      alert("Please type exactly: delete my account");
+      return;
+    }
+    if (!window.confirm("This action cannot be undone. Are you absolutely sure you want to delete your account?")) {
+      return;
+    }
+    try {
+      const response = await fetch(`${backendUrl2}/api/user/delete-request`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": userId
+        },
+        body: JSON.stringify({
+          userId,
+          userName,
+          userEmail,
+          requestDate: (/* @__PURE__ */ new Date()).toISOString()
+        })
+      });
+      if (response.ok) {
+        alert("Account deletion request submitted. You will receive an email confirmation within 24 hours.");
+        setShowDeleteModal(false);
+        setTimeout(() => {
+          if (onLogout) onLogout();
+        }, 2e3);
+      } else {
+        alert("Failed to submit deletion request. Please contact support@biseda.ai");
+      }
+    } catch (error) {
+      console.error("Error submitting account deletion:", error);
+      alert("Failed to submit deletion request. Please contact support@biseda.ai");
+    }
+  };
+  const handleExportData = async () => {
+    try {
+      const userData = {
+        profile: {
+          name: userName,
+          email: userEmail,
+          tier: currentTier,
+          country: userCountry,
+          city: userCity
+        },
+        stats,
+        favorites: localFavorites,
+        usage: usage2,
+        exportDate: (/* @__PURE__ */ new Date()).toISOString()
+      };
+      const dataStr = JSON.stringify(userData, null, 2);
+      const dataBlob = new Blob([dataStr], { type: "application/json" });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `biseda-data-${(/* @__PURE__ */ new Date()).toISOString().split("T")[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      alert("Your data has been exported successfully!");
+    } catch (error) {
+      console.error("Error exporting data:", error);
+      alert("Failed to export data. Please try again.");
     }
   };
   const getTierBadge = (tier) => {
@@ -21604,13 +21639,13 @@ function UserProfile({ onLogout }) {
           ] })
         ] })
       ] }),
-      currentTier !== "free" && /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-white font-semibold mb-4 flex items-center gap-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(CreditCard, { className: "w-5 h-5 text-purple-400" }),
           "Subscription"
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-between", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border ${tierBadge.color} mb-2`, children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx(TierIcon, { className: "w-4 h-4" }),
               /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sm font-bold", children: [
@@ -21618,22 +21653,95 @@ function UserProfile({ onLogout }) {
                 " Plan"
               ] })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: "Manage your subscription" })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "a",
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: currentTier === "free" ? "Upgrade to unlock premium features" : "Manage your subscription" })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-2", children: currentTier === "free" ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            Button,
             {
-              href: "https://billing.stripe.com/p/login/test_7sI9Df4Mp8M48zm000",
-              target: "_blank",
-              rel: "noopener noreferrer",
-              className: "px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-sm",
-              children: "Manage"
+              onClick: () => setShowUpgradeModal(true),
+              className: "flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-2.5 rounded-xl text-sm font-semibold",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Crown, { className: "w-4 h-4 mr-1.5" }),
+                "Upgrade Now"
+              ]
             }
-          )
+          ) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "a",
+              {
+                href: "https://billing.stripe.com/p/login/test_7sI9Df4Mp8M48zm000",
+                target: "_blank",
+                rel: "noopener noreferrer",
+                className: "flex-1 px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-sm font-semibold text-center",
+                children: "Manage Billing"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              Button,
+              {
+                onClick: () => setShowCancelModal(true),
+                variant: "outline",
+                className: "px-4 py-2.5 bg-slate-700/50 border-slate-600 hover:bg-slate-600/50 text-slate-300 rounded-xl text-sm",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(XCircle, { className: "w-4 h-4 mr-1.5" }),
+                  "Cancel"
+                ]
+              }
+            )
+          ] }) })
         ] })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-semibold mb-4", children: "Account" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-white font-semibold mb-4 flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Shield, { className: "w-5 h-5 text-cyan-400" }),
+          "Data & Privacy"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: handleExportData,
+              className: "w-full p-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-left transition-colors",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Download, { className: "w-5 h-5 text-cyan-400" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-semibold", children: "Export My Data" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-slate-400", children: "Download all your data in JSON format" })
+                ] })
+              ] })
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/privacy", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "w-full p-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-left transition-colors", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(FileText, { className: "w-5 h-5 text-blue-400" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-semibold", children: "Privacy Policy" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-slate-400", children: "Read our privacy policy" })
+            ] })
+          ] }) }) })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-white font-semibold mb-4 flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(HelpCircle, { className: "w-5 h-5 text-green-400" }),
+          "Support & Help"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "a",
+          {
+            href: "mailto:support@biseda.ai",
+            className: "block w-full p-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl transition-colors",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Mail, { className: "w-5 h-5 text-green-400" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-semibold", children: "Contact Support" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-slate-400", children: "support@biseda.ai" })
+              ] })
+            ] })
+          }
+        ) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-semibold mb-4", children: "Account Actions" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
           {
@@ -21645,8 +21753,183 @@ function UserProfile({ onLogout }) {
             ] })
           }
         ) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-red-900/20 border-red-500/30 p-5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-red-400 font-semibold mb-2 flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(AlertTriangle, { className: "w-5 h-5" }),
+          "Danger Zone"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm mb-4", children: "Permanent actions that cannot be undone" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setShowDeleteModal(true),
+            className: "w-full p-3 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-400 rounded-xl text-left transition-colors",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-5 h-5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-semibold", children: "Delete Account" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-red-400/70", children: "Permanently delete your account and all data" })
+              ] })
+            ] })
+          }
+        )
       ] })
     ] }),
+    showCancelModal && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "w-full max-w-md bg-slate-900 border-slate-700 p-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xl font-bold text-white flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(XCircle, { className: "w-6 h-6 text-orange-400" }),
+          "Cancel Subscription"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setShowCancelModal(false),
+            className: "text-slate-400 hover:text-white",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5" })
+          }
+        )
+      ] }),
+      !cancelSubmitted ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm mb-4", children: "Your cancellation will take effect after 30 days. You'll continue to have access until then." }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "text-sm text-slate-300 mb-2 block", children: [
+              "Why are you canceling? ",
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-red-400", children: "*" })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "select",
+              {
+                value: cancelReason,
+                onChange: (e) => setCancelReason(e.target.value),
+                className: "w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-white",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: "Select a reason..." }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "too_expensive", children: "Too expensive" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "not_using", children: "Not using enough" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "found_alternative", children: "Found alternative" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "technical_issues", children: "Technical issues" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "missing_features", children: "Missing features I need" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "other", children: "Other" })
+                ]
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-sm text-slate-300 mb-2 block", children: "Additional feedback (optional)" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "textarea",
+              {
+                value: cancelFeedback,
+                onChange: (e) => setCancelFeedback(e.target.value),
+                placeholder: "Tell us how we can improve...",
+                rows: 4,
+                className: "w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500 resize-none"
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Button,
+              {
+                onClick: handleCancellationRequest,
+                disabled: !cancelReason,
+                className: "flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2.5 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
+                children: "Submit Cancellation Request"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Button,
+              {
+                onClick: () => setShowCancelModal(false),
+                variant: "outline",
+                className: "px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-xl",
+                children: "Keep Subscription"
+              }
+            )
+          ] })
+        ] })
+      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center py-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Check$1, { className: "w-16 h-16 text-green-400 mx-auto mb-4" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-white font-semibold text-lg mb-2", children: "Request Submitted!" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: "Your cancellation will take effect in 30 days. You'll receive a confirmation email shortly." })
+      ] })
+    ] }) }),
+    showDeleteModal && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "w-full max-w-md bg-slate-900 border-red-500/30 p-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xl font-bold text-red-400 flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(AlertTriangle, { className: "w-6 h-6" }),
+          "Delete Account"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => {
+              setShowDeleteModal(false);
+              setDeleteConfirmText("");
+            },
+            className: "text-slate-400 hover:text-white",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5" })
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-red-300 text-sm font-semibold mb-2", children: "⚠️ Warning: This action cannot be undone!" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "text-red-300/80 text-sm space-y-1", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• All your data will be permanently deleted" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• Your saved items and progress will be lost" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• Your subscription will be cancelled" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "• You won't be able to recover your account" })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "text-sm text-slate-300 mb-2 block", children: [
+            "Type ",
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-bold text-red-400", children: "delete my account" }),
+            " to confirm:"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "text",
+              value: deleteConfirmText,
+              onChange: (e) => setDeleteConfirmText(e.target.value),
+              placeholder: "delete my account",
+              className: "w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            Button,
+            {
+              onClick: handleAccountDeletion,
+              disabled: deleteConfirmText.toLowerCase() !== "delete my account",
+              className: "flex-1 bg-red-500 hover:bg-red-600 text-white py-2.5 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4 mr-1.5" }),
+                "Delete My Account"
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Button,
+            {
+              onClick: () => {
+                setShowDeleteModal(false);
+                setDeleteConfirmText("");
+              },
+              variant: "outline",
+              className: "px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-xl",
+              children: "Cancel"
+            }
+          )
+        ] })
+      ] })
+    ] }) }),
     showUpgradeModal && /* @__PURE__ */ jsxRuntimeExports.jsx(UpgradeModal, { onClose: () => setShowUpgradeModal(false) })
   ] });
 }
@@ -24314,7 +24597,7 @@ function App() {
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/gifts", element: /* @__PURE__ */ jsxRuntimeExports.jsx(GiftSuggestions, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/chat", element: /* @__PURE__ */ jsxRuntimeExports.jsx(Chat, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/text-helper", element: /* @__PURE__ */ jsxRuntimeExports.jsx(TextResponseHelper, {}) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/progress", element: /* @__PURE__ */ jsxRuntimeExports.jsx(ProgressTracking, {}) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/progress", element: /* @__PURE__ */ jsxRuntimeExports.jsx(Navigate, { to: "/profile", replace: true }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/mood", element: /* @__PURE__ */ jsxRuntimeExports.jsx(MoodCheck, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/moodcheck", element: /* @__PURE__ */ jsxRuntimeExports.jsx(MoodCheck, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/profileoptimizer", element: /* @__PURE__ */ jsxRuntimeExports.jsx(ProfileOptimizer, {}) }),

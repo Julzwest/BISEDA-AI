@@ -141,13 +141,6 @@ export default function Home() {
       page: 'ProfileOptimizer'
     },
     {
-      icon: TrendingUp,
-      title: 'Progress Tracking',
-      description: 'Track your dating journey',
-      color: 'from-emerald-500 to-green-500',
-      page: 'progress'
-    },
-    {
       icon: Sparkles,
       title: t('home.features.styleAdvisor.title', 'Style Advisor'),
       description: t('home.features.styleAdvisor.desc', 'Get fashion advice'),

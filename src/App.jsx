@@ -7,7 +7,6 @@ import Chat from './pages/Chat.jsx';
 import Explore from './pages/Explore.jsx';
 import GiftSuggestions from './pages/GiftSuggestions.jsx';
 import TextResponseHelper from './pages/TextResponseHelper.jsx';
-import ProgressTracking from './pages/ProgressTracking.jsx';
 import SubscriptionSuccess from './pages/SubscriptionSuccess.jsx';
 import SubscriptionCancel from './pages/SubscriptionCancel.jsx';
 import Admin from './pages/Admin.jsx';
@@ -140,7 +139,7 @@ function App() {
           
           {/* New Features */}
           <Route path="/text-helper" element={<TextResponseHelper />} />
-          <Route path="/progress" element={<ProgressTracking />} />
+          <Route path="/progress" element={<Navigate to="/profile" replace />} />
           
           {/* User & Tools */}
           <Route path="/mood" element={<MoodCheck />} />

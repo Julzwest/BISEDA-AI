@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
   TrendingUp, Award, Target, Zap, Calendar, MessageSquare, Heart, Star, Trophy, Flame,
-  User, Crown, Shield, LogOut, Bookmark, Settings, MapPin, Globe, Check, CreditCard, Trash2
+  User, Crown, Shield, LogOut, Bookmark, Settings, MapPin, Globe, Check, CreditCard, Trash2,
+  AlertTriangle, Download, Mail, HelpCircle, FileText, XCircle, X
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -34,6 +35,12 @@ export default function UserProfile({ onLogout }) {
   const [userCity, setUserCity] = useState(localStorage.getItem('userCity') || '');
   const [isEditingLocation, setIsEditingLocation] = useState(false);
   const [locationSaved, setLocationSaved] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [cancelReason, setCancelReason] = useState('');
+  const [cancelFeedback, setCancelFeedback] = useState('');
+  const [cancelSubmitted, setCancelSubmitted] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteConfirmText, setDeleteConfirmText] = useState('');
 
   const backendUrl = getBackendUrl();
   const userId = localStorage.getItem('userId');
@@ -42,6 +49,7 @@ export default function UserProfile({ onLogout }) {
 
   useEffect(() => {
     fetchData();
+    trackUserActivity(); // Track that user visited profile
     
     // Listen for favorites changes
     const handleFavoritesChanged = () => {
@@ -54,17 +62,56 @@ export default function UserProfile({ onLogout }) {
     };
   }, []);
 
+  const trackUserActivity = () => {
+    // Update last active timestamp
+    localStorage.setItem('lastActive', new Date().toISOString());
+    
+    // Increment profile views
+    const profileViews = parseInt(localStorage.getItem('profileViews') || '0') + 1;
+    localStorage.setItem('profileViews', profileViews.toString());
+  };
+
   const fetchData = async () => {
     try {
       // Load stats from localStorage
       const savedStats = localStorage.getItem('userProgressStats');
       if (savedStats) {
-        setStats(JSON.parse(savedStats));
+        const parsedStats = JSON.parse(savedStats);
+        setStats(parsedStats);
+      } else {
+        // Initialize default stats
+        const defaultStats = {
+          totalMessages: 0,
+          messagesThisWeek: 0,
+          datesPlanned: 0,
+          rehearsalsSessions: 0,
+          tipsViewed: 0,
+          photosFeedback: 0,
+          conversationStartersUsed: 0,
+          currentStreak: 0,
+          level: 1
+        };
+        setStats(defaultStats);
+        localStorage.setItem('userProgressStats', JSON.stringify(defaultStats));
       }
 
-      // Calculate weekly activity
-      const activity = Array(7).fill(0).map((_, i) => Math.floor(Math.random() * 20));
-      setWeeklyActivity(activity);
+      // Calculate real weekly activity from user actions
+      const calculateWeeklyActivity = () => {
+        const activity = [];
+        const today = new Date();
+        
+        for (let i = 6; i >= 0; i--) {
+          const dayDate = new Date(today);
+          dayDate.setDate(today.getDate() - i);
+          const dayKey = `activity_${dayDate.toISOString().split('T')[0]}`;
+          const dayActivity = parseInt(localStorage.getItem(dayKey) || '0');
+          activity.push(dayActivity);
+        }
+        
+        return activity;
+      };
+      
+      setWeeklyActivity(calculateWeeklyActivity());
 
       // Fetch usage stats from backend
       const usageRes = await fetch(`${backendUrl}/api/usage`, {
@@ -73,6 +120,15 @@ export default function UserProfile({ onLogout }) {
       if (usageRes.ok) {
         const usageData = await usageRes.json();
         setUsage(usageData);
+        
+        // Update stats from backend
+        if (usageData.dailyUsage) {
+          setStats(prev => ({
+            ...prev,
+            totalMessages: usageData.dailyUsage.messages || prev.totalMessages,
+            level: Math.floor((usageData.dailyUsage.messages || 0) / 10) + 1
+          }));
+        }
       }
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -108,6 +164,139 @@ export default function UserProfile({ onLogout }) {
       setLocalFavorites(getFavorites());
     } catch (error) {
       console.error('Error removing favorite:', error);
+    }
+  };
+
+  const handleCancellationRequest = async () => {
+    if (!cancelReason) {
+      alert('Please select a reason for cancellation');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${backendUrl}/api/subscription/cancel-request`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-user-id': userId
+        },
+        body: JSON.stringify({
+          userId,
+          userName,
+          userEmail,
+          reason: cancelReason,
+          feedback: cancelFeedback,
+          requestDate: new Date().toISOString(),
+          currentTier
+        })
+      });
+
+      if (response.ok) {
+        setCancelSubmitted(true);
+        setTimeout(() => {
+          setShowCancelModal(false);
+          setCancelReason('');
+          setCancelFeedback('');
+          setCancelSubmitted(false);
+        }, 3000);
+      } else {
+        alert('Failed to submit cancellation request. Please try again or contact support.');
+      }
+    } catch (error) {
+      console.error('Error submitting cancellation:', error);
+      // Still save locally as backup
+      const cancellationRequest = {
+        userId,
+        userName,
+        userEmail,
+        reason: cancelReason,
+        feedback: cancelFeedback,
+        requestDate: new Date().toISOString(),
+        status: 'pending'
+      };
+      localStorage.setItem('cancellationRequest', JSON.stringify(cancellationRequest));
+      setCancelSubmitted(true);
+      setTimeout(() => {
+        setShowCancelModal(false);
+        setCancelReason('');
+        setCancelFeedback('');
+        setCancelSubmitted(false);
+      }, 3000);
+    }
+  };
+
+  const handleAccountDeletion = async () => {
+    if (deleteConfirmText.toLowerCase() !== 'delete my account') {
+      alert('Please type exactly: delete my account');
+      return;
+    }
+
+    if (!window.confirm('This action cannot be undone. Are you absolutely sure you want to delete your account?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`${backendUrl}/api/user/delete-request`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-user-id': userId
+        },
+        body: JSON.stringify({
+          userId,
+          userName,
+          userEmail,
+          requestDate: new Date().toISOString()
+        })
+      });
+
+      if (response.ok) {
+        alert('Account deletion request submitted. You will receive an email confirmation within 24 hours.');
+        setShowDeleteModal(false);
+        // Logout after deletion request
+        setTimeout(() => {
+          if (onLogout) onLogout();
+        }, 2000);
+      } else {
+        alert('Failed to submit deletion request. Please contact support@biseda.ai');
+      }
+    } catch (error) {
+      console.error('Error submitting account deletion:', error);
+      alert('Failed to submit deletion request. Please contact support@biseda.ai');
+    }
+  };
+
+  const handleExportData = async () => {
+    try {
+      const userData = {
+        profile: {
+          name: userName,
+          email: userEmail,
+          tier: currentTier,
+          country: userCountry,
+          city: userCity
+        },
+        stats,
+        favorites: localFavorites,
+        usage,
+        exportDate: new Date().toISOString()
+      };
+
+      const dataStr = JSON.stringify(userData, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `biseda-data-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      alert('Your data has been exported successfully!');
+    } catch (error) {
+      console.error('Error exporting data:', error);
+      alert('Failed to export data. Please try again.');
     }
   };
 
@@ -540,35 +729,117 @@ export default function UserProfile({ onLogout }) {
           </Card>
 
           {/* Subscription Management */}
-          {currentTier !== 'free' && (
-            <Card className="bg-slate-800/50 border-slate-700 p-5">
-              <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-                <CreditCard className="w-5 h-5 text-purple-400" />
-                Subscription
-              </h3>
+          <Card className="bg-slate-800/50 border-slate-700 p-5">
+            <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+              <CreditCard className="w-5 h-5 text-purple-400" />
+              Subscription
+            </h3>
+            
+            <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div>
                   <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border ${tierBadge.color} mb-2`}>
                     <TierIcon className="w-4 h-4" />
                     <span className="text-sm font-bold">{tierBadge.label} Plan</span>
                   </div>
-                  <p className="text-slate-400 text-sm">Manage your subscription</p>
+                  <p className="text-slate-400 text-sm">
+                    {currentTier === 'free' ? 'Upgrade to unlock premium features' : 'Manage your subscription'}
+                  </p>
                 </div>
-                <a
-                  href="https://billing.stripe.com/p/login/test_7sI9Df4Mp8M48zm000"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-sm"
-                >
-                  Manage
-                </a>
               </div>
-            </Card>
-          )}
+
+              <div className="flex gap-2">
+                {currentTier === 'free' ? (
+                  <Button
+                    onClick={() => setShowUpgradeModal(true)}
+                    className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-2.5 rounded-xl text-sm font-semibold"
+                  >
+                    <Crown className="w-4 h-4 mr-1.5" />
+                    Upgrade Now
+                  </Button>
+                ) : (
+                  <>
+                    <a
+                      href="https://billing.stripe.com/p/login/test_7sI9Df4Mp8M48zm000"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-sm font-semibold text-center"
+                    >
+                      Manage Billing
+                    </a>
+                    <Button
+                      onClick={() => setShowCancelModal(true)}
+                      variant="outline"
+                      className="px-4 py-2.5 bg-slate-700/50 border-slate-600 hover:bg-slate-600/50 text-slate-300 rounded-xl text-sm"
+                    >
+                      <XCircle className="w-4 h-4 mr-1.5" />
+                      Cancel
+                    </Button>
+                  </>
+                )}
+              </div>
+            </div>
+          </Card>
+
+          {/* Data & Privacy */}
+          <Card className="bg-slate-800/50 border-slate-700 p-5">
+            <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+              <Shield className="w-5 h-5 text-cyan-400" />
+              Data & Privacy
+            </h3>
+            <div className="space-y-2">
+              <button
+                onClick={handleExportData}
+                className="w-full p-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-left transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <Download className="w-5 h-5 text-cyan-400" />
+                  <div>
+                    <div className="text-sm font-semibold">Export My Data</div>
+                    <div className="text-xs text-slate-400">Download all your data in JSON format</div>
+                  </div>
+                </div>
+              </button>
+
+              <Link to="/privacy">
+                <button className="w-full p-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-left transition-colors">
+                  <div className="flex items-center gap-3">
+                    <FileText className="w-5 h-5 text-blue-400" />
+                    <div>
+                      <div className="text-sm font-semibold">Privacy Policy</div>
+                      <div className="text-xs text-slate-400">Read our privacy policy</div>
+                    </div>
+                  </div>
+                </button>
+              </Link>
+            </div>
+          </Card>
+
+          {/* Support & Help */}
+          <Card className="bg-slate-800/50 border-slate-700 p-5">
+            <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+              <HelpCircle className="w-5 h-5 text-green-400" />
+              Support & Help
+            </h3>
+            <div className="space-y-2">
+              <a
+                href="mailto:support@biseda.ai"
+                className="block w-full p-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <Mail className="w-5 h-5 text-green-400" />
+                  <div>
+                    <div className="text-sm font-semibold">Contact Support</div>
+                    <div className="text-xs text-slate-400">support@biseda.ai</div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </Card>
 
           {/* Account Actions */}
           <Card className="bg-slate-800/50 border-slate-700 p-5">
-            <h3 className="text-white font-semibold mb-4">Account</h3>
+            <h3 className="text-white font-semibold mb-4">Account Actions</h3>
             <div className="space-y-2">
               <button
                 onClick={onLogout}
@@ -579,6 +850,185 @@ export default function UserProfile({ onLogout }) {
                   <div className="text-sm font-semibold">Logout</div>
                 </div>
               </button>
+            </div>
+          </Card>
+
+          {/* Danger Zone */}
+          <Card className="bg-red-900/20 border-red-500/30 p-5">
+            <h3 className="text-red-400 font-semibold mb-2 flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5" />
+              Danger Zone
+            </h3>
+            <p className="text-slate-400 text-sm mb-4">
+              Permanent actions that cannot be undone
+            </p>
+            <button
+              onClick={() => setShowDeleteModal(true)}
+              className="w-full p-3 bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-400 rounded-xl text-left transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <Trash2 className="w-5 h-5" />
+                <div>
+                  <div className="text-sm font-semibold">Delete Account</div>
+                  <div className="text-xs text-red-400/70">Permanently delete your account and all data</div>
+                </div>
+              </div>
+            </button>
+          </Card>
+        </div>
+      )}
+
+      {/* Cancellation Request Modal */}
+      {showCancelModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+          <Card className="w-full max-w-md bg-slate-900 border-slate-700 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                <XCircle className="w-6 h-6 text-orange-400" />
+                Cancel Subscription
+              </h3>
+              <button
+                onClick={() => setShowCancelModal(false)}
+                className="text-slate-400 hover:text-white"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {!cancelSubmitted ? (
+              <>
+                <p className="text-slate-400 text-sm mb-4">
+                  Your cancellation will take effect after 30 days. You'll continue to have access until then.
+                </p>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm text-slate-300 mb-2 block">
+                      Why are you canceling? <span className="text-red-400">*</span>
+                    </label>
+                    <select
+                      value={cancelReason}
+                      onChange={(e) => setCancelReason(e.target.value)}
+                      className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-white"
+                    >
+                      <option value="">Select a reason...</option>
+                      <option value="too_expensive">Too expensive</option>
+                      <option value="not_using">Not using enough</option>
+                      <option value="found_alternative">Found alternative</option>
+                      <option value="technical_issues">Technical issues</option>
+                      <option value="missing_features">Missing features I need</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="text-sm text-slate-300 mb-2 block">
+                      Additional feedback (optional)
+                    </label>
+                    <textarea
+                      value={cancelFeedback}
+                      onChange={(e) => setCancelFeedback(e.target.value)}
+                      placeholder="Tell us how we can improve..."
+                      rows={4}
+                      className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500 resize-none"
+                    />
+                  </div>
+
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={handleCancellationRequest}
+                      disabled={!cancelReason}
+                      className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2.5 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Submit Cancellation Request
+                    </Button>
+                    <Button
+                      onClick={() => setShowCancelModal(false)}
+                      variant="outline"
+                      className="px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-xl"
+                    >
+                      Keep Subscription
+                    </Button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-6">
+                <Check className="w-16 h-16 text-green-400 mx-auto mb-4" />
+                <h4 className="text-white font-semibold text-lg mb-2">Request Submitted!</h4>
+                <p className="text-slate-400 text-sm">
+                  Your cancellation will take effect in 30 days. You'll receive a confirmation email shortly.
+                </p>
+              </div>
+            )}
+          </Card>
+        </div>
+      )}
+
+      {/* Account Deletion Modal */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+          <Card className="w-full max-w-md bg-slate-900 border-red-500/30 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-red-400 flex items-center gap-2">
+                <AlertTriangle className="w-6 h-6" />
+                Delete Account
+              </h3>
+              <button
+                onClick={() => {
+                  setShowDeleteModal(false);
+                  setDeleteConfirmText('');
+                }}
+                className="text-slate-400 hover:text-white"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 mb-4">
+              <p className="text-red-300 text-sm font-semibold mb-2">⚠️ Warning: This action cannot be undone!</p>
+              <ul className="text-red-300/80 text-sm space-y-1">
+                <li>• All your data will be permanently deleted</li>
+                <li>• Your saved items and progress will be lost</li>
+                <li>• Your subscription will be cancelled</li>
+                <li>• You won't be able to recover your account</li>
+              </ul>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm text-slate-300 mb-2 block">
+                  Type <span className="font-bold text-red-400">delete my account</span> to confirm:
+                </label>
+                <input
+                  type="text"
+                  value={deleteConfirmText}
+                  onChange={(e) => setDeleteConfirmText(e.target.value)}
+                  placeholder="delete my account"
+                  className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500"
+                />
+              </div>
+
+              <div className="flex gap-2">
+                <Button
+                  onClick={handleAccountDeletion}
+                  disabled={deleteConfirmText.toLowerCase() !== 'delete my account'}
+                  className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2.5 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Trash2 className="w-4 h-4 mr-1.5" />
+                  Delete My Account
+                </Button>
+                <Button
+                  onClick={() => {
+                    setShowDeleteModal(false);
+                    setDeleteConfirmText('');
+                  }}
+                  variant="outline"
+                  className="px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-xl"
+                >
+                  Cancel
+                </Button>
+              </div>
             </div>
           </Card>
         </div>
