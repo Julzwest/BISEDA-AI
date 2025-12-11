@@ -11597,12 +11597,6 @@ const UserPlus = createLucideIcon("UserPlus", [
   ["line", { x1: "19", x2: "19", y1: "8", y2: "14", key: "1bvyxn" }],
   ["line", { x1: "22", x2: "16", y1: "11", y2: "11", key: "1shjgl" }]
 ]);
-const UserX = createLucideIcon("UserX", [
-  ["path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2", key: "1yyitq" }],
-  ["circle", { cx: "9", cy: "7", r: "4", key: "nufk8" }],
-  ["line", { x1: "17", x2: "22", y1: "8", y2: "13", key: "3nzzx3" }],
-  ["line", { x1: "22", x2: "17", y1: "8", y2: "13", key: "1swrse" }]
-]);
 const User = createLucideIcon("User", [
   ["path", { d: "M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2", key: "975kel" }],
   ["circle", { cx: "12", cy: "7", r: "4", key: "17ys0d" }]
@@ -13140,60 +13134,266 @@ function RegionSwitcher() {
     )
   ] });
 }
-const scriptRel = "modulepreload";
-const assetsURL = function(dep) {
-  return "/" + dep;
+const ANALYTICS_KEY = "biseda_analytics";
+const getAnalytics = () => {
+  try {
+    const data = localStorage.getItem(ANALYTICS_KEY);
+    return data ? JSON.parse(data) : initAnalytics();
+  } catch {
+    return initAnalytics();
+  }
 };
-const seen = {};
-const __vitePreload = function preload(baseModule, deps, importerUrl) {
-  let promise = Promise.resolve();
-  if (deps && deps.length > 0) {
-    let allSettled = function(promises$2) {
-      return Promise.all(promises$2.map((p) => Promise.resolve(p).then((value$1) => ({
-        status: "fulfilled",
-        value: value$1
-      }), (reason) => ({
-        status: "rejected",
-        reason
-      }))));
-    };
-    document.getElementsByTagName("link");
-    const cspNonceMeta = document.querySelector("meta[property=csp-nonce]");
-    const cspNonce = cspNonceMeta?.nonce || cspNonceMeta?.getAttribute("nonce");
-    promise = allSettled(deps.map((dep) => {
-      dep = assetsURL(dep);
-      if (dep in seen) return;
-      seen[dep] = true;
-      const isCss = dep.endsWith(".css");
-      const cssSelector = isCss ? '[rel="stylesheet"]' : "";
-      if (document.querySelector(`link[href="${dep}"]${cssSelector}`)) return;
-      const link = document.createElement("link");
-      link.rel = isCss ? "stylesheet" : scriptRel;
-      if (!isCss) link.as = "script";
-      link.crossOrigin = "";
-      link.href = dep;
-      if (cspNonce) link.setAttribute("nonce", cspNonce);
-      document.head.appendChild(link);
-      if (isCss) return new Promise((res, rej) => {
-        link.addEventListener("load", res);
-        link.addEventListener("error", () => rej(/* @__PURE__ */ new Error(`Unable to preload CSS for ${dep}`)));
-      });
-    }));
+const initAnalytics = () => ({
+  firstVisit: Date.now(),
+  lastVisit: Date.now(),
+  totalSessions: 0,
+  features: {
+    bisedaChat: { views: 0, uses: 0 },
+    aiCoach: { views: 0, uses: 0, messages: 0 },
+    firstDates: { views: 0, searches: 0 },
+    events: { views: 0, searches: 0, venueClicks: 0 },
+    tips: { views: 0 },
+    gifts: { views: 0 },
+    festiveDates: { views: 0 },
+    profile: { views: 0 },
+    countrySwitcher: { uses: 0 },
+    share: { uses: 0 }
+  },
+  actions: {
+    screenshots: 0,
+    favorites: 0,
+    shares: 0,
+    themeChanges: 0
+  },
+  engagement: {
+    totalTimeSpent: 0,
+    // in seconds
+    averageSessionTime: 0,
+    longestSession: 0
   }
-  function handlePreloadError(err$2) {
-    const e$1 = new Event("vite:preloadError", { cancelable: true });
-    e$1.payload = err$2;
-    window.dispatchEvent(e$1);
-    if (!e$1.defaultPrevented) throw err$2;
+});
+const saveAnalytics = (data) => {
+  try {
+    localStorage.setItem(ANALYTICS_KEY, JSON.stringify(data));
+  } catch (e) {
+    console.warn("Failed to save analytics:", e);
   }
-  return promise.then((res) => {
-    for (const item of res || []) {
-      if (item.status !== "rejected") continue;
-      handlePreloadError(item.reason);
+};
+const trackPageView = (pageName) => {
+  const analytics = getAnalytics();
+  const featureMap = {
+    "Clipboard": "bisedaChat",
+    "Chat": "aiCoach",
+    "FirstDates": "firstDates",
+    "Events": "events",
+    "Tips": "tips",
+    "Gifts": "gifts",
+    "FestiveDates": "festiveDates",
+    "Profile": "profile",
+    "Home": null
+    // Don't track home specifically
+  };
+  const feature = featureMap[pageName];
+  if (feature && analytics.features[feature]) {
+    analytics.features[feature].views++;
+  }
+  analytics.lastVisit = Date.now();
+  saveAnalytics(analytics);
+  console.log(`📊 Page view: ${pageName}`);
+};
+const trackFeatureUse = (featureName, action = "use") => {
+  const analytics = getAnalytics();
+  if (analytics.features[featureName]) {
+    if (action === "use") {
+      analytics.features[featureName].uses = (analytics.features[featureName].uses || 0) + 1;
+    } else if (action === "search") {
+      analytics.features[featureName].searches = (analytics.features[featureName].searches || 0) + 1;
+    } else if (action === "message") {
+      analytics.features[featureName].messages = (analytics.features[featureName].messages || 0) + 1;
+    } else if (action === "venueClick") {
+      analytics.features[featureName].venueClicks = (analytics.features[featureName].venueClicks || 0) + 1;
     }
-    return baseModule().catch(handlePreloadError);
-  });
+  }
+  saveAnalytics(analytics);
+  console.log(`📊 Feature use: ${featureName} - ${action}`);
 };
+const trackAction = (actionName) => {
+  const analytics = getAnalytics();
+  if (analytics.actions[actionName] !== void 0) {
+    analytics.actions[actionName]++;
+  }
+  saveAnalytics(analytics);
+  console.log(`📊 Action: ${actionName}`);
+};
+const trackSessionStart = () => {
+  const analytics = getAnalytics();
+  analytics.totalSessions++;
+  analytics.lastVisit = Date.now();
+  sessionStorage.setItem("sessionStart", Date.now().toString());
+  saveAnalytics(analytics);
+  console.log(`📊 Session started (Total: ${analytics.totalSessions})`);
+};
+const trackSessionEnd = () => {
+  const analytics = getAnalytics();
+  const sessionStart = sessionStorage.getItem("sessionStart");
+  if (sessionStart) {
+    const sessionDuration = Math.floor((Date.now() - parseInt(sessionStart)) / 1e3);
+    analytics.engagement.totalTimeSpent += sessionDuration;
+    if (analytics.totalSessions > 0) {
+      analytics.engagement.averageSessionTime = Math.floor(
+        analytics.engagement.totalTimeSpent / analytics.totalSessions
+      );
+    }
+    if (sessionDuration > analytics.engagement.longestSession) {
+      analytics.engagement.longestSession = sessionDuration;
+    }
+    saveAnalytics(analytics);
+    console.log(`📊 Session ended (Duration: ${sessionDuration}s)`);
+  }
+};
+function Layout({ children, onLogout }) {
+  const { t } = useTranslation();
+  useNavigate();
+  const location = useLocation();
+  const currentPageName = location.pathname.split("/")[1]?.charAt(0).toUpperCase() + location.pathname.split("/")[1]?.slice(1) || "Home";
+  reactExports.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+    const mainContainer = document.getElementById("main-content");
+    if (mainContainer) {
+      mainContainer.scrollTo({ top: 0, behavior: "instant" });
+    }
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [location.pathname]);
+  reactExports.useEffect(() => {
+    trackPageView(currentPageName);
+  }, [currentPageName]);
+  const navItems = [
+    { name: t("nav.home"), icon: Home$1, page: "Home" },
+    { name: t("nav.aiCoach"), icon: Sparkles, page: "Chat" },
+    { name: t("nav.dates"), icon: Heart, page: "FirstDates" },
+    { name: t("nav.events"), icon: MapPin, page: "Events" },
+    { name: t("nav.tips"), icon: Lightbulb, page: "Tips" }
+  ];
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `
+        html, body {
+          background: var(--bg-primary, #0f172a) !important;
+          -webkit-overflow-scrolling: touch;
+          transition: background-color 0.3s ease;
+        }
+        
+        * {
+          -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Cover the entire bottom area including home indicator */
+        .bottom-safe-area {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: env(safe-area-inset-bottom, 0px);
+          background: var(--bg-primary, #0f172a);
+          z-index: 9998;
+        }
+        
+        /* Modern nav styling */
+        .nav-item {
+          position: relative;
+          transition: all 0.2s ease;
+        }
+        
+        .nav-item.active {
+          color: var(--accent-primary, #a855f7);
+        }
+        
+        .nav-item.active::before {
+          content: '';
+          position: absolute;
+          top: -4px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 24px;
+          height: 3px;
+          background: linear-gradient(90deg, var(--accent-primary, #a855f7), var(--accent-secondary, #ec4899));
+          border-radius: 0 0 4px 4px;
+        }
+        
+        .nav-item:not(.active):hover {
+          color: var(--accent-primary, #c084fc);
+        }
+        
+        .nav-icon {
+          transition: transform 0.2s ease;
+        }
+        
+        .nav-item.active .nav-icon {
+          transform: scale(1.15);
+        }
+      ` }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bottom-safe-area" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "header",
+      {
+        style: {
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          paddingTop: "env(safe-area-inset-top, 0px)",
+          zIndex: 9999,
+          background: "linear-gradient(to bottom, var(--bg-primary, rgba(15, 23, 42, 0.98)), var(--bg-primary, rgba(15, 23, 42, 0.95)))",
+          backdropFilter: "blur(12px)",
+          borderBottom: "1px solid var(--border-color, rgba(148, 163, 184, 0.1))"
+        },
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-12 sm:h-14 px-3 sm:px-4 flex items-center justify-between max-w-screen-xl mx-auto", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/home", className: "flex items-center gap-2 flex-shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 text-white" }) }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 flex-shrink-0", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(RegionSwitcher, {}),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/profile", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg hover:scale-105 hover:shadow-purple-500/30 transition-all duration-200", children: /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-4 h-4 sm:w-5 sm:h-5 text-white" }) }) })
+          ] })
+        ] })
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "main",
+      {
+        id: "main-content",
+        className: "w-full max-w-full overflow-x-hidden",
+        style: { paddingTop: "calc(56px + env(safe-area-inset-top, 0px))", paddingBottom: "90px", minHeight: "100vh" },
+        children
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { style: {
+      position: "fixed",
+      bottom: 0,
+      left: 0,
+      right: 0,
+      background: "linear-gradient(to top, var(--bg-primary, rgba(15, 23, 42, 0.98)), var(--bg-primary, rgba(15, 23, 42, 0.95)))",
+      backdropFilter: "blur(12px)",
+      borderTop: "1px solid var(--border-color, rgba(148, 163, 184, 0.1))",
+      zIndex: 9999,
+      paddingBottom: "env(safe-area-inset-bottom, 0px)"
+    }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-around items-center h-16 px-2 max-w-screen-xl mx-auto", children: navItems.map((item) => {
+      const Icon = item.icon;
+      const isActive = currentPageName === item.page;
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        Link,
+        {
+          to: createPageUrl(item.page),
+          className: `nav-item flex flex-col items-center justify-center py-2 px-3 rounded-xl ${isActive ? "active text-purple-400" : "text-slate-400"}`,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `nav-icon p-2 rounded-xl ${isActive ? "bg-purple-500/20" : ""}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { className: "w-5 h-5", strokeWidth: isActive ? 2.5 : 2 }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `text-xs font-semibold mt-0.5 ${isActive ? "text-purple-300" : "text-slate-500"}`, children: item.name })
+          ]
+        },
+        item.page
+      );
+    }) }) })
+  ] });
+}
 function Card({ children, className = "", ...props }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `rounded-2xl ${className}`, ...props, children });
 }
@@ -13244,6 +13444,235 @@ function getBackendUrl() {
     return isLocalHost(runtimeWindow.location.hostname) ? DEV_FALLBACK_URL : PROD_FALLBACK_URL;
   }
   return PROD_FALLBACK_URL;
+}
+function CreditsModal({ isOpen, onClose }) {
+  const { t } = useTranslation();
+  const [packages, setPackages] = reactExports.useState(null);
+  const [balance, setBalance] = reactExports.useState(0);
+  const [loading, setLoading] = reactExports.useState(false);
+  const backendUrl2 = getBackendUrl();
+  const userId = localStorage.getItem("userId") || "anonymous";
+  reactExports.useEffect(() => {
+    if (isOpen) {
+      fetchCredits();
+    }
+  }, [isOpen]);
+  const fetchCredits = async () => {
+    try {
+      const response = await fetch(`${backendUrl2}/api/credits/balance`, {
+        headers: {
+          "x-user-id": userId
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setBalance(data.balance);
+        setPackages(data.packages);
+      }
+    } catch (error) {
+      console.error("Error fetching credits:", error);
+    }
+  };
+  const handlePurchase = async (packageId) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${backendUrl2}/api/credits/purchase`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": userId
+        },
+        body: JSON.stringify({ packageId })
+      });
+      if (response.ok) {
+        const data = await response.json();
+        window.location.href = data.url;
+      } else {
+        alert(t("credits.purchaseFailed"));
+      }
+    } catch (error) {
+      console.error("Error purchasing credits:", error);
+      alert(t("credits.errorOccurred"));
+    } finally {
+      setLoading(false);
+    }
+  };
+  if (!isOpen) return null;
+  const creditPackages = packages || {
+    starter: { name: "Starter Pack", price: 2.99, credits: 100 },
+    popular: { name: "Popular Pack", price: 9.99, credits: 400 },
+    pro: { name: "Pro Pack", price: 19.99, credits: 900 }
+  };
+  return reactDomExports.createPortal(
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4", style: { zIndex: 99999 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-900 border-slate-700 max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white mb-1", children: t("credits.title") }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: t("credits.subtitle") })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: onClose,
+            className: "text-slate-400 hover:text-white transition-colors",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-6 h-6" })
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-6 p-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-5 h-5 text-purple-400" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-slate-300", children: t("credits.currentBalance") })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl font-bold text-white", children: balance })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3 mb-6", children: Object.entries(creditPackages).map(([id, pkg]) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Card,
+        {
+          className: "bg-slate-700/50 border-slate-600 hover:border-purple-500/50 transition-colors",
+          children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-white", children: pkg.name }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-slate-400", children: [
+                  pkg.credits,
+                  " ",
+                  t("credits.creditsCount")
+                ] })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-right", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-xl font-bold text-white", children: [
+                  "€",
+                  pkg.price
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-xs text-slate-400", children: [
+                  "€",
+                  (pkg.price / pkg.credits).toFixed(4),
+                  " ",
+                  t("credits.perCredit")
+                ] })
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Button,
+              {
+                onClick: () => handlePurchase(id),
+                disabled: loading,
+                className: "w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white",
+                children: loading ? t("credits.processing") : t("credits.buyNow")
+              }
+            )
+          ] })
+        },
+        id
+      )) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-500", children: t("credits.description") }) })
+    ] }) }) }),
+    document.body
+  );
+}
+function UsageDisplay({ onUpgrade, onLimitReached }) {
+  const { t } = useTranslation();
+  const [usage2, setUsage] = reactExports.useState(null);
+  const [loading, setLoading] = reactExports.useState(true);
+  const [showCreditsModal, setShowCreditsModal] = reactExports.useState(false);
+  const backendUrl2 = getBackendUrl();
+  reactExports.useEffect(() => {
+    fetchUsage();
+    const interval = setInterval(fetchUsage, 3e4);
+    return () => clearInterval(interval);
+  }, []);
+  const fetchUsage = async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const headers = {};
+      if (userId) {
+        headers["x-user-id"] = userId;
+      }
+      const response = await fetch(`${backendUrl2}/api/usage`, { headers });
+      if (response.ok) {
+        const data = await response.json();
+        setUsage(data);
+        if (data.tier) {
+          localStorage.setItem("userSubscriptionTier", data.tier);
+        }
+        if (onLimitReached && data.dailyUsage.remainingMessages === 0 && (!data.credits || data.credits === 0)) {
+          onLimitReached(true);
+        } else if (onLimitReached) {
+          onLimitReached(false);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching usage:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  if (loading || !usage2) {
+    return null;
+  }
+  const { dailyUsage, tier, credits: credits2 } = usage2;
+  const percentageUsed = dailyUsage.messages / dailyUsage.messagesLimit * 100;
+  const isNearLimit = percentageUsed >= 80;
+  const isAtLimit = dailyUsage.messages >= dailyUsage.messagesLimit;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 backdrop-blur-sm p-4 mb-4", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-5 h-5 text-amber-400" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-white", children: tier === "free_trial" ? t("usage.freeTrial") : tier === "free" ? t("usage.freePlan") : tier === "starter" ? t("usage.starterPlan") : tier === "pro" ? t("usage.proPlan") : tier === "elite" ? t("usage.elitePlan") : tier === "premium" ? t("usage.elitePlan") : t("usage.basePlan") })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+        credits2 !== void 0 && credits2 > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Button,
+          {
+            onClick: () => setShowCreditsModal(true),
+            size: "sm",
+            className: "bg-purple-600 hover:bg-purple-700 text-white text-xs h-7 px-3",
+            children: t("usage.buyCredits")
+          }
+        ),
+        (tier === "free_trial" || tier === "free" || tier === "starter" || tier === "pro") && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Button,
+          {
+            onClick: onUpgrade,
+            size: "sm",
+            className: "bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white text-xs h-7 px-3",
+            children: tier === "free_trial" || tier === "free" ? t("home.upgrade") : t("usage.upgradeMore")
+          }
+        )
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2", children: [
+      credits2 !== void 0 && credits2 > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-2 p-2 bg-purple-500/10 border border-purple-500/30 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-300", children: t("usage.credits") }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-semibold text-purple-300", children: credits2 })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-xs text-slate-400 mb-1", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("home.messagesRemaining") }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: isNearLimit ? "text-red-400 font-semibold" : "", children: [
+            dailyUsage.messages,
+            " / ",
+            dailyUsage.messagesLimit
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full bg-slate-700 rounded-full h-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            className: `h-2 rounded-full transition-all ${isAtLimit ? "bg-red-500" : isNearLimit ? "bg-amber-500" : "bg-gradient-to-r from-green-500 to-emerald-500"}`,
+            style: { width: `${Math.min(100, percentageUsed)}%` }
+          }
+        ) })
+      ] }),
+      dailyUsage.remainingMessages === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-3 p-2 bg-red-500/10 border border-red-500/30 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-red-400 text-center", children: [
+        t("usage.limitReached"),
+        " ",
+        tier === "free" && t("usage.upgradeToChat")
+      ] }) }),
+      isNearLimit && !isAtLimit && (tier === "free" || tier === "free_trial") && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-2 p-2 bg-amber-500/10 border border-amber-500/30 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-amber-400 text-center", children: t("home.limitWarning") }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(CreditsModal, { isOpen: showCreditsModal, onClose: () => setShowCreditsModal(false) })
+  ] });
 }
 var ExceptionCode;
 (function(ExceptionCode2) {
@@ -13722,1424 +14151,6 @@ class CapacitorHttpPluginWeb extends WebPlugin {
 registerPlugin("CapacitorHttp", {
   web: () => new CapacitorHttpPluginWeb()
 });
-function LanguageSwitcher() {
-  const { t, i18n } = useTranslation();
-  const [isOpen, setIsOpen] = reactExports.useState(false);
-  const triggerRef = reactExports.useRef(null);
-  const dropdownRef = reactExports.useRef(null);
-  const currentLanguage = languages.find((lang) => lang.code === i18n.language) || languages[0];
-  reactExports.useEffect(() => {
-    const handleClickOutside = (event) => {
-      const clickedInsideTrigger = triggerRef.current && triggerRef.current.contains(event.target);
-      const clickedInsideDropdown = dropdownRef.current && dropdownRef.current.contains(event.target);
-      if (!clickedInsideTrigger && !clickedInsideDropdown) {
-        setIsOpen(false);
-      }
-    };
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isOpen]);
-  reactExports.useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === "Escape") setIsOpen(false);
-    };
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscape);
-    }
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, [isOpen]);
-  reactExports.useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
-  const handleSelectLanguage = (langCode) => {
-    i18n.changeLanguage(langCode);
-    localStorage.setItem("appLanguage", langCode);
-    setIsOpen(false);
-    window.dispatchEvent(new CustomEvent("languageChanged", {
-      detail: { langCode }
-    }));
-  };
-  const getTriggerRect = () => {
-    if (triggerRef.current) {
-      return triggerRef.current.getBoundingClientRect();
-    }
-    return null;
-  };
-  const triggerRect = isOpen ? getTriggerRect() : null;
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", ref: triggerRef, children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "button",
-      {
-        onClick: (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setIsOpen(!isOpen);
-        },
-        className: "group flex items-center gap-1.5 px-3 py-2 bg-slate-800/90 border border-slate-700/60 rounded-xl hover:bg-slate-700/90 hover:border-purple-500/50 transition-all duration-200",
-        "aria-label": "Change language",
-        "aria-expanded": isOpen,
-        type: "button",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Languages, { className: "w-3.5 h-3.5 text-slate-400 group-hover:text-purple-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg", children: currentLanguage?.flag }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            ChevronDown,
-            {
-              className: `w-3.5 h-3.5 text-slate-400 group-hover:text-purple-400 transition-all duration-200 ${isOpen ? "rotate-180" : ""}`
-            }
-          )
-        ]
-      }
-    ),
-    isOpen && reactDomExports.createPortal(
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "div",
-          {
-            className: "md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[10000]",
-            onClick: (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setIsOpen(false);
-            }
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "div",
-          {
-            ref: dropdownRef,
-            className: "fixed left-4 right-4 bottom-4 md:fixed md:left-auto md:right-auto md:bottom-auto bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-[10001]",
-            style: {
-              maxHeight: "calc(100vh - 120px)",
-              ...triggerRect && window.innerWidth >= 768 ? {
-                top: triggerRect.bottom + 8,
-                right: window.innerWidth - triggerRect.right,
-                width: 256,
-                left: "auto",
-                bottom: "auto"
-              } : {}
-            },
-            onClick: (e) => e.stopPropagation(),
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-3 border-b border-slate-700/50 bg-gradient-to-r from-slate-800 to-slate-800/50", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Languages, { className: "w-4 h-4 text-purple-400" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-white", children: t("language.selectLanguage") })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    onClick: (e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setIsOpen(false);
-                    },
-                    className: "p-1.5 hover:bg-slate-700 rounded-lg transition-colors md:hidden",
-                    type: "button",
-                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5 text-slate-400" })
-                  }
-                )
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-y-auto max-h-[350px]", children: languages.map((language2) => {
-                const isSelected = i18n.language === language2.code;
-                return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "button",
-                  {
-                    onClick: (e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      handleSelectLanguage(language2.code);
-                    },
-                    className: `w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-150 border-b border-slate-800/50 last:border-b-0 ${isSelected ? "bg-purple-500/20 text-white" : "text-slate-300 hover:bg-slate-800 hover:text-white active:bg-slate-700"}`,
-                    type: "button",
-                    children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: language2.flag }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-medium", children: language2.nativeName }),
-                          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-slate-500", children: language2.name })
-                        ] })
-                      ] }),
-                      isSelected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-400 font-medium", children: t("common.active") }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-purple-400 flex-shrink-0" })
-                      ] })
-                    ]
-                  },
-                  language2.code
-                );
-              }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-4 py-2 border-t border-slate-700/50 bg-slate-800/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-slate-500 text-center", children: t("language.hint") }) })
-            ]
-          }
-        )
-      ] }),
-      document.body
-    )
-  ] });
-}
-const clearGuestSession = () => {
-  localStorage.removeItem("guestSession");
-  localStorage.removeItem("isGuest");
-  localStorage.removeItem("guestId");
-};
-const clearAllUserData = () => {
-  localStorage.removeItem("userId");
-  localStorage.removeItem("userEmail");
-  localStorage.removeItem("userName");
-  localStorage.removeItem("userGender");
-  localStorage.removeItem("userCountry");
-  localStorage.removeItem("isAuthenticated");
-  localStorage.removeItem("isGuest");
-  localStorage.removeItem("guestSession");
-  localStorage.removeItem("guestId");
-  localStorage.removeItem("conversationHistory");
-  localStorage.removeItem("onboardingCompleted");
-  console.log("🔓 User logged out - all data cleared");
-};
-const getTranslatedError = (data, t) => {
-  if (data.code) {
-    const codeToKey = {
-      "INVALID_CREDENTIALS": "authErrors.invalidCredentials",
-      "EMAIL_EXISTS": "authErrors.emailExists",
-      "USER_NOT_FOUND": "authErrors.userNotFound",
-      "CODE_EXPIRED": "authErrors.codeExpired",
-      "INVALID_CODE": "authErrors.invalidCode",
-      "SERVER_ERROR": "authErrors.serverError",
-      "FIELDS_REQUIRED": "authErrors.somethingWrong",
-      "PASSWORD_TOO_SHORT": "authErrors.passwordLength",
-      "EMAIL_REQUIRED": "authErrors.enterEmail"
-    };
-    const translationKey = codeToKey[data.code];
-    if (translationKey) {
-      return t(translationKey);
-    }
-  }
-  return data.error || t("authErrors.somethingWrong");
-};
-function Auth({ onAuthSuccess }) {
-  const { t, i18n } = useTranslation();
-  const [isLogin, setIsLogin] = reactExports.useState(false);
-  const [firstName, setFirstName] = reactExports.useState("");
-  const [lastName, setLastName] = reactExports.useState("");
-  const [gender, setGender] = reactExports.useState("");
-  const [email, setEmail] = reactExports.useState("");
-  const [password, setPassword] = reactExports.useState("");
-  const [showPassword, setShowPassword] = reactExports.useState(false);
-  const [loading, setLoading] = reactExports.useState(false);
-  const [error, setError] = reactExports.useState("");
-  const [successMessage, setSuccessMessage] = reactExports.useState("");
-  const [focusedField, setFocusedField] = reactExports.useState(null);
-  const [forgotPasswordMode, setForgotPasswordMode] = reactExports.useState(false);
-  const [resetStep, setResetStep] = reactExports.useState(1);
-  const [resetEmail, setResetEmail] = reactExports.useState("");
-  const [resetCode, setResetCode] = reactExports.useState("");
-  const [newPassword, setNewPassword] = reactExports.useState("");
-  const [showAgeVerification, setShowAgeVerification] = reactExports.useState(false);
-  const [selectedAge, setSelectedAge] = reactExports.useState("");
-  const backendUrl2 = getBackendUrl();
-  const isNativeIOS = Capacitor.isNativePlatform() && Capacitor.getPlatform() === "ios";
-  const handleAppleSignIn = async () => {
-    if (isNativeIOS) {
-      try {
-        const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-ClHnOB1n.js");
-          return { SignInWithApple: SignInWithApple2 };
-        }, true ? [] : void 0);
-        const result = await SignInWithApple.authorize({
-          clientId: "com.bisedaai.app",
-          redirectURI: "https://bisedaai.com/auth/callback",
-          scopes: "email name",
-          state: "auth",
-          nonce: Math.random().toString(36).substring(2, 15)
-        });
-        if (result.response) {
-          const response = await fetch(`${backendUrl2}/api/auth/apple`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              identityToken: result.response.identityToken,
-              user: result.response.user,
-              email: result.response.email,
-              fullName: result.response.givenName ? {
-                givenName: result.response.givenName,
-                familyName: result.response.familyName
-              } : null
-            })
-          });
-          const data = await response.json();
-          if (response.ok && data.user) {
-            localStorage.setItem("userId", data.user.odId || data.user.userId);
-            localStorage.setItem("userEmail", data.user.email);
-            localStorage.setItem("userName", data.user.firstName || data.user.email?.split("@")[0]);
-            localStorage.setItem("isAuthenticated", "true");
-            localStorage.setItem("userCountry", data.user.country || "AL");
-            if (data.user.gender) {
-              localStorage.setItem("userGender", data.user.gender);
-            }
-            if (onAuthSuccess) {
-              onAuthSuccess({
-                userId: data.user.odId || data.user.userId,
-                email: data.user.email,
-                userName: data.user.firstName || data.user.email?.split("@")[0],
-                country: data.user.country || "AL",
-                gender: data.user.gender
-              });
-            }
-          } else {
-            setError(t("authErrors.appleFailed"));
-          }
-        }
-      } catch (err) {
-        console.error("Apple Sign In error:", err);
-        if (err.message !== "The user canceled the authorization attempt.") {
-          setError(t("authErrors.appleFailed"));
-        }
-      }
-    } else {
-      setError(t("authErrors.appleIOSOnly"));
-    }
-  };
-  const [taglineIndex, setTaglineIndex] = reactExports.useState(0);
-  const taglines = [
-    t("auth.tagline1"),
-    t("auth.tagline2"),
-    t("auth.tagline3"),
-    t("auth.tagline4")
-  ];
-  reactExports.useEffect(() => {
-    const interval = setInterval(() => {
-      setTaglineIndex((prev) => (prev + 1) % 4);
-    }, 4e3);
-    return () => clearInterval(interval);
-  }, []);
-  const handleGuestButtonClick = () => {
-    setShowAgeVerification(true);
-    setSelectedAge("");
-  };
-  const handleGuestLogin = () => {
-    if (!selectedAge || parseInt(selectedAge) < 18) {
-      return;
-    }
-    const guestId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    clearAllUserData();
-    localStorage.setItem("isGuest", "true");
-    localStorage.setItem("guestId", guestId);
-    localStorage.setItem("isAuthenticated", "true");
-    localStorage.setItem("userCountry", "AL");
-    localStorage.setItem("userAge", selectedAge);
-    console.log("👤 Guest session started:", guestId, "Age:", selectedAge);
-    setShowAgeVerification(false);
-    if (onAuthSuccess) onAuthSuccess({ isGuest: true, guestId });
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    if (!isLogin && !firstName.trim()) {
-      setError(t("authErrors.enterFirstName"));
-      return;
-    }
-    if (!isLogin && !lastName.trim()) {
-      setError(t("authErrors.enterLastName"));
-      return;
-    }
-    if (!isLogin && !gender) {
-      setError(t("authErrors.selectGender"));
-      return;
-    }
-    if (!email.trim()) {
-      setError(t("authErrors.enterEmail"));
-      return;
-    }
-    if (!password || password.length < 6) {
-      setError(t("authErrors.passwordLength"));
-      return;
-    }
-    setLoading(true);
-    try {
-      const endpoint = isLogin ? "/api/auth/login" : "/api/auth/register";
-      const payload = isLogin ? { email: email.trim(), password } : {
-        firstName: firstName.trim(),
-        lastName: lastName.trim(),
-        gender,
-        email: email.trim(),
-        password,
-        country: "AL"
-      };
-      const response = await fetch(`${backendUrl2}${endpoint}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      const data = await response.json();
-      if (response.ok) {
-        localStorage.removeItem("userId");
-        localStorage.removeItem("userEmail");
-        localStorage.removeItem("userName");
-        localStorage.removeItem("userCountry");
-        localStorage.removeItem("isAuthenticated");
-        localStorage.removeItem("isGuest");
-        localStorage.removeItem("guestSession");
-        localStorage.removeItem("guestId");
-        localStorage.removeItem("conversationHistory");
-        const userId = data.user.odId || data.user.userId;
-        const userName = data.user.firstName ? `${data.user.firstName} ${data.user.lastName || ""}`.trim() : data.user.username || email.split("@")[0];
-        localStorage.setItem("userId", userId);
-        localStorage.setItem("userEmail", data.user.email);
-        localStorage.setItem("userName", userName);
-        localStorage.setItem("isAuthenticated", "true");
-        localStorage.setItem("userCountry", data.user.country || "AL");
-        if (data.user.gender) {
-          localStorage.setItem("userGender", data.user.gender);
-        }
-        if (data.user.subscriptionTier) {
-          localStorage.setItem("userSubscriptionTier", data.user.subscriptionTier);
-        }
-        console.log("✅ Auth successful:", { userId, userName, email: data.user.email, gender: data.user.gender, tier: data.user.subscriptionTier });
-        if (onAuthSuccess) {
-          onAuthSuccess({
-            userId,
-            email: data.user.email,
-            userName,
-            country: data.user.country || "AL",
-            subscriptionTier: data.user.subscriptionTier
-          });
-        }
-      } else {
-        setError(getTranslatedError(data, t));
-      }
-    } catch (err) {
-      console.error("Auth error:", err);
-      setError(t("authErrors.connectionError"));
-    } finally {
-      setLoading(false);
-    }
-  };
-  if (forgotPasswordMode) {
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed top-4 right-4 z-50", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LanguageSwitcher, {}) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-900/80 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20 max-w-md w-full", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            onClick: () => {
-              setForgotPasswordMode(false);
-              setResetStep(1);
-              setResetEmail("");
-              setResetCode("");
-              setNewPassword("");
-              setError("");
-            },
-            className: "mb-6 flex items-center gap-2 text-slate-400 hover:text-white transition-colors",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-5 h-5" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("tips.back") })
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-2xl font-bold text-white mb-6 text-center", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(KeyRound, { className: "w-8 h-8 inline-block mr-2" }),
-          t("auth.resetPassword")
-        ] }),
-        resetStep === 1 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "input",
-            {
-              type: "email",
-              value: resetEmail,
-              onChange: (e) => setResetEmail(e.target.value),
-              placeholder: t("auth.email") + " 📧",
-              className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Button,
-            {
-              onClick: async () => {
-                if (!resetEmail.trim()) {
-                  setError(t("authErrors.enterEmail"));
-                  return;
-                }
-                setLoading(true);
-                try {
-                  const response = await fetch(`${backendUrl2}/api/auth/forgot-password`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email: resetEmail.trim() })
-                  });
-                  const data = await response.json();
-                  if (response.ok) {
-                    setResetStep(2);
-                    setSuccessMessage(t("auth.codeSent"));
-                    setError("");
-                  } else {
-                    setError(data.error || t("authErrors.somethingWrong"));
-                  }
-                } catch (err) {
-                  setError(t("authErrors.connectionError"));
-                } finally {
-                  setLoading(false);
-                }
-              },
-              disabled: loading,
-              className: "w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl",
-              children: loading ? t("common.loading") : t("auth.sendCode")
-            }
-          )
-        ] }),
-        resetStep === 2 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "input",
-            {
-              type: "text",
-              value: resetCode,
-              onChange: (e) => setResetCode(e.target.value),
-              placeholder: t("auth.sixDigitCode"),
-              maxLength: 6,
-              className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-center text-2xl tracking-widest"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Button,
-            {
-              onClick: async () => {
-                if (!resetCode || resetCode.length !== 6) {
-                  setError(t("authErrors.enterCode"));
-                  return;
-                }
-                setLoading(true);
-                try {
-                  const response = await fetch(`${backendUrl2}/api/auth/verify-reset-code`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email: resetEmail.trim(), code: resetCode })
-                  });
-                  const data = await response.json();
-                  if (response.ok) {
-                    setResetStep(3);
-                    setError("");
-                  } else {
-                    setError(data.error || t("authErrors.wrongCode"));
-                  }
-                } catch (err) {
-                  setError(t("authErrors.connectionError"));
-                } finally {
-                  setLoading(false);
-                }
-              },
-              disabled: loading,
-              className: "w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl",
-              children: loading ? t("common.loading") : t("auth.verifyCode")
-            }
-          )
-        ] }),
-        resetStep === 3 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "input",
-            {
-              type: "password",
-              value: newPassword,
-              onChange: (e) => setNewPassword(e.target.value),
-              placeholder: t("auth.newPassword") + " 🔐",
-              className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Button,
-            {
-              onClick: async () => {
-                if (!newPassword || newPassword.length < 6) {
-                  setError(t("authErrors.passwordLength"));
-                  return;
-                }
-                setLoading(true);
-                try {
-                  const response = await fetch(`${backendUrl2}/api/auth/reset-password`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                      email: resetEmail.trim(),
-                      code: resetCode,
-                      newPassword
-                    })
-                  });
-                  const data = await response.json();
-                  if (response.ok) {
-                    setSuccessMessage(t("auth.passwordChanged"));
-                    setTimeout(() => {
-                      setForgotPasswordMode(false);
-                      setIsLogin(true);
-                      setResetStep(1);
-                      setResetEmail("");
-                      setResetCode("");
-                      setNewPassword("");
-                      setError("");
-                      setSuccessMessage("");
-                    }, 2e3);
-                  } else {
-                    setError(data.error || t("authErrors.somethingWrong"));
-                  }
-                } catch (err) {
-                  setError(t("authErrors.connectionError"));
-                } finally {
-                  setLoading(false);
-                }
-              },
-              disabled: loading,
-              className: "w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl",
-              children: loading ? t("common.loading") : t("auth.changePassword")
-            }
-          )
-        ] }),
-        error && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-red-400 text-sm text-center", children: error }) }),
-        successMessage && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4 p-3 bg-green-500/10 border border-green-500/30 rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-green-400 text-sm text-center", children: successMessage }) })
-      ] })
-    ] });
-  }
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed top-4 right-4 z-50", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LanguageSwitcher, {}) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-md", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-8", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-block mb-5 relative", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-24 h-24 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/50 relative overflow-hidden animate-bounce-slow", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-white/20 to-transparent" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(MessageSquare, { className: "w-12 h-12 text-white relative z-10", fill: "currentColor", strokeWidth: 1.5 }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 text-yellow-300 absolute top-2 right-2 animate-pulse" })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center shadow-lg border-2 border-slate-900", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-3 h-3 bg-white rounded-full" }) })
-        ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h1", { className: "text-5xl font-extrabold mb-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "bg-gradient-to-r from-white via-indigo-100 to-purple-100 bg-clip-text text-transparent", children: "Biseda" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent text-4xl", children: ".ai" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 text-base font-medium animate-fade-in", children: taglines[taglineIndex] }) })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-900/80 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 mb-8 bg-slate-800/50 p-1.5 rounded-2xl border border-slate-700/50", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: () => {
-                setIsLogin(false);
-                setError("");
-              },
-              className: `flex-1 py-3.5 rounded-xl font-semibold text-base transition-all duration-300 ${!isLogin ? "bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white shadow-md shadow-purple-500/30" : "text-slate-400 hover:text-white"}`,
-              children: t("auth.register")
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: () => {
-                setIsLogin(true);
-                setError("");
-              },
-              className: `flex-1 py-3.5 rounded-xl font-semibold text-base transition-all duration-300 ${isLogin ? "bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white shadow-md shadow-purple-500/30" : "text-slate-400 hover:text-white"}`,
-              children: t("auth.login")
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, className: "space-y-4", children: [
-          !isLogin && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "input",
-                {
-                  type: "text",
-                  value: firstName,
-                  onChange: (e) => {
-                    setFirstName(e.target.value);
-                    setError("");
-                  },
-                  className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base",
-                  placeholder: t("auth.firstName") + " ✏️",
-                  style: { fontSize: "16px" },
-                  required: true
-                }
-              ) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "input",
-                {
-                  type: "text",
-                  value: lastName,
-                  onChange: (e) => {
-                    setLastName(e.target.value);
-                    setError("");
-                  },
-                  className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base",
-                  placeholder: t("auth.lastName") + " ✏️",
-                  style: { fontSize: "16px" },
-                  required: true
-                }
-              ) })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "button",
-                {
-                  type: "button",
-                  onClick: () => {
-                    setGender("male");
-                    setError("");
-                  },
-                  className: `py-4 rounded-xl font-semibold text-base transition-all duration-300 flex items-center justify-center gap-2 ${gender === "male" ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30 border-2 border-blue-400" : "bg-slate-800/50 border-2 border-slate-700/50 text-slate-400 hover:text-white hover:border-blue-500/50"}`,
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xl", children: "👨" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("auth.male") })
-                  ]
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "button",
-                {
-                  type: "button",
-                  onClick: () => {
-                    setGender("female");
-                    setError("");
-                  },
-                  className: `py-4 rounded-xl font-semibold text-base transition-all duration-300 flex items-center justify-center gap-2 ${gender === "female" ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg shadow-pink-500/30 border-2 border-pink-400" : "bg-slate-800/50 border-2 border-slate-700/50 text-slate-400 hover:text-white hover:border-pink-500/50"}`,
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xl", children: "👩" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("auth.female") })
-                  ]
-                }
-              )
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "input",
-            {
-              type: "email",
-              value: email,
-              onChange: (e) => {
-                setEmail(e.target.value);
-                setError("");
-              },
-              className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base",
-              placeholder: t("auth.email") + " 📧",
-              style: { fontSize: "16px" },
-              required: true
-            }
-          ) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                type: showPassword ? "text" : "password",
-                value: password,
-                onChange: (e) => {
-                  setPassword(e.target.value);
-                  setError("");
-                },
-                className: "w-full px-4 py-4 pr-12 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base",
-                placeholder: t("auth.password") + " 🔐",
-                style: { fontSize: "16px" },
-                required: true
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                onClick: () => setShowPassword(!showPassword),
-                className: "absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors",
-                children: showPassword ? /* @__PURE__ */ jsxRuntimeExports.jsx(EyeOff, { className: "w-5 h-5" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Eye, { className: "w-5 h-5" })
-              }
-            )
-          ] }),
-          error && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-3 bg-red-500/10 border border-red-500/30 rounded-xl animate-shake", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-red-400 text-sm text-center", children: error }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              Button,
-              {
-                type: "submit",
-                disabled: loading,
-                className: "w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl text-base shadow-lg transition-all duration-300",
-                children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center gap-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4 h-4 border-3 border-white/30 border-t-white rounded-full animate-spin" }) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isLogin ? "🚀 " + t("auth.login") : "✨ " + t("auth.createAccount") })
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: handleGuestButtonClick,
-                disabled: loading,
-                className: "w-full bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white font-bold h-14 rounded-xl text-base shadow-lg shadow-slate-500/20 transition-all duration-300 inline-flex items-center justify-center disabled:opacity-50",
-                children: [
-                  "👤 ",
-                  t("auth.guest")
-                ]
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: handleAppleSignIn,
-              className: "w-full bg-white hover:bg-gray-100 text-black font-semibold h-14 rounded-xl text-base shadow-lg transition-all duration-300 flex items-center justify-center gap-3",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: "20", height: "20", viewBox: "0 0 24 24", fill: "black", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" }) }),
-                t("auth.continueWithApple")
-              ]
-            }
-          )
-        ] }),
-        isLogin && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            onClick: () => setForgotPasswordMode(true),
-            className: "text-sm text-purple-400 hover:text-purple-300 transition-colors w-full text-center",
-            children: [
-              "🔑 ",
-              t("auth.forgotPassword")
-            ]
-          }
-        ) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-6 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-500 text-xs", children: [
-          t("auth.termsAgree"),
-          " ",
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-purple-400 font-medium", children: [
-            t("auth.terms"),
-            " & ",
-            t("auth.privacy")
-          ] })
-        ] }) })
-      ] })
-    ] }),
-    showAgeVerification && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-900/95 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20 max-w-md w-full", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-3xl", children: "🔞" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white mb-2", children: t("ageVerification.title") }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: t("ageVerification.subtitle") })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-slate-300 text-sm font-medium mb-2", children: t("ageVerification.selectAge") }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "select",
-            {
-              value: selectedAge,
-              onChange: (e) => setSelectedAge(e.target.value),
-              className: "flex-1 px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white text-lg focus:outline-none focus:border-purple-500/50 transition-all appearance-none cursor-pointer",
-              style: { fontSize: "18px" },
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", disabled: true, children: t("ageVerification.chooseAge") }),
-                Array.from({ length: 83 }, (_, i) => i + 18).map((age) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: age, children: age }, age))
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-slate-300 text-lg font-medium whitespace-nowrap", children: t("ageVerification.yearsOld") })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          Button,
-          {
-            onClick: handleGuestLogin,
-            disabled: !selectedAge || parseInt(selectedAge) < 18,
-            className: "w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl text-base shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed",
-            children: [
-              "✅ ",
-              t("ageVerification.confirm")
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            onClick: () => setShowAgeVerification(false),
-            className: "w-full text-slate-400 hover:text-white py-3 transition-colors text-sm",
-            children: t("common.cancel")
-          }
-        )
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-4 text-center text-xs text-slate-500", children: t("ageVerification.disclaimer") })
-    ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `
-        @keyframes bounce-slow {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-        .animate-bounce-slow {
-          animation: bounce-slow 3s ease-in-out infinite;
-        }
-        @keyframes fade-in {
-          from { opacity: 0; transform: translateY(-10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
-          animation: fade-in 0.5s ease-out;
-        }
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          25% { transform: translateX(-10px); }
-          75% { transform: translateX(10px); }
-        }
-        .animate-shake {
-          animation: shake 0.5s ease-in-out;
-        }
-      ` })
-  ] });
-}
-function GuestBanner({ onSignUp }) {
-  const [dismissed, setDismissed] = reactExports.useState(false);
-  const isGuest = localStorage.getItem("isGuest") === "true";
-  if (!isGuest) return null;
-  const guestNumber = localStorage.getItem("guestNumber") || "";
-  const visitorLabel = guestNumber ? `Vizitor #${guestNumber}` : "Vizitor";
-  if (dismissed) {
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "button",
-      {
-        onClick: () => setDismissed(false),
-        className: "px-2 py-1 bg-slate-800/90 border border-slate-700 rounded-full flex items-center gap-1.5 hover:bg-slate-700/90 transition-all",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(UserX, { className: "w-3 h-3 text-cyan-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-medium text-white", children: visitorLabel })
-        ]
-      }
-    );
-  }
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 bg-slate-800/80 rounded-lg sm:rounded-xl border border-slate-700/50", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hidden sm:flex items-center gap-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-cyan-500/20 border border-cyan-500/50 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(UserX, { className: "w-2.5 h-2.5 sm:w-3 sm:h-3 text-cyan-400" }) }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "button",
-      {
-        onClick: () => {
-          clearGuestSession();
-          if (onSignUp) onSignUp();
-        },
-        className: "px-2 sm:px-2.5 py-0.5 sm:py-1 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white text-[10px] sm:text-xs font-bold rounded-md sm:rounded-lg transition-all flex items-center gap-0.5 sm:gap-1",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-2.5 h-2.5 sm:w-3 sm:h-3" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "whitespace-nowrap", children: "Sign Up" })
-        ]
-      }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "button",
-      {
-        onClick: () => setDismissed(true),
-        className: "p-0.5 text-slate-500 hover:text-white transition-colors",
-        children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-3 h-3 sm:w-3.5 sm:h-3.5" })
-      }
-    )
-  ] });
-}
-const ANALYTICS_KEY = "biseda_analytics";
-const getAnalytics = () => {
-  try {
-    const data = localStorage.getItem(ANALYTICS_KEY);
-    return data ? JSON.parse(data) : initAnalytics();
-  } catch {
-    return initAnalytics();
-  }
-};
-const initAnalytics = () => ({
-  firstVisit: Date.now(),
-  lastVisit: Date.now(),
-  totalSessions: 0,
-  features: {
-    bisedaChat: { views: 0, uses: 0 },
-    aiCoach: { views: 0, uses: 0, messages: 0 },
-    firstDates: { views: 0, searches: 0 },
-    events: { views: 0, searches: 0, venueClicks: 0 },
-    tips: { views: 0 },
-    gifts: { views: 0 },
-    festiveDates: { views: 0 },
-    profile: { views: 0 },
-    countrySwitcher: { uses: 0 },
-    share: { uses: 0 }
-  },
-  actions: {
-    screenshots: 0,
-    favorites: 0,
-    shares: 0,
-    themeChanges: 0
-  },
-  engagement: {
-    totalTimeSpent: 0,
-    // in seconds
-    averageSessionTime: 0,
-    longestSession: 0
-  }
-});
-const saveAnalytics = (data) => {
-  try {
-    localStorage.setItem(ANALYTICS_KEY, JSON.stringify(data));
-  } catch (e) {
-    console.warn("Failed to save analytics:", e);
-  }
-};
-const trackPageView = (pageName) => {
-  const analytics = getAnalytics();
-  const featureMap = {
-    "Clipboard": "bisedaChat",
-    "Chat": "aiCoach",
-    "FirstDates": "firstDates",
-    "Events": "events",
-    "Tips": "tips",
-    "Gifts": "gifts",
-    "FestiveDates": "festiveDates",
-    "Profile": "profile",
-    "Home": null
-    // Don't track home specifically
-  };
-  const feature = featureMap[pageName];
-  if (feature && analytics.features[feature]) {
-    analytics.features[feature].views++;
-  }
-  analytics.lastVisit = Date.now();
-  saveAnalytics(analytics);
-  console.log(`📊 Page view: ${pageName}`);
-};
-const trackFeatureUse = (featureName, action = "use") => {
-  const analytics = getAnalytics();
-  if (analytics.features[featureName]) {
-    if (action === "use") {
-      analytics.features[featureName].uses = (analytics.features[featureName].uses || 0) + 1;
-    } else if (action === "search") {
-      analytics.features[featureName].searches = (analytics.features[featureName].searches || 0) + 1;
-    } else if (action === "message") {
-      analytics.features[featureName].messages = (analytics.features[featureName].messages || 0) + 1;
-    } else if (action === "venueClick") {
-      analytics.features[featureName].venueClicks = (analytics.features[featureName].venueClicks || 0) + 1;
-    }
-  }
-  saveAnalytics(analytics);
-  console.log(`📊 Feature use: ${featureName} - ${action}`);
-};
-const trackAction = (actionName) => {
-  const analytics = getAnalytics();
-  if (analytics.actions[actionName] !== void 0) {
-    analytics.actions[actionName]++;
-  }
-  saveAnalytics(analytics);
-  console.log(`📊 Action: ${actionName}`);
-};
-const trackSessionStart = () => {
-  const analytics = getAnalytics();
-  analytics.totalSessions++;
-  analytics.lastVisit = Date.now();
-  sessionStorage.setItem("sessionStart", Date.now().toString());
-  saveAnalytics(analytics);
-  console.log(`📊 Session started (Total: ${analytics.totalSessions})`);
-};
-const trackSessionEnd = () => {
-  const analytics = getAnalytics();
-  const sessionStart = sessionStorage.getItem("sessionStart");
-  if (sessionStart) {
-    const sessionDuration = Math.floor((Date.now() - parseInt(sessionStart)) / 1e3);
-    analytics.engagement.totalTimeSpent += sessionDuration;
-    if (analytics.totalSessions > 0) {
-      analytics.engagement.averageSessionTime = Math.floor(
-        analytics.engagement.totalTimeSpent / analytics.totalSessions
-      );
-    }
-    if (sessionDuration > analytics.engagement.longestSession) {
-      analytics.engagement.longestSession = sessionDuration;
-    }
-    saveAnalytics(analytics);
-    console.log(`📊 Session ended (Duration: ${sessionDuration}s)`);
-  }
-};
-function Layout({ children, onLogout }) {
-  const { t } = useTranslation();
-  useNavigate();
-  const location = useLocation();
-  const currentPageName = location.pathname.split("/")[1]?.charAt(0).toUpperCase() + location.pathname.split("/")[1]?.slice(1) || "Home";
-  const isGuest = localStorage.getItem("isGuest") === "true";
-  reactExports.useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
-    const mainContainer = document.getElementById("main-content");
-    if (mainContainer) {
-      mainContainer.scrollTo({ top: 0, behavior: "instant" });
-    }
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-  }, [location.pathname]);
-  reactExports.useEffect(() => {
-    trackPageView(currentPageName);
-  }, [currentPageName]);
-  const navItems = [
-    { name: t("nav.home"), icon: Home$1, page: "Home" },
-    { name: t("nav.aiCoach"), icon: Sparkles, page: "Chat" },
-    { name: t("nav.dates"), icon: Heart, page: "FirstDates" },
-    { name: t("nav.events"), icon: MapPin, page: "Events" },
-    { name: t("nav.tips"), icon: Lightbulb, page: "Tips" }
-  ];
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `
-        html, body {
-          background: var(--bg-primary, #0f172a) !important;
-          -webkit-overflow-scrolling: touch;
-          transition: background-color 0.3s ease;
-        }
-        
-        * {
-          -webkit-tap-highlight-color: transparent;
-        }
-        
-        /* Cover the entire bottom area including home indicator */
-        .bottom-safe-area {
-          position: fixed;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          height: env(safe-area-inset-bottom, 0px);
-          background: var(--bg-primary, #0f172a);
-          z-index: 9998;
-        }
-        
-        /* Modern nav styling */
-        .nav-item {
-          position: relative;
-          transition: all 0.2s ease;
-        }
-        
-        .nav-item.active {
-          color: var(--accent-primary, #a855f7);
-        }
-        
-        .nav-item.active::before {
-          content: '';
-          position: absolute;
-          top: -4px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 24px;
-          height: 3px;
-          background: linear-gradient(90deg, var(--accent-primary, #a855f7), var(--accent-secondary, #ec4899));
-          border-radius: 0 0 4px 4px;
-        }
-        
-        .nav-item:not(.active):hover {
-          color: var(--accent-primary, #c084fc);
-        }
-        
-        .nav-icon {
-          transition: transform 0.2s ease;
-        }
-        
-        .nav-item.active .nav-icon {
-          transform: scale(1.15);
-        }
-      ` }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bottom-safe-area" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "header",
-      {
-        style: {
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          paddingTop: "env(safe-area-inset-top, 0px)",
-          zIndex: 9999,
-          background: "linear-gradient(to bottom, var(--bg-primary, rgba(15, 23, 42, 0.98)), var(--bg-primary, rgba(15, 23, 42, 0.95)))",
-          backdropFilter: "blur(12px)",
-          borderBottom: "1px solid var(--border-color, rgba(148, 163, 184, 0.1))"
-        },
-        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-12 sm:h-14 px-3 sm:px-4 flex items-center justify-between max-w-screen-xl mx-auto", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/home", className: "flex items-center gap-2 flex-shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 text-white" }) }) }),
-          isGuest && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 flex justify-center mx-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-            GuestBanner,
-            {
-              onExpired: () => {
-                clearGuestSession();
-                if (onLogout) onLogout();
-              },
-              onSignUp: () => {
-                clearGuestSession();
-                if (onLogout) onLogout();
-              }
-            }
-          ) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 flex-shrink-0", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(RegionSwitcher, {}),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/profile", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg hover:scale-105 hover:shadow-purple-500/30 transition-all duration-200", children: /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-4 h-4 sm:w-5 sm:h-5 text-white" }) }) })
-          ] })
-        ] })
-      }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "main",
-      {
-        id: "main-content",
-        className: "w-full max-w-full overflow-x-hidden",
-        style: { paddingTop: "calc(56px + env(safe-area-inset-top, 0px))", paddingBottom: "90px", minHeight: "100vh" },
-        children
-      }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { style: {
-      position: "fixed",
-      bottom: 0,
-      left: 0,
-      right: 0,
-      background: "linear-gradient(to top, var(--bg-primary, rgba(15, 23, 42, 0.98)), var(--bg-primary, rgba(15, 23, 42, 0.95)))",
-      backdropFilter: "blur(12px)",
-      borderTop: "1px solid var(--border-color, rgba(148, 163, 184, 0.1))",
-      zIndex: 9999,
-      paddingBottom: "env(safe-area-inset-bottom, 0px)"
-    }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-around items-center h-16 px-2 max-w-screen-xl mx-auto", children: navItems.map((item) => {
-      const Icon = item.icon;
-      const isActive = currentPageName === item.page;
-      return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        Link,
-        {
-          to: createPageUrl(item.page),
-          className: `nav-item flex flex-col items-center justify-center py-2 px-3 rounded-xl ${isActive ? "active text-purple-400" : "text-slate-400"}`,
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `nav-icon p-2 rounded-xl ${isActive ? "bg-purple-500/20" : ""}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { className: "w-5 h-5", strokeWidth: isActive ? 2.5 : 2 }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `text-xs font-semibold mt-0.5 ${isActive ? "text-purple-300" : "text-slate-500"}`, children: item.name })
-          ]
-        },
-        item.page
-      );
-    }) }) })
-  ] });
-}
-function CreditsModal({ isOpen, onClose }) {
-  const { t } = useTranslation();
-  const [packages, setPackages] = reactExports.useState(null);
-  const [balance, setBalance] = reactExports.useState(0);
-  const [loading, setLoading] = reactExports.useState(false);
-  const backendUrl2 = getBackendUrl();
-  const userId = localStorage.getItem("userId") || "anonymous";
-  reactExports.useEffect(() => {
-    if (isOpen) {
-      fetchCredits();
-    }
-  }, [isOpen]);
-  const fetchCredits = async () => {
-    try {
-      const response = await fetch(`${backendUrl2}/api/credits/balance`, {
-        headers: {
-          "x-user-id": userId
-        }
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setBalance(data.balance);
-        setPackages(data.packages);
-      }
-    } catch (error) {
-      console.error("Error fetching credits:", error);
-    }
-  };
-  const handlePurchase = async (packageId) => {
-    setLoading(true);
-    try {
-      const response = await fetch(`${backendUrl2}/api/credits/purchase`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-user-id": userId
-        },
-        body: JSON.stringify({ packageId })
-      });
-      if (response.ok) {
-        const data = await response.json();
-        window.location.href = data.url;
-      } else {
-        alert(t("credits.purchaseFailed"));
-      }
-    } catch (error) {
-      console.error("Error purchasing credits:", error);
-      alert(t("credits.errorOccurred"));
-    } finally {
-      setLoading(false);
-    }
-  };
-  if (!isOpen) return null;
-  const creditPackages = packages || {
-    starter: { name: "Starter Pack", price: 2.99, credits: 100 },
-    popular: { name: "Popular Pack", price: 9.99, credits: 400 },
-    pro: { name: "Pro Pack", price: 19.99, credits: 900 }
-  };
-  return reactDomExports.createPortal(
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4", style: { zIndex: 99999 }, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-900 border-slate-700 max-w-md w-full max-h-[90vh] overflow-y-auto shadow-2xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white mb-1", children: t("credits.title") }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: t("credits.subtitle") })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            onClick: onClose,
-            className: "text-slate-400 hover:text-white transition-colors",
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-6 h-6" })
-          }
-        )
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-6 p-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-5 h-5 text-purple-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-slate-300", children: t("credits.currentBalance") })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl font-bold text-white", children: balance })
-      ] }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3 mb-6", children: Object.entries(creditPackages).map(([id, pkg]) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-        Card,
-        {
-          className: "bg-slate-700/50 border-slate-600 hover:border-purple-500/50 transition-colors",
-          children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-white", children: pkg.name }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-slate-400", children: [
-                  pkg.credits,
-                  " ",
-                  t("credits.creditsCount")
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-right", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-xl font-bold text-white", children: [
-                  "€",
-                  pkg.price
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-xs text-slate-400", children: [
-                  "€",
-                  (pkg.price / pkg.credits).toFixed(4),
-                  " ",
-                  t("credits.perCredit")
-                ] })
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              Button,
-              {
-                onClick: () => handlePurchase(id),
-                disabled: loading,
-                className: "w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white",
-                children: loading ? t("credits.processing") : t("credits.buyNow")
-              }
-            )
-          ] })
-        },
-        id
-      )) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-500", children: t("credits.description") }) })
-    ] }) }) }),
-    document.body
-  );
-}
-function UsageDisplay({ onUpgrade, onLimitReached }) {
-  const { t } = useTranslation();
-  const [usage2, setUsage] = reactExports.useState(null);
-  const [loading, setLoading] = reactExports.useState(true);
-  const [showCreditsModal, setShowCreditsModal] = reactExports.useState(false);
-  const backendUrl2 = getBackendUrl();
-  reactExports.useEffect(() => {
-    fetchUsage();
-    const interval = setInterval(fetchUsage, 3e4);
-    return () => clearInterval(interval);
-  }, []);
-  const fetchUsage = async () => {
-    try {
-      const userId = localStorage.getItem("userId");
-      const headers = {};
-      if (userId) {
-        headers["x-user-id"] = userId;
-      }
-      const response = await fetch(`${backendUrl2}/api/usage`, { headers });
-      if (response.ok) {
-        const data = await response.json();
-        setUsage(data);
-        if (data.tier) {
-          localStorage.setItem("userSubscriptionTier", data.tier);
-        }
-        if (onLimitReached && data.dailyUsage.remainingMessages === 0 && (!data.credits || data.credits === 0)) {
-          onLimitReached(true);
-        } else if (onLimitReached) {
-          onLimitReached(false);
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching usage:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  if (loading || !usage2) {
-    return null;
-  }
-  const { dailyUsage, tier, credits: credits2 } = usage2;
-  const percentageUsed = dailyUsage.messages / dailyUsage.messagesLimit * 100;
-  const isNearLimit = percentageUsed >= 80;
-  const isAtLimit = dailyUsage.messages >= dailyUsage.messagesLimit;
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 backdrop-blur-sm p-4 mb-4", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-3", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-5 h-5 text-amber-400" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-white", children: tier === "free_trial" ? t("usage.freeTrial") : tier === "free" ? t("usage.freePlan") : tier === "starter" ? t("usage.starterPlan") : tier === "pro" ? t("usage.proPlan") : tier === "elite" ? t("usage.elitePlan") : tier === "premium" ? t("usage.elitePlan") : t("usage.basePlan") })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
-        credits2 !== void 0 && credits2 > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(
-          Button,
-          {
-            onClick: () => setShowCreditsModal(true),
-            size: "sm",
-            className: "bg-purple-600 hover:bg-purple-700 text-white text-xs h-7 px-3",
-            children: t("usage.buyCredits")
-          }
-        ),
-        (tier === "free_trial" || tier === "free" || tier === "starter" || tier === "pro") && /* @__PURE__ */ jsxRuntimeExports.jsx(
-          Button,
-          {
-            onClick: onUpgrade,
-            size: "sm",
-            className: "bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white text-xs h-7 px-3",
-            children: tier === "free_trial" || tier === "free" ? t("home.upgrade") : t("usage.upgradeMore")
-          }
-        )
-      ] })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2", children: [
-      credits2 !== void 0 && credits2 > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-2 p-2 bg-purple-500/10 border border-purple-500/30 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-300", children: t("usage.credits") }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-semibold text-purple-300", children: credits2 })
-      ] }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-xs text-slate-400 mb-1", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("home.messagesRemaining") }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: isNearLimit ? "text-red-400 font-semibold" : "", children: [
-            dailyUsage.messages,
-            " / ",
-            dailyUsage.messagesLimit
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full bg-slate-700 rounded-full h-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "div",
-          {
-            className: `h-2 rounded-full transition-all ${isAtLimit ? "bg-red-500" : isNearLimit ? "bg-amber-500" : "bg-gradient-to-r from-green-500 to-emerald-500"}`,
-            style: { width: `${Math.min(100, percentageUsed)}%` }
-          }
-        ) })
-      ] }),
-      dailyUsage.remainingMessages === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-3 p-2 bg-red-500/10 border border-red-500/30 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-red-400 text-center", children: [
-        t("usage.limitReached"),
-        " ",
-        tier === "free" && t("usage.upgradeToChat")
-      ] }) }),
-      isNearLimit && !isAtLimit && (tier === "free" || tier === "free_trial") && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-2 p-2 bg-amber-500/10 border border-amber-500/30 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-amber-400 text-center", children: t("home.limitWarning") }) })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(CreditsModal, { isOpen: showCreditsModal, onClose: () => setShowCreditsModal(false) })
-  ] });
-}
 function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
   const { t } = useTranslation();
   if (!isOpen) return null;
@@ -16382,6 +15393,60 @@ Now write 10 COMPLETELY new messages:`
     )
   ] });
 }
+const scriptRel = "modulepreload";
+const assetsURL = function(dep) {
+  return "/" + dep;
+};
+const seen = {};
+const __vitePreload = function preload(baseModule, deps, importerUrl) {
+  let promise = Promise.resolve();
+  if (deps && deps.length > 0) {
+    let allSettled = function(promises$2) {
+      return Promise.all(promises$2.map((p) => Promise.resolve(p).then((value$1) => ({
+        status: "fulfilled",
+        value: value$1
+      }), (reason) => ({
+        status: "rejected",
+        reason
+      }))));
+    };
+    document.getElementsByTagName("link");
+    const cspNonceMeta = document.querySelector("meta[property=csp-nonce]");
+    const cspNonce = cspNonceMeta?.nonce || cspNonceMeta?.getAttribute("nonce");
+    promise = allSettled(deps.map((dep) => {
+      dep = assetsURL(dep);
+      if (dep in seen) return;
+      seen[dep] = true;
+      const isCss = dep.endsWith(".css");
+      const cssSelector = isCss ? '[rel="stylesheet"]' : "";
+      if (document.querySelector(`link[href="${dep}"]${cssSelector}`)) return;
+      const link = document.createElement("link");
+      link.rel = isCss ? "stylesheet" : scriptRel;
+      if (!isCss) link.as = "script";
+      link.crossOrigin = "";
+      link.href = dep;
+      if (cspNonce) link.setAttribute("nonce", cspNonce);
+      document.head.appendChild(link);
+      if (isCss) return new Promise((res, rej) => {
+        link.addEventListener("load", res);
+        link.addEventListener("error", () => rej(/* @__PURE__ */ new Error(`Unable to preload CSS for ${dep}`)));
+      });
+    }));
+  }
+  function handlePreloadError(err$2) {
+    const e$1 = new Event("vite:preloadError", { cancelable: true });
+    e$1.payload = err$2;
+    window.dispatchEvent(e$1);
+    if (!e$1.defaultPrevented) throw err$2;
+  }
+  return promise.then((res) => {
+    for (const item of res || []) {
+      if (item.status !== "rejected") continue;
+      handlePreloadError(item.reason);
+    }
+    return baseModule().catch(handlePreloadError);
+  });
+};
 const UNIFIED_AI_SYSTEM_PROMPT = `Ti je një AI me një PhD në psikologji sociale dhe komunikim nga Oxford dhe Cambridge, por me eksperiencë rruge që e bën të kuptosh realitetin e bisedave reale. Ti je MASTER i artit të bisedës, picking up, dhe të bësh njerëzit të ndihen të tërhequr dhe të eksituar.
 
 KRITIKE SIGURIE - ABSOLUTISHT E NDALUAR:
@@ -16972,7 +16037,7 @@ function ClipboardSuggestions() {
       if (window.Capacitor && window.Capacitor.isNativePlatform()) {
         try {
           const { Clipboard: Clipboard2 } = await __vitePreload(async () => {
-            const { Clipboard: Clipboard22 } = await import("./index-ZmtakRLn.js");
+            const { Clipboard: Clipboard22 } = await import("./index-BKjtgTlu.js");
             return { Clipboard: Clipboard22 };
           }, true ? [] : void 0);
           const { value } = await Clipboard2.read();
@@ -23240,6 +22305,853 @@ function Admin() {
       "Përditësuar: ",
       stats?.timestamp ? new Date(stats.timestamp).toLocaleString("sq-AL") : "N/A"
     ] }) })
+  ] });
+}
+function LanguageSwitcher() {
+  const { t, i18n } = useTranslation();
+  const [isOpen, setIsOpen] = reactExports.useState(false);
+  const triggerRef = reactExports.useRef(null);
+  const dropdownRef = reactExports.useRef(null);
+  const currentLanguage = languages.find((lang) => lang.code === i18n.language) || languages[0];
+  reactExports.useEffect(() => {
+    const handleClickOutside = (event) => {
+      const clickedInsideTrigger = triggerRef.current && triggerRef.current.contains(event.target);
+      const clickedInsideDropdown = dropdownRef.current && dropdownRef.current.contains(event.target);
+      if (!clickedInsideTrigger && !clickedInsideDropdown) {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+  reactExports.useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscape);
+    }
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [isOpen]);
+  reactExports.useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+  const handleSelectLanguage = (langCode) => {
+    i18n.changeLanguage(langCode);
+    localStorage.setItem("appLanguage", langCode);
+    setIsOpen(false);
+    window.dispatchEvent(new CustomEvent("languageChanged", {
+      detail: { langCode }
+    }));
+  };
+  const getTriggerRect = () => {
+    if (triggerRef.current) {
+      return triggerRef.current.getBoundingClientRect();
+    }
+    return null;
+  };
+  const triggerRect = isOpen ? getTriggerRect() : null;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", ref: triggerRef, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "button",
+      {
+        onClick: (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsOpen(!isOpen);
+        },
+        className: "group flex items-center gap-1.5 px-3 py-2 bg-slate-800/90 border border-slate-700/60 rounded-xl hover:bg-slate-700/90 hover:border-purple-500/50 transition-all duration-200",
+        "aria-label": "Change language",
+        "aria-expanded": isOpen,
+        type: "button",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Languages, { className: "w-3.5 h-3.5 text-slate-400 group-hover:text-purple-400" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg", children: currentLanguage?.flag }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            ChevronDown,
+            {
+              className: `w-3.5 h-3.5 text-slate-400 group-hover:text-purple-400 transition-all duration-200 ${isOpen ? "rotate-180" : ""}`
+            }
+          )
+        ]
+      }
+    ),
+    isOpen && reactDomExports.createPortal(
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            className: "md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[10000]",
+            onClick: (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsOpen(false);
+            }
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            ref: dropdownRef,
+            className: "fixed left-4 right-4 bottom-4 md:fixed md:left-auto md:right-auto md:bottom-auto bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-[10001]",
+            style: {
+              maxHeight: "calc(100vh - 120px)",
+              ...triggerRect && window.innerWidth >= 768 ? {
+                top: triggerRect.bottom + 8,
+                right: window.innerWidth - triggerRect.right,
+                width: 256,
+                left: "auto",
+                bottom: "auto"
+              } : {}
+            },
+            onClick: (e) => e.stopPropagation(),
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-3 border-b border-slate-700/50 bg-gradient-to-r from-slate-800 to-slate-800/50", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Languages, { className: "w-4 h-4 text-purple-400" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-white", children: t("language.selectLanguage") })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    onClick: (e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setIsOpen(false);
+                    },
+                    className: "p-1.5 hover:bg-slate-700 rounded-lg transition-colors md:hidden",
+                    type: "button",
+                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5 text-slate-400" })
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-y-auto max-h-[350px]", children: languages.map((language2) => {
+                const isSelected = i18n.language === language2.code;
+                return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "button",
+                  {
+                    onClick: (e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleSelectLanguage(language2.code);
+                    },
+                    className: `w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-150 border-b border-slate-800/50 last:border-b-0 ${isSelected ? "bg-purple-500/20 text-white" : "text-slate-300 hover:bg-slate-800 hover:text-white active:bg-slate-700"}`,
+                    type: "button",
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: language2.flag }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-medium", children: language2.nativeName }),
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-slate-500", children: language2.name })
+                        ] })
+                      ] }),
+                      isSelected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-400 font-medium", children: t("common.active") }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-purple-400 flex-shrink-0" })
+                      ] })
+                    ]
+                  },
+                  language2.code
+                );
+              }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-4 py-2 border-t border-slate-700/50 bg-slate-800/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-slate-500 text-center", children: t("language.hint") }) })
+            ]
+          }
+        )
+      ] }),
+      document.body
+    )
+  ] });
+}
+const clearAllUserData = () => {
+  localStorage.removeItem("userId");
+  localStorage.removeItem("userEmail");
+  localStorage.removeItem("userName");
+  localStorage.removeItem("userGender");
+  localStorage.removeItem("userCountry");
+  localStorage.removeItem("isAuthenticated");
+  localStorage.removeItem("isGuest");
+  localStorage.removeItem("guestSession");
+  localStorage.removeItem("guestId");
+  localStorage.removeItem("conversationHistory");
+  localStorage.removeItem("onboardingCompleted");
+  console.log("🔓 User logged out - all data cleared");
+};
+const getTranslatedError = (data, t) => {
+  if (data.code) {
+    const codeToKey = {
+      "INVALID_CREDENTIALS": "authErrors.invalidCredentials",
+      "EMAIL_EXISTS": "authErrors.emailExists",
+      "USER_NOT_FOUND": "authErrors.userNotFound",
+      "CODE_EXPIRED": "authErrors.codeExpired",
+      "INVALID_CODE": "authErrors.invalidCode",
+      "SERVER_ERROR": "authErrors.serverError",
+      "FIELDS_REQUIRED": "authErrors.somethingWrong",
+      "PASSWORD_TOO_SHORT": "authErrors.passwordLength",
+      "EMAIL_REQUIRED": "authErrors.enterEmail"
+    };
+    const translationKey = codeToKey[data.code];
+    if (translationKey) {
+      return t(translationKey);
+    }
+  }
+  return data.error || t("authErrors.somethingWrong");
+};
+function Auth({ onAuthSuccess }) {
+  const { t, i18n } = useTranslation();
+  const [isLogin, setIsLogin] = reactExports.useState(false);
+  const [firstName, setFirstName] = reactExports.useState("");
+  const [lastName, setLastName] = reactExports.useState("");
+  const [gender, setGender] = reactExports.useState("");
+  const [email, setEmail] = reactExports.useState("");
+  const [password, setPassword] = reactExports.useState("");
+  const [showPassword, setShowPassword] = reactExports.useState(false);
+  const [loading, setLoading] = reactExports.useState(false);
+  const [error, setError] = reactExports.useState("");
+  const [successMessage, setSuccessMessage] = reactExports.useState("");
+  const [focusedField, setFocusedField] = reactExports.useState(null);
+  const [forgotPasswordMode, setForgotPasswordMode] = reactExports.useState(false);
+  const [resetStep, setResetStep] = reactExports.useState(1);
+  const [resetEmail, setResetEmail] = reactExports.useState("");
+  const [resetCode, setResetCode] = reactExports.useState("");
+  const [newPassword, setNewPassword] = reactExports.useState("");
+  const [showAgeVerification, setShowAgeVerification] = reactExports.useState(false);
+  const [selectedAge, setSelectedAge] = reactExports.useState("");
+  const backendUrl2 = getBackendUrl();
+  const isNativeIOS = Capacitor.isNativePlatform() && Capacitor.getPlatform() === "ios";
+  const handleAppleSignIn = async () => {
+    if (isNativeIOS) {
+      try {
+        const { SignInWithApple } = await __vitePreload(async () => {
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-C7UkSEYX.js");
+          return { SignInWithApple: SignInWithApple2 };
+        }, true ? [] : void 0);
+        const result = await SignInWithApple.authorize({
+          clientId: "com.bisedaai.app",
+          redirectURI: "https://bisedaai.com/auth/callback",
+          scopes: "email name",
+          state: "auth",
+          nonce: Math.random().toString(36).substring(2, 15)
+        });
+        if (result.response) {
+          const response = await fetch(`${backendUrl2}/api/auth/apple`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              identityToken: result.response.identityToken,
+              user: result.response.user,
+              email: result.response.email,
+              fullName: result.response.givenName ? {
+                givenName: result.response.givenName,
+                familyName: result.response.familyName
+              } : null
+            })
+          });
+          const data = await response.json();
+          if (response.ok && data.user) {
+            localStorage.setItem("userId", data.user.odId || data.user.userId);
+            localStorage.setItem("userEmail", data.user.email);
+            localStorage.setItem("userName", data.user.firstName || data.user.email?.split("@")[0]);
+            localStorage.setItem("isAuthenticated", "true");
+            localStorage.setItem("userCountry", data.user.country || "AL");
+            if (data.user.gender) {
+              localStorage.setItem("userGender", data.user.gender);
+            }
+            if (onAuthSuccess) {
+              onAuthSuccess({
+                userId: data.user.odId || data.user.userId,
+                email: data.user.email,
+                userName: data.user.firstName || data.user.email?.split("@")[0],
+                country: data.user.country || "AL",
+                gender: data.user.gender
+              });
+            }
+          } else {
+            setError(t("authErrors.appleFailed"));
+          }
+        }
+      } catch (err) {
+        console.error("Apple Sign In error:", err);
+        if (err.message !== "The user canceled the authorization attempt.") {
+          setError(t("authErrors.appleFailed"));
+        }
+      }
+    } else {
+      setError(t("authErrors.appleIOSOnly"));
+    }
+  };
+  const [taglineIndex, setTaglineIndex] = reactExports.useState(0);
+  const taglines = [
+    t("auth.tagline1"),
+    t("auth.tagline2"),
+    t("auth.tagline3"),
+    t("auth.tagline4")
+  ];
+  reactExports.useEffect(() => {
+    const interval = setInterval(() => {
+      setTaglineIndex((prev) => (prev + 1) % 4);
+    }, 4e3);
+    return () => clearInterval(interval);
+  }, []);
+  const handleGuestLogin = () => {
+    if (!selectedAge || parseInt(selectedAge) < 18) {
+      return;
+    }
+    const guestId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    clearAllUserData();
+    localStorage.setItem("isGuest", "true");
+    localStorage.setItem("guestId", guestId);
+    localStorage.setItem("isAuthenticated", "true");
+    localStorage.setItem("userCountry", "AL");
+    localStorage.setItem("userAge", selectedAge);
+    console.log("👤 Guest session started:", guestId, "Age:", selectedAge);
+    setShowAgeVerification(false);
+    if (onAuthSuccess) onAuthSuccess({ isGuest: true, guestId });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    if (!isLogin && !firstName.trim()) {
+      setError(t("authErrors.enterFirstName"));
+      return;
+    }
+    if (!isLogin && !lastName.trim()) {
+      setError(t("authErrors.enterLastName"));
+      return;
+    }
+    if (!isLogin && !gender) {
+      setError(t("authErrors.selectGender"));
+      return;
+    }
+    if (!email.trim()) {
+      setError(t("authErrors.enterEmail"));
+      return;
+    }
+    if (!password || password.length < 6) {
+      setError(t("authErrors.passwordLength"));
+      return;
+    }
+    setLoading(true);
+    try {
+      const endpoint = isLogin ? "/api/auth/login" : "/api/auth/register";
+      const payload = isLogin ? { email: email.trim(), password } : {
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        gender,
+        email: email.trim(),
+        password,
+        country: "AL"
+      };
+      const response = await fetch(`${backendUrl2}${endpoint}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.removeItem("userId");
+        localStorage.removeItem("userEmail");
+        localStorage.removeItem("userName");
+        localStorage.removeItem("userCountry");
+        localStorage.removeItem("isAuthenticated");
+        localStorage.removeItem("isGuest");
+        localStorage.removeItem("guestSession");
+        localStorage.removeItem("guestId");
+        localStorage.removeItem("conversationHistory");
+        const userId = data.user.odId || data.user.userId;
+        const userName = data.user.firstName ? `${data.user.firstName} ${data.user.lastName || ""}`.trim() : data.user.username || email.split("@")[0];
+        localStorage.setItem("userId", userId);
+        localStorage.setItem("userEmail", data.user.email);
+        localStorage.setItem("userName", userName);
+        localStorage.setItem("isAuthenticated", "true");
+        localStorage.setItem("userCountry", data.user.country || "AL");
+        if (data.user.gender) {
+          localStorage.setItem("userGender", data.user.gender);
+        }
+        if (data.user.subscriptionTier) {
+          localStorage.setItem("userSubscriptionTier", data.user.subscriptionTier);
+        }
+        console.log("✅ Auth successful:", { userId, userName, email: data.user.email, gender: data.user.gender, tier: data.user.subscriptionTier });
+        if (onAuthSuccess) {
+          onAuthSuccess({
+            userId,
+            email: data.user.email,
+            userName,
+            country: data.user.country || "AL",
+            subscriptionTier: data.user.subscriptionTier
+          });
+        }
+      } else {
+        setError(getTranslatedError(data, t));
+      }
+    } catch (err) {
+      console.error("Auth error:", err);
+      setError(t("authErrors.connectionError"));
+    } finally {
+      setLoading(false);
+    }
+  };
+  if (forgotPasswordMode) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed top-4 right-4 z-50", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LanguageSwitcher, {}) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-900/80 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20 max-w-md w-full", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => {
+              setForgotPasswordMode(false);
+              setResetStep(1);
+              setResetEmail("");
+              setResetCode("");
+              setNewPassword("");
+              setError("");
+            },
+            className: "mb-6 flex items-center gap-2 text-slate-400 hover:text-white transition-colors",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-5 h-5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("tips.back") })
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-2xl font-bold text-white mb-6 text-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(KeyRound, { className: "w-8 h-8 inline-block mr-2" }),
+          t("auth.resetPassword")
+        ] }),
+        resetStep === 1 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "email",
+              value: resetEmail,
+              onChange: (e) => setResetEmail(e.target.value),
+              placeholder: t("auth.email") + " 📧",
+              className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Button,
+            {
+              onClick: async () => {
+                if (!resetEmail.trim()) {
+                  setError(t("authErrors.enterEmail"));
+                  return;
+                }
+                setLoading(true);
+                try {
+                  const response = await fetch(`${backendUrl2}/api/auth/forgot-password`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email: resetEmail.trim() })
+                  });
+                  const data = await response.json();
+                  if (response.ok) {
+                    setResetStep(2);
+                    setSuccessMessage(t("auth.codeSent"));
+                    setError("");
+                  } else {
+                    setError(data.error || t("authErrors.somethingWrong"));
+                  }
+                } catch (err) {
+                  setError(t("authErrors.connectionError"));
+                } finally {
+                  setLoading(false);
+                }
+              },
+              disabled: loading,
+              className: "w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl",
+              children: loading ? t("common.loading") : t("auth.sendCode")
+            }
+          )
+        ] }),
+        resetStep === 2 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "text",
+              value: resetCode,
+              onChange: (e) => setResetCode(e.target.value),
+              placeholder: t("auth.sixDigitCode"),
+              maxLength: 6,
+              className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-center text-2xl tracking-widest"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Button,
+            {
+              onClick: async () => {
+                if (!resetCode || resetCode.length !== 6) {
+                  setError(t("authErrors.enterCode"));
+                  return;
+                }
+                setLoading(true);
+                try {
+                  const response = await fetch(`${backendUrl2}/api/auth/verify-reset-code`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email: resetEmail.trim(), code: resetCode })
+                  });
+                  const data = await response.json();
+                  if (response.ok) {
+                    setResetStep(3);
+                    setError("");
+                  } else {
+                    setError(data.error || t("authErrors.wrongCode"));
+                  }
+                } catch (err) {
+                  setError(t("authErrors.connectionError"));
+                } finally {
+                  setLoading(false);
+                }
+              },
+              disabled: loading,
+              className: "w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl",
+              children: loading ? t("common.loading") : t("auth.verifyCode")
+            }
+          )
+        ] }),
+        resetStep === 3 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "password",
+              value: newPassword,
+              onChange: (e) => setNewPassword(e.target.value),
+              placeholder: t("auth.newPassword") + " 🔐",
+              className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Button,
+            {
+              onClick: async () => {
+                if (!newPassword || newPassword.length < 6) {
+                  setError(t("authErrors.passwordLength"));
+                  return;
+                }
+                setLoading(true);
+                try {
+                  const response = await fetch(`${backendUrl2}/api/auth/reset-password`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      email: resetEmail.trim(),
+                      code: resetCode,
+                      newPassword
+                    })
+                  });
+                  const data = await response.json();
+                  if (response.ok) {
+                    setSuccessMessage(t("auth.passwordChanged"));
+                    setTimeout(() => {
+                      setForgotPasswordMode(false);
+                      setIsLogin(true);
+                      setResetStep(1);
+                      setResetEmail("");
+                      setResetCode("");
+                      setNewPassword("");
+                      setError("");
+                      setSuccessMessage("");
+                    }, 2e3);
+                  } else {
+                    setError(data.error || t("authErrors.somethingWrong"));
+                  }
+                } catch (err) {
+                  setError(t("authErrors.connectionError"));
+                } finally {
+                  setLoading(false);
+                }
+              },
+              disabled: loading,
+              className: "w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl",
+              children: loading ? t("common.loading") : t("auth.changePassword")
+            }
+          )
+        ] }),
+        error && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-red-400 text-sm text-center", children: error }) }),
+        successMessage && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4 p-3 bg-green-500/10 border border-green-500/30 rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-green-400 text-sm text-center", children: successMessage }) })
+      ] })
+    ] });
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed top-4 right-4 z-50", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LanguageSwitcher, {}) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-md", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-8", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-block mb-5 relative", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-24 h-24 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/50 relative overflow-hidden animate-bounce-slow", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-white/20 to-transparent" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(MessageSquare, { className: "w-12 h-12 text-white relative z-10", fill: "currentColor", strokeWidth: 1.5 }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 text-yellow-300 absolute top-2 right-2 animate-pulse" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center shadow-lg border-2 border-slate-900", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-3 h-3 bg-white rounded-full" }) })
+        ] }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h1", { className: "text-5xl font-extrabold mb-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "bg-gradient-to-r from-white via-indigo-100 to-purple-100 bg-clip-text text-transparent", children: "Biseda" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent text-4xl", children: ".ai" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 text-base font-medium animate-fade-in", children: taglines[taglineIndex] }) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-900/80 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 mb-8 bg-slate-800/50 p-1.5 rounded-2xl border border-slate-700/50", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => {
+                setIsLogin(false);
+                setError("");
+              },
+              className: `flex-1 py-3.5 rounded-xl font-semibold text-base transition-all duration-300 ${!isLogin ? "bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white shadow-md shadow-purple-500/30" : "text-slate-400 hover:text-white"}`,
+              children: t("auth.register")
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => {
+                setIsLogin(true);
+                setError("");
+              },
+              className: `flex-1 py-3.5 rounded-xl font-semibold text-base transition-all duration-300 ${isLogin ? "bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white shadow-md shadow-purple-500/30" : "text-slate-400 hover:text-white"}`,
+              children: t("auth.login")
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, className: "space-y-4", children: [
+          !isLogin && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "text",
+                  value: firstName,
+                  onChange: (e) => {
+                    setFirstName(e.target.value);
+                    setError("");
+                  },
+                  className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base",
+                  placeholder: t("auth.firstName") + " ✏️",
+                  style: { fontSize: "16px" },
+                  required: true
+                }
+              ) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "input",
+                {
+                  type: "text",
+                  value: lastName,
+                  onChange: (e) => {
+                    setLastName(e.target.value);
+                    setError("");
+                  },
+                  className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base",
+                  placeholder: t("auth.lastName") + " ✏️",
+                  style: { fontSize: "16px" },
+                  required: true
+                }
+              ) })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "button",
+                {
+                  type: "button",
+                  onClick: () => {
+                    setGender("male");
+                    setError("");
+                  },
+                  className: `py-4 rounded-xl font-semibold text-base transition-all duration-300 flex items-center justify-center gap-2 ${gender === "male" ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30 border-2 border-blue-400" : "bg-slate-800/50 border-2 border-slate-700/50 text-slate-400 hover:text-white hover:border-blue-500/50"}`,
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xl", children: "👨" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("auth.male") })
+                  ]
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "button",
+                {
+                  type: "button",
+                  onClick: () => {
+                    setGender("female");
+                    setError("");
+                  },
+                  className: `py-4 rounded-xl font-semibold text-base transition-all duration-300 flex items-center justify-center gap-2 ${gender === "female" ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg shadow-pink-500/30 border-2 border-pink-400" : "bg-slate-800/50 border-2 border-slate-700/50 text-slate-400 hover:text-white hover:border-pink-500/50"}`,
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xl", children: "👩" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("auth.female") })
+                  ]
+                }
+              )
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "email",
+              value: email,
+              onChange: (e) => {
+                setEmail(e.target.value);
+                setError("");
+              },
+              className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base",
+              placeholder: t("auth.email") + " 📧",
+              style: { fontSize: "16px" },
+              required: true
+            }
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                type: showPassword ? "text" : "password",
+                value: password,
+                onChange: (e) => {
+                  setPassword(e.target.value);
+                  setError("");
+                },
+                className: "w-full px-4 py-4 pr-12 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base",
+                placeholder: t("auth.password") + " 🔐",
+                style: { fontSize: "16px" },
+                required: true
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                type: "button",
+                onClick: () => setShowPassword(!showPassword),
+                className: "absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors",
+                children: showPassword ? /* @__PURE__ */ jsxRuntimeExports.jsx(EyeOff, { className: "w-5 h-5" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Eye, { className: "w-5 h-5" })
+              }
+            )
+          ] }),
+          error && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-3 bg-red-500/10 border border-red-500/30 rounded-xl animate-shake", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-red-400 text-sm text-center", children: error }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 gap-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Button,
+            {
+              type: "submit",
+              disabled: loading,
+              className: "w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl text-base shadow-lg transition-all duration-300",
+              children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center gap-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4 h-4 border-3 border-white/30 border-t-white rounded-full animate-spin" }) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isLogin ? "🚀 " + t("auth.login") : "✨ " + t("auth.createAccount") })
+            }
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              type: "button",
+              onClick: handleAppleSignIn,
+              className: "w-full bg-white hover:bg-gray-100 text-black font-semibold h-14 rounded-xl text-base shadow-lg transition-all duration-300 flex items-center justify-center gap-3",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: "20", height: "20", viewBox: "0 0 24 24", fill: "black", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" }) }),
+                t("auth.continueWithApple")
+              ]
+            }
+          )
+        ] }),
+        isLogin && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => setForgotPasswordMode(true),
+            className: "text-sm text-purple-400 hover:text-purple-300 transition-colors w-full text-center",
+            children: [
+              "🔑 ",
+              t("auth.forgotPassword")
+            ]
+          }
+        ) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-6 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-500 text-xs", children: [
+          t("auth.termsAgree"),
+          " ",
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-purple-400 font-medium", children: [
+            t("auth.terms"),
+            " & ",
+            t("auth.privacy")
+          ] })
+        ] }) })
+      ] })
+    ] }),
+    showAgeVerification && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-900/95 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20 max-w-md w-full", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-3xl", children: "🔞" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white mb-2", children: t("ageVerification.title") }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: t("ageVerification.subtitle") })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-slate-300 text-sm font-medium mb-2", children: t("ageVerification.selectAge") }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "select",
+            {
+              value: selectedAge,
+              onChange: (e) => setSelectedAge(e.target.value),
+              className: "flex-1 px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white text-lg focus:outline-none focus:border-purple-500/50 transition-all appearance-none cursor-pointer",
+              style: { fontSize: "18px" },
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", disabled: true, children: t("ageVerification.chooseAge") }),
+                Array.from({ length: 83 }, (_, i) => i + 18).map((age) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: age, children: age }, age))
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-slate-300 text-lg font-medium whitespace-nowrap", children: t("ageVerification.yearsOld") })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          Button,
+          {
+            onClick: handleGuestLogin,
+            disabled: !selectedAge || parseInt(selectedAge) < 18,
+            className: "w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl text-base shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed",
+            children: [
+              "✅ ",
+              t("ageVerification.confirm")
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setShowAgeVerification(false),
+            className: "w-full text-slate-400 hover:text-white py-3 transition-colors text-sm",
+            children: t("common.cancel")
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-4 text-center text-xs text-slate-500", children: t("ageVerification.disclaimer") })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `
+        @keyframes bounce-slow {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+        .animate-bounce-slow {
+          animation: bounce-slow 3s ease-in-out infinite;
+        }
+        @keyframes fade-in {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.5s ease-out;
+        }
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-10px); }
+          75% { transform: translateX(10px); }
+        }
+        .animate-shake {
+          animation: shake 0.5s ease-in-out;
+        }
+      ` })
   ] });
 }
 function UserProfile({ onLogout }) {
