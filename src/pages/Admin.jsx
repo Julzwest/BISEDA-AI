@@ -440,32 +440,36 @@ export default function Admin() {
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950/20 to-slate-950 p-4 md:p-6">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-white mb-1 flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
-              <Shield className="w-5 h-5 text-white" />
+        <div className="flex-1 min-w-0">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-1 flex items-center gap-2 sm:gap-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
-            Biseda.ai Admin
+            <span className="truncate">Admin</span>
           </h1>
-          <p className="text-slate-400 text-sm">Menaxho aplikacionin dhe përdoruesit</p>
+          <p className="text-slate-400 text-xs sm:text-sm truncate">Manage app and users</p>
         </div>
-        <div className="flex gap-2">
-          <Button onClick={fetchData} disabled={refreshing} className="bg-slate-700 hover:bg-slate-600 text-white">
-            <RefreshCw className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} /> Rifresko
+        <div className="flex gap-1.5 sm:gap-2 flex-shrink-0">
+          <Button onClick={fetchData} disabled={refreshing} className="bg-slate-700 hover:bg-slate-600 text-white px-2 sm:px-4 py-2">
+            <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+            <span className="hidden sm:inline ml-2">Refresh</span>
           </Button>
-          <Button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 text-white">Dil</Button>
+          <Button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 text-white px-2 sm:px-4 py-2">
+            <span className="sm:hidden">Exit</span>
+            <span className="hidden sm:inline">Logout</span>
+          </Button>
         </div>
       </div>
 
-      {/* Tab Navigation */}
-      <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
+      {/* Tab Navigation - Scrollable on mobile */}
+      <div className="flex gap-2 mb-6 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
         {[
-          { id: 'overview', label: '📊 Përmbledhje' },
-          { id: 'users', label: '👥 Përdoruesit' },
-          { id: 'createUser', label: '➕ Krijo Përdorues' },
-          { id: 'conversations', label: '💬 Bisedat' },
-          { id: 'subscriptions', label: '💎 Abonimet' },
-          { id: 'activity', label: '📈 Aktiviteti' },
+          { id: 'overview', label: '📊 Overview', icon: '📊' },
+          { id: 'users', label: '👥 Users', icon: '👥' },
+          { id: 'createUser', label: '➕ Create', icon: '➕' },
+          { id: 'conversations', label: '💬 Chats', icon: '💬' },
+          { id: 'subscriptions', label: '💎 Subs', icon: '💎' },
+          { id: 'activity', label: '📈 Activity', icon: '📈' },
         ].map(tab => (
           <button
             key={tab.id}
@@ -473,7 +477,7 @@ export default function Admin() {
               setActiveTab(tab.id);
               if (tab.id === 'conversations') fetchConversations();
             }}
-            className={`px-4 py-2 rounded-xl font-medium text-sm whitespace-nowrap transition-all ${
+            className={`px-3 py-2 rounded-xl font-medium text-xs sm:text-sm whitespace-nowrap transition-all flex-shrink-0 ${
               activeTab === tab.id
                 ? 'bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-lg'
                 : 'bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-700/50'
