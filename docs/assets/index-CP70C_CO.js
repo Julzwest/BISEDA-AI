@@ -13810,7 +13810,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-5mIe812j.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-CEnJZTnG.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -18878,7 +18878,20 @@ CRITICAL REMINDER: The user has shared a screenshot of a conversation earlier in
               }
             )
           ] }, index)) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-2 px-1", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs text-slate-400 flex items-center gap-1", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Image, { className: "w-3 h-3" }),
+              "Screenshot analyses"
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: `text-xs font-semibold px-2 py-1 rounded-full ${screenshotUsage.remaining === 0 ? "bg-red-500/20 text-red-400 border border-red-500/30" : screenshotUsage.remaining <= 5 ? "bg-orange-500/20 text-orange-400 border border-orange-500/30" : "bg-green-500/20 text-green-400 border border-green-500/30"}`, children: [
+              screenshotUsage.remaining,
+              "/",
+              screenshotUsage.limit,
+              " ",
+              screenshotUsage.isPaidUser ? t("chat.thisMonth") : t("chat.remaining")
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-slate-800/50 rounded-xl border border-slate-700/50 p-3", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "input",
               {
@@ -18891,9 +18904,9 @@ CRITICAL REMINDER: The user has shared a screenshot of a conversation earlier in
                 id: "image-upload"
               }
             ),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                Button,
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-end gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
                 {
                   onClick: () => {
                     if (screenshotUsage.remaining === 0) {
@@ -18902,56 +18915,48 @@ CRITICAL REMINDER: The user has shared a screenshot of a conversation earlier in
                       fileInputRef.current?.click();
                     }
                   },
-                  className: `px-3 py-3 rounded-lg h-auto self-end flex items-center gap-2 ${screenshotUsage.remaining === 0 ? "bg-orange-600 hover:bg-orange-700" : "bg-slate-700 hover:bg-slate-600"} text-white`,
+                  className: `flex-shrink-0 p-3 rounded-lg transition-all ${screenshotUsage.remaining === 0 ? "bg-orange-600/80 hover:bg-orange-600" : "bg-slate-700 hover:bg-slate-600"} text-white disabled:opacity-50`,
                   disabled: isLoading || selectedImages.length >= 4,
-                  title: screenshotUsage.remaining > 0 ? `${screenshotUsage.remaining}/${screenshotUsage.limit} ${screenshotUsage.isPaidUser ? t("chat.thisMonth") : t("chat.remaining")}` : t("chat.upgradeForScreenshot"),
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Image, { className: "w-5 h-5" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-medium", children: "Chat Screenshot" })
-                  ]
+                  title: screenshotUsage.remaining > 0 ? `Upload screenshot (${screenshotUsage.remaining} left)` : t("chat.upgradeForScreenshot"),
+                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(Image, { className: "w-5 h-5" })
                 }
               ),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: `absolute -top-2 -right-2 min-w-5 h-5 px-1 rounded-full text-xs font-bold flex items-center justify-center ${screenshotUsage.remaining === 0 ? "bg-red-500 text-white" : "bg-green-500 text-white"}`, children: [
-                screenshotUsage.remaining,
-                "/",
-                screenshotUsage.limit
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "textarea",
-              {
-                value: inputText,
-                onChange: (e) => setInputText(e.target.value),
-                onKeyPress: handleKeyPress,
-                placeholder: isLimitReached ? t("upgrade.limitReached") : t("chat.placeholder"),
-                className: `flex-1 bg-slate-700 text-white px-4 py-3 rounded-lg border resize-none min-h-[60px] max-h-[120px] ${isLimitReached ? "border-red-500/50 opacity-60" : "border-slate-600 focus:outline-none focus:border-blue-500"}`,
-                rows: 2,
-                disabled: isLoading || isLimitReached,
-                inputMode: "text",
-                enterKeyHint: "send",
-                autoComplete: "off",
-                autoCorrect: "off",
-                autoCapitalize: "off",
-                spellCheck: "false",
-                "data-gramm": "false",
-                "data-gramm_editor": "false",
-                "data-enable-grammarly": "false",
-                style: {
-                  WebkitAppearance: "none",
-                  WebkitUserSelect: "text",
-                  appearance: "none"
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "textarea",
+                {
+                  value: inputText,
+                  onChange: (e) => setInputText(e.target.value),
+                  onKeyPress: handleKeyPress,
+                  placeholder: isLimitReached ? t("upgrade.limitReached") : t("chat.placeholder"),
+                  className: `flex-1 bg-slate-900/50 text-white px-4 py-3 rounded-lg border resize-none min-h-[48px] max-h-[120px] ${isLimitReached ? "border-red-500/50 opacity-60" : "border-slate-700/50 focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20"}`,
+                  rows: 1,
+                  disabled: isLoading || isLimitReached,
+                  inputMode: "text",
+                  enterKeyHint: "send",
+                  autoComplete: "off",
+                  autoCorrect: "off",
+                  autoCapitalize: "off",
+                  spellCheck: "false",
+                  "data-gramm": "false",
+                  "data-gramm_editor": "false",
+                  "data-enable-grammarly": "false",
+                  style: {
+                    WebkitAppearance: "none",
+                    WebkitUserSelect: "text",
+                    appearance: "none"
+                  }
                 }
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              Button,
-              {
-                onClick: handleSend,
-                className: "bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg h-auto self-end disabled:opacity-50 disabled:cursor-not-allowed",
-                disabled: !inputText.trim() && selectedImages.length === 0 || isLoading || isLimitReached,
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Send, { className: "w-5 h-5" })
-              }
-            )
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  onClick: handleSend,
+                  className: "flex-shrink-0 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white p-3 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-500/20",
+                  disabled: !inputText.trim() && selectedImages.length === 0 || isLoading || isLimitReached,
+                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(Send, { className: "w-5 h-5" })
+                }
+              )
+            ] })
           ] })
         ] }) })
       }
