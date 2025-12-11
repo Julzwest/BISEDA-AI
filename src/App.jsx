@@ -3,12 +3,15 @@ import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './Layout.jsx';
 import Home from './pages/Home.jsx';
 import Tips from './pages/Tips.jsx';
-import ClipboardSuggestions from './pages/ClipboardSuggestions.jsx';
 import FirstDates from './pages/FirstDates.jsx';
 import Chat from './pages/Chat.jsx';
 import GiftSuggestions from './pages/GiftSuggestions.jsx';
-import FestiveDates from './pages/FestiveDates.jsx';
 import Events from './pages/Events.jsx';
+import TextResponseHelper from './pages/TextResponseHelper.jsx';
+import PhotoFeedback from './pages/PhotoFeedback.jsx';
+import ConversationStarters from './pages/ConversationStarters.jsx';
+import QuickDateIdeas from './pages/QuickDateIdeas.jsx';
+import ProgressTracking from './pages/ProgressTracking.jsx';
 import SubscriptionSuccess from './pages/SubscriptionSuccess.jsx';
 import SubscriptionCancel from './pages/SubscriptionCancel.jsx';
 import Admin from './pages/Admin.jsx';
@@ -133,21 +136,35 @@ function App() {
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/home" element={<Home />} />
           <Route path="/tips" element={<Tips />} />
-          <Route path="/clipboard" element={<ClipboardSuggestions />} />
-          <Route path="/firstdates" element={<FirstDates />} />
-          <Route path="/festivedates" element={<FestiveDates />} />
+          <Route path="/dates" element={<FirstDates />} />
           <Route path="/events" element={<Events />} />
           <Route path="/gifts" element={<GiftSuggestions />} />
           <Route path="/chat" element={<Chat />} />
+          
+          {/* New Features */}
+          <Route path="/text-helper" element={<TextResponseHelper />} />
+          <Route path="/photo-feedback" element={<PhotoFeedback />} />
+          <Route path="/starters" element={<ConversationStarters />} />
+          <Route path="/quick-ideas" element={<QuickDateIdeas />} />
+          <Route path="/progress" element={<ProgressTracking />} />
+          
+          {/* User & Tools */}
+          <Route path="/mood" element={<MoodCheck />} />
+          <Route path="/profileoptimizer" element={<ProfileOptimizer />} />
+          <Route path="/rehearsal" element={<DateRehearsal />} />
+          <Route path="/profile" element={<UserProfile onLogout={handleLogout} />} />
+          
+          {/* System */}
           <Route path="/subscription/success" element={<SubscriptionSuccess />} />
           <Route path="/subscription/cancel" element={<SubscriptionCancel />} />
           <Route path="/admin" element={<Admin />} />
-          <Route path="/profile" element={<UserProfile onLogout={handleLogout} />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
-          <Route path="/mood" element={<MoodCheck />} />
-          <Route path="/profileoptimizer" element={<ProfileOptimizer />} />
-          <Route path="/dateplanner" element={<DatePlanner />} />
-          <Route path="/rehearsal" element={<DateRehearsal />} />
+          
+          {/* Legacy redirects */}
+          <Route path="/firstdates" element={<Navigate to="/dates" replace />} />
+          <Route path="/dateplanner" element={<Navigate to="/dates" replace />} />
+          <Route path="/festivedates" element={<Navigate to="/events" replace />} />
+          <Route path="/clipboard" element={<Navigate to="/starters" replace />} />
         </Routes>
       </Layout>
     </Router>

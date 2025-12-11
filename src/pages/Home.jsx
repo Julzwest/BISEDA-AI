@@ -61,40 +61,85 @@ export default function Home() {
     };
   }, []);
 
+  // Daily tip (changes daily)
+  const [dailyTip, setDailyTip] = useState('');
+  const [lastConversation, setLastConversation] = useState(null);
+
+  useEffect(() => {
+    // Get daily tip
+    const tips = [
+      "💡 Ask open-ended questions to keep the conversation flowing",
+      "✨ Mirror their energy - if they're playful, be playful back!",
+      "🎯 Use their profile as conversation fuel - mention shared interests",
+      "😊 Compliment something specific, not just 'you're beautiful'",
+      "💬 Share something interesting about yourself to spark curiosity",
+      "🎭 Be authentic - the right person will love the real you",
+      "⏰ Don't wait too long to ask them out - strike while the iron is hot!",
+    ];
+    const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+    setDailyTip(tips[dayOfYear % tips.length]);
+
+    // Get last conversation
+    try {
+      const history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+      if (history.length > 0) {
+        setLastConversation(history[0]);
+      }
+    } catch (e) {}
+  }, []);
+
   const features = [
     {
       icon: Bot,
-      title: t('home.features.aiCoach.title'),
-      description: t('home.features.aiCoach.desc'),
+      title: 'AI Coach',
+      description: 'Get instant dating advice',
       color: 'from-purple-500 to-pink-500',
       page: 'Chat'
     },
     {
-      icon: Users,
-      title: t('home.features.rehearsal.title', 'Date Rehearsal'),
-      description: t('home.features.rehearsal.desc', 'Practice conversations with AI roleplay'),
-      color: 'from-violet-500 to-fuchsia-500',
-      page: 'Rehearsal',
-      isNew: true,
-      requiresProOrElite: true
-    },
-    {
-      icon: Smile,
-      title: t('home.features.mood.title', 'Mood Check'),
-      description: t('home.features.mood.desc', 'Get tailored advice based on how you feel'),
-      color: 'from-pink-500 to-purple-500',
-      page: 'Mood',
-      isNew: true,
-      requiresProOrElite: true
+      icon: MessageSquare,
+      title: 'Text Response Helper',
+      description: 'AI suggests perfect replies',
+      color: 'from-blue-500 to-cyan-500',
+      page: 'text-helper',
+      isNew: true
     },
     {
       icon: Camera,
-      title: t('home.features.profileOptimizer.title', 'Profile Optimizer'),
-      description: t('home.features.profileOptimizer.desc', 'AI-powered dating profile review'),
-      color: 'from-indigo-500 to-purple-500',
-      page: 'ProfileOptimizer',
-      isNew: true,
+      title: 'Photo Feedback',
+      description: 'Rate your profile photos',
+      color: 'from-rose-500 to-pink-500',
+      page: 'photo-feedback',
+      isNew: true
+    },
+    {
+      icon: MessageSquare,
+      title: 'Conversation Starters',
+      description: 'Ready-to-use opening lines',
+      color: 'from-green-500 to-emerald-500',
+      page: 'starters'
+    },
+    {
+      icon: Users,
+      title: 'Date Rehearsal',
+      description: 'Practice with AI roleplay',
+      color: 'from-violet-500 to-fuchsia-500',
+      page: 'Rehearsal',
       requiresProOrElite: true
+    },
+    {
+      icon: Heart,
+      title: 'Quick Date Ideas',
+      description: 'Instant date inspiration',
+      color: 'from-pink-500 to-rose-500',
+      page: 'quick-ideas'
+    },
+    {
+      icon: PartyPopper,
+      title: 'Events Near You',
+      description: 'Local events & activities',
+      color: 'from-yellow-500 to-orange-500',
+      page: 'Events'
     },
     {
       icon: BookOpen,
