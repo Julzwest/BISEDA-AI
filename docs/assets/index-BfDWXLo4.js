@@ -1,4 +1,4 @@
-import { W as WebPlugin, r as registerPlugin } from "./index-Bpia6Wn-.js";
+import { W as WebPlugin, r as registerPlugin } from "./index-BJUAfhzb.js";
 class ClipboardWeb extends WebPlugin {
   async write(options) {
     if (typeof navigator === "undefined" || !navigator.clipboard) {

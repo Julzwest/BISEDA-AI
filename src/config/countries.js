@@ -332,6 +332,12 @@ export const getCountryFlag = (countryCode) => {
   return country ? country.flag : '🇦🇱';
 };
 
+export const getLocalizedCountryName = (countryCode, language = 'en') => {
+  const country = getCountryByCode(countryCode);
+  if (!country) return countryCode;
+  return language === 'sq' ? country.name : (country.nameEn || country.name);
+};
+
 // Get city name in English for Google Places API
 export const getCityNameEn = (countryCode, cityName) => {
   const country = getCountryByCode(countryCode);

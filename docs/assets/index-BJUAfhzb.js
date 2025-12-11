@@ -7036,7 +7036,7 @@ function requireClient() {
 }
 var clientExports = requireClient();
 const ReactDOM = /* @__PURE__ */ getDefaultExportFromCjs(clientExports);
-requireReactDom();
+var reactDomExports = requireReactDom();
 function _extends$2() {
   _extends$2 = Object.assign ? Object.assign.bind() : function(target) {
     for (var i = 1; i < arguments.length; i++) {
@@ -11492,12 +11492,6 @@ const UserPlus = createLucideIcon("UserPlus", [
   ["line", { x1: "19", x2: "19", y1: "8", y2: "14", key: "1bvyxn" }],
   ["line", { x1: "22", x2: "16", y1: "11", y2: "11", key: "1shjgl" }]
 ]);
-const UserX = createLucideIcon("UserX", [
-  ["path", { d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2", key: "1yyitq" }],
-  ["circle", { cx: "9", cy: "7", r: "4", key: "nufk8" }],
-  ["line", { x1: "17", x2: "22", y1: "8", y2: "13", key: "3nzzx3" }],
-  ["line", { x1: "22", x2: "17", y1: "8", y2: "13", key: "1swrse" }]
-]);
 const User = createLucideIcon("User", [
   ["path", { d: "M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2", key: "975kel" }],
   ["circle", { cx: "12", cy: "7", r: "4", key: "17ys0d" }]
@@ -11529,479 +11523,6 @@ const X = createLucideIcon("X", [
 const Zap = createLucideIcon("Zap", [
   ["polygon", { points: "13 2 3 14 12 14 11 22 21 10 12 10 13 2", key: "45s27k" }]
 ]);
-const countries = [
-  {
-    code: "AL",
-    name: "Shqipëri",
-    nameEn: "Albania",
-    flag: "🇦🇱",
-    currency: "ALL",
-    currencySymbol: "L",
-    cities: [
-      { name: "Tiranë", nameEn: "Tirana" },
-      { name: "Durrës", nameEn: "Durres" },
-      { name: "Vlorë", nameEn: "Vlora" },
-      { name: "Shkodër", nameEn: "Shkoder" },
-      { name: "Elbasan", nameEn: "Elbasan" },
-      { name: "Korçë", nameEn: "Korce" },
-      { name: "Fier", nameEn: "Fier" },
-      { name: "Berat", nameEn: "Berat" },
-      { name: "Lushnjë", nameEn: "Lushnje" },
-      { name: "Pogradec", nameEn: "Pogradec" },
-      { name: "Sarandë", nameEn: "Saranda" },
-      { name: "Gjirokastër", nameEn: "Gjirokastra" },
-      { name: "Has", nameEn: "Has" },
-      { name: "Tropojë", nameEn: "Tropoja" },
-      { name: "Tepelenë", nameEn: "Tepelena" },
-      { name: "Kukës", nameEn: "Kukes" },
-      { name: "Lezhë", nameEn: "Lezha" },
-      { name: "Peshkopi", nameEn: "Peshkopi" },
-      { name: "Bulqizë", nameEn: "Bulqiza" },
-      { name: "Librazhd", nameEn: "Librazhd" },
-      { name: "Gramsh", nameEn: "Gramsh" },
-      { name: "Përmet", nameEn: "Permet" },
-      { name: "Ersekë", nameEn: "Erseka" },
-      { name: "Pukë", nameEn: "Puka" },
-      { name: "Mirditë", nameEn: "Mirdita" },
-      { name: "Krujë", nameEn: "Kruja" },
-      { name: "Kavajë", nameEn: "Kavaja" },
-      { name: "Peqin", nameEn: "Peqin" },
-      { name: "Cërrik", nameEn: "Cerrik" },
-      { name: "Kuçovë", nameEn: "Kucova" },
-      { name: "Roskovec", nameEn: "Roskovec" },
-      { name: "Patos", nameEn: "Patos" },
-      { name: "Ballsh", nameEn: "Ballsh" },
-      { name: "Memaliaj", nameEn: "Memaliaj" },
-      { name: "Selenicë", nameEn: "Selenica" },
-      { name: "Himarë", nameEn: "Himara" },
-      { name: "Delvinë", nameEn: "Delvina" },
-      { name: "Konispol", nameEn: "Konispol" },
-      { name: "Finiq", nameEn: "Finiq" },
-      { name: "Dropull", nameEn: "Dropull" },
-      { name: "Libohovë", nameEn: "Libohova" },
-      { name: "Këlcyrë", nameEn: "Kelcyra" },
-      { name: "Skrapar", nameEn: "Skrapar" },
-      { name: "Poliçan", nameEn: "Polican" },
-      { name: "Devoll", nameEn: "Devoll" },
-      { name: "Pustec", nameEn: "Pustec" },
-      { name: "Maliq", nameEn: "Maliq" },
-      { name: "Kolonjë", nameEn: "Kolonja" },
-      { name: "Vau i Dejës", nameEn: "Vau i Dejes" },
-      { name: "Fushë-Arrëz", nameEn: "Fushe-Arrez" },
-      { name: "Malësi e Madhe", nameEn: "Malesia e Madhe" },
-      { name: "Klos", nameEn: "Klos" },
-      { name: "Mat", nameEn: "Mat" },
-      { name: "Dibër", nameEn: "Diber" },
-      { name: "Laç", nameEn: "Lac" },
-      { name: "Mamurras", nameEn: "Mamurras" },
-      { name: "Kurbin", nameEn: "Kurbin" },
-      { name: "Shijak", nameEn: "Shijak" },
-      { name: "Vorë", nameEn: "Vora" },
-      { name: "Kamëz", nameEn: "Kamza" }
-    ]
-  },
-  {
-    code: "XK",
-    name: "Kosovë",
-    nameEn: "Kosovo",
-    flag: "🇽🇰",
-    currency: "EUR",
-    currencySymbol: "€",
-    cities: [
-      { name: "Prishtinë", nameEn: "Pristina" },
-      { name: "Prizren", nameEn: "Prizren" },
-      { name: "Ferizaj", nameEn: "Ferizaj" },
-      { name: "Pejë", nameEn: "Peja" },
-      { name: "Gjakovë", nameEn: "Gjakova" },
-      { name: "Gjilan", nameEn: "Gjilan" },
-      { name: "Mitrovicë", nameEn: "Mitrovica" },
-      { name: "Podujevë", nameEn: "Podujeva" }
-    ]
-  },
-  {
-    code: "GB",
-    name: "Britani e Madhe",
-    nameEn: "United Kingdom",
-    flag: "🇬🇧",
-    currency: "GBP",
-    currencySymbol: "£",
-    cities: [
-      { name: "Londër", nameEn: "London" },
-      { name: "Mançester", nameEn: "Manchester" },
-      { name: "Birmingham", nameEn: "Birmingham" },
-      { name: "Leeds", nameEn: "Leeds" },
-      { name: "Liverpool", nameEn: "Liverpool" },
-      { name: "Bristol", nameEn: "Bristol" },
-      { name: "Sheffield", nameEn: "Sheffield" },
-      { name: "Edinburgh", nameEn: "Edinburgh" },
-      { name: "Glasgow", nameEn: "Glasgow" },
-      { name: "Nottingham", nameEn: "Nottingham" }
-    ]
-  },
-  {
-    code: "CH",
-    name: "Zvicër",
-    nameEn: "Switzerland",
-    flag: "🇨🇭",
-    currency: "CHF",
-    currencySymbol: "CHF",
-    cities: [
-      { name: "Cyrih", nameEn: "Zurich" },
-      { name: "Gjenevë", nameEn: "Geneva" },
-      { name: "Bazel", nameEn: "Basel" },
-      { name: "Bernë", nameEn: "Bern" },
-      { name: "Lozanë", nameEn: "Lausanne" },
-      { name: "Winterthur", nameEn: "Winterthur" },
-      { name: "St. Gallen", nameEn: "St. Gallen" },
-      { name: "Lugano", nameEn: "Lugano" }
-    ]
-  },
-  {
-    code: "DE",
-    name: "Gjermani",
-    nameEn: "Germany",
-    flag: "🇩🇪",
-    currency: "EUR",
-    currencySymbol: "€",
-    cities: [
-      { name: "Mynih", nameEn: "Munich" },
-      { name: "Berlin", nameEn: "Berlin" },
-      { name: "Frankfurt", nameEn: "Frankfurt" },
-      { name: "Hamburg", nameEn: "Hamburg" },
-      { name: "Këln", nameEn: "Cologne" },
-      { name: "Dyseldorf", nameEn: "Dusseldorf" },
-      { name: "Shtutgart", nameEn: "Stuttgart" },
-      { name: "Dortmund", nameEn: "Dortmund" },
-      { name: "Esen", nameEn: "Essen" },
-      { name: "Hanover", nameEn: "Hanover" }
-    ]
-  },
-  {
-    code: "US",
-    name: "SHBA",
-    nameEn: "United States",
-    flag: "🇺🇸",
-    currency: "USD",
-    currencySymbol: "$",
-    cities: [
-      { name: "Nju Jork", nameEn: "New York" },
-      { name: "Çikago", nameEn: "Chicago" },
-      { name: "Los Anxhelos", nameEn: "Los Angeles" },
-      { name: "Detroit", nameEn: "Detroit" },
-      { name: "Boston", nameEn: "Boston" },
-      { name: "Filadelfia", nameEn: "Philadelphia" },
-      { name: "Uashington", nameEn: "Washington DC" },
-      { name: "Houston", nameEn: "Houston" },
-      { name: "San Francisko", nameEn: "San Francisco" },
-      { name: "Miami", nameEn: "Miami" }
-    ]
-  },
-  {
-    code: "IT",
-    name: "Itali",
-    nameEn: "Italy",
-    flag: "🇮🇹",
-    currency: "EUR",
-    currencySymbol: "€",
-    cities: [
-      { name: "Milano", nameEn: "Milan" },
-      { name: "Romë", nameEn: "Rome" },
-      { name: "Torino", nameEn: "Turin" },
-      { name: "Napoli", nameEn: "Naples" },
-      { name: "Firence", nameEn: "Florence" },
-      { name: "Bolonjë", nameEn: "Bologna" },
-      { name: "Venecia", nameEn: "Venice" },
-      { name: "Bari", nameEn: "Bari" },
-      { name: "Verona", nameEn: "Verona" },
-      { name: "Padova", nameEn: "Padua" }
-    ]
-  },
-  {
-    code: "FR",
-    name: "Francë",
-    nameEn: "France",
-    flag: "🇫🇷",
-    currency: "EUR",
-    currencySymbol: "€",
-    cities: [
-      { name: "Paris", nameEn: "Paris" },
-      { name: "Lion", nameEn: "Lyon" },
-      { name: "Marsejë", nameEn: "Marseille" },
-      { name: "Tuluz", nameEn: "Toulouse" },
-      { name: "Nicë", nameEn: "Nice" },
-      { name: "Nant", nameEn: "Nantes" },
-      { name: "Strasburg", nameEn: "Strasbourg" },
-      { name: "Bordo", nameEn: "Bordeaux" },
-      { name: "Lil", nameEn: "Lille" },
-      { name: "Ren", nameEn: "Rennes" }
-    ]
-  },
-  {
-    code: "ES",
-    name: "Spanjë",
-    nameEn: "Spain",
-    flag: "🇪🇸",
-    currency: "EUR",
-    currencySymbol: "€",
-    cities: [
-      { name: "Madrid", nameEn: "Madrid" },
-      { name: "Barcelonë", nameEn: "Barcelona" },
-      { name: "Valensja", nameEn: "Valencia" },
-      { name: "Seviljë", nameEn: "Seville" },
-      { name: "Saragozë", nameEn: "Zaragoza" },
-      { name: "Malagë", nameEn: "Malaga" },
-      { name: "Murcia", nameEn: "Murcia" },
-      { name: "Palma", nameEn: "Palma" },
-      { name: "Bilbao", nameEn: "Bilbao" },
-      { name: "Alikante", nameEn: "Alicante" }
-    ]
-  },
-  {
-    code: "GR",
-    name: "Greqi",
-    nameEn: "Greece",
-    flag: "🇬🇷",
-    currency: "EUR",
-    currencySymbol: "€",
-    cities: [
-      { name: "Athinë", nameEn: "Athens" },
-      { name: "Selanik", nameEn: "Thessaloniki" },
-      { name: "Patras", nameEn: "Patras" },
-      { name: "Heraklion", nameEn: "Heraklion" },
-      { name: "Larisa", nameEn: "Larissa" },
-      { name: "Volos", nameEn: "Volos" },
-      { name: "Janinë", nameEn: "Ioannina" },
-      { name: "Kavala", nameEn: "Kavala" },
-      { name: "Rodos", nameEn: "Rhodes" },
-      { name: "Korfuz", nameEn: "Corfu" }
-    ]
-  },
-  {
-    code: "AT",
-    name: "Austri",
-    nameEn: "Austria",
-    flag: "🇦🇹",
-    currency: "EUR",
-    currencySymbol: "€",
-    cities: [
-      { name: "Vjenë", nameEn: "Vienna" },
-      { name: "Grac", nameEn: "Graz" },
-      { name: "Linc", nameEn: "Linz" },
-      { name: "Salcburg", nameEn: "Salzburg" },
-      { name: "Innsbruk", nameEn: "Innsbruck" }
-    ]
-  },
-  {
-    code: "BE",
-    name: "Belgjikë",
-    nameEn: "Belgium",
-    flag: "🇧🇪",
-    currency: "EUR",
-    currencySymbol: "€",
-    cities: [
-      { name: "Bruksel", nameEn: "Brussels" },
-      { name: "Antverp", nameEn: "Antwerp" },
-      { name: "Gent", nameEn: "Ghent" },
-      { name: "Bryzh", nameEn: "Bruges" },
-      { name: "Liezh", nameEn: "Liege" }
-    ]
-  },
-  {
-    code: "SE",
-    name: "Suedi",
-    nameEn: "Sweden",
-    flag: "🇸🇪",
-    currency: "SEK",
-    currencySymbol: "kr",
-    cities: [
-      { name: "Stokholm", nameEn: "Stockholm" },
-      { name: "Gotenburg", nameEn: "Gothenburg" },
-      { name: "Malmö", nameEn: "Malmo" },
-      { name: "Uppsala", nameEn: "Uppsala" }
-    ]
-  },
-  {
-    code: "NL",
-    name: "Holandë",
-    nameEn: "Netherlands",
-    flag: "🇳🇱",
-    currency: "EUR",
-    currencySymbol: "€",
-    cities: [
-      { name: "Amsterdam", nameEn: "Amsterdam" },
-      { name: "Rotërdam", nameEn: "Rotterdam" },
-      { name: "Hagë", nameEn: "The Hague" },
-      { name: "Utrecht", nameEn: "Utrecht" },
-      { name: "Ajndhoven", nameEn: "Eindhoven" }
-    ]
-  }
-];
-const getCountryByCode = (code) => {
-  return countries.find((c) => c.code === code) || countries[0];
-};
-const getCitiesForCountry = (countryCode) => {
-  const country2 = getCountryByCode(countryCode);
-  return country2 ? country2.cities : [];
-};
-const getCurrencySymbol = (countryCode) => {
-  const country2 = getCountryByCode(countryCode);
-  return country2 ? country2.currencySymbol : "€";
-};
-const getCityNameEn = (countryCode, cityName) => {
-  const country2 = getCountryByCode(countryCode);
-  if (!country2) return cityName;
-  const city = country2.cities.find((c) => c.name === cityName);
-  return city ? city.nameEn : cityName;
-};
-function CountrySwitcher() {
-  const [isOpen, setIsOpen] = reactExports.useState(false);
-  const [selectedCountry, setSelectedCountry] = reactExports.useState(
-    localStorage.getItem("userCountry") || "AL"
-  );
-  const dropdownRef = reactExports.useRef(null);
-  const currentCountry = getCountryByCode(selectedCountry);
-  reactExports.useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isOpen]);
-  reactExports.useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === "Escape") setIsOpen(false);
-    };
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscape);
-    }
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, [isOpen]);
-  reactExports.useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen]);
-  const handleSelectCountry = (countryCode) => {
-    setSelectedCountry(countryCode);
-    localStorage.setItem("userCountry", countryCode);
-    localStorage.removeItem("userCity");
-    window.dispatchEvent(new CustomEvent("countryChanged", {
-      detail: { countryCode }
-    }));
-    setIsOpen(false);
-  };
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", ref: dropdownRef, children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "button",
-      {
-        onClick: (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setIsOpen(!isOpen);
-        },
-        className: "group flex items-center gap-1.5 px-3 py-2 bg-slate-800/90 border border-slate-700/60 rounded-xl hover:bg-slate-700/90 hover:border-purple-500/50 transition-all duration-200",
-        "aria-label": "Change country",
-        "aria-expanded": isOpen,
-        type: "button",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg", children: currentCountry?.flag }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            ChevronDown,
-            {
-              className: `w-3.5 h-3.5 text-slate-400 group-hover:text-purple-400 transition-all duration-200 ${isOpen ? "rotate-180" : ""}`
-            }
-          )
-        ]
-      }
-    ),
-    isOpen && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "div",
-        {
-          className: "md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[10000]",
-          onClick: (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            setIsOpen(false);
-          }
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "fixed left-4 right-4 bottom-4 md:absolute md:left-auto md:right-0 md:bottom-auto md:top-full md:mt-2 md:w-72 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-[10001]",
-          style: { maxHeight: "calc(100vh - 120px)" },
-          onClick: (e) => e.stopPropagation(),
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-3 border-b border-slate-700/50 bg-gradient-to-r from-slate-800 to-slate-800/50", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Globe, { className: "w-4 h-4 text-purple-400" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-white", children: "Zgjidh Vendin" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  onClick: (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setIsOpen(false);
-                  },
-                  className: "p-1.5 hover:bg-slate-700 rounded-lg transition-colors md:hidden",
-                  type: "button",
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5 text-slate-400" })
-                }
-              )
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-y-auto max-h-[400px]", children: countries.map((country2) => {
-              const isSelected = selectedCountry === country2.code;
-              return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "button",
-                {
-                  onClick: (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleSelectCountry(country2.code);
-                  },
-                  className: `w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-150 border-b border-slate-800/50 last:border-b-0 ${isSelected ? "bg-purple-500/20 text-white" : "text-slate-300 hover:bg-slate-800 hover:text-white active:bg-slate-700"}`,
-                  type: "button",
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: country2.flag }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-medium", children: country2.name }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-xs text-slate-500", children: [
-                          country2.cities?.length || 0,
-                          " qytete"
-                        ] })
-                      ] })
-                    ] }),
-                    isSelected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-400 font-medium", children: "Aktiv" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-purple-400 flex-shrink-0" })
-                    ] })
-                  ]
-                },
-                country2.code
-              );
-            }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-4 py-2 border-t border-slate-700/50 bg-slate-800/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-slate-500 text-center", children: "Zgjidh vendin për të parë evente dhe takime lokale" }) })
-          ]
-        }
-      )
-    ] })
-  ] });
-}
 const {
   slice,
   forEach
@@ -12455,25 +11976,38 @@ const sq = {
   plans: plans$6
 };
 const app$5 = { "name": "Biseda.ai", "tagline": "Learn how to talk to guys/girls, improve your chats on WhatsApp, Instagram, Facebook Messenger, Tinder and other dating apps" };
+const onboarding = { "skip": "Skip", "back": "Back", "continue": "Continue", "startNow": "Start Now", "step": "Step {{current}} of {{total}}", "guestNotice": "👋 Exploring as a visitor - register to save your progress", "steps": { "welcome": { "title": "Welcome to Biseda.ai! 👋", "description": "Your personal AI Coach for dating and conversations. Let us show you how it works!", "features": ["Copy conversations and get advice", "Practice with AI Coach", "Find places for dates"] }, "chat": { "title": "Chat & AI Coach 🤖", "description": "Copy messages from WhatsApp, Instagram or Tinder and get suggested replies. Or chat directly with AI Coach for advice!", "features": ["Paste the message you received", "Get 3 different replies", "Practice conversations with AI"] }, "events": { "title": "Dates & Events 🎉", "description": "Find perfect places for your first date and local events in your city!", "features": ["Restaurant & cafe suggestions", "Concerts and nightclubs", "Live data from Google"] } } };
+const styleAdvisor = { "title": "Style Advisor", "subtitle": "Get personalized fashion advice for your date", "selectOccasion": "Select occasion", "occasions": { "coffee": "First coffee", "dinner": "Elegant dinner", "casual": "Casual outing", "club": "Night at the club", "movie": "Cinema", "beach": "Beach day" }, "additionalContext": "Additional context (optional)", "placeholder": "Describe your style, what you already have, your budget...", "uploadPhoto": "Upload your outfit", "uploadPhotoDesc": "Upload a photo of your outfit for personalized advice", "getAdvice": "Get Style Advice", "generating": "Generating advice...", "yourAdvice": "Your Style Advice" };
+const festiveDates = { "title": "Festive Dates", "subtitle": "Plan special dates for holidays and occasions", "selectMonth": "Select Month", "noEventsThisMonth": "No festive dates this month", "dateIdeas": "Date ideas for this occasion", "national": "National Holiday", "international": "International", "cultural": "Cultural", "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"] };
 const nav$5 = { "home": "Home", "aiCoach": "AI Coach", "dates": "Dates", "events": "Events", "tips": "Tips" };
-const home$5 = { "getStarted": "Get Started", "stats": { "improve": "Improve your game", "moreDates": "More dates", "fastResults": "Fast results" }, "features": { "aiCoach": { "title": "AI Coach", "desc": "Chat with AI to practice conversations, learn pickup techniques, and improve your skills" }, "dates": { "title": "First Dates", "desc": "Find perfect ideas for your first date with local business suggestions in your city" }, "tips": { "title": "Tips & Advice", "desc": "Learn how to talk to guys/girls on WhatsApp, Instagram, Messenger, Tinder and improve your game" }, "events": { "title": "Local Events", "desc": "Find event venues, concerts, clubs and entertainment in your city" }, "gifts": { "title": "Gift Suggestions", "desc": "Find the perfect gift based on your partner's interests with purchase links" } }, "freeTrial": "Free Trial", "upgrade": "Upgrade", "messagesRemaining": "Messages Today", "limitWarning": "Almost at your limit! Upgrade for unlimited messages." };
-const auth$5 = { "register": "Register", "login": "Login", "logout": "Logout", "guest": "Continue as Guest", "createAccount": "Create Account", "forgotPassword": "Forgot password?", "email": "Email", "password": "Password", "confirmPassword": "Confirm Password", "name": "Name", "firstName": "First Name", "lastName": "Last Name", "username": "Username", "continueWithApple": "Continue with Apple", "or": "OR", "alreadyHaveAccount": "Have an account?", "dontHaveAccount": "Don't have an account?", "termsAgree": "By continuing, you agree to our", "terms": "Terms", "and": "and", "privacy": "Privacy", "resetPassword": "Reset Password", "sendCode": "Send Code", "verifyCode": "Verify Code", "changePassword": "Change Password", "sixDigitCode": "6-digit code", "newPassword": "New Password", "codeSent": "Code sent to your email! 📧", "passwordChanged": "Password changed! ✅", "tagline1": "✨ AI that truly understands you", "tagline2": "✨ AI that makes you irresistible", "tagline3": "✨ Start conversations that impress", "tagline4": "✨ Dates that start with perfect messages" };
-const authErrors$5 = { "enterFirstName": "Enter your first name ✏️", "enterLastName": "Enter your last name ✏️", "enterEmail": "Enter your email 📧", "passwordLength": "Password must be 6+ characters 🔐", "somethingWrong": "Something went wrong 😅", "connectionError": "Connection error. Try again! 🔄", "enterCode": "Enter the 6-digit code 🔢", "wrongCode": "Wrong code ❌", "appleFailed": "Apple Sign In failed. Try again.", "appleIOSOnly": "Apple Sign In is only available on iOS." };
-const chat$5 = { "placeholder": "Type your message here...", "send": "Send", "typing": "Typing...", "history": "Chat history", "newChat": "New chat", "welcome": "Hey! I'm your AI Coach for dating and conversations. How can I help you today?", "upgradeForScreenshot": "Upgrade for screenshot analysis", "imageAnalysisNotAvailable": "📸 Image analysis is not available on your current plan. Upgrade to unlock this feature!", "screenshotLimitReached": "📸 You've used your screenshot analyses! Upgrade for more analyses. ☕💕", "dailyLimitReached": "☕ Hey! You've finished your daily dose! For the price of a coffee per month, you can chat with me 24/7. 💕", "thisMonth": "this month", "remaining": "remaining" };
-const tips$5 = { "title": "Tips & Advice", "subtitle": "Improve your game", "categories": "Categories", "firstMessage": "First message", "keepConversation": "Keep the conversation", "compliments": "Compliments", "redFlags": "Red flags", "confidence": "Confidence", "analyzeChat": "Analyze chat", "askQuestion": "Ask a question", "questionPlaceholder": "Type your question here...", "getAnswer": "Get answer", "preparing": "Preparing...", "followUp": "Follow-up question?", "askMore": "Ask more...", "showMore": "Show more", "generateMore": "Generate more", "generateNewTip": "Click to get new messages", "save": "Save", "back": "Back", "resultsCount": "of", "results": "results" };
-const events$5 = { "title": "Local Events", "subtitle": "Find events in your city", "selectCity": "Select City", "findEvents": "Find Events", "allEvents": "All", "concerts": "Concerts", "clubs": "Clubs", "festivals": "Festivals", "sports": "Sports", "loading": "Searching...", "noEvents": "No events found", "upcoming": "Upcoming Holidays", "loadMore": "Load more" };
-const dates$5 = { "title": "First Dates", "subtitle": "Perfect ideas for your date", "selectCity": "Select city", "restaurants": "Restaurants", "cafes": "Cafes", "outdoor": "Outdoor", "activities": "Activities", "romantic": "Romantic", "getSuggestions": "Get Suggestions", "loading": "Searching..." };
-const gifts$5 = { "title": "Gift Suggestions", "subtitle": "Find the perfect gift", "forWho": "Who is the gift for?", "interests": "Interests", "budget": "Budget", "getSuggestions": "Get Suggestions", "buyNow": "Buy Now" };
+const home$5 = { "getStarted": "Get Started", "stats": { "improve": "Improve your game", "moreDates": "More dates", "fastResults": "Fast results" }, "features": { "aiCoach": { "title": "AI Coach", "desc": "Chat with AI to practice conversations, learn pickup techniques, and improve your skills" }, "dates": { "title": "First Dates", "desc": "Find perfect ideas for your first date with local business suggestions in your city" }, "tips": { "title": "Tips & Advice", "desc": "Learn how to talk to guys/girls on WhatsApp, Instagram, Messenger, Tinder and improve your game" }, "events": { "title": "Local Events", "desc": "Find event venues, concerts, clubs and entertainment in your city" }, "gifts": { "title": "Gift Suggestions", "desc": "Find the perfect gift based on your partner's interests with purchase links" }, "rehearsal": { "title": "Date Rehearsal", "desc": "Practice conversations with AI roleplay" }, "mood": { "title": "Mood Check", "desc": "Get tailored advice based on how you feel" }, "profileOptimizer": { "title": "Profile Optimizer", "desc": "AI-powered dating profile review" }, "datePlanner": { "title": "Date Planner", "desc": "Plan dates & track what works" } }, "whyBiseda": "Why Biseda.ai?", "benefit1": "Learn how to talk to guys/girls on WhatsApp, Instagram, Messenger, Tinder and other apps", "benefit2": "Get dating advice and learn how to start interesting conversations", "benefit3": "Improve your game and become more confident in chats", "benefit4": "Smart AI that understands emotions for better responses", "freeTrial": "Free Trial", "upgrade": "Upgrade", "messagesRemaining": "Messages Today", "limitWarning": "Almost at your limit! Upgrade for unlimited messages." };
+const auth$5 = { "register": "Register", "login": "Login", "logout": "Logout", "guest": "Continue as Guest", "createAccount": "Create Account", "forgotPassword": "Forgot password?", "email": "Email", "password": "Password", "confirmPassword": "Confirm Password", "name": "Name", "firstName": "First Name", "lastName": "Last Name", "male": "Male", "female": "Female", "username": "Username", "continueWithApple": "Continue with Apple", "or": "OR", "alreadyHaveAccount": "Have an account?", "dontHaveAccount": "Don't have an account?", "termsAgree": "By continuing, you agree to our", "terms": "Terms", "and": "and", "privacy": "Privacy", "resetPassword": "Reset Password", "sendCode": "Send Code", "verifyCode": "Verify Code", "changePassword": "Change Password", "sixDigitCode": "6-digit code", "newPassword": "New Password", "codeSent": "Code sent to your email! 📧", "passwordChanged": "Password changed! ✅", "tagline1": "✨ AI that truly understands you", "tagline2": "✨ AI that makes you irresistible", "tagline3": "✨ Start conversations that impress", "tagline4": "✨ Dates that start with perfect messages" };
+const authErrors$5 = { "enterFirstName": "Enter your first name ✏️", "enterLastName": "Enter your last name ✏️", "selectGender": "Please select your gender 👤", "enterEmail": "Enter your email 📧", "passwordLength": "Password must be 6+ characters 🔐", "somethingWrong": "Something went wrong 😅", "connectionError": "Connection error. Try again! 🔄", "enterCode": "Enter the 6-digit code 🔢", "wrongCode": "Wrong code ❌", "appleFailed": "Apple Sign In failed. Try again.", "appleIOSOnly": "Apple Sign In is only available on iOS.", "invalidCredentials": "Invalid email/username or password ❌", "emailExists": "This email is already registered. Login or use another email.", "userNotFound": "User not found", "codeExpired": "Code expired. Request a new code.", "invalidCode": "Invalid code ❌", "serverError": "Server error. Please try again." };
+const chat$5 = { "placeholder": "Type your message here...", "send": "Send", "typing": "Typing...", "history": "Chat history", "newChat": "New chat", "welcome": "Hey! I'm your AI Coach for dating and conversations. How can I help you today?", "upgradeForScreenshot": "Upgrade for screenshot analysis", "imageAnalysisNotAvailable": "📸 Image analysis is not available on your current plan. Upgrade to unlock this feature!", "screenshotLimitReached": "📸 You've used your screenshot analyses! Upgrade for more analyses. ☕💕", "dailyLimitReached": "☕ Hey! You've finished your daily dose! For the price of a coffee per month, you can chat with me 24/7. 💕", "thisMonth": "this month", "remaining": "remaining", "intimacyUpgrade": "🔒 **Intimacy & Bedroom Questions**\n\nI noticed you're asking about intimate/bedroom topics. For professional guidance on intimacy, sexual wellness, and bedroom advice, please upgrade to our **Intimacy Coach** feature.\n\n💕 **Intimacy Coach includes:**\n• Step-by-step guidance for pleasuring your partner\n• First-time intimacy advice\n• Communication tips for the bedroom\n• Professional sex education\n\n*Available with Pro or Elite membership*\n\n[Upgrade now to unlock Intimacy Coach]" };
+const tips$5 = { "title": "Tips & Advice", "subtitle": "Improve your game ✨", "categories": "CATEGORIES", "firstMessage": "First message", "keepConversation": "Keep conversation", "compliments": "Compliments", "redFlags": "Red flags", "confidence": "Confidence", "analyzeChat": "Analyze chat", "askQuestion": "Ask a question", "questionPlaceholder": "Type your question here...", "getAnswer": "Get answer", "preparing": "Preparing...", "followUp": "Follow-up question?", "followUpQuestion": "Follow-up question?", "askMore": "Ask more...", "showMore": "Show More", "generateMore": "Generate More", "generating": "Generating...", "generateNewTip": "Click to get new messages", "clickForNewMessages": "Click to get new messages", "save": "Save", "back": "Back", "of": "of", "resultsCount": "of", "results": "results", "analyzeYourChat": "Analyze your chat", "screenshotUploaded": "Screenshot uploaded", "uploadScreenshot": "Upload chat screenshot", "specificQuestion": "Specific question? (optional)", "analyzing": "Analyzing...", "analyze": "Analyze", "chatAnalysis": "Chat Analysis", "preparingAnswer": "Preparing your answer..." };
+const events$5 = { "title": "Local Events 🎉", "subtitle": "Find event venues and entertainment in your city", "selectCity": "Select City", "findEvents": "Find Events", "allEvents": "All", "music": "Music", "nightlife": "Nightlife", "culture": "Culture", "sports": "Sports", "food": "Food", "comedy": "Comedy", "cinema": "Cinema", "adventure": "Adventure", "art": "Art", "loading": "Searching...", "noEvents": "No events found", "upcomingHoliday": "UPCOMING HOLIDAY", "days": "DAYS", "planSpecialDate": "Plan a special date! Click for more festive dates.", "viewMoreFestiveDates": "View more festive dates", "upcomingFestiveDates": "Upcoming festive dates", "viewAllFestiveDates": "View all festive dates", "eventType": "Event Type", "loadMore": "Load more", "otherCity": "Other city", "more": "more", "selectedCity": "Selected city", "searchCity": "Search or type a city...", "searchInCity": "Search in this city", "cityNotInList": 'City "{{city}}" not found in list, but you can search directly.', "searchInCityName": 'Search in "{{city}}"', "close": "Close", "searching": "Searching...", "searchEventsIn": "Search Events in {{city}}", "searchingVenuesIn": "Searching event venues in {{city}}...", "venuesIn": "Venues in {{city}}", "open": "Open", "closed": "Closed", "tickets": "Tickets", "removeFromFavorites": "Remove from favorites", "addToFavorites": "Add to favorites", "checkOutVenue": "Check out {{venue}} in {{city}}! 🎉", "loadingMore": "Loading...", "showMore": "Show more ({{count}} more)", "showingCount": "Showing {{showing}} of {{total}} venues", "searchTicketsOnline": "Search Tickets Online", "findTicketsIn": "Find tickets for events in {{city}}", "searchTicketsFor": "Search Tickets for {{city}}", "noVenuesFound": "No event venues found", "noVenuesFoundIn": "No event venues found in {{city}}", "tryAnotherCity": "Try another city or a different event type", "selectACity": "Select a city", "selectCityToSeeEvents": "Select your city to see events and entertainment venues", "eventTips": "Event Tips", "tip1": "Check opening hours before you go", "tip2": "Book in advance for major events", "tip3": "Music events are perfect for dates", "tip4": "Explore new cultural venues in your city" };
+const dates$5 = { "title": "First Dates 💕", "subtitle": "Find perfect ideas for your first date", "selectCity": "Select City", "selectCategory": "Select Category", "restaurants": "Restaurants", "restaurantsDesc": "Romantic restaurants with great atmosphere", "cafes": "Cafes", "cafesDesc": "Beautiful cafes for comfortable conversations", "bars": "Bars & Rooftop", "barsDesc": "Bars and rooftop bars for a lovely evening", "cinema": "Cinema", "cinemaDesc": "Movies and cinema activities", "music": "Music & Live", "musicDesc": "Concerts and music events", "activities": "Activities", "activitiesDesc": "Bowling, escape rooms, and other activities", "culture": "Culture & Art", "cultureDesc": "Museums, galleries, and cultural events", "nature": "Nature & Parks", "natureDesc": "Parks, walks, and outdoor activities", "getSuggestions": "Get Suggestions", "loading": "Searching...", "otherCity": "Other city", "more": "more", "selectedCity": "Selected city", "searchCity": "Search or type a city...", "searchInCity": "Search in this city", "cityNotInList": 'City "{{city}}" not found in list, but you can search directly.', "searchInCityName": 'Search in "{{city}}"', "close": "Close", "selectCityAndCategory": "Please select a city and category!", "generating": "Generating...", "generateSuggestions": "Generate Suggestions", "selectCityAndCategoryAbove": "Select the city and category above", "nowSelectCategory": "Now select a category!", "nowSelectCity": "Now select a city!", "suggestions": "Suggestions", "sponsored": "Sponsored", "loadingMore": "Loading more...", "loadMoreResults": "Load More Results", "yourBusinessHere": "Your Business Here?", "businessPartnershipDesc": "Want your business to appear as sponsored and get more customers? Contact us for partnership!", "becomePartner": "Become Partner", "selectCityForSuggestions": "Select a city to see specific suggestions", "selectCategoryToStart": "Select a category to start" };
+const gifts$5 = { "title": "Gift Suggestions 🎁", "subtitle": "Find the perfect gift based on your partner's interests", "partnerInterests": "What does your partner like? (interests, hobbies, etc.)", "partnerInterestsPlaceholder": "e.g: They like music, football, books, technology, fashion...", "enterInterests": "Please enter your partner's interests", "specialOccasion": "Special Occasion", "budget": "Budget", "location": "Location", "change": "Change", "cityOptional": "City (optional - for local shops)", "willShowLocalShops": "Local shops in {{city}} will also be shown", "generating": "Generating suggestions...", "generateSuggestions": "Generate Suggestions", "searchingLocalShops": "Searching local shops in {{city}}...", "localShopsIn": "Local Shops in {{city}}", "viewOnGoogleMaps": "View on Google Maps", "loadingMoreShops": "Loading more shops...", "loadMoreShops": "Load More Shops", "generatingIdeas": "Generating gift ideas...", "giftIdeasOnline": "Online Gift Ideas", "viewAndBuy": "View and Buy", "alsoShowLocalShops": "Also show local shops near me", "selectCity": "Select your city", "shopOn": "Shop on", "giftFor": "Gift for", "forHer": "For Her", "forHim": "For Him", "forThem": "For Them", "emptyState": "Enter your partner's interests and select an occasion", "emptyStateSubtitle": "AI will generate perfect gift suggestions", "affiliateNote": '💡 Click "View and Buy" to open the partner link. Biseda.ai receives a small commission for purchases made through our links.', "occasions": { "birthday": "Birthday", "anniversary": "Anniversary", "valentine": "Valentine's Day", "christmas": "Christmas", "newyear": "New Year", "justbecause": "Just Because" } };
 const settings$5 = { "title": "Settings", "language": "Language", "region": "Region", "notifications": "Notifications", "darkMode": "Dark mode", "about": "About", "help": "Help", "privacy": "Privacy", "terms": "Terms" };
-const common$5 = { "loading": "Loading...", "error": "Error", "success": "Success", "cancel": "Cancel", "confirm": "Confirm", "save": "Save", "delete": "Delete", "edit": "Edit", "close": "Close", "search": "Search", "filter": "Filter", "sort": "Sort", "refresh": "Refresh", "tryAgain": "Try again", "seeAll": "See all", "more": "More", "less": "Less", "yes": "Yes", "no": "No", "active": "Active", "cities": "cities" };
-const upgrade$5 = { "title": "Upgrade Plan", "limitReached": "Limit reached!", "unlimitedMessages": "Unlimited messages", "allFeatures": "All features", "priority": "Priority support", "monthly": "Monthly", "yearly": "Yearly", "choosePlan": "Choose Plan" };
-const usage$5 = { "freeTrial": "Free Trial", "freePlan": "Free Plan", "starterPlan": "Starter Plan (€6.99)", "proPlan": "Pro Plan (€12.99)", "elitePlan": "Elite Plan (€19.99)", "basePlan": "Basic Plan", "buyCredits": "Buy Credits", "upgradeMore": "Upgrade More", "credits": "Credits", "limitReached": "Daily limit reached!", "upgradeToChat": "Upgrade to continue chatting.", "screenshotAnalysis": "free analyses left" };
-const country$5 = { "selectCountry": "Select Country", "hint": "Select country to see local events and dates" };
-const language$5 = { "selectLanguage": "Select Language", "hint": "Select app language" };
+const common$5 = { "loading": "Loading...", "error": "Error", "success": "Success", "cancel": "Cancel", "confirm": "Confirm", "save": "Save", "saved": "Saved!", "saving": "Saving...", "delete": "Delete", "edit": "Edit", "goBack": "Go Back", "home": "Home", "close": "Close", "search": "Search", "filter": "Filter", "sort": "Sort", "refresh": "Refresh", "refreshing": "Refreshing...", "tryAgain": "Try again", "seeAll": "See all", "more": "More", "less": "Less", "yes": "Yes", "no": "No", "active": "Active", "cities": "cities", "loginToSave": "Please log in to save", "saveError": "Error saving", "regionSettings": "Region Settings" };
 const ageVerification$5 = { "title": "Age Verification", "subtitle": "This app is for adults only (18+)", "selectAge": "How old are you?", "chooseAge": "Select age...", "yearsOld": "years old", "confirm": "Confirm & Continue", "disclaimer": "By continuing, you confirm that you are 18 or older." };
-const plans$5 = { "mostPopular": "Most Popular", "select": "Select", "subscribeWeb": "Subscribe on Web", "webSubscription": "To subscribe, visit bisedaai.com from your browser.", "securePayment": "Secure payment with Stripe. Cancel anytime.", "starter": { "messages": "75 messages per day", "categories": "All categories", "adultContent": "Adult content", "aiCoach": "AI Coach chat", "tips": "Dating tips & advice" }, "pro": { "messages": "200 messages per day", "starterFeatures": "Everything from Starter", "imageAnalysis": "30 image analyses/day", "advancedAI": "Advanced AI responses", "prioritySupport": "Priority support" }, "elite": { "messages": "500 messages per day", "proFeatures": "Everything from Pro", "imageAnalysis": "100 image analyses/day", "vipSupport": "VIP support 24/7", "earlyAccess": "Early access to new features" } };
+const clipboard = { "analyzing": "Analyzing...", "limitReached": "Limit reached - Upgrade", "analyzeGenerate": "Analyze & Generate", "limitPlaceholder": "🚫 Limit reached - Upgrade to continue", "typePlaceholder": "💬 Type or paste message here...", "checkingPlaceholder": "⏳ Checking...", "generatingResponse": "Generating response..." };
+const mood = { "title": "Mood Check", "subtitle": "How are you feeling today?", "confident": "Confident", "nervous": "Nervous", "excited": "Excited", "anxious": "Anxious", "happy": "Happy", "unsure": "Unsure", "highEnergy": "High Energy", "mediumEnergy": "Medium", "lowEnergy": "Low Energy", "howFeeling": "How are you feeling?", "energyLevel": "What's your energy level?", "whatSituation": "What's the situation?", "contextFirstDate": "Going on a first date", "contextTexting": "Texting someone new", "contextApproaching": "Want to approach someone", "contextMeetParents": "First time meeting the parents", "contextAskingOut": "Asking someone out", "contextSecondDate": "Going on a second date", "contextMakingMove": "Making the first move", "contextRejected": "Feeling rejected", "contextBreakup": "Going through a breakup", "contextLongDistance": "Long distance relationship", "contextRelationship": "In a relationship", "contextGeneral": "Just need a boost", "analyzing": "Analyzing...", "getAdvice": "Get Personalized Advice", "yourState": "Your current state: {{mood}}, {{energy}} energy, {{context}}", "yourAdvice": "Your Personalized Advice", "checkAgain": "Check Again" };
+const rehearsal = { "title": "Date Rehearsal", "subtitle": "Practice conversations with AI roleplay", "personName": "Person's name", "parentName": "Parent's name", "partnerName": "Partner's name", "exName": "Their name", "strangerName": "Their name", "dateName": "Your date's name", "enterParentName": "e.g. John, Mary...", "enterPartnerName": "Enter their name...", "enterTheirName": "Enter the name for the roleplay", "selectScenario": "What situation do you want to practice?", "startRoleplay": "Start Roleplay", "partnerNameLabel": "Your partner's name (their child)", "partnerNameHint": "The person you're dating - their son/daughter", "enterPartnerNamePlaceholder": "e.g. Sarah, Mike...", "suggestedReplies": "Suggested replies:", "enterName": "Enter a name...", "personality": "Their personality", "selectPersonality": "Choose a personality type", "selectGoal": "What do you want to achieve?", "yourGoal": "Your goal", "chooseScenario": "Choose a scenario", "enterNameFirst": "⚠️ Enter a name first to start", "firstDate": "First Date", "firstDateDesc": "Practice conversation at a coffee shop", "approaching": "Approaching Someone", "approachingDesc": "Practice starting a conversation", "meetParents": "Meeting the Parents", "meetParentsDesc": "Practice making a good impression", "difficultConvo": "Difficult Conversation", "difficultConvoDesc": "Practice handling tough topics", "reconnecting": "Reconnecting", "reconnectingDesc": "Practice reaching out to an ex or old flame", "friendly": "Friendly & Open", "shy": "Shy & Reserved", "confident": "Confident & Flirty", "challenging": "Playing Hard to Get", "sarcastic": "Sarcastic & Witty", "serious": "Serious & Traditional", "protective": "Protective & Skeptical", "warm": "Warm & Welcoming", "intentImpress": "Make a great impression", "intentConnect": "Build a genuine connection", "intentFun": "Have fun & be playful", "intentSerious": "Show serious intentions", "intentApproval": "Win their approval", "intentClosure": "Get closure or clarity", "intentFriends": "Just be friends", "intentFlirty": "Be flirty & charming", "intentConfident": "Build my confidence", "intentGetNumber": "Get their number", "intentSecondDate": "Secure a second date", "intentReconcile": "Reconcile the relationship", "genderFemale": "Woman", "genderMale": "Man", "genderNonbinary": "Non-binary", "theirGender": "Their gender", "parentGender": "Parent's gender", "partnerGender": "Partner's gender", "exGender": "Their gender", "strangerGender": "Their gender", "dateGender": "Date's gender", "selectGender": "Who will you be talking to?", "quickSelect": "Quick select:", "dontKnowName": "I don't know their name", "strangerDefault": "Stranger", "mysteryPerson": "Mystery Person", "cuteStranger": "Cutie at the bar", "enterCustomName": "Enter a custom name:", "suggestedNames": "Suggested names:", "getFeedback": "Get Feedback", "yourFeedback": "Your Feedback", "tryAnother": "Try Another Scenario", "yourResponse": "Your response...", "tipMinMessages": "Send at least 2 messages to unlock feedback", "tipReady": 'Ready for feedback! Click "Get Feedback" when done', "errorResponse": "Sorry, I couldn't respond. Please try again.", "errorStarting": "Hi! Let's get started. What would you like to say?", "feedbackError": "Could not generate feedback. Please try again.", "newPerson": "Start with new person", "roleParent": "Parent", "roleStranger": "Stranger", "rolePartner": "Partner", "roleEx": "Ex", "roleDate": "Date" };
+const upgrade$5 = { "title": "Upgrade Plan", "limitReached": "Limit reached!", "unlimitedMessages": "Unlimited messages", "allFeatures": "All features", "priority": "Priority support", "monthly": "Monthly", "yearly": "Yearly", "choosePlan": "Choose Plan", "proFeature": "Pro Feature", "upgradeToPro": "Upgrade to Pro", "requiresProElite": "Requires Pro or Elite membership", "profileOptimizerLocked": "Profile Optimizer is available for Pro and Elite members. Upgrade to unlock AI-powered profile analysis!", "moodCheckLocked": "Mood Check is available for Pro and Elite members. Upgrade to get personalized advice based on your emotional state!", "dateRehearsalLocked": "Date Rehearsal is available for Pro and Elite members. Upgrade to practice conversations with AI roleplay!" };
+const usage$5 = { "freeTrial": "Free Trial", "freePlan": "Free Plan", "starterPlan": "Starter Plan (€6.99)", "proPlan": "Pro Plan (€12.99)", "elitePlan": "Elite Plan (€19.99)", "basePlan": "Basic Plan", "buyCredits": "Buy Credits", "upgradeMore": "Upgrade More", "credits": "Credits", "limitReached": "Daily limit reached!", "upgradeToChat": "Upgrade to continue chatting.", "screenshotAnalysis": "free analyses left" };
+const country$5 = { "selectCountry": "Select Country", "hint": "Region affects local recommendations", "region": "Region", "cities": "cities" };
+const language$5 = { "selectLanguage": "Select Language", "hint": "Language affects app text and AI responses", "language": "Language" };
+const plans$5 = { "mostPopular": "Most Popular", "select": "Select", "subscribeWeb": "Subscribe on Web", "webSubscription": "To subscribe, visit bisedaai.com from your browser.", "securePayment": "Secure payment with Stripe. Cancel anytime.", "starter": { "messages": "50 messages per day", "screenshots": "5 screenshot analyses/month", "categories": "All categories", "adultContent": "Adult content access", "aiCoach": "AI Coach chat", "tips": "Dating tips & advice" }, "pro": { "messages": "150 messages per day", "screenshots": "15 screenshot analyses/month", "imageAnalysis": "20 image analyses/day", "starterFeatures": "Everything from Starter", "intimacyCoach": "Intimacy Coach access", "advancedAI": "Advanced AI responses" }, "elite": { "messages": "350 messages per day", "screenshots": "50 screenshot analyses/month", "imageAnalysis": "50 image analyses/day", "proFeatures": "Everything from Pro", "intimacyCoach": "Full Intimacy Coach", "prioritySupport": "Priority support 24/7", "earlyAccess": "Early access to new features" } };
+const profile = { "overview": "Overview", "saved": "Saved", "plan": "Plan", "currentMembership": "Current membership", "upgrade": "Upgrade", "messagesToday": "Messages Today", "credits": "Credits", "location": "Location", "selectCountry": "Select country", "selectCity": "Select city", "saveLocation": "Save", "locationSaved": "Location saved!", "logout": "Log Out", "logoutConfirm": "Are you sure you want to log out?", "cancel": "Cancel", "noSavedItems": "No saved items", "noSavedItemsDesc": "Your saved items will appear here", "loading": "Loading profile...", "savedOn": "Saved", "savedVenues": "Saved Venues", "savedDateIdeas": "Saved Date Ideas", "savedGifts": "Saved Gifts", "savedTips": "Saved Tips", "cancelMembership": "Cancel Membership", "cancelNote": "Need to cancel your subscription?", "cancel30Days": "30-Day Notice Required", "cancel30DaysDesc": "Cancellation requests require 30 days advance notice. Your membership will remain active until the notice period ends.", "cancel30DaysDetail": "As per our terms, cancellations require 30 days advance notice. Your membership and all features will remain active during this period.", "requestCancellation": "Request Cancellation", "cancelSubtitle": "We're sorry to see you go", "cancelReason": "Why are you cancelling? (Optional)", "cancelReasonPlaceholder": "Tell us how we could improve...", "whatYouLose": "What you'll lose after cancellation:", "loseMessages": "Extended daily message limits", "loseScreenshots": "Screenshot analysis feature", "loseIntimacy": "Access to Intimacy Coach", "confirmCancellation": "Confirm Cancellation Request", "keepMembership": "Keep My Membership", "cancelRequestSent": "Cancellation Request Sent", "cancelConfirmation": "We have received your cancellation request", "requestReceived": "Request Received", "cancelProcessing": "Your cancellation will be processed within 30 days. You'll receive a confirmation email shortly.", "activeUntil": "Your membership remains active for 30 more days" };
+const credits = { "title": "Buy Credits", "subtitle": "Extend your daily limit", "currentBalance": "Current Balance", "creditsCount": "credits", "perCredit": "per credit", "buyNow": "Buy Now", "processing": "Processing...", "purchaseFailed": "Purchase failed. Please try again.", "errorOccurred": "An error occurred. Please try again.", "description": "Credits are used when you exceed your daily message limit. 1 credit = 1 message." };
+const limitReached = { "titles": ["Oops! You've run out...", "Let me help you...", "Full potential, zero messages!", "Love is waiting!", "Limit reached, but not you!"], "messages": ["Skip ONE coffee this month and get your personal love coach for 30 days. Love > Caffeine 💕", "For the price of an espresso a day, I work 24/7 for you. Your barista won't write flirty messages for you! 😏", "Less than 30 cents a day = unlimited love advice. Coffee machine? €500. Biseda.ai? Priceless. 💎", "A coffee loses its effect after 4 hours. My advice? It changes your life. Skip the latte, get the love! ❤️‍🔥", "You spend €3-4 on coffee that lasts 30 minutes. For €6.99/month I'm available ALL THE TIME. Do the math! 🧮"], "ctas": ["Yes, I want love!", "Convince me!", "Get it now!", "I'm ready!", "OK, you're right!"], "oneCoffee": "1 Coffee", "oneMonthAI": "1 Month AI", "noThanks": "No thanks, I prefer to wait ☹️", "socialProof": "Over 1,000 happy couples thanks to Biseda.ai" };
+const intimacy = { "welcome": "Hey you! 😏 Welcome to your private Intimacy Coach session. I'm here to help you become absolutely amazing in the bedroom - no awkward tiptoeing, just real, explicit guidance on what actually works. Whether it's techniques, first times, or exploring something new... ask me anything. What would you like to explore? 🔥", "welcomeMale": "Hey stud! 😏 Welcome to your private Intimacy Coach session. Whether you want to learn how to make her scream your name, master the art of foreplay, or just become an absolute god in bed - I've got you covered. No judgment here, just real talk about what works. So tell me... what do you want to get better at? 🔥", "welcomeFemale": "Hey gorgeous! 💋 Welcome to your private Intimacy Coach session. Whether you want to learn how to drive him wild, discover what makes YOU feel amazing, or explore something new and exciting - I'm here for all of it. This is your safe space to ask anything. So babe, what's on your mind? ✨", "ageVerification": { "title": "Adult Content", "subtitle": "This section contains mature content for adults only", "warning": "18+ Only", "warningText": "This section contains educational content about intimacy and sexual wellness intended for adults only.", "confirm": "I confirm that I am 18 years of age or older and consent to viewing adult educational content.", "enter": "Enter Intimacy Coach", "cancel": "Go Back" }, "features": { "education": "Intimacy Education", "educationDesc": "Professional guidance like a sex therapist", "private": "Private & Confidential", "privateDesc": "Your conversations are private and secure" }, "topics": { "communication": "Communication in Intimacy", "pleasure": "Understanding Pleasure", "firstTime": "First Time Guidance", "exploration": "Exploration & Dynamics", "techniques": "Technique Guidance" } };
 const en = {
   app: app$5,
+  onboarding,
+  styleAdvisor,
+  festiveDates,
   nav: nav$5,
   home: home$5,
   auth: auth$5,
@@ -12485,12 +12019,19 @@ const en = {
   gifts: gifts$5,
   settings: settings$5,
   common: common$5,
+  ageVerification: ageVerification$5,
+  clipboard,
+  mood,
+  rehearsal,
   upgrade: upgrade$5,
   usage: usage$5,
   country: country$5,
   language: language$5,
-  ageVerification: ageVerification$5,
-  plans: plans$5
+  plans: plans$5,
+  profile,
+  credits,
+  limitReached,
+  intimacy
 };
 const app$4 = { "name": "Biseda.ai", "tagline": "Impara a parlare con ragazzi/ragazze, migliora le tue chat su WhatsApp, Instagram, Facebook Messenger, Tinder e altre app di dating" };
 const nav$4 = { "home": "Home", "aiCoach": "AI Coach", "dates": "Appuntamenti", "events": "Eventi", "tips": "Consigli" };
@@ -12715,14 +12256,351 @@ instance.use(Browser).use(initReactI18next).init({
     // React already escapes
   }
 });
-function LanguageSwitcher() {
+const countries = [
+  {
+    code: "AL",
+    name: "Shqipëri",
+    nameEn: "Albania",
+    flag: "🇦🇱",
+    currency: "ALL",
+    currencySymbol: "L",
+    cities: [
+      { name: "Tiranë", nameEn: "Tirana" },
+      { name: "Durrës", nameEn: "Durres" },
+      { name: "Vlorë", nameEn: "Vlora" },
+      { name: "Shkodër", nameEn: "Shkoder" },
+      { name: "Elbasan", nameEn: "Elbasan" },
+      { name: "Korçë", nameEn: "Korce" },
+      { name: "Fier", nameEn: "Fier" },
+      { name: "Berat", nameEn: "Berat" },
+      { name: "Lushnjë", nameEn: "Lushnje" },
+      { name: "Pogradec", nameEn: "Pogradec" },
+      { name: "Sarandë", nameEn: "Saranda" },
+      { name: "Gjirokastër", nameEn: "Gjirokastra" },
+      { name: "Has", nameEn: "Has" },
+      { name: "Tropojë", nameEn: "Tropoja" },
+      { name: "Tepelenë", nameEn: "Tepelena" },
+      { name: "Kukës", nameEn: "Kukes" },
+      { name: "Lezhë", nameEn: "Lezha" },
+      { name: "Peshkopi", nameEn: "Peshkopi" },
+      { name: "Bulqizë", nameEn: "Bulqiza" },
+      { name: "Librazhd", nameEn: "Librazhd" },
+      { name: "Gramsh", nameEn: "Gramsh" },
+      { name: "Përmet", nameEn: "Permet" },
+      { name: "Ersekë", nameEn: "Erseka" },
+      { name: "Pukë", nameEn: "Puka" },
+      { name: "Mirditë", nameEn: "Mirdita" },
+      { name: "Krujë", nameEn: "Kruja" },
+      { name: "Kavajë", nameEn: "Kavaja" },
+      { name: "Peqin", nameEn: "Peqin" },
+      { name: "Cërrik", nameEn: "Cerrik" },
+      { name: "Kuçovë", nameEn: "Kucova" },
+      { name: "Roskovec", nameEn: "Roskovec" },
+      { name: "Patos", nameEn: "Patos" },
+      { name: "Ballsh", nameEn: "Ballsh" },
+      { name: "Memaliaj", nameEn: "Memaliaj" },
+      { name: "Selenicë", nameEn: "Selenica" },
+      { name: "Himarë", nameEn: "Himara" },
+      { name: "Delvinë", nameEn: "Delvina" },
+      { name: "Konispol", nameEn: "Konispol" },
+      { name: "Finiq", nameEn: "Finiq" },
+      { name: "Dropull", nameEn: "Dropull" },
+      { name: "Libohovë", nameEn: "Libohova" },
+      { name: "Këlcyrë", nameEn: "Kelcyra" },
+      { name: "Skrapar", nameEn: "Skrapar" },
+      { name: "Poliçan", nameEn: "Polican" },
+      { name: "Devoll", nameEn: "Devoll" },
+      { name: "Pustec", nameEn: "Pustec" },
+      { name: "Maliq", nameEn: "Maliq" },
+      { name: "Kolonjë", nameEn: "Kolonja" },
+      { name: "Vau i Dejës", nameEn: "Vau i Dejes" },
+      { name: "Fushë-Arrëz", nameEn: "Fushe-Arrez" },
+      { name: "Malësi e Madhe", nameEn: "Malesia e Madhe" },
+      { name: "Klos", nameEn: "Klos" },
+      { name: "Mat", nameEn: "Mat" },
+      { name: "Dibër", nameEn: "Diber" },
+      { name: "Laç", nameEn: "Lac" },
+      { name: "Mamurras", nameEn: "Mamurras" },
+      { name: "Kurbin", nameEn: "Kurbin" },
+      { name: "Shijak", nameEn: "Shijak" },
+      { name: "Vorë", nameEn: "Vora" },
+      { name: "Kamëz", nameEn: "Kamza" }
+    ]
+  },
+  {
+    code: "XK",
+    name: "Kosovë",
+    nameEn: "Kosovo",
+    flag: "🇽🇰",
+    currency: "EUR",
+    currencySymbol: "€",
+    cities: [
+      { name: "Prishtinë", nameEn: "Pristina" },
+      { name: "Prizren", nameEn: "Prizren" },
+      { name: "Ferizaj", nameEn: "Ferizaj" },
+      { name: "Pejë", nameEn: "Peja" },
+      { name: "Gjakovë", nameEn: "Gjakova" },
+      { name: "Gjilan", nameEn: "Gjilan" },
+      { name: "Mitrovicë", nameEn: "Mitrovica" },
+      { name: "Podujevë", nameEn: "Podujeva" }
+    ]
+  },
+  {
+    code: "GB",
+    name: "Britani e Madhe",
+    nameEn: "United Kingdom",
+    flag: "🇬🇧",
+    currency: "GBP",
+    currencySymbol: "£",
+    cities: [
+      { name: "Londër", nameEn: "London" },
+      { name: "Mançester", nameEn: "Manchester" },
+      { name: "Birmingham", nameEn: "Birmingham" },
+      { name: "Leeds", nameEn: "Leeds" },
+      { name: "Liverpool", nameEn: "Liverpool" },
+      { name: "Bristol", nameEn: "Bristol" },
+      { name: "Sheffield", nameEn: "Sheffield" },
+      { name: "Edinburgh", nameEn: "Edinburgh" },
+      { name: "Glasgow", nameEn: "Glasgow" },
+      { name: "Nottingham", nameEn: "Nottingham" }
+    ]
+  },
+  {
+    code: "CH",
+    name: "Zvicër",
+    nameEn: "Switzerland",
+    flag: "🇨🇭",
+    currency: "CHF",
+    currencySymbol: "CHF",
+    cities: [
+      { name: "Cyrih", nameEn: "Zurich" },
+      { name: "Gjenevë", nameEn: "Geneva" },
+      { name: "Bazel", nameEn: "Basel" },
+      { name: "Bernë", nameEn: "Bern" },
+      { name: "Lozanë", nameEn: "Lausanne" },
+      { name: "Winterthur", nameEn: "Winterthur" },
+      { name: "St. Gallen", nameEn: "St. Gallen" },
+      { name: "Lugano", nameEn: "Lugano" }
+    ]
+  },
+  {
+    code: "DE",
+    name: "Gjermani",
+    nameEn: "Germany",
+    flag: "🇩🇪",
+    currency: "EUR",
+    currencySymbol: "€",
+    cities: [
+      { name: "Mynih", nameEn: "Munich" },
+      { name: "Berlin", nameEn: "Berlin" },
+      { name: "Frankfurt", nameEn: "Frankfurt" },
+      { name: "Hamburg", nameEn: "Hamburg" },
+      { name: "Këln", nameEn: "Cologne" },
+      { name: "Dyseldorf", nameEn: "Dusseldorf" },
+      { name: "Shtutgart", nameEn: "Stuttgart" },
+      { name: "Dortmund", nameEn: "Dortmund" },
+      { name: "Esen", nameEn: "Essen" },
+      { name: "Hanover", nameEn: "Hanover" }
+    ]
+  },
+  {
+    code: "US",
+    name: "SHBA",
+    nameEn: "United States",
+    flag: "🇺🇸",
+    currency: "USD",
+    currencySymbol: "$",
+    cities: [
+      { name: "Nju Jork", nameEn: "New York" },
+      { name: "Çikago", nameEn: "Chicago" },
+      { name: "Los Anxhelos", nameEn: "Los Angeles" },
+      { name: "Detroit", nameEn: "Detroit" },
+      { name: "Boston", nameEn: "Boston" },
+      { name: "Filadelfia", nameEn: "Philadelphia" },
+      { name: "Uashington", nameEn: "Washington DC" },
+      { name: "Houston", nameEn: "Houston" },
+      { name: "San Francisko", nameEn: "San Francisco" },
+      { name: "Miami", nameEn: "Miami" }
+    ]
+  },
+  {
+    code: "IT",
+    name: "Itali",
+    nameEn: "Italy",
+    flag: "🇮🇹",
+    currency: "EUR",
+    currencySymbol: "€",
+    cities: [
+      { name: "Milano", nameEn: "Milan" },
+      { name: "Romë", nameEn: "Rome" },
+      { name: "Torino", nameEn: "Turin" },
+      { name: "Napoli", nameEn: "Naples" },
+      { name: "Firence", nameEn: "Florence" },
+      { name: "Bolonjë", nameEn: "Bologna" },
+      { name: "Venecia", nameEn: "Venice" },
+      { name: "Bari", nameEn: "Bari" },
+      { name: "Verona", nameEn: "Verona" },
+      { name: "Padova", nameEn: "Padua" }
+    ]
+  },
+  {
+    code: "FR",
+    name: "Francë",
+    nameEn: "France",
+    flag: "🇫🇷",
+    currency: "EUR",
+    currencySymbol: "€",
+    cities: [
+      { name: "Paris", nameEn: "Paris" },
+      { name: "Lion", nameEn: "Lyon" },
+      { name: "Marsejë", nameEn: "Marseille" },
+      { name: "Tuluz", nameEn: "Toulouse" },
+      { name: "Nicë", nameEn: "Nice" },
+      { name: "Nant", nameEn: "Nantes" },
+      { name: "Strasburg", nameEn: "Strasbourg" },
+      { name: "Bordo", nameEn: "Bordeaux" },
+      { name: "Lil", nameEn: "Lille" },
+      { name: "Ren", nameEn: "Rennes" }
+    ]
+  },
+  {
+    code: "ES",
+    name: "Spanjë",
+    nameEn: "Spain",
+    flag: "🇪🇸",
+    currency: "EUR",
+    currencySymbol: "€",
+    cities: [
+      { name: "Madrid", nameEn: "Madrid" },
+      { name: "Barcelonë", nameEn: "Barcelona" },
+      { name: "Valensja", nameEn: "Valencia" },
+      { name: "Seviljë", nameEn: "Seville" },
+      { name: "Saragozë", nameEn: "Zaragoza" },
+      { name: "Malagë", nameEn: "Malaga" },
+      { name: "Murcia", nameEn: "Murcia" },
+      { name: "Palma", nameEn: "Palma" },
+      { name: "Bilbao", nameEn: "Bilbao" },
+      { name: "Alikante", nameEn: "Alicante" }
+    ]
+  },
+  {
+    code: "GR",
+    name: "Greqi",
+    nameEn: "Greece",
+    flag: "🇬🇷",
+    currency: "EUR",
+    currencySymbol: "€",
+    cities: [
+      { name: "Athinë", nameEn: "Athens" },
+      { name: "Selanik", nameEn: "Thessaloniki" },
+      { name: "Patras", nameEn: "Patras" },
+      { name: "Heraklion", nameEn: "Heraklion" },
+      { name: "Larisa", nameEn: "Larissa" },
+      { name: "Volos", nameEn: "Volos" },
+      { name: "Janinë", nameEn: "Ioannina" },
+      { name: "Kavala", nameEn: "Kavala" },
+      { name: "Rodos", nameEn: "Rhodes" },
+      { name: "Korfuz", nameEn: "Corfu" }
+    ]
+  },
+  {
+    code: "AT",
+    name: "Austri",
+    nameEn: "Austria",
+    flag: "🇦🇹",
+    currency: "EUR",
+    currencySymbol: "€",
+    cities: [
+      { name: "Vjenë", nameEn: "Vienna" },
+      { name: "Grac", nameEn: "Graz" },
+      { name: "Linc", nameEn: "Linz" },
+      { name: "Salcburg", nameEn: "Salzburg" },
+      { name: "Innsbruk", nameEn: "Innsbruck" }
+    ]
+  },
+  {
+    code: "BE",
+    name: "Belgjikë",
+    nameEn: "Belgium",
+    flag: "🇧🇪",
+    currency: "EUR",
+    currencySymbol: "€",
+    cities: [
+      { name: "Bruksel", nameEn: "Brussels" },
+      { name: "Antverp", nameEn: "Antwerp" },
+      { name: "Gent", nameEn: "Ghent" },
+      { name: "Bryzh", nameEn: "Bruges" },
+      { name: "Liezh", nameEn: "Liege" }
+    ]
+  },
+  {
+    code: "SE",
+    name: "Suedi",
+    nameEn: "Sweden",
+    flag: "🇸🇪",
+    currency: "SEK",
+    currencySymbol: "kr",
+    cities: [
+      { name: "Stokholm", nameEn: "Stockholm" },
+      { name: "Gotenburg", nameEn: "Gothenburg" },
+      { name: "Malmö", nameEn: "Malmo" },
+      { name: "Uppsala", nameEn: "Uppsala" }
+    ]
+  },
+  {
+    code: "NL",
+    name: "Holandë",
+    nameEn: "Netherlands",
+    flag: "🇳🇱",
+    currency: "EUR",
+    currencySymbol: "€",
+    cities: [
+      { name: "Amsterdam", nameEn: "Amsterdam" },
+      { name: "Rotërdam", nameEn: "Rotterdam" },
+      { name: "Hagë", nameEn: "The Hague" },
+      { name: "Utrecht", nameEn: "Utrecht" },
+      { name: "Ajndhoven", nameEn: "Eindhoven" }
+    ]
+  }
+];
+const getCountryByCode = (code) => {
+  return countries.find((c) => c.code === code) || countries[0];
+};
+const getCitiesForCountry = (countryCode) => {
+  const country2 = getCountryByCode(countryCode);
+  return country2 ? country2.cities : [];
+};
+const getCurrencySymbol = (countryCode) => {
+  const country2 = getCountryByCode(countryCode);
+  return country2 ? country2.currencySymbol : "€";
+};
+const getLocalizedCountryName = (countryCode, language2 = "en") => {
+  const country2 = getCountryByCode(countryCode);
+  if (!country2) return countryCode;
+  return language2 === "sq" ? country2.name : country2.nameEn || country2.name;
+};
+const getCityNameEn = (countryCode, cityName) => {
+  const country2 = getCountryByCode(countryCode);
+  if (!country2) return cityName;
+  const city = country2.cities.find((c) => c.name === cityName);
+  return city ? city.nameEn : cityName;
+};
+function RegionSwitcher() {
   const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = reactExports.useState(false);
+  const [activeTab, setActiveTab] = reactExports.useState("language");
+  const [selectedCountry, setSelectedCountry] = reactExports.useState(
+    localStorage.getItem("userCountry") || "AL"
+  );
+  const triggerRef = reactExports.useRef(null);
   const dropdownRef = reactExports.useRef(null);
   const currentLanguage = languages.find((lang) => lang.code === i18n.language) || languages[0];
+  const currentCountry = getCountryByCode(selectedCountry);
   reactExports.useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      const clickedInsideTrigger = triggerRef.current && triggerRef.current.contains(event.target);
+      const clickedInsideDropdown = dropdownRef.current && dropdownRef.current.contains(event.target);
+      if (!clickedInsideTrigger && !clickedInsideDropdown) {
         setIsOpen(false);
       }
     };
@@ -12755,12 +12633,26 @@ function LanguageSwitcher() {
   const handleSelectLanguage = (langCode) => {
     i18n.changeLanguage(langCode);
     localStorage.setItem("appLanguage", langCode);
-    setIsOpen(false);
     window.dispatchEvent(new CustomEvent("languageChanged", {
       detail: { langCode }
     }));
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", ref: dropdownRef, children: [
+  const handleSelectCountry = (countryCode) => {
+    setSelectedCountry(countryCode);
+    localStorage.setItem("userCountry", countryCode);
+    localStorage.removeItem("userCity");
+    window.dispatchEvent(new CustomEvent("countryChanged", {
+      detail: { countryCode }
+    }));
+  };
+  const getTriggerRect = () => {
+    if (triggerRef.current) {
+      return triggerRef.current.getBoundingClientRect();
+    }
+    return null;
+  };
+  const triggerRect = isOpen ? getTriggerRect() : null;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", ref: triggerRef, children: [
     /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "button",
       {
@@ -12769,12 +12661,13 @@ function LanguageSwitcher() {
           e.stopPropagation();
           setIsOpen(!isOpen);
         },
-        className: "group flex items-center gap-1.5 px-3 py-2 bg-slate-800/90 border border-slate-700/60 rounded-xl hover:bg-slate-700/90 hover:border-purple-500/50 transition-all duration-200",
-        "aria-label": "Change language",
+        className: "group flex items-center gap-1.5 px-2.5 py-2 bg-slate-800/90 border border-slate-700/60 rounded-xl hover:bg-slate-700/90 hover:border-purple-500/50 transition-all duration-200",
+        "aria-label": "Change region settings",
         "aria-expanded": isOpen,
         type: "button",
         children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg", children: currentLanguage?.flag }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-medium text-slate-300 uppercase", children: currentLanguage?.code }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(
             ChevronDown,
             {
@@ -12784,134 +12677,421 @@ function LanguageSwitcher() {
         ]
       }
     ),
-    isOpen && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "div",
-        {
-          className: "md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[10000]",
-          onClick: (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            setIsOpen(false);
+    isOpen && reactDomExports.createPortal(
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            className: "fixed inset-0 bg-black/60 backdrop-blur-sm z-[10000]",
+            onClick: (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsOpen(false);
+            }
           }
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "div",
-        {
-          className: "fixed left-4 right-4 bottom-4 md:absolute md:left-auto md:right-0 md:bottom-auto md:top-full md:mt-2 md:w-64 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-[10001]",
-          style: { maxHeight: "calc(100vh - 120px)" },
-          onClick: (e) => e.stopPropagation(),
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-3 border-b border-slate-700/50 bg-gradient-to-r from-slate-800 to-slate-800/50", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Languages, { className: "w-4 h-4 text-purple-400" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-white", children: t("language.selectLanguage") })
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            ref: dropdownRef,
+            className: "fixed left-4 right-4 bottom-4 md:fixed md:left-auto md:right-auto md:bottom-auto bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-[10001]",
+            style: {
+              maxHeight: "calc(100vh - 120px)",
+              ...triggerRect && window.innerWidth >= 768 ? {
+                top: triggerRect.bottom + 8,
+                right: window.innerWidth - triggerRect.right,
+                width: 320,
+                left: "auto",
+                bottom: "auto"
+              } : {}
+            },
+            onClick: (e) => e.stopPropagation(),
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "border-b border-slate-700/50 bg-gradient-to-r from-slate-800 to-slate-800/50", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(Globe, { className: "w-4 h-4 text-purple-400" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-white", children: t("common.regionSettings") || "Region Settings" })
+                  ] }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      onClick: (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setIsOpen(false);
+                      },
+                      className: "p-1.5 hover:bg-slate-700 rounded-lg transition-colors",
+                      type: "button",
+                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5 text-slate-400" })
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex px-2 pb-2 gap-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "button",
+                    {
+                      onClick: () => setActiveTab("language"),
+                      className: `flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === "language" ? "bg-purple-500/20 text-purple-400 border border-purple-500/50" : "bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:bg-slate-700/50"}`,
+                      type: "button",
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(Languages, { className: "w-4 h-4" }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("language.language") || "Language" }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg", children: currentLanguage?.flag })
+                      ]
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "button",
+                    {
+                      onClick: () => setActiveTab("country"),
+                      className: `flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === "country" ? "bg-purple-500/20 text-purple-400 border border-purple-500/50" : "bg-slate-800/50 text-slate-400 border border-slate-700/50 hover:bg-slate-700/50"}`,
+                      type: "button",
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-4 h-4" }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("country.region") || "Region" }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg", children: currentCountry?.flag })
+                      ]
+                    }
+                  )
+                ] })
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  onClick: (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setIsOpen(false);
-                  },
-                  className: "p-1.5 hover:bg-slate-700 rounded-lg transition-colors md:hidden",
-                  type: "button",
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5 text-slate-400" })
-                }
-              )
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-y-auto max-h-[350px]", children: languages.map((language2) => {
-              const isSelected = i18n.language === language2.code;
-              return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "button",
-                {
-                  onClick: (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    handleSelectLanguage(language2.code);
-                  },
-                  className: `w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-150 border-b border-slate-800/50 last:border-b-0 ${isSelected ? "bg-purple-500/20 text-white" : "text-slate-300 hover:bg-slate-800 hover:text-white active:bg-slate-700"}`,
-                  type: "button",
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: language2.flag }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-medium", children: language2.nativeName }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-slate-500", children: language2.name })
-                      ] })
-                    ] }),
-                    isSelected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-400 font-medium", children: t("common.active") }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-purple-400 flex-shrink-0" })
-                    ] })
-                  ]
-                },
-                language2.code
-              );
-            }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-4 py-2 border-t border-slate-700/50 bg-slate-800/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-slate-500 text-center", children: t("language.hint") }) })
-          ]
-        }
-      )
-    ] })
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-y-auto max-h-[350px]", children: activeTab === "language" ? (
+                // Languages List
+                languages.map((language2) => {
+                  const isSelected = i18n.language === language2.code;
+                  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "button",
+                    {
+                      onClick: (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleSelectLanguage(language2.code);
+                      },
+                      className: `w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-150 border-b border-slate-800/50 last:border-b-0 ${isSelected ? "bg-purple-500/20 text-white" : "text-slate-300 hover:bg-slate-800 hover:text-white active:bg-slate-700"}`,
+                      type: "button",
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: language2.flag }),
+                          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-medium", children: language2.nativeName }),
+                            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-slate-500", children: language2.name })
+                          ] })
+                        ] }),
+                        isSelected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-400 font-medium", children: t("common.active") }),
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-purple-400 flex-shrink-0" })
+                        ] })
+                      ]
+                    },
+                    language2.code
+                  );
+                })
+              ) : (
+                // Countries List
+                countries.map((country2) => {
+                  const isSelected = selectedCountry === country2.code;
+                  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "button",
+                    {
+                      onClick: (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleSelectCountry(country2.code);
+                      },
+                      className: `w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-150 border-b border-slate-800/50 last:border-b-0 ${isSelected ? "bg-purple-500/20 text-white" : "text-slate-300 hover:bg-slate-800 hover:text-white active:bg-slate-700"}`,
+                      type: "button",
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: country2.flag }),
+                          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-medium", children: getLocalizedCountryName(country2.code) }),
+                            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-xs text-slate-500", children: [
+                              country2.cities?.length || 0,
+                              " ",
+                              t("country.cities") || "cities"
+                            ] })
+                          ] })
+                        ] }),
+                        isSelected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-400 font-medium", children: t("common.active") }),
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-purple-400 flex-shrink-0" })
+                        ] })
+                      ]
+                    },
+                    country2.code
+                  );
+                })
+              ) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-4 py-2 border-t border-slate-700/50 bg-slate-800/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-slate-500 text-center", children: activeTab === "language" ? t("language.hint") || "Language affects app text and AI responses" : t("country.hint") || "Region affects local recommendations" }) })
+            ]
+          }
+        )
+      ] }),
+      document.body
+    )
   ] });
 }
-const scriptRel = "modulepreload";
-const assetsURL = function(dep) {
-  return "/" + dep;
+const ANALYTICS_KEY = "biseda_analytics";
+const getAnalytics = () => {
+  try {
+    const data = localStorage.getItem(ANALYTICS_KEY);
+    return data ? JSON.parse(data) : initAnalytics();
+  } catch {
+    return initAnalytics();
+  }
 };
-const seen = {};
-const __vitePreload = function preload(baseModule, deps, importerUrl) {
-  let promise = Promise.resolve();
-  if (deps && deps.length > 0) {
-    let allSettled = function(promises$2) {
-      return Promise.all(promises$2.map((p) => Promise.resolve(p).then((value$1) => ({
-        status: "fulfilled",
-        value: value$1
-      }), (reason) => ({
-        status: "rejected",
-        reason
-      }))));
-    };
-    document.getElementsByTagName("link");
-    const cspNonceMeta = document.querySelector("meta[property=csp-nonce]");
-    const cspNonce = cspNonceMeta?.nonce || cspNonceMeta?.getAttribute("nonce");
-    promise = allSettled(deps.map((dep) => {
-      dep = assetsURL(dep);
-      if (dep in seen) return;
-      seen[dep] = true;
-      const isCss = dep.endsWith(".css");
-      const cssSelector = isCss ? '[rel="stylesheet"]' : "";
-      if (document.querySelector(`link[href="${dep}"]${cssSelector}`)) return;
-      const link = document.createElement("link");
-      link.rel = isCss ? "stylesheet" : scriptRel;
-      if (!isCss) link.as = "script";
-      link.crossOrigin = "";
-      link.href = dep;
-      if (cspNonce) link.setAttribute("nonce", cspNonce);
-      document.head.appendChild(link);
-      if (isCss) return new Promise((res, rej) => {
-        link.addEventListener("load", res);
-        link.addEventListener("error", () => rej(/* @__PURE__ */ new Error(`Unable to preload CSS for ${dep}`)));
-      });
-    }));
+const initAnalytics = () => ({
+  firstVisit: Date.now(),
+  lastVisit: Date.now(),
+  totalSessions: 0,
+  features: {
+    bisedaChat: { views: 0, uses: 0 },
+    aiCoach: { views: 0, uses: 0, messages: 0 },
+    firstDates: { views: 0, searches: 0 },
+    events: { views: 0, searches: 0, venueClicks: 0 },
+    tips: { views: 0 },
+    gifts: { views: 0 },
+    festiveDates: { views: 0 },
+    profile: { views: 0 },
+    countrySwitcher: { uses: 0 },
+    share: { uses: 0 }
+  },
+  actions: {
+    screenshots: 0,
+    favorites: 0,
+    shares: 0,
+    themeChanges: 0
+  },
+  engagement: {
+    totalTimeSpent: 0,
+    // in seconds
+    averageSessionTime: 0,
+    longestSession: 0
   }
-  function handlePreloadError(err$2) {
-    const e$1 = new Event("vite:preloadError", { cancelable: true });
-    e$1.payload = err$2;
-    window.dispatchEvent(e$1);
-    if (!e$1.defaultPrevented) throw err$2;
+});
+const saveAnalytics = (data) => {
+  try {
+    localStorage.setItem(ANALYTICS_KEY, JSON.stringify(data));
+  } catch (e) {
+    console.warn("Failed to save analytics:", e);
   }
-  return promise.then((res) => {
-    for (const item of res || []) {
-      if (item.status !== "rejected") continue;
-      handlePreloadError(item.reason);
+};
+const trackPageView = (pageName) => {
+  const analytics = getAnalytics();
+  const featureMap = {
+    "Clipboard": "bisedaChat",
+    "Chat": "aiCoach",
+    "FirstDates": "firstDates",
+    "Events": "events",
+    "Tips": "tips",
+    "Gifts": "gifts",
+    "FestiveDates": "festiveDates",
+    "Profile": "profile",
+    "Home": null
+    // Don't track home specifically
+  };
+  const feature = featureMap[pageName];
+  if (feature && analytics.features[feature]) {
+    analytics.features[feature].views++;
+  }
+  analytics.lastVisit = Date.now();
+  saveAnalytics(analytics);
+  console.log(`📊 Page view: ${pageName}`);
+};
+const trackFeatureUse = (featureName, action = "use") => {
+  const analytics = getAnalytics();
+  if (analytics.features[featureName]) {
+    if (action === "use") {
+      analytics.features[featureName].uses = (analytics.features[featureName].uses || 0) + 1;
+    } else if (action === "search") {
+      analytics.features[featureName].searches = (analytics.features[featureName].searches || 0) + 1;
+    } else if (action === "message") {
+      analytics.features[featureName].messages = (analytics.features[featureName].messages || 0) + 1;
+    } else if (action === "venueClick") {
+      analytics.features[featureName].venueClicks = (analytics.features[featureName].venueClicks || 0) + 1;
     }
-    return baseModule().catch(handlePreloadError);
-  });
+  }
+  saveAnalytics(analytics);
+  console.log(`📊 Feature use: ${featureName} - ${action}`);
 };
+const trackAction = (actionName) => {
+  const analytics = getAnalytics();
+  if (analytics.actions[actionName] !== void 0) {
+    analytics.actions[actionName]++;
+  }
+  saveAnalytics(analytics);
+  console.log(`📊 Action: ${actionName}`);
+};
+const trackSessionStart = () => {
+  const analytics = getAnalytics();
+  analytics.totalSessions++;
+  analytics.lastVisit = Date.now();
+  sessionStorage.setItem("sessionStart", Date.now().toString());
+  saveAnalytics(analytics);
+  console.log(`📊 Session started (Total: ${analytics.totalSessions})`);
+};
+const trackSessionEnd = () => {
+  const analytics = getAnalytics();
+  const sessionStart = sessionStorage.getItem("sessionStart");
+  if (sessionStart) {
+    const sessionDuration = Math.floor((Date.now() - parseInt(sessionStart)) / 1e3);
+    analytics.engagement.totalTimeSpent += sessionDuration;
+    if (analytics.totalSessions > 0) {
+      analytics.engagement.averageSessionTime = Math.floor(
+        analytics.engagement.totalTimeSpent / analytics.totalSessions
+      );
+    }
+    if (sessionDuration > analytics.engagement.longestSession) {
+      analytics.engagement.longestSession = sessionDuration;
+    }
+    saveAnalytics(analytics);
+    console.log(`📊 Session ended (Duration: ${sessionDuration}s)`);
+  }
+};
+function Layout({ children, onLogout }) {
+  const { t } = useTranslation();
+  useNavigate();
+  const location = useLocation();
+  const currentPageName = location.pathname.split("/")[1]?.charAt(0).toUpperCase() + location.pathname.split("/")[1]?.slice(1) || "Home";
+  reactExports.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+    const mainContainer = document.getElementById("main-content");
+    if (mainContainer) {
+      mainContainer.scrollTo({ top: 0, behavior: "instant" });
+    }
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [location.pathname]);
+  reactExports.useEffect(() => {
+    trackPageView(currentPageName);
+  }, [currentPageName]);
+  const navItems = [
+    { name: t("nav.home"), icon: Home$1, page: "Home" },
+    { name: t("nav.aiCoach"), icon: Sparkles, page: "Chat" },
+    { name: t("nav.dates"), icon: Heart, page: "FirstDates" },
+    { name: t("nav.events"), icon: MapPin, page: "Events" },
+    { name: t("nav.tips"), icon: Lightbulb, page: "Tips" }
+  ];
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `
+        html, body {
+          background: var(--bg-primary, #0f172a) !important;
+          -webkit-overflow-scrolling: touch;
+          transition: background-color 0.3s ease;
+        }
+        
+        * {
+          -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Cover the entire bottom area including home indicator */
+        .bottom-safe-area {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: env(safe-area-inset-bottom, 0px);
+          background: var(--bg-primary, #0f172a);
+          z-index: 9998;
+        }
+        
+        /* Modern nav styling */
+        .nav-item {
+          position: relative;
+          transition: all 0.2s ease;
+        }
+        
+        .nav-item.active {
+          color: var(--accent-primary, #a855f7);
+        }
+        
+        .nav-item.active::before {
+          content: '';
+          position: absolute;
+          top: -4px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 24px;
+          height: 3px;
+          background: linear-gradient(90deg, var(--accent-primary, #a855f7), var(--accent-secondary, #ec4899));
+          border-radius: 0 0 4px 4px;
+        }
+        
+        .nav-item:not(.active):hover {
+          color: var(--accent-primary, #c084fc);
+        }
+        
+        .nav-icon {
+          transition: transform 0.2s ease;
+        }
+        
+        .nav-item.active .nav-icon {
+          transform: scale(1.15);
+        }
+      ` }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bottom-safe-area" }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "header",
+      {
+        style: {
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          paddingTop: "env(safe-area-inset-top, 0px)",
+          zIndex: 9999,
+          background: "linear-gradient(to bottom, var(--bg-primary, rgba(15, 23, 42, 0.98)), var(--bg-primary, rgba(15, 23, 42, 0.95)))",
+          backdropFilter: "blur(12px)",
+          borderBottom: "1px solid var(--border-color, rgba(148, 163, 184, 0.1))"
+        },
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-12 sm:h-14 px-3 sm:px-4 flex items-center justify-between max-w-screen-xl mx-auto", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/home", className: "flex items-center gap-2 flex-shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 text-white" }) }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 flex-shrink-0", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(RegionSwitcher, {}),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/profile", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg hover:scale-105 hover:shadow-purple-500/30 transition-all duration-200", children: /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-4 h-4 sm:w-5 sm:h-5 text-white" }) }) })
+          ] })
+        ] })
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      "main",
+      {
+        id: "main-content",
+        className: "w-full max-w-full overflow-x-hidden",
+        style: { paddingTop: "calc(56px + env(safe-area-inset-top, 0px))", paddingBottom: "90px", minHeight: "100vh" },
+        children
+      }
+    ),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { style: {
+      position: "fixed",
+      bottom: 0,
+      left: 0,
+      right: 0,
+      background: "linear-gradient(to top, var(--bg-primary, rgba(15, 23, 42, 0.98)), var(--bg-primary, rgba(15, 23, 42, 0.95)))",
+      backdropFilter: "blur(12px)",
+      borderTop: "1px solid var(--border-color, rgba(148, 163, 184, 0.1))",
+      zIndex: 9999,
+      paddingBottom: "env(safe-area-inset-bottom, 0px)"
+    }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-around items-center h-16 px-2 max-w-screen-xl mx-auto", children: navItems.map((item) => {
+      const Icon = item.icon;
+      const isActive = currentPageName === item.page;
+      return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        Link,
+        {
+          to: createPageUrl(item.page),
+          className: `nav-item flex flex-col items-center justify-center py-2 px-3 rounded-xl ${isActive ? "active text-purple-400" : "text-slate-400"}`,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `nav-icon p-2 rounded-xl ${isActive ? "bg-purple-500/20" : ""}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { className: "w-5 h-5", strokeWidth: isActive ? 2.5 : 2 }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `text-xs font-semibold mt-0.5 ${isActive ? "text-purple-300" : "text-slate-500"}`, children: item.name })
+          ]
+        },
+        item.page
+      );
+    }) }) })
+  ] });
+}
 function Card({ children, className = "", ...props }) {
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `rounded-2xl ${className}`, ...props, children });
 }
@@ -12962,6 +13142,221 @@ function getBackendUrl() {
     return isLocalHost(runtimeWindow.location.hostname) ? DEV_FALLBACK_URL : PROD_FALLBACK_URL;
   }
   return PROD_FALLBACK_URL;
+}
+function CreditsModal({ isOpen, onClose }) {
+  const [packages, setPackages] = reactExports.useState(null);
+  const [balance, setBalance] = reactExports.useState(0);
+  const [loading, setLoading] = reactExports.useState(false);
+  const backendUrl2 = getBackendUrl();
+  const userId = localStorage.getItem("userId") || "anonymous";
+  reactExports.useEffect(() => {
+    if (isOpen) {
+      fetchCredits();
+    }
+  }, [isOpen]);
+  const fetchCredits = async () => {
+    try {
+      const response = await fetch(`${backendUrl2}/api/credits/balance`, {
+        headers: {
+          "x-user-id": userId
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setBalance(data.balance);
+        setPackages(data.packages);
+      }
+    } catch (error) {
+      console.error("Error fetching credits:", error);
+    }
+  };
+  const handlePurchase = async (packageId) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${backendUrl2}/api/credits/purchase`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-user-id": userId
+        },
+        body: JSON.stringify({ packageId })
+      });
+      if (response.ok) {
+        const data = await response.json();
+        window.location.href = data.url;
+      } else {
+        alert("Dështoi fillimi i pagesës. Provo përsëri.");
+      }
+    } catch (error) {
+      console.error("Error purchasing credits:", error);
+      alert("Ndodhi një gabim. Provo përsëri.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  if (!isOpen) return null;
+  const creditPackages = packages || {
+    starter: { name: "Paketa Starter", price: 2.99, credits: 100 },
+    popular: { name: "Paketa Popullore", price: 9.99, credits: 400 },
+    pro: { name: "Paketa Pro", price: 19.99, credits: 900 }
+  };
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-800 border-slate-700 max-w-md w-full", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white mb-1", children: "Bli Kredite" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: "Zgjat limitin tënd ditor" })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: onClose,
+          className: "text-slate-400 hover:text-white transition-colors",
+          children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-6 h-6" })
+        }
+      )
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-6 p-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-5 h-5 text-purple-400" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-slate-300", children: "Bilanci Aktual" })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl font-bold text-white", children: balance })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3 mb-6", children: Object.entries(creditPackages).map(([id, pkg]) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Card,
+      {
+        className: "bg-slate-700/50 border-slate-600 hover:border-purple-500/50 transition-colors",
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-white", children: pkg.name }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-slate-400", children: [
+                pkg.credits,
+                " kredite"
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-right", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-xl font-bold text-white", children: [
+                "€",
+                pkg.price
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-xs text-slate-400", children: [
+                "€",
+                (pkg.price / pkg.credits).toFixed(4),
+                " për kredit"
+              ] })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Button,
+            {
+              onClick: () => handlePurchase(id),
+              disabled: loading,
+              className: "w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white",
+              children: loading ? "Duke procesuar..." : "Bli Tani"
+            }
+          )
+        ] })
+      },
+      id
+    )) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-500", children: "Kredite përdoren kur tejkalon limitin tënd ditor të mesazheve. 1 kredit = 1 mesazh." }) })
+  ] }) }) });
+}
+function UsageDisplay({ onUpgrade, onLimitReached }) {
+  const { t } = useTranslation();
+  const [usage2, setUsage] = reactExports.useState(null);
+  const [loading, setLoading] = reactExports.useState(true);
+  const [showCreditsModal, setShowCreditsModal] = reactExports.useState(false);
+  const backendUrl2 = getBackendUrl();
+  reactExports.useEffect(() => {
+    fetchUsage();
+    const interval = setInterval(fetchUsage, 3e4);
+    return () => clearInterval(interval);
+  }, []);
+  const fetchUsage = async () => {
+    try {
+      const response = await fetch(`${backendUrl2}/api/usage`);
+      if (response.ok) {
+        const data = await response.json();
+        setUsage(data);
+        if (onLimitReached && data.dailyUsage.remainingMessages === 0 && (!data.credits || data.credits === 0)) {
+          onLimitReached(true);
+        } else if (onLimitReached) {
+          onLimitReached(false);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching usage:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  if (loading || !usage2) {
+    return null;
+  }
+  const { dailyUsage, tier, credits: credits2 } = usage2;
+  const percentageUsed = dailyUsage.messages / dailyUsage.messagesLimit * 100;
+  const isNearLimit = percentageUsed >= 80;
+  const isAtLimit = dailyUsage.messages >= dailyUsage.messagesLimit;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 backdrop-blur-sm p-4 mb-4", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-5 h-5 text-amber-400" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-white", children: tier === "free_trial" ? t("usage.freeTrial") : tier === "free" ? t("usage.freePlan") : tier === "starter" ? t("usage.starterPlan") : tier === "pro" ? t("usage.proPlan") : tier === "elite" ? t("usage.elitePlan") : tier === "premium" ? t("usage.elitePlan") : t("usage.basePlan") })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+        credits2 !== void 0 && credits2 > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Button,
+          {
+            onClick: () => setShowCreditsModal(true),
+            size: "sm",
+            className: "bg-purple-600 hover:bg-purple-700 text-white text-xs h-7 px-3",
+            children: t("usage.buyCredits")
+          }
+        ),
+        (tier === "free_trial" || tier === "free" || tier === "starter" || tier === "pro") && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Button,
+          {
+            onClick: onUpgrade,
+            size: "sm",
+            className: "bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white text-xs h-7 px-3",
+            children: tier === "free_trial" || tier === "free" ? t("home.upgrade") : t("usage.upgradeMore")
+          }
+        )
+      ] })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2", children: [
+      credits2 !== void 0 && credits2 > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-2 p-2 bg-purple-500/10 border border-purple-500/30 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-300", children: t("usage.credits") }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-semibold text-purple-300", children: credits2 })
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-xs text-slate-400 mb-1", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("home.messagesRemaining") }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: isNearLimit ? "text-red-400 font-semibold" : "", children: [
+            dailyUsage.messages,
+            " / ",
+            dailyUsage.messagesLimit
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full bg-slate-700 rounded-full h-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            className: `h-2 rounded-full transition-all ${isAtLimit ? "bg-red-500" : isNearLimit ? "bg-amber-500" : "bg-gradient-to-r from-green-500 to-emerald-500"}`,
+            style: { width: `${Math.min(100, percentageUsed)}%` }
+          }
+        ) })
+      ] }),
+      dailyUsage.remainingMessages === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-3 p-2 bg-red-500/10 border border-red-500/30 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-red-400 text-center", children: [
+        t("usage.limitReached"),
+        " ",
+        tier === "free" && t("usage.upgradeToChat")
+      ] }) }),
+      isNearLimit && !isAtLimit && (tier === "free" || tier === "free_trial") && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-2 p-2 bg-amber-500/10 border border-amber-500/30 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-amber-400 text-center", children: t("home.limitWarning") }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(CreditsModal, { isOpen: showCreditsModal, onClose: () => setShowCreditsModal(false) })
+  ] });
 }
 var ExceptionCode;
 (function(ExceptionCode2) {
@@ -13440,1184 +13835,6 @@ class CapacitorHttpPluginWeb extends WebPlugin {
 registerPlugin("CapacitorHttp", {
   web: () => new CapacitorHttpPluginWeb()
 });
-const clearGuestSession = () => {
-  localStorage.removeItem("guestSession");
-  localStorage.removeItem("isGuest");
-  localStorage.removeItem("guestId");
-};
-const clearAllUserData = () => {
-  localStorage.removeItem("userId");
-  localStorage.removeItem("userEmail");
-  localStorage.removeItem("userName");
-  localStorage.removeItem("userCountry");
-  localStorage.removeItem("isAuthenticated");
-  localStorage.removeItem("isGuest");
-  localStorage.removeItem("guestSession");
-  localStorage.removeItem("guestId");
-  localStorage.removeItem("conversationHistory");
-  localStorage.removeItem("onboardingCompleted");
-  console.log("🔓 User logged out - all data cleared");
-};
-function Auth({ onAuthSuccess }) {
-  const { t, i18n } = useTranslation();
-  const [isLogin, setIsLogin] = reactExports.useState(false);
-  const [firstName, setFirstName] = reactExports.useState("");
-  const [lastName, setLastName] = reactExports.useState("");
-  const [email, setEmail] = reactExports.useState("");
-  const [password, setPassword] = reactExports.useState("");
-  const [showPassword, setShowPassword] = reactExports.useState(false);
-  const [loading, setLoading] = reactExports.useState(false);
-  const [error, setError] = reactExports.useState("");
-  const [successMessage, setSuccessMessage] = reactExports.useState("");
-  const [focusedField, setFocusedField] = reactExports.useState(null);
-  const [forgotPasswordMode, setForgotPasswordMode] = reactExports.useState(false);
-  const [resetStep, setResetStep] = reactExports.useState(1);
-  const [resetEmail, setResetEmail] = reactExports.useState("");
-  const [resetCode, setResetCode] = reactExports.useState("");
-  const [newPassword, setNewPassword] = reactExports.useState("");
-  const [showAgeVerification, setShowAgeVerification] = reactExports.useState(false);
-  const [selectedAge, setSelectedAge] = reactExports.useState("");
-  const backendUrl2 = getBackendUrl();
-  const isNativeIOS = Capacitor.isNativePlatform() && Capacitor.getPlatform() === "ios";
-  const handleAppleSignIn = async () => {
-    if (isNativeIOS) {
-      try {
-        const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-C2k9ccZk.js");
-          return { SignInWithApple: SignInWithApple2 };
-        }, true ? [] : void 0);
-        const result = await SignInWithApple.authorize({
-          clientId: "com.bisedaai.app",
-          redirectURI: "https://bisedaai.com/auth/callback",
-          scopes: "email name",
-          state: "auth",
-          nonce: Math.random().toString(36).substring(2, 15)
-        });
-        if (result.response) {
-          const response = await fetch(`${backendUrl2}/api/auth/apple`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              identityToken: result.response.identityToken,
-              user: result.response.user,
-              email: result.response.email,
-              fullName: result.response.givenName ? {
-                givenName: result.response.givenName,
-                familyName: result.response.familyName
-              } : null
-            })
-          });
-          const data = await response.json();
-          if (response.ok && data.user) {
-            localStorage.setItem("userId", data.user.odId || data.user.userId);
-            localStorage.setItem("userEmail", data.user.email);
-            localStorage.setItem("userName", data.user.firstName || data.user.email?.split("@")[0]);
-            localStorage.setItem("isAuthenticated", "true");
-            localStorage.setItem("userCountry", data.user.country || "AL");
-            if (onAuthSuccess) {
-              onAuthSuccess({
-                userId: data.user.odId || data.user.userId,
-                email: data.user.email,
-                userName: data.user.firstName || data.user.email?.split("@")[0],
-                country: data.user.country || "AL"
-              });
-            }
-          } else {
-            setError(t("authErrors.appleFailed"));
-          }
-        }
-      } catch (err) {
-        console.error("Apple Sign In error:", err);
-        if (err.message !== "The user canceled the authorization attempt.") {
-          setError(t("authErrors.appleFailed"));
-        }
-      }
-    } else {
-      setError(t("authErrors.appleIOSOnly"));
-    }
-  };
-  const [taglineIndex, setTaglineIndex] = reactExports.useState(0);
-  const taglines = [
-    t("auth.tagline1"),
-    t("auth.tagline2"),
-    t("auth.tagline3"),
-    t("auth.tagline4")
-  ];
-  reactExports.useEffect(() => {
-    const interval = setInterval(() => {
-      setTaglineIndex((prev) => (prev + 1) % 4);
-    }, 4e3);
-    return () => clearInterval(interval);
-  }, []);
-  const handleGuestButtonClick = () => {
-    setShowAgeVerification(true);
-    setSelectedAge("");
-  };
-  const handleGuestLogin = () => {
-    if (!selectedAge || parseInt(selectedAge) < 18) {
-      return;
-    }
-    const guestId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    clearAllUserData();
-    localStorage.setItem("isGuest", "true");
-    localStorage.setItem("guestId", guestId);
-    localStorage.setItem("isAuthenticated", "true");
-    localStorage.setItem("userCountry", "AL");
-    localStorage.setItem("userAge", selectedAge);
-    console.log("👤 Guest session started:", guestId, "Age:", selectedAge);
-    setShowAgeVerification(false);
-    if (onAuthSuccess) onAuthSuccess({ isGuest: true, guestId });
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    if (!isLogin && !firstName.trim()) {
-      setError(t("authErrors.enterFirstName"));
-      return;
-    }
-    if (!isLogin && !lastName.trim()) {
-      setError(t("authErrors.enterLastName"));
-      return;
-    }
-    if (!email.trim()) {
-      setError(t("authErrors.enterEmail"));
-      return;
-    }
-    if (!password || password.length < 6) {
-      setError(t("authErrors.passwordLength"));
-      return;
-    }
-    setLoading(true);
-    try {
-      const endpoint = isLogin ? "/api/auth/login" : "/api/auth/register";
-      const payload = isLogin ? { email: email.trim(), password } : {
-        firstName: firstName.trim(),
-        lastName: lastName.trim(),
-        email: email.trim(),
-        password,
-        country: "AL"
-      };
-      const response = await fetch(`${backendUrl2}${endpoint}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      const data = await response.json();
-      if (response.ok) {
-        localStorage.removeItem("userId");
-        localStorage.removeItem("userEmail");
-        localStorage.removeItem("userName");
-        localStorage.removeItem("userCountry");
-        localStorage.removeItem("isAuthenticated");
-        localStorage.removeItem("isGuest");
-        localStorage.removeItem("guestSession");
-        localStorage.removeItem("guestId");
-        localStorage.removeItem("conversationHistory");
-        const userId = data.user.odId || data.user.userId;
-        const userName = data.user.firstName ? `${data.user.firstName} ${data.user.lastName || ""}`.trim() : data.user.username || email.split("@")[0];
-        localStorage.setItem("userId", userId);
-        localStorage.setItem("userEmail", data.user.email);
-        localStorage.setItem("userName", userName);
-        localStorage.setItem("isAuthenticated", "true");
-        localStorage.setItem("userCountry", data.user.country || "AL");
-        console.log("✅ Auth successful:", { userId, userName, email: data.user.email });
-        if (onAuthSuccess) {
-          onAuthSuccess({
-            userId,
-            email: data.user.email,
-            userName,
-            country: data.user.country || "AL"
-          });
-        }
-      } else {
-        setError(data.error || t("authErrors.somethingWrong"));
-      }
-    } catch (err) {
-      console.error("Auth error:", err);
-      setError(t("authErrors.connectionError"));
-    } finally {
-      setLoading(false);
-    }
-  };
-  if (forgotPasswordMode) {
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed top-4 right-4 z-50", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LanguageSwitcher, {}) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-900/80 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20 max-w-md w-full", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            onClick: () => {
-              setForgotPasswordMode(false);
-              setResetStep(1);
-              setResetEmail("");
-              setResetCode("");
-              setNewPassword("");
-              setError("");
-            },
-            className: "mb-6 flex items-center gap-2 text-slate-400 hover:text-white transition-colors",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-5 h-5" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("tips.back") })
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-2xl font-bold text-white mb-6 text-center", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(KeyRound, { className: "w-8 h-8 inline-block mr-2" }),
-          t("auth.resetPassword")
-        ] }),
-        resetStep === 1 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "input",
-            {
-              type: "email",
-              value: resetEmail,
-              onChange: (e) => setResetEmail(e.target.value),
-              placeholder: t("auth.email") + " 📧",
-              className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Button,
-            {
-              onClick: async () => {
-                if (!resetEmail.trim()) {
-                  setError(t("authErrors.enterEmail"));
-                  return;
-                }
-                setLoading(true);
-                try {
-                  const response = await fetch(`${backendUrl2}/api/auth/forgot-password`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email: resetEmail.trim() })
-                  });
-                  const data = await response.json();
-                  if (response.ok) {
-                    setResetStep(2);
-                    setSuccessMessage(t("auth.codeSent"));
-                    setError("");
-                  } else {
-                    setError(data.error || t("authErrors.somethingWrong"));
-                  }
-                } catch (err) {
-                  setError(t("authErrors.connectionError"));
-                } finally {
-                  setLoading(false);
-                }
-              },
-              disabled: loading,
-              className: "w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl",
-              children: loading ? t("common.loading") : t("auth.sendCode")
-            }
-          )
-        ] }),
-        resetStep === 2 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "input",
-            {
-              type: "text",
-              value: resetCode,
-              onChange: (e) => setResetCode(e.target.value),
-              placeholder: t("auth.sixDigitCode"),
-              maxLength: 6,
-              className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-center text-2xl tracking-widest"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Button,
-            {
-              onClick: async () => {
-                if (!resetCode || resetCode.length !== 6) {
-                  setError(t("authErrors.enterCode"));
-                  return;
-                }
-                setLoading(true);
-                try {
-                  const response = await fetch(`${backendUrl2}/api/auth/verify-reset-code`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email: resetEmail.trim(), code: resetCode })
-                  });
-                  const data = await response.json();
-                  if (response.ok) {
-                    setResetStep(3);
-                    setError("");
-                  } else {
-                    setError(data.error || t("authErrors.wrongCode"));
-                  }
-                } catch (err) {
-                  setError(t("authErrors.connectionError"));
-                } finally {
-                  setLoading(false);
-                }
-              },
-              disabled: loading,
-              className: "w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl",
-              children: loading ? t("common.loading") : t("auth.verifyCode")
-            }
-          )
-        ] }),
-        resetStep === 3 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "input",
-            {
-              type: "password",
-              value: newPassword,
-              onChange: (e) => setNewPassword(e.target.value),
-              placeholder: t("auth.newPassword") + " 🔐",
-              className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Button,
-            {
-              onClick: async () => {
-                if (!newPassword || newPassword.length < 6) {
-                  setError(t("authErrors.passwordLength"));
-                  return;
-                }
-                setLoading(true);
-                try {
-                  const response = await fetch(`${backendUrl2}/api/auth/reset-password`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                      email: resetEmail.trim(),
-                      code: resetCode,
-                      newPassword
-                    })
-                  });
-                  const data = await response.json();
-                  if (response.ok) {
-                    setSuccessMessage(t("auth.passwordChanged"));
-                    setTimeout(() => {
-                      setForgotPasswordMode(false);
-                      setIsLogin(true);
-                      setResetStep(1);
-                      setResetEmail("");
-                      setResetCode("");
-                      setNewPassword("");
-                      setError("");
-                      setSuccessMessage("");
-                    }, 2e3);
-                  } else {
-                    setError(data.error || t("authErrors.somethingWrong"));
-                  }
-                } catch (err) {
-                  setError(t("authErrors.connectionError"));
-                } finally {
-                  setLoading(false);
-                }
-              },
-              disabled: loading,
-              className: "w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl",
-              children: loading ? t("common.loading") : t("auth.changePassword")
-            }
-          )
-        ] }),
-        error && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-red-400 text-sm text-center", children: error }) }),
-        successMessage && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4 p-3 bg-green-500/10 border border-green-500/30 rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-green-400 text-sm text-center", children: successMessage }) })
-      ] })
-    ] });
-  }
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed top-4 right-4 z-50", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LanguageSwitcher, {}) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-md", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-8", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-block mb-5 relative", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-24 h-24 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/50 relative overflow-hidden animate-bounce-slow", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-white/20 to-transparent" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(MessageSquare, { className: "w-12 h-12 text-white relative z-10", fill: "currentColor", strokeWidth: 1.5 }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 text-yellow-300 absolute top-2 right-2 animate-pulse" })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center shadow-lg border-2 border-slate-900", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-3 h-3 bg-white rounded-full" }) })
-        ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h1", { className: "text-5xl font-extrabold mb-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "bg-gradient-to-r from-white via-indigo-100 to-purple-100 bg-clip-text text-transparent", children: "Biseda" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent text-4xl", children: ".ai" })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 text-base font-medium animate-fade-in", children: taglines[taglineIndex] }) })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-900/80 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 mb-8 bg-slate-800/50 p-1.5 rounded-2xl border border-slate-700/50", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: () => {
-                setIsLogin(false);
-                setError("");
-              },
-              className: `flex-1 py-3.5 rounded-xl font-semibold text-base transition-all duration-300 ${!isLogin ? "bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white shadow-md shadow-purple-500/30" : "text-slate-400 hover:text-white"}`,
-              children: t("auth.register")
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: () => {
-                setIsLogin(true);
-                setError("");
-              },
-              className: `flex-1 py-3.5 rounded-xl font-semibold text-base transition-all duration-300 ${isLogin ? "bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white shadow-md shadow-purple-500/30" : "text-slate-400 hover:text-white"}`,
-              children: t("auth.login")
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, className: "space-y-4", children: [
-          !isLogin && /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                type: "text",
-                value: firstName,
-                onChange: (e) => {
-                  setFirstName(e.target.value);
-                  setError("");
-                },
-                className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base",
-                placeholder: t("auth.firstName") + " ✏️",
-                style: { fontSize: "16px" },
-                required: true
-              }
-            ) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                type: "text",
-                value: lastName,
-                onChange: (e) => {
-                  setLastName(e.target.value);
-                  setError("");
-                },
-                className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base",
-                placeholder: t("auth.lastName") + " ✏️",
-                style: { fontSize: "16px" },
-                required: true
-              }
-            ) })
-          ] }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "input",
-            {
-              type: "email",
-              value: email,
-              onChange: (e) => {
-                setEmail(e.target.value);
-                setError("");
-              },
-              className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base",
-              placeholder: t("auth.email") + " 📧",
-              style: { fontSize: "16px" },
-              required: true
-            }
-          ) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                type: showPassword ? "text" : "password",
-                value: password,
-                onChange: (e) => {
-                  setPassword(e.target.value);
-                  setError("");
-                },
-                className: "w-full px-4 py-4 pr-12 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base",
-                placeholder: t("auth.password") + " 🔐",
-                style: { fontSize: "16px" },
-                required: true
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                onClick: () => setShowPassword(!showPassword),
-                className: "absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors",
-                children: showPassword ? /* @__PURE__ */ jsxRuntimeExports.jsx(EyeOff, { className: "w-5 h-5" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Eye, { className: "w-5 h-5" })
-              }
-            )
-          ] }),
-          error && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-3 bg-red-500/10 border border-red-500/30 rounded-xl animate-shake", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-red-400 text-sm text-center", children: error }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              Button,
-              {
-                type: "submit",
-                disabled: loading,
-                className: "w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl text-base shadow-lg transition-all duration-300",
-                children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center gap-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4 h-4 border-3 border-white/30 border-t-white rounded-full animate-spin" }) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isLogin ? "🚀 " + t("auth.login") : "✨ " + t("auth.createAccount") })
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: handleGuestButtonClick,
-                disabled: loading,
-                className: "w-full bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white font-bold h-14 rounded-xl text-base shadow-lg shadow-slate-500/20 transition-all duration-300 inline-flex items-center justify-center disabled:opacity-50",
-                children: [
-                  "👤 ",
-                  t("auth.guest")
-                ]
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: handleAppleSignIn,
-              className: "w-full bg-white hover:bg-gray-100 text-black font-semibold h-14 rounded-xl text-base shadow-lg transition-all duration-300 flex items-center justify-center gap-3",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: "20", height: "20", viewBox: "0 0 24 24", fill: "black", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" }) }),
-                t("auth.continueWithApple")
-              ]
-            }
-          )
-        ] }),
-        isLogin && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            onClick: () => setForgotPasswordMode(true),
-            className: "text-sm text-purple-400 hover:text-purple-300 transition-colors w-full text-center",
-            children: [
-              "🔑 ",
-              t("auth.forgotPassword")
-            ]
-          }
-        ) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-6 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-500 text-xs", children: [
-          t("auth.termsAgree"),
-          " ",
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-purple-400 font-medium", children: [
-            t("auth.terms"),
-            " & ",
-            t("auth.privacy")
-          ] })
-        ] }) })
-      ] })
-    ] }),
-    showAgeVerification && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-900/95 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20 max-w-md w-full", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-3xl", children: "🔞" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white mb-2", children: t("ageVerification.title") }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: t("ageVerification.subtitle") })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-slate-300 text-sm font-medium mb-2", children: t("ageVerification.selectAge") }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "select",
-            {
-              value: selectedAge,
-              onChange: (e) => setSelectedAge(e.target.value),
-              className: "flex-1 px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white text-lg focus:outline-none focus:border-purple-500/50 transition-all appearance-none cursor-pointer",
-              style: { fontSize: "18px" },
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", disabled: true, children: t("ageVerification.chooseAge") }),
-                Array.from({ length: 83 }, (_, i) => i + 18).map((age) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: age, children: age }, age))
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-slate-300 text-lg font-medium whitespace-nowrap", children: t("ageVerification.yearsOld") })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          Button,
-          {
-            onClick: handleGuestLogin,
-            disabled: !selectedAge || parseInt(selectedAge) < 18,
-            className: "w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl text-base shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed",
-            children: [
-              "✅ ",
-              t("ageVerification.confirm")
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            onClick: () => setShowAgeVerification(false),
-            className: "w-full text-slate-400 hover:text-white py-3 transition-colors text-sm",
-            children: t("common.cancel")
-          }
-        )
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-4 text-center text-xs text-slate-500", children: t("ageVerification.disclaimer") })
-    ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `
-        @keyframes bounce-slow {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-        .animate-bounce-slow {
-          animation: bounce-slow 3s ease-in-out infinite;
-        }
-        @keyframes fade-in {
-          from { opacity: 0; transform: translateY(-10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
-          animation: fade-in 0.5s ease-out;
-        }
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          25% { transform: translateX(-10px); }
-          75% { transform: translateX(10px); }
-        }
-        .animate-shake {
-          animation: shake 0.5s ease-in-out;
-        }
-      ` })
-  ] });
-}
-function GuestBanner({ onSignUp }) {
-  const [dismissed, setDismissed] = reactExports.useState(false);
-  const isGuest = localStorage.getItem("isGuest") === "true";
-  if (!isGuest) return null;
-  const guestNumber = localStorage.getItem("guestNumber") || "";
-  const visitorLabel = guestNumber ? `Vizitor #${guestNumber}` : "Vizitor";
-  if (dismissed) {
-    return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "button",
-      {
-        onClick: () => setDismissed(false),
-        className: "px-2 py-1 bg-slate-800/90 border border-slate-700 rounded-full flex items-center gap-1.5 hover:bg-slate-700/90 transition-all",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(UserX, { className: "w-3 h-3 text-cyan-400" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-medium text-white", children: visitorLabel })
-        ]
-      }
-    );
-  }
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 px-3 py-1.5 bg-slate-800/80 rounded-xl border border-slate-700/50", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-6 h-6 rounded-lg bg-cyan-500/20 border border-cyan-500/50 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(UserX, { className: "w-3 h-3 text-cyan-400" }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "hidden sm:block", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-slate-400 leading-tight", children: "Mënyra" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-bold text-white leading-tight", children: visitorLabel })
-      ] })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "button",
-      {
-        onClick: () => {
-          clearGuestSession();
-          if (onSignUp) onSignUp();
-        },
-        className: "px-2.5 py-1 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white text-xs font-bold rounded-lg transition-all flex items-center gap-1",
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-3 h-3" }),
-          "Regjistrohu"
-        ]
-      }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "button",
-      {
-        onClick: () => setDismissed(true),
-        className: "p-0.5 text-slate-500 hover:text-white transition-colors",
-        children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-3.5 h-3.5" })
-      }
-    )
-  ] });
-}
-const ANALYTICS_KEY = "biseda_analytics";
-const getAnalytics = () => {
-  try {
-    const data = localStorage.getItem(ANALYTICS_KEY);
-    return data ? JSON.parse(data) : initAnalytics();
-  } catch {
-    return initAnalytics();
-  }
-};
-const initAnalytics = () => ({
-  firstVisit: Date.now(),
-  lastVisit: Date.now(),
-  totalSessions: 0,
-  features: {
-    bisedaChat: { views: 0, uses: 0 },
-    aiCoach: { views: 0, uses: 0, messages: 0 },
-    firstDates: { views: 0, searches: 0 },
-    events: { views: 0, searches: 0, venueClicks: 0 },
-    tips: { views: 0 },
-    gifts: { views: 0 },
-    festiveDates: { views: 0 },
-    profile: { views: 0 },
-    countrySwitcher: { uses: 0 },
-    share: { uses: 0 }
-  },
-  actions: {
-    screenshots: 0,
-    favorites: 0,
-    shares: 0,
-    themeChanges: 0
-  },
-  engagement: {
-    totalTimeSpent: 0,
-    // in seconds
-    averageSessionTime: 0,
-    longestSession: 0
-  }
-});
-const saveAnalytics = (data) => {
-  try {
-    localStorage.setItem(ANALYTICS_KEY, JSON.stringify(data));
-  } catch (e) {
-    console.warn("Failed to save analytics:", e);
-  }
-};
-const trackPageView = (pageName) => {
-  const analytics = getAnalytics();
-  const featureMap = {
-    "Clipboard": "bisedaChat",
-    "Chat": "aiCoach",
-    "FirstDates": "firstDates",
-    "Events": "events",
-    "Tips": "tips",
-    "Gifts": "gifts",
-    "FestiveDates": "festiveDates",
-    "Profile": "profile",
-    "Home": null
-    // Don't track home specifically
-  };
-  const feature = featureMap[pageName];
-  if (feature && analytics.features[feature]) {
-    analytics.features[feature].views++;
-  }
-  analytics.lastVisit = Date.now();
-  saveAnalytics(analytics);
-  console.log(`📊 Page view: ${pageName}`);
-};
-const trackFeatureUse = (featureName, action = "use") => {
-  const analytics = getAnalytics();
-  if (analytics.features[featureName]) {
-    if (action === "use") {
-      analytics.features[featureName].uses = (analytics.features[featureName].uses || 0) + 1;
-    } else if (action === "search") {
-      analytics.features[featureName].searches = (analytics.features[featureName].searches || 0) + 1;
-    } else if (action === "message") {
-      analytics.features[featureName].messages = (analytics.features[featureName].messages || 0) + 1;
-    } else if (action === "venueClick") {
-      analytics.features[featureName].venueClicks = (analytics.features[featureName].venueClicks || 0) + 1;
-    }
-  }
-  saveAnalytics(analytics);
-  console.log(`📊 Feature use: ${featureName} - ${action}`);
-};
-const trackAction = (actionName) => {
-  const analytics = getAnalytics();
-  if (analytics.actions[actionName] !== void 0) {
-    analytics.actions[actionName]++;
-  }
-  saveAnalytics(analytics);
-  console.log(`📊 Action: ${actionName}`);
-};
-const trackSessionStart = () => {
-  const analytics = getAnalytics();
-  analytics.totalSessions++;
-  analytics.lastVisit = Date.now();
-  sessionStorage.setItem("sessionStart", Date.now().toString());
-  saveAnalytics(analytics);
-  console.log(`📊 Session started (Total: ${analytics.totalSessions})`);
-};
-const trackSessionEnd = () => {
-  const analytics = getAnalytics();
-  const sessionStart = sessionStorage.getItem("sessionStart");
-  if (sessionStart) {
-    const sessionDuration = Math.floor((Date.now() - parseInt(sessionStart)) / 1e3);
-    analytics.engagement.totalTimeSpent += sessionDuration;
-    if (analytics.totalSessions > 0) {
-      analytics.engagement.averageSessionTime = Math.floor(
-        analytics.engagement.totalTimeSpent / analytics.totalSessions
-      );
-    }
-    if (sessionDuration > analytics.engagement.longestSession) {
-      analytics.engagement.longestSession = sessionDuration;
-    }
-    saveAnalytics(analytics);
-    console.log(`📊 Session ended (Duration: ${sessionDuration}s)`);
-  }
-};
-function Layout({ children, onLogout }) {
-  const { t } = useTranslation();
-  useNavigate();
-  const location = useLocation();
-  const currentPageName = location.pathname.split("/")[1]?.charAt(0).toUpperCase() + location.pathname.split("/")[1]?.slice(1) || "Home";
-  const isGuest = localStorage.getItem("isGuest") === "true";
-  reactExports.useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
-    const mainContainer = document.getElementById("main-content");
-    if (mainContainer) {
-      mainContainer.scrollTo({ top: 0, behavior: "instant" });
-    }
-    document.documentElement.scrollTop = 0;
-    document.body.scrollTop = 0;
-  }, [location.pathname]);
-  reactExports.useEffect(() => {
-    trackPageView(currentPageName);
-  }, [currentPageName]);
-  const navItems = [
-    { name: t("nav.home"), icon: Home$1, page: "Home" },
-    { name: t("nav.aiCoach"), icon: Sparkles, page: "Chat" },
-    { name: t("nav.dates"), icon: Heart, page: "FirstDates" },
-    { name: t("nav.events"), icon: MapPin, page: "Events" },
-    { name: t("nav.tips"), icon: Lightbulb, page: "Tips" }
-  ];
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `
-        html, body {
-          background: var(--bg-primary, #0f172a) !important;
-          -webkit-overflow-scrolling: touch;
-          transition: background-color 0.3s ease;
-        }
-        
-        * {
-          -webkit-tap-highlight-color: transparent;
-        }
-        
-        /* Cover the entire bottom area including home indicator */
-        .bottom-safe-area {
-          position: fixed;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          height: env(safe-area-inset-bottom, 0px);
-          background: var(--bg-primary, #0f172a);
-          z-index: 9998;
-        }
-        
-        /* Modern nav styling */
-        .nav-item {
-          position: relative;
-          transition: all 0.2s ease;
-        }
-        
-        .nav-item.active {
-          color: var(--accent-primary, #a855f7);
-        }
-        
-        .nav-item.active::before {
-          content: '';
-          position: absolute;
-          top: -4px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 24px;
-          height: 3px;
-          background: linear-gradient(90deg, var(--accent-primary, #a855f7), var(--accent-secondary, #ec4899));
-          border-radius: 0 0 4px 4px;
-        }
-        
-        .nav-item:not(.active):hover {
-          color: var(--accent-primary, #c084fc);
-        }
-        
-        .nav-icon {
-          transition: transform 0.2s ease;
-        }
-        
-        .nav-item.active .nav-icon {
-          transform: scale(1.15);
-        }
-      ` }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bottom-safe-area" }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "header",
-      {
-        style: {
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          paddingTop: "env(safe-area-inset-top, 0px)",
-          zIndex: 9999,
-          background: "linear-gradient(to bottom, var(--bg-primary, rgba(15, 23, 42, 0.98)), var(--bg-primary, rgba(15, 23, 42, 0.95)))",
-          backdropFilter: "blur(12px)",
-          borderBottom: "1px solid var(--border-color, rgba(148, 163, 184, 0.1))"
-        },
-        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-14 px-4 flex items-center justify-between max-w-screen-xl mx-auto", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, { to: "/home", className: "flex items-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 text-white" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-bold text-white text-lg hidden sm:block", children: [
-              "Biseda",
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-purple-400", children: ".ai" })
-            ] })
-          ] }) }),
-          isGuest && /* @__PURE__ */ jsxRuntimeExports.jsx(
-            GuestBanner,
-            {
-              onExpired: () => {
-                clearGuestSession();
-                if (onLogout) onLogout();
-              },
-              onSignUp: () => {
-                clearGuestSession();
-                if (onLogout) onLogout();
-              }
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(LanguageSwitcher, {}),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(CountrySwitcher, {}),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/profile", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg hover:scale-105 hover:shadow-purple-500/30 transition-all duration-200", children: /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-5 h-5 text-white" }) }) })
-          ] })
-        ] })
-      }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      "main",
-      {
-        id: "main-content",
-        className: "w-full max-w-full overflow-x-hidden",
-        style: { paddingTop: "calc(56px + env(safe-area-inset-top, 0px))", paddingBottom: "90px", minHeight: "100vh" },
-        children
-      }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { style: {
-      position: "fixed",
-      bottom: 0,
-      left: 0,
-      right: 0,
-      background: "linear-gradient(to top, var(--bg-primary, rgba(15, 23, 42, 0.98)), var(--bg-primary, rgba(15, 23, 42, 0.95)))",
-      backdropFilter: "blur(12px)",
-      borderTop: "1px solid var(--border-color, rgba(148, 163, 184, 0.1))",
-      zIndex: 9999,
-      paddingBottom: "env(safe-area-inset-bottom, 0px)"
-    }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-around items-center h-16 px-2 max-w-screen-xl mx-auto", children: navItems.map((item) => {
-      const Icon = item.icon;
-      const isActive = currentPageName === item.page;
-      return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        Link,
-        {
-          to: createPageUrl(item.page),
-          className: `nav-item flex flex-col items-center justify-center py-2 px-3 rounded-xl ${isActive ? "active text-purple-400" : "text-slate-400"}`,
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `nav-icon p-2 rounded-xl ${isActive ? "bg-purple-500/20" : ""}`, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { className: "w-5 h-5", strokeWidth: isActive ? 2.5 : 2 }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `text-xs font-semibold mt-0.5 ${isActive ? "text-purple-300" : "text-slate-500"}`, children: item.name })
-          ]
-        },
-        item.page
-      );
-    }) }) })
-  ] });
-}
-function CreditsModal({ isOpen, onClose }) {
-  const [packages, setPackages] = reactExports.useState(null);
-  const [balance, setBalance] = reactExports.useState(0);
-  const [loading, setLoading] = reactExports.useState(false);
-  const backendUrl2 = getBackendUrl();
-  const userId = localStorage.getItem("userId") || "anonymous";
-  reactExports.useEffect(() => {
-    if (isOpen) {
-      fetchCredits();
-    }
-  }, [isOpen]);
-  const fetchCredits = async () => {
-    try {
-      const response = await fetch(`${backendUrl2}/api/credits/balance`, {
-        headers: {
-          "x-user-id": userId
-        }
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setBalance(data.balance);
-        setPackages(data.packages);
-      }
-    } catch (error) {
-      console.error("Error fetching credits:", error);
-    }
-  };
-  const handlePurchase = async (packageId) => {
-    setLoading(true);
-    try {
-      const response = await fetch(`${backendUrl2}/api/credits/purchase`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-user-id": userId
-        },
-        body: JSON.stringify({ packageId })
-      });
-      if (response.ok) {
-        const data = await response.json();
-        window.location.href = data.url;
-      } else {
-        alert("Dështoi fillimi i pagesës. Provo përsëri.");
-      }
-    } catch (error) {
-      console.error("Error purchasing credits:", error);
-      alert("Ndodhi një gabim. Provo përsëri.");
-    } finally {
-      setLoading(false);
-    }
-  };
-  if (!isOpen) return null;
-  const creditPackages = packages || {
-    starter: { name: "Paketa Starter", price: 2.99, credits: 100 },
-    popular: { name: "Paketa Popullore", price: 9.99, credits: 400 },
-    pro: { name: "Paketa Pro", price: 19.99, credits: 900 }
-  };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-800 border-slate-700 max-w-md w-full", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-6", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white mb-1", children: "Bli Kredite" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: "Zgjat limitin tënd ditor" })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "button",
-        {
-          onClick: onClose,
-          className: "text-slate-400 hover:text-white transition-colors",
-          children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-6 h-6" })
-        }
-      )
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-6 p-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-5 h-5 text-purple-400" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-slate-300", children: "Bilanci Aktual" })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl font-bold text-white", children: balance })
-    ] }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3 mb-6", children: Object.entries(creditPackages).map(([id, pkg]) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-      Card,
-      {
-        className: "bg-slate-700/50 border-slate-600 hover:border-purple-500/50 transition-colors",
-        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg font-bold text-white", children: pkg.name }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-slate-400", children: [
-                pkg.credits,
-                " kredite"
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-right", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-xl font-bold text-white", children: [
-                "€",
-                pkg.price
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-xs text-slate-400", children: [
-                "€",
-                (pkg.price / pkg.credits).toFixed(4),
-                " për kredit"
-              ] })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Button,
-            {
-              onClick: () => handlePurchase(id),
-              disabled: loading,
-              className: "w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white",
-              children: loading ? "Duke procesuar..." : "Bli Tani"
-            }
-          )
-        ] })
-      },
-      id
-    )) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-500", children: "Kredite përdoren kur tejkalon limitin tënd ditor të mesazheve. 1 kredit = 1 mesazh." }) })
-  ] }) }) });
-}
-function UsageDisplay({ onUpgrade, onLimitReached }) {
-  const { t } = useTranslation();
-  const [usage2, setUsage] = reactExports.useState(null);
-  const [loading, setLoading] = reactExports.useState(true);
-  const [showCreditsModal, setShowCreditsModal] = reactExports.useState(false);
-  const backendUrl2 = getBackendUrl();
-  reactExports.useEffect(() => {
-    fetchUsage();
-    const interval = setInterval(fetchUsage, 3e4);
-    return () => clearInterval(interval);
-  }, []);
-  const fetchUsage = async () => {
-    try {
-      const response = await fetch(`${backendUrl2}/api/usage`);
-      if (response.ok) {
-        const data = await response.json();
-        setUsage(data);
-        if (onLimitReached && data.dailyUsage.remainingMessages === 0 && (!data.credits || data.credits === 0)) {
-          onLimitReached(true);
-        } else if (onLimitReached) {
-          onLimitReached(false);
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching usage:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  if (loading || !usage2) {
-    return null;
-  }
-  const { dailyUsage, tier, credits } = usage2;
-  const percentageUsed = dailyUsage.messages / dailyUsage.messagesLimit * 100;
-  const isNearLimit = percentageUsed >= 80;
-  const isAtLimit = dailyUsage.messages >= dailyUsage.messagesLimit;
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 backdrop-blur-sm p-4 mb-4", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-3", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-5 h-5 text-amber-400" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-semibold text-white", children: tier === "free_trial" ? t("usage.freeTrial") : tier === "free" ? t("usage.freePlan") : tier === "starter" ? t("usage.starterPlan") : tier === "pro" ? t("usage.proPlan") : tier === "elite" ? t("usage.elitePlan") : tier === "premium" ? t("usage.elitePlan") : t("usage.basePlan") })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
-        credits !== void 0 && credits > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(
-          Button,
-          {
-            onClick: () => setShowCreditsModal(true),
-            size: "sm",
-            className: "bg-purple-600 hover:bg-purple-700 text-white text-xs h-7 px-3",
-            children: t("usage.buyCredits")
-          }
-        ),
-        (tier === "free_trial" || tier === "free" || tier === "starter" || tier === "pro") && /* @__PURE__ */ jsxRuntimeExports.jsx(
-          Button,
-          {
-            onClick: onUpgrade,
-            size: "sm",
-            className: "bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white text-xs h-7 px-3",
-            children: tier === "free_trial" || tier === "free" ? t("home.upgrade") : t("usage.upgradeMore")
-          }
-        )
-      ] })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2", children: [
-      credits !== void 0 && credits > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-2 p-2 bg-purple-500/10 border border-purple-500/30 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-300", children: t("usage.credits") }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-semibold text-purple-300", children: credits })
-      ] }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-xs text-slate-400 mb-1", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("home.messagesRemaining") }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: isNearLimit ? "text-red-400 font-semibold" : "", children: [
-            dailyUsage.messages,
-            " / ",
-            dailyUsage.messagesLimit
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full bg-slate-700 rounded-full h-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "div",
-          {
-            className: `h-2 rounded-full transition-all ${isAtLimit ? "bg-red-500" : isNearLimit ? "bg-amber-500" : "bg-gradient-to-r from-green-500 to-emerald-500"}`,
-            style: { width: `${Math.min(100, percentageUsed)}%` }
-          }
-        ) })
-      ] }),
-      dailyUsage.remainingMessages === 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-3 p-2 bg-red-500/10 border border-red-500/30 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-red-400 text-center", children: [
-        t("usage.limitReached"),
-        " ",
-        tier === "free" && t("usage.upgradeToChat")
-      ] }) }),
-      isNearLimit && !isAtLimit && (tier === "free" || tier === "free_trial") && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-2 p-2 bg-amber-500/10 border border-amber-500/30 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-amber-400 text-center", children: t("home.limitWarning") }) })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(CreditsModal, { isOpen: showCreditsModal, onClose: () => setShowCreditsModal(false) })
-  ] });
-}
 function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
   const { t } = useTranslation();
   if (!isOpen) return null;
@@ -15786,6 +15003,60 @@ Tani shkruaj 10 mesazhe KREJTËSISHT të reja:`
     )
   ] });
 }
+const scriptRel = "modulepreload";
+const assetsURL = function(dep) {
+  return "/" + dep;
+};
+const seen = {};
+const __vitePreload = function preload(baseModule, deps, importerUrl) {
+  let promise = Promise.resolve();
+  if (deps && deps.length > 0) {
+    let allSettled = function(promises$2) {
+      return Promise.all(promises$2.map((p) => Promise.resolve(p).then((value$1) => ({
+        status: "fulfilled",
+        value: value$1
+      }), (reason) => ({
+        status: "rejected",
+        reason
+      }))));
+    };
+    document.getElementsByTagName("link");
+    const cspNonceMeta = document.querySelector("meta[property=csp-nonce]");
+    const cspNonce = cspNonceMeta?.nonce || cspNonceMeta?.getAttribute("nonce");
+    promise = allSettled(deps.map((dep) => {
+      dep = assetsURL(dep);
+      if (dep in seen) return;
+      seen[dep] = true;
+      const isCss = dep.endsWith(".css");
+      const cssSelector = isCss ? '[rel="stylesheet"]' : "";
+      if (document.querySelector(`link[href="${dep}"]${cssSelector}`)) return;
+      const link = document.createElement("link");
+      link.rel = isCss ? "stylesheet" : scriptRel;
+      if (!isCss) link.as = "script";
+      link.crossOrigin = "";
+      link.href = dep;
+      if (cspNonce) link.setAttribute("nonce", cspNonce);
+      document.head.appendChild(link);
+      if (isCss) return new Promise((res, rej) => {
+        link.addEventListener("load", res);
+        link.addEventListener("error", () => rej(/* @__PURE__ */ new Error(`Unable to preload CSS for ${dep}`)));
+      });
+    }));
+  }
+  function handlePreloadError(err$2) {
+    const e$1 = new Event("vite:preloadError", { cancelable: true });
+    e$1.payload = err$2;
+    window.dispatchEvent(e$1);
+    if (!e$1.defaultPrevented) throw err$2;
+  }
+  return promise.then((res) => {
+    for (const item of res || []) {
+      if (item.status !== "rejected") continue;
+      handlePreloadError(item.reason);
+    }
+    return baseModule().catch(handlePreloadError);
+  });
+};
 const UNIFIED_AI_SYSTEM_PROMPT = `Ti je një AI me një PhD në psikologji sociale dhe komunikim nga Oxford dhe Cambridge, por me eksperiencë rruge që e bën të kuptosh realitetin e bisedave reale. Ti je MASTER i artit të bisedës, picking up, dhe të bësh njerëzit të ndihen të tërhequr dhe të eksituar.
 
 KRITIKE SIGURIE - ABSOLUTISHT E NDALUAR:
@@ -16393,7 +15664,7 @@ function ClipboardSuggestions() {
       if (window.Capacitor && window.Capacitor.isNativePlatform()) {
         try {
           const { Clipboard: Clipboard2 } = await __vitePreload(async () => {
-            const { Clipboard: Clipboard22 } = await import("./index-B6PfI803.js");
+            const { Clipboard: Clipboard22 } = await import("./index-BfDWXLo4.js");
             return { Clipboard: Clipboard22 };
           }, true ? [] : void 0);
           const { value } = await Clipboard2.read();
@@ -19899,10 +19170,10 @@ function Events() {
     };
   }, []);
   const getUpcomingFestiveDates = () => {
-    const festiveDates = festiveDatesByCountry[userCountry] || defaultFestiveDates;
+    const festiveDates2 = festiveDatesByCountry[userCountry] || defaultFestiveDates;
     const today = /* @__PURE__ */ new Date();
     const currentYear = today.getFullYear();
-    const upcomingDates = festiveDates.map((festive) => {
+    const upcomingDates = festiveDates2.map((festive) => {
       let festiveDate = new Date(currentYear, festive.month, festive.date);
       if (festiveDate < today) {
         festiveDate = new Date(currentYear + 1, festive.month, festive.date);
@@ -21688,6 +20959,800 @@ function Admin() {
       "Përditësuar: ",
       stats?.timestamp ? new Date(stats.timestamp).toLocaleString("sq-AL") : "N/A"
     ] }) })
+  ] });
+}
+function LanguageSwitcher() {
+  const { t, i18n } = useTranslation();
+  const [isOpen, setIsOpen] = reactExports.useState(false);
+  const triggerRef = reactExports.useRef(null);
+  const dropdownRef = reactExports.useRef(null);
+  const currentLanguage = languages.find((lang) => lang.code === i18n.language) || languages[0];
+  reactExports.useEffect(() => {
+    const handleClickOutside = (event) => {
+      const clickedInsideTrigger = triggerRef.current && triggerRef.current.contains(event.target);
+      const clickedInsideDropdown = dropdownRef.current && dropdownRef.current.contains(event.target);
+      if (!clickedInsideTrigger && !clickedInsideDropdown) {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+  reactExports.useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscape);
+    }
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [isOpen]);
+  reactExports.useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+  const handleSelectLanguage = (langCode) => {
+    i18n.changeLanguage(langCode);
+    localStorage.setItem("appLanguage", langCode);
+    setIsOpen(false);
+    window.dispatchEvent(new CustomEvent("languageChanged", {
+      detail: { langCode }
+    }));
+  };
+  const getTriggerRect = () => {
+    if (triggerRef.current) {
+      return triggerRef.current.getBoundingClientRect();
+    }
+    return null;
+  };
+  const triggerRect = isOpen ? getTriggerRect() : null;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", ref: triggerRef, children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(
+      "button",
+      {
+        onClick: (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsOpen(!isOpen);
+        },
+        className: "group flex items-center gap-1.5 px-3 py-2 bg-slate-800/90 border border-slate-700/60 rounded-xl hover:bg-slate-700/90 hover:border-purple-500/50 transition-all duration-200",
+        "aria-label": "Change language",
+        "aria-expanded": isOpen,
+        type: "button",
+        children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Languages, { className: "w-3.5 h-3.5 text-slate-400 group-hover:text-purple-400" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-lg", children: currentLanguage?.flag }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            ChevronDown,
+            {
+              className: `w-3.5 h-3.5 text-slate-400 group-hover:text-purple-400 transition-all duration-200 ${isOpen ? "rotate-180" : ""}`
+            }
+          )
+        ]
+      }
+    ),
+    isOpen && reactDomExports.createPortal(
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            className: "md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[10000]",
+            onClick: (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsOpen(false);
+            }
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            ref: dropdownRef,
+            className: "fixed left-4 right-4 bottom-4 md:fixed md:left-auto md:right-auto md:bottom-auto bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-[10001]",
+            style: {
+              maxHeight: "calc(100vh - 120px)",
+              ...triggerRect && window.innerWidth >= 768 ? {
+                top: triggerRect.bottom + 8,
+                right: window.innerWidth - triggerRect.right,
+                width: 256,
+                left: "auto",
+                bottom: "auto"
+              } : {}
+            },
+            onClick: (e) => e.stopPropagation(),
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-3 border-b border-slate-700/50 bg-gradient-to-r from-slate-800 to-slate-800/50", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(Languages, { className: "w-4 h-4 text-purple-400" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm font-semibold text-white", children: t("language.selectLanguage") })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                  "button",
+                  {
+                    onClick: (e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setIsOpen(false);
+                    },
+                    className: "p-1.5 hover:bg-slate-700 rounded-lg transition-colors md:hidden",
+                    type: "button",
+                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5 text-slate-400" })
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "overflow-y-auto max-h-[350px]", children: languages.map((language2) => {
+                const isSelected = i18n.language === language2.code;
+                return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "button",
+                  {
+                    onClick: (e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleSelectLanguage(language2.code);
+                    },
+                    className: `w-full flex items-center justify-between px-4 py-3 text-left transition-all duration-150 border-b border-slate-800/50 last:border-b-0 ${isSelected ? "bg-purple-500/20 text-white" : "text-slate-300 hover:bg-slate-800 hover:text-white active:bg-slate-700"}`,
+                    type: "button",
+                    children: [
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: language2.flag }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-medium", children: language2.nativeName }),
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-slate-500", children: language2.name })
+                        ] })
+                      ] }),
+                      isSelected && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-purple-400 font-medium", children: t("common.active") }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-purple-400 flex-shrink-0" })
+                      ] })
+                    ]
+                  },
+                  language2.code
+                );
+              }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-4 py-2 border-t border-slate-700/50 bg-slate-800/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-slate-500 text-center", children: t("language.hint") }) })
+            ]
+          }
+        )
+      ] }),
+      document.body
+    )
+  ] });
+}
+const clearAllUserData = () => {
+  localStorage.removeItem("userId");
+  localStorage.removeItem("userEmail");
+  localStorage.removeItem("userName");
+  localStorage.removeItem("userCountry");
+  localStorage.removeItem("isAuthenticated");
+  localStorage.removeItem("isGuest");
+  localStorage.removeItem("guestSession");
+  localStorage.removeItem("guestId");
+  localStorage.removeItem("conversationHistory");
+  localStorage.removeItem("onboardingCompleted");
+  console.log("🔓 User logged out - all data cleared");
+};
+function Auth({ onAuthSuccess }) {
+  const { t, i18n } = useTranslation();
+  const [isLogin, setIsLogin] = reactExports.useState(false);
+  const [firstName, setFirstName] = reactExports.useState("");
+  const [lastName, setLastName] = reactExports.useState("");
+  const [email, setEmail] = reactExports.useState("");
+  const [password, setPassword] = reactExports.useState("");
+  const [showPassword, setShowPassword] = reactExports.useState(false);
+  const [loading, setLoading] = reactExports.useState(false);
+  const [error, setError] = reactExports.useState("");
+  const [successMessage, setSuccessMessage] = reactExports.useState("");
+  const [focusedField, setFocusedField] = reactExports.useState(null);
+  const [forgotPasswordMode, setForgotPasswordMode] = reactExports.useState(false);
+  const [resetStep, setResetStep] = reactExports.useState(1);
+  const [resetEmail, setResetEmail] = reactExports.useState("");
+  const [resetCode, setResetCode] = reactExports.useState("");
+  const [newPassword, setNewPassword] = reactExports.useState("");
+  const [showAgeVerification, setShowAgeVerification] = reactExports.useState(false);
+  const [selectedAge, setSelectedAge] = reactExports.useState("");
+  const backendUrl2 = getBackendUrl();
+  const isNativeIOS = Capacitor.isNativePlatform() && Capacitor.getPlatform() === "ios";
+  const handleAppleSignIn = async () => {
+    if (isNativeIOS) {
+      try {
+        const { SignInWithApple } = await __vitePreload(async () => {
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-BJj01CCc.js");
+          return { SignInWithApple: SignInWithApple2 };
+        }, true ? [] : void 0);
+        const result = await SignInWithApple.authorize({
+          clientId: "com.bisedaai.app",
+          redirectURI: "https://bisedaai.com/auth/callback",
+          scopes: "email name",
+          state: "auth",
+          nonce: Math.random().toString(36).substring(2, 15)
+        });
+        if (result.response) {
+          const response = await fetch(`${backendUrl2}/api/auth/apple`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              identityToken: result.response.identityToken,
+              user: result.response.user,
+              email: result.response.email,
+              fullName: result.response.givenName ? {
+                givenName: result.response.givenName,
+                familyName: result.response.familyName
+              } : null
+            })
+          });
+          const data = await response.json();
+          if (response.ok && data.user) {
+            localStorage.setItem("userId", data.user.odId || data.user.userId);
+            localStorage.setItem("userEmail", data.user.email);
+            localStorage.setItem("userName", data.user.firstName || data.user.email?.split("@")[0]);
+            localStorage.setItem("isAuthenticated", "true");
+            localStorage.setItem("userCountry", data.user.country || "AL");
+            if (onAuthSuccess) {
+              onAuthSuccess({
+                userId: data.user.odId || data.user.userId,
+                email: data.user.email,
+                userName: data.user.firstName || data.user.email?.split("@")[0],
+                country: data.user.country || "AL"
+              });
+            }
+          } else {
+            setError(t("authErrors.appleFailed"));
+          }
+        }
+      } catch (err) {
+        console.error("Apple Sign In error:", err);
+        if (err.message !== "The user canceled the authorization attempt.") {
+          setError(t("authErrors.appleFailed"));
+        }
+      }
+    } else {
+      setError(t("authErrors.appleIOSOnly"));
+    }
+  };
+  const [taglineIndex, setTaglineIndex] = reactExports.useState(0);
+  const taglines = [
+    t("auth.tagline1"),
+    t("auth.tagline2"),
+    t("auth.tagline3"),
+    t("auth.tagline4")
+  ];
+  reactExports.useEffect(() => {
+    const interval = setInterval(() => {
+      setTaglineIndex((prev) => (prev + 1) % 4);
+    }, 4e3);
+    return () => clearInterval(interval);
+  }, []);
+  const handleGuestButtonClick = () => {
+    setShowAgeVerification(true);
+    setSelectedAge("");
+  };
+  const handleGuestLogin = () => {
+    if (!selectedAge || parseInt(selectedAge) < 18) {
+      return;
+    }
+    const guestId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    clearAllUserData();
+    localStorage.setItem("isGuest", "true");
+    localStorage.setItem("guestId", guestId);
+    localStorage.setItem("isAuthenticated", "true");
+    localStorage.setItem("userCountry", "AL");
+    localStorage.setItem("userAge", selectedAge);
+    console.log("👤 Guest session started:", guestId, "Age:", selectedAge);
+    setShowAgeVerification(false);
+    if (onAuthSuccess) onAuthSuccess({ isGuest: true, guestId });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    if (!isLogin && !firstName.trim()) {
+      setError(t("authErrors.enterFirstName"));
+      return;
+    }
+    if (!isLogin && !lastName.trim()) {
+      setError(t("authErrors.enterLastName"));
+      return;
+    }
+    if (!email.trim()) {
+      setError(t("authErrors.enterEmail"));
+      return;
+    }
+    if (!password || password.length < 6) {
+      setError(t("authErrors.passwordLength"));
+      return;
+    }
+    setLoading(true);
+    try {
+      const endpoint = isLogin ? "/api/auth/login" : "/api/auth/register";
+      const payload = isLogin ? { email: email.trim(), password } : {
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        email: email.trim(),
+        password,
+        country: "AL"
+      };
+      const response = await fetch(`${backendUrl2}${endpoint}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.removeItem("userId");
+        localStorage.removeItem("userEmail");
+        localStorage.removeItem("userName");
+        localStorage.removeItem("userCountry");
+        localStorage.removeItem("isAuthenticated");
+        localStorage.removeItem("isGuest");
+        localStorage.removeItem("guestSession");
+        localStorage.removeItem("guestId");
+        localStorage.removeItem("conversationHistory");
+        const userId = data.user.odId || data.user.userId;
+        const userName = data.user.firstName ? `${data.user.firstName} ${data.user.lastName || ""}`.trim() : data.user.username || email.split("@")[0];
+        localStorage.setItem("userId", userId);
+        localStorage.setItem("userEmail", data.user.email);
+        localStorage.setItem("userName", userName);
+        localStorage.setItem("isAuthenticated", "true");
+        localStorage.setItem("userCountry", data.user.country || "AL");
+        console.log("✅ Auth successful:", { userId, userName, email: data.user.email });
+        if (onAuthSuccess) {
+          onAuthSuccess({
+            userId,
+            email: data.user.email,
+            userName,
+            country: data.user.country || "AL"
+          });
+        }
+      } else {
+        setError(data.error || t("authErrors.somethingWrong"));
+      }
+    } catch (err) {
+      console.error("Auth error:", err);
+      setError(t("authErrors.connectionError"));
+    } finally {
+      setLoading(false);
+    }
+  };
+  if (forgotPasswordMode) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed top-4 right-4 z-50", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LanguageSwitcher, {}) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-900/80 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20 max-w-md w-full", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => {
+              setForgotPasswordMode(false);
+              setResetStep(1);
+              setResetEmail("");
+              setResetCode("");
+              setNewPassword("");
+              setError("");
+            },
+            className: "mb-6 flex items-center gap-2 text-slate-400 hover:text-white transition-colors",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-5 h-5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("tips.back") })
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-2xl font-bold text-white mb-6 text-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(KeyRound, { className: "w-8 h-8 inline-block mr-2" }),
+          t("auth.resetPassword")
+        ] }),
+        resetStep === 1 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "email",
+              value: resetEmail,
+              onChange: (e) => setResetEmail(e.target.value),
+              placeholder: t("auth.email") + " 📧",
+              className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Button,
+            {
+              onClick: async () => {
+                if (!resetEmail.trim()) {
+                  setError(t("authErrors.enterEmail"));
+                  return;
+                }
+                setLoading(true);
+                try {
+                  const response = await fetch(`${backendUrl2}/api/auth/forgot-password`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email: resetEmail.trim() })
+                  });
+                  const data = await response.json();
+                  if (response.ok) {
+                    setResetStep(2);
+                    setSuccessMessage(t("auth.codeSent"));
+                    setError("");
+                  } else {
+                    setError(data.error || t("authErrors.somethingWrong"));
+                  }
+                } catch (err) {
+                  setError(t("authErrors.connectionError"));
+                } finally {
+                  setLoading(false);
+                }
+              },
+              disabled: loading,
+              className: "w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl",
+              children: loading ? t("common.loading") : t("auth.sendCode")
+            }
+          )
+        ] }),
+        resetStep === 2 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "text",
+              value: resetCode,
+              onChange: (e) => setResetCode(e.target.value),
+              placeholder: t("auth.sixDigitCode"),
+              maxLength: 6,
+              className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-center text-2xl tracking-widest"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Button,
+            {
+              onClick: async () => {
+                if (!resetCode || resetCode.length !== 6) {
+                  setError(t("authErrors.enterCode"));
+                  return;
+                }
+                setLoading(true);
+                try {
+                  const response = await fetch(`${backendUrl2}/api/auth/verify-reset-code`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email: resetEmail.trim(), code: resetCode })
+                  });
+                  const data = await response.json();
+                  if (response.ok) {
+                    setResetStep(3);
+                    setError("");
+                  } else {
+                    setError(data.error || t("authErrors.wrongCode"));
+                  }
+                } catch (err) {
+                  setError(t("authErrors.connectionError"));
+                } finally {
+                  setLoading(false);
+                }
+              },
+              disabled: loading,
+              className: "w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl",
+              children: loading ? t("common.loading") : t("auth.verifyCode")
+            }
+          )
+        ] }),
+        resetStep === 3 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "password",
+              value: newPassword,
+              onChange: (e) => setNewPassword(e.target.value),
+              placeholder: t("auth.newPassword") + " 🔐",
+              className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Button,
+            {
+              onClick: async () => {
+                if (!newPassword || newPassword.length < 6) {
+                  setError(t("authErrors.passwordLength"));
+                  return;
+                }
+                setLoading(true);
+                try {
+                  const response = await fetch(`${backendUrl2}/api/auth/reset-password`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      email: resetEmail.trim(),
+                      code: resetCode,
+                      newPassword
+                    })
+                  });
+                  const data = await response.json();
+                  if (response.ok) {
+                    setSuccessMessage(t("auth.passwordChanged"));
+                    setTimeout(() => {
+                      setForgotPasswordMode(false);
+                      setIsLogin(true);
+                      setResetStep(1);
+                      setResetEmail("");
+                      setResetCode("");
+                      setNewPassword("");
+                      setError("");
+                      setSuccessMessage("");
+                    }, 2e3);
+                  } else {
+                    setError(data.error || t("authErrors.somethingWrong"));
+                  }
+                } catch (err) {
+                  setError(t("authErrors.connectionError"));
+                } finally {
+                  setLoading(false);
+                }
+              },
+              disabled: loading,
+              className: "w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl",
+              children: loading ? t("common.loading") : t("auth.changePassword")
+            }
+          )
+        ] }),
+        error && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-red-400 text-sm text-center", children: error }) }),
+        successMessage && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4 p-3 bg-green-500/10 border border-green-500/30 rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-green-400 text-sm text-center", children: successMessage }) })
+      ] })
+    ] });
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed top-4 right-4 z-50", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LanguageSwitcher, {}) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-md", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-8", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-block mb-5 relative", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-24 h-24 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/50 relative overflow-hidden animate-bounce-slow", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-white/20 to-transparent" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(MessageSquare, { className: "w-12 h-12 text-white relative z-10", fill: "currentColor", strokeWidth: 1.5 }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 text-yellow-300 absolute top-2 right-2 animate-pulse" })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center shadow-lg border-2 border-slate-900", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-3 h-3 bg-white rounded-full" }) })
+        ] }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h1", { className: "text-5xl font-extrabold mb-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "bg-gradient-to-r from-white via-indigo-100 to-purple-100 bg-clip-text text-transparent", children: "Biseda" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent text-4xl", children: ".ai" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-8 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 text-base font-medium animate-fade-in", children: taglines[taglineIndex] }) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-900/80 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 mb-8 bg-slate-800/50 p-1.5 rounded-2xl border border-slate-700/50", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => {
+                setIsLogin(false);
+                setError("");
+              },
+              className: `flex-1 py-3.5 rounded-xl font-semibold text-base transition-all duration-300 ${!isLogin ? "bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white shadow-md shadow-purple-500/30" : "text-slate-400 hover:text-white"}`,
+              children: t("auth.register")
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => {
+                setIsLogin(true);
+                setError("");
+              },
+              className: `flex-1 py-3.5 rounded-xl font-semibold text-base transition-all duration-300 ${isLogin ? "bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white shadow-md shadow-purple-500/30" : "text-slate-400 hover:text-white"}`,
+              children: t("auth.login")
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, className: "space-y-4", children: [
+          !isLogin && /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                type: "text",
+                value: firstName,
+                onChange: (e) => {
+                  setFirstName(e.target.value);
+                  setError("");
+                },
+                className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base",
+                placeholder: t("auth.firstName") + " ✏️",
+                style: { fontSize: "16px" },
+                required: true
+              }
+            ) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                type: "text",
+                value: lastName,
+                onChange: (e) => {
+                  setLastName(e.target.value);
+                  setError("");
+                },
+                className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base",
+                placeholder: t("auth.lastName") + " ✏️",
+                style: { fontSize: "16px" },
+                required: true
+              }
+            ) })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "email",
+              value: email,
+              onChange: (e) => {
+                setEmail(e.target.value);
+                setError("");
+              },
+              className: "w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base",
+              placeholder: t("auth.email") + " 📧",
+              style: { fontSize: "16px" },
+              required: true
+            }
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
+              {
+                type: showPassword ? "text" : "password",
+                value: password,
+                onChange: (e) => {
+                  setPassword(e.target.value);
+                  setError("");
+                },
+                className: "w-full px-4 py-4 pr-12 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base",
+                placeholder: t("auth.password") + " 🔐",
+                style: { fontSize: "16px" },
+                required: true
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                type: "button",
+                onClick: () => setShowPassword(!showPassword),
+                className: "absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors",
+                children: showPassword ? /* @__PURE__ */ jsxRuntimeExports.jsx(EyeOff, { className: "w-5 h-5" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Eye, { className: "w-5 h-5" })
+              }
+            )
+          ] }),
+          error && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-3 bg-red-500/10 border border-red-500/30 rounded-xl animate-shake", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-red-400 text-sm text-center", children: error }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Button,
+              {
+                type: "submit",
+                disabled: loading,
+                className: "w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl text-base shadow-lg transition-all duration-300",
+                children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-center gap-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4 h-4 border-3 border-white/30 border-t-white rounded-full animate-spin" }) }) : /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isLogin ? "🚀 " + t("auth.login") : "✨ " + t("auth.createAccount") })
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
+              {
+                type: "button",
+                onClick: handleGuestButtonClick,
+                disabled: loading,
+                className: "w-full bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white font-bold h-14 rounded-xl text-base shadow-lg shadow-slate-500/20 transition-all duration-300 inline-flex items-center justify-center disabled:opacity-50",
+                children: [
+                  "👤 ",
+                  t("auth.guest")
+                ]
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              type: "button",
+              onClick: handleAppleSignIn,
+              className: "w-full bg-white hover:bg-gray-100 text-black font-semibold h-14 rounded-xl text-base shadow-lg transition-all duration-300 flex items-center justify-center gap-3",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("svg", { width: "20", height: "20", viewBox: "0 0 24 24", fill: "black", children: /* @__PURE__ */ jsxRuntimeExports.jsx("path", { d: "M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" }) }),
+                t("auth.continueWithApple")
+              ]
+            }
+          )
+        ] }),
+        isLogin && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => setForgotPasswordMode(true),
+            className: "text-sm text-purple-400 hover:text-purple-300 transition-colors w-full text-center",
+            children: [
+              "🔑 ",
+              t("auth.forgotPassword")
+            ]
+          }
+        ) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-6 text-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-500 text-xs", children: [
+          t("auth.termsAgree"),
+          " ",
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-purple-400 font-medium", children: [
+            t("auth.terms"),
+            " & ",
+            t("auth.privacy")
+          ] })
+        ] }) })
+      ] })
+    ] }),
+    showAgeVerification && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-900/95 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20 max-w-md w-full", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-3xl", children: "🔞" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white mb-2", children: t("ageVerification.title") }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: t("ageVerification.subtitle") })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-slate-300 text-sm font-medium mb-2", children: t("ageVerification.selectAge") }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "select",
+            {
+              value: selectedAge,
+              onChange: (e) => setSelectedAge(e.target.value),
+              className: "flex-1 px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white text-lg focus:outline-none focus:border-purple-500/50 transition-all appearance-none cursor-pointer",
+              style: { fontSize: "18px" },
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", disabled: true, children: t("ageVerification.chooseAge") }),
+                Array.from({ length: 83 }, (_, i) => i + 18).map((age) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: age, children: age }, age))
+              ]
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-slate-300 text-lg font-medium whitespace-nowrap", children: t("ageVerification.yearsOld") })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          Button,
+          {
+            onClick: handleGuestLogin,
+            disabled: !selectedAge || parseInt(selectedAge) < 18,
+            className: "w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl text-base shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed",
+            children: [
+              "✅ ",
+              t("ageVerification.confirm")
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setShowAgeVerification(false),
+            className: "w-full text-slate-400 hover:text-white py-3 transition-colors text-sm",
+            children: t("common.cancel")
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-4 text-center text-xs text-slate-500", children: t("ageVerification.disclaimer") })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `
+        @keyframes bounce-slow {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
+        }
+        .animate-bounce-slow {
+          animation: bounce-slow 3s ease-in-out infinite;
+        }
+        @keyframes fade-in {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.5s ease-out;
+        }
+        @keyframes shake {
+          0%, 100% { transform: translateX(0); }
+          25% { transform: translateX(-10px); }
+          75% { transform: translateX(10px); }
+        }
+        .animate-shake {
+          animation: shake 0.5s ease-in-out;
+        }
+      ` })
   ] });
 }
 function UserProfile({ onLogout }) {
