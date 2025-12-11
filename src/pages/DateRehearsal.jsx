@@ -1320,37 +1320,38 @@ ${langInstruction}`;
               
               {/* Parent name with inline gender selection for meeting parents */}
               {selectedScenarioId === 'meet_parents' ? (
-                <div className="space-y-4">
-                  {/* Parent name + gender row */}
-                  <div className="flex gap-2">
-                    <Input
-                      value={dateName}
-                      onChange={(e) => setDateName(e.target.value)}
-                      placeholder={getNamePlaceholder()}
-                      className="bg-slate-900 border-slate-700 text-white flex-1 text-sm h-10"
-                    />
-                    <div className="flex gap-1">
+                <div className="space-y-3">
+                  {/* Parent name input */}
+                  <Input
+                    value={dateName}
+                    onChange={(e) => setDateName(e.target.value)}
+                    placeholder={getNamePlaceholder()}
+                    className="bg-slate-900 border-slate-700 text-white text-sm h-10"
+                  />
+                  
+                  {/* Gender selection - Full width buttons */}
+                  <div>
+                    <p className="text-slate-400 text-xs mb-2">{t('rehearsal.selectParentGender', 'Select parent gender:')}</p>
+                    <div className="grid grid-cols-2 gap-2">
                       <button
                         onClick={() => setPersonGender('female')}
-                        className={`px-3 py-2 rounded-lg text-lg transition-all ${
+                        className={`p-3 rounded-lg text-xl transition-all flex items-center justify-center gap-2 ${
                           personGender === 'female'
-                            ? 'bg-pink-500/30 border-2 border-pink-500'
-                            : 'bg-slate-800 border-2 border-slate-700 hover:border-slate-600'
+                            ? 'bg-pink-500/30 border-2 border-pink-500 text-white'
+                            : 'bg-slate-800 border-2 border-slate-700 hover:border-slate-600 text-slate-400'
                         }`}
-                        title={t('rehearsal.genderFemale', 'Woman')}
                       >
-                        👩
+                        👩 <span className="text-sm">{t('rehearsal.mom', 'Mom')}</span>
                       </button>
                       <button
                         onClick={() => setPersonGender('male')}
-                        className={`px-3 py-2 rounded-lg text-lg transition-all ${
+                        className={`p-3 rounded-lg text-xl transition-all flex items-center justify-center gap-2 ${
                           personGender === 'male'
-                            ? 'bg-blue-500/30 border-2 border-blue-500'
-                            : 'bg-slate-800 border-2 border-slate-700 hover:border-slate-600'
+                            ? 'bg-blue-500/30 border-2 border-blue-500 text-white'
+                            : 'bg-slate-800 border-2 border-slate-700 hover:border-slate-600 text-slate-400'
                         }`}
-                        title={t('rehearsal.genderMale', 'Man')}
                       >
-                        👨
+                        👨 <span className="text-sm">{t('rehearsal.dad', 'Dad')}</span>
                       </button>
                     </div>
                   </div>
@@ -1379,14 +1380,26 @@ ${langInstruction}`;
                 />
               )}
               
-              {/* Continue button - for meeting parents, requires gender selection too */}
-              {dateName.trim() && (selectedScenarioId !== 'meet_parents' || (partnerName.trim() && personGender)) && (
-                <Button
-                  onClick={() => selectedScenarioId === 'meet_parents' ? setSetupStep(4) : setSetupStep(3)}
-                  className="w-full mt-3 bg-purple-500 hover:bg-purple-600 h-10 text-sm"
-                >
-                  {t('common.continue', 'Continue')}
-                </Button>
+              {/* Continue button */}
+              {dateName.trim() && (
+                <div>
+                  {selectedScenarioId === 'meet_parents' && (!partnerName.trim() || !personGender) && (
+                    <div className="mt-3 p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg">
+                      <p className="text-amber-400 text-xs flex items-center gap-2">
+                        <AlertCircle className="w-4 h-4" />
+                        {!personGender ? t('rehearsal.selectGenderFirst', 'Please select parent gender above') : t('rehearsal.enterPartnerNameFirst', 'Please enter your partner\'s name')}
+                      </p>
+                    </div>
+                  )}
+                  {(selectedScenarioId !== 'meet_parents' || (partnerName.trim() && personGender)) && (
+                    <Button
+                      onClick={() => selectedScenarioId === 'meet_parents' ? setSetupStep(4) : setSetupStep(3)}
+                      className="w-full mt-3 bg-purple-500 hover:bg-purple-600 h-10 text-sm"
+                    >
+                      {t('common.continue', 'Continue')}
+                    </Button>
+                  )}
+                </div>
               )}
             </Card>
           )}

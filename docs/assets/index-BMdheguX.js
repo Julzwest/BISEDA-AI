@@ -13742,7 +13742,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-D5QNJzWT.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-CUUi_7BW.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -16717,7 +16717,7 @@ function ClipboardSuggestions() {
       if (window.Capacitor && window.Capacitor.isNativePlatform()) {
         try {
           const { Clipboard: Clipboard2 } = await __vitePreload(async () => {
-            const { Clipboard: Clipboard22 } = await import("./index-BgaDgGIl.js");
+            const { Clipboard: Clipboard22 } = await import("./index-qeywutiK.js");
             return { Clipboard: Clipboard22 };
           }, true ? [] : void 0);
           const { value } = await Clipboard2.read();
@@ -25344,34 +25344,39 @@ ${langInstruction}`;
               name
             )) })
           ] }),
-          selectedScenarioId === "meet_parents" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                Input,
-                {
-                  value: dateName,
-                  onChange: (e) => setDateName(e.target.value),
-                  placeholder: getNamePlaceholder(),
-                  className: "bg-slate-900 border-slate-700 text-white flex-1 text-sm h-10"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
+          selectedScenarioId === "meet_parents" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Input,
+              {
+                value: dateName,
+                onChange: (e) => setDateName(e.target.value),
+                placeholder: getNamePlaceholder(),
+                className: "bg-slate-900 border-slate-700 text-white text-sm h-10"
+              }
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs mb-2", children: t("rehearsal.selectParentGender", "Select parent gender:") }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-2", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs(
                   "button",
                   {
                     onClick: () => setPersonGender("female"),
-                    className: `px-3 py-2 rounded-lg text-lg transition-all ${personGender === "female" ? "bg-pink-500/30 border-2 border-pink-500" : "bg-slate-800 border-2 border-slate-700 hover:border-slate-600"}`,
-                    title: t("rehearsal.genderFemale", "Woman"),
-                    children: "👩"
+                    className: `p-3 rounded-lg text-xl transition-all flex items-center justify-center gap-2 ${personGender === "female" ? "bg-pink-500/30 border-2 border-pink-500 text-white" : "bg-slate-800 border-2 border-slate-700 hover:border-slate-600 text-slate-400"}`,
+                    children: [
+                      "👩 ",
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm", children: t("rehearsal.mom", "Mom") })
+                    ]
                   }
                 ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
+                /* @__PURE__ */ jsxRuntimeExports.jsxs(
                   "button",
                   {
                     onClick: () => setPersonGender("male"),
-                    className: `px-3 py-2 rounded-lg text-lg transition-all ${personGender === "male" ? "bg-blue-500/30 border-2 border-blue-500" : "bg-slate-800 border-2 border-slate-700 hover:border-slate-600"}`,
-                    title: t("rehearsal.genderMale", "Man"),
-                    children: "👨"
+                    className: `p-3 rounded-lg text-xl transition-all flex items-center justify-center gap-2 ${personGender === "male" ? "bg-blue-500/30 border-2 border-blue-500 text-white" : "bg-slate-800 border-2 border-slate-700 hover:border-slate-600 text-slate-400"}`,
+                    children: [
+                      "👨 ",
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm", children: t("rehearsal.dad", "Dad") })
+                    ]
                   }
                 )
               ] })
@@ -25401,14 +25406,20 @@ ${langInstruction}`;
               className: "bg-slate-900 border-slate-700 text-white text-sm h-10 mb-2"
             }
           ),
-          dateName.trim() && (selectedScenarioId !== "meet_parents" || partnerName.trim() && personGender) && /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Button,
-            {
-              onClick: () => selectedScenarioId === "meet_parents" ? setSetupStep(4) : setSetupStep(3),
-              className: "w-full mt-3 bg-purple-500 hover:bg-purple-600 h-10 text-sm",
-              children: t("common.continue", "Continue")
-            }
-          )
+          dateName.trim() && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            selectedScenarioId === "meet_parents" && (!partnerName.trim() || !personGender) && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-3 p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-amber-400 text-xs flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(AlertCircle, { className: "w-4 h-4" }),
+              !personGender ? t("rehearsal.selectGenderFirst", "Please select parent gender above") : t("rehearsal.enterPartnerNameFirst", "Please enter your partner's name")
+            ] }) }),
+            (selectedScenarioId !== "meet_parents" || partnerName.trim() && personGender) && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Button,
+              {
+                onClick: () => selectedScenarioId === "meet_parents" ? setSetupStep(4) : setSetupStep(3),
+                className: "w-full mt-3 bg-purple-500 hover:bg-purple-600 h-10 text-sm",
+                children: t("common.continue", "Continue")
+              }
+            )
+          ] })
         ] }),
         setupStep === 3 && dateName.trim() && /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 backdrop-blur-sm p-4", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs(
