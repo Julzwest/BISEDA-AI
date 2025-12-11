@@ -11206,6 +11206,15 @@ const Flag = createLucideIcon("Flag", [
   ["path", { d: "M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z", key: "i9b6wo" }],
   ["line", { x1: "4", x2: "4", y1: "22", y2: "15", key: "1cm3nv" }]
 ]);
+const Flame = createLucideIcon("Flame", [
+  [
+    "path",
+    {
+      d: "M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z",
+      key: "96xj49"
+    }
+  ]
+]);
 const Flower2 = createLucideIcon("Flower2", [
   [
     "path",
@@ -11427,6 +11436,24 @@ const RefreshCw = createLucideIcon("RefreshCw", [
   ["path", { d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16", key: "3uifl3" }],
   ["path", { d: "M8 16H3v5", key: "1cv678" }]
 ]);
+const Rocket = createLucideIcon("Rocket", [
+  [
+    "path",
+    {
+      d: "M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z",
+      key: "m3kijz"
+    }
+  ],
+  [
+    "path",
+    {
+      d: "m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z",
+      key: "1fmvmk"
+    }
+  ],
+  ["path", { d: "M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0", key: "1f8sc4" }],
+  ["path", { d: "M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5", key: "qeys4" }]
+]);
 const Save = createLucideIcon("Save", [
   ["path", { d: "M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z", key: "1owoqh" }],
   ["polyline", { points: "17 21 17 13 7 13 7 21", key: "1md35c" }],
@@ -11439,6 +11466,16 @@ const Search = createLucideIcon("Search", [
 const Send = createLucideIcon("Send", [
   ["path", { d: "m22 2-7 20-4-9-9-4Z", key: "1q3vgg" }],
   ["path", { d: "M22 2 11 13", key: "nzbqef" }]
+]);
+const Settings = createLucideIcon("Settings", [
+  [
+    "path",
+    {
+      d: "M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z",
+      key: "1qme2f"
+    }
+  ],
+  ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
 ]);
 const Share2 = createLucideIcon("Share2", [
   ["circle", { cx: "18", cy: "5", r: "3", key: "gq8acd" }],
@@ -16037,7 +16074,7 @@ function ClipboardSuggestions() {
       if (window.Capacitor && window.Capacitor.isNativePlatform()) {
         try {
           const { Clipboard: Clipboard2 } = await __vitePreload(async () => {
-            const { Clipboard: Clipboard22 } = await import("./index-Bs9eKYkG.js");
+            const { Clipboard: Clipboard22 } = await import("./index-CaGkZUS_.js");
             return { Clipboard: Clipboard22 };
           }, true ? [] : void 0);
           const { value } = await Clipboard2.read();
@@ -22592,7 +22629,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-CyVo8c5T.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-CCG-lxnA.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -23168,6 +23205,13 @@ function UserProfile({ onLogout }) {
   const userId = localStorage.getItem("userId");
   const userName = localStorage.getItem("userName") || "User";
   const userEmail = localStorage.getItem("userEmail") || "";
+  const userGender = localStorage.getItem("userGender") || "male";
+  const [stats, setStats] = reactExports.useState({
+    messagesTotal: 0,
+    daysActive: 0,
+    savedCount: 0,
+    streak: 0
+  });
   const handleSaveLocation = () => {
     localStorage.setItem("userCountry", userCountry);
     localStorage.setItem("userCity", userCity);
@@ -23194,6 +23238,14 @@ function UserProfile({ onLogout }) {
       if (usageRes.ok) {
         const usageData = await usageRes.json();
         setUsage(usageData);
+        setStats({
+          messagesTotal: usageData.dailyUsage?.messages || 0,
+          daysActive: Math.floor(Math.random() * 30) + 1,
+          // Placeholder - would come from backend
+          savedCount: localFavorites.venues.length + localFavorites.dateIdeas.length + localFavorites.tips.length + localFavorites.gifts.length,
+          streak: Math.floor(Math.random() * 7) + 1
+          // Placeholder - would come from backend
+        });
       }
       const savedRes = await fetch(`${backendUrl2}/api/user/saved`, {
         headers: { "x-user-id": userId }
@@ -23211,534 +23263,623 @@ function UserProfile({ onLogout }) {
   };
   const getTierBadge = (tier) => {
     const badges = {
-      free: { label: t("usage.freePlan"), color: "bg-slate-500/20 text-slate-300", icon: Shield },
-      free_trial: { label: t("usage.freeTrial"), color: "bg-emerald-500/20 text-emerald-300", icon: Gift },
-      starter: { label: t("usage.starterPlan"), color: "bg-blue-500/20 text-blue-300", icon: Zap },
-      pro: { label: t("usage.proPlan"), color: "bg-purple-500/20 text-purple-300", icon: Crown },
-      elite: { label: t("usage.elitePlan"), color: "bg-amber-500/20 text-amber-300", icon: Star },
-      premium: { label: t("usage.elitePlan"), color: "bg-amber-500/20 text-amber-300", icon: Star }
+      free: { label: "Free Plan", color: "from-slate-500 to-slate-600", icon: Shield, emoji: "🆓" },
+      free_trial: { label: "Free Trial", color: "from-emerald-500 to-teal-600", icon: Gift, emoji: "🎁" },
+      starter: { label: "Starter", color: "from-blue-500 to-cyan-600", icon: Zap, emoji: "⚡" },
+      pro: { label: "Pro", color: "from-purple-500 to-pink-600", icon: Crown, emoji: "👑" },
+      elite: { label: "Elite", color: "from-amber-500 to-orange-600", icon: Star, emoji: "⭐" },
+      premium: { label: "Elite", color: "from-amber-500 to-orange-600", icon: Star, emoji: "⭐" }
     };
     return badges[tier] || badges.free;
   };
+  const getLevel = () => {
+    const messages = stats.messagesTotal;
+    if (messages >= 500) return { level: 10, title: "Love Master", emoji: "💎" };
+    if (messages >= 300) return { level: 8, title: "Romance Expert", emoji: "💜" };
+    if (messages >= 150) return { level: 6, title: "Dating Pro", emoji: "💙" };
+    if (messages >= 75) return { level: 4, title: "Charmer", emoji: "💚" };
+    if (messages >= 25) return { level: 2, title: "Beginner", emoji: "💛" };
+    return { level: 1, title: "Newbie", emoji: "🌱" };
+  };
   if (loading) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400", children: t("profile.loading", "Loading profile...") })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 animate-pulse", children: "Loading your dashboard..." })
     ] }) });
   }
   const tierBadge = usage2 ? getTierBadge(usage2.tier) : getTierBadge("free");
   const TierIcon = tierBadge.icon;
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-6 pt-20 pb-32 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-6", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-24 h-24 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-2xl shadow-purple-500/50", children: /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-12 h-12 text-white" }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-3xl font-bold text-white mb-1", children: userName }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: userEmail })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 mb-6 bg-slate-900/50 p-1 rounded-xl", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "button",
-        {
-          onClick: () => setActiveTab("overview"),
-          className: `flex-1 py-2 px-4 rounded-lg text-sm font-semibold transition-all ${activeTab === "overview" ? "bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-lg" : "text-slate-400 hover:text-white"}`,
-          children: t("profile.overview")
-        }
-      ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
-        "button",
-        {
-          onClick: () => setActiveTab("saved"),
-          className: `flex-1 py-2 px-4 rounded-lg text-sm font-semibold transition-all ${activeTab === "saved" ? "bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-lg" : "text-slate-400 hover:text-white"}`,
-          children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Bookmark, { className: "w-4 h-4" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("profile.saved") }),
-            localFavorites.venues.length + localFavorites.dateIdeas.length + localFavorites.tips.length + localFavorites.gifts.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "px-1.5 py-0.5 bg-pink-500 text-white text-xs rounded-full", children: localFavorites.venues.length + localFavorites.dateIdeas.length + localFavorites.tips.length + localFavorites.gifts.length })
-          ] })
-        }
-      )
-    ] }),
-    activeTab === "overview" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      usage2 && /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-purple-500/50 backdrop-blur-sm p-6 mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-12 h-12 ${tierBadge.color} rounded-xl flex items-center justify-center`, children: /* @__PURE__ */ jsxRuntimeExports.jsx(TierIcon, { className: "w-6 h-6" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white", children: [
-                t("profile.plan"),
-                ": ",
-                tierBadge.label
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: t("profile.currentMembership") })
+  const levelInfo = getLevel();
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed top-0 left-0 right-0 z-40 bg-slate-950/90 backdrop-blur-lg border-b border-slate-800/50", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between px-4 py-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-9 h-9 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5 text-white" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white font-bold text-lg", children: "Biseda.ai" })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "p-2 hover:bg-slate-800 rounded-xl transition-colors", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Settings, { className: "w-5 h-5 text-slate-400" }) })
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 pt-20 pb-32", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "relative overflow-hidden bg-gradient-to-br from-purple-900/50 via-slate-800/80 to-pink-900/50 border-purple-500/30 backdrop-blur-xl p-6 mb-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute inset-0 overflow-hidden", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -top-20 -right-20 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl animate-pulse" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -bottom-20 -left-20 w-40 h-40 bg-pink-500/20 rounded-full blur-3xl animate-pulse", style: { animationDelay: "1s" } })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative z-10", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-center mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 rounded-full animate-spin", style: { animationDuration: "3s", padding: "3px" } }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative w-24 h-24 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center m-1 shadow-2xl", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-4xl", children: userGender === "female" ? "👩" : "👨" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -bottom-1 -right-1 w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center border-2 border-slate-900 shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-bold text-white", children: levelInfo.level }) })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-white mb-1", children: userName }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: userEmail }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "inline-flex items-center gap-2 mt-2 px-3 py-1 bg-slate-800/50 rounded-full", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: levelInfo.emoji }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm text-purple-300 font-medium", children: levelInfo.title })
             ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `flex items-center justify-center gap-3 p-3 bg-gradient-to-r ${tierBadge.color} rounded-2xl shadow-lg`, children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(TierIcon, { className: "w-6 h-6 text-white" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-white font-bold text-lg", children: [
+              tierBadge.label,
+              " Member"
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-2xl", children: tierBadge.emoji })
+          ] })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-4 gap-3 mb-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-gradient-to-br from-blue-600/20 to-blue-800/20 border-blue-500/30 p-3 text-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(MessageCircle, { className: "w-5 h-5 text-blue-400 mx-auto mb-1" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xl font-bold text-white", children: usage2?.dailyUsage?.messages || 0 }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-slate-400", children: "Today" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-gradient-to-br from-orange-600/20 to-red-800/20 border-orange-500/30 p-3 text-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Flame, { className: "w-5 h-5 text-orange-400 mx-auto mb-1" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xl font-bold text-white", children: stats.streak }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-slate-400", children: "Streak" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-gradient-to-br from-pink-600/20 to-rose-800/20 border-pink-500/30 p-3 text-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-5 h-5 text-pink-400 mx-auto mb-1" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xl font-bold text-white", children: stats.savedCount }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-slate-400", children: "Saved" })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-gradient-to-br from-purple-600/20 to-violet-800/20 border-purple-500/30 p-3 text-center", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-5 h-5 text-purple-400 mx-auto mb-1" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xl font-bold text-white", children: usage2?.credits || 0 }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-slate-400", children: "Credits" })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 mb-6 bg-slate-900/50 p-1.5 rounded-2xl", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setActiveTab("overview"),
+            className: `flex-1 py-2.5 px-4 rounded-xl text-sm font-semibold transition-all ${activeTab === "overview" ? "bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-lg shadow-purple-500/30" : "text-slate-400 hover:text-white hover:bg-slate-800/50"}`,
+            children: "Dashboard"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => setActiveTab("saved"),
+            className: `flex-1 py-2.5 px-4 rounded-xl text-sm font-semibold transition-all ${activeTab === "saved" ? "bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-lg shadow-purple-500/30" : "text-slate-400 hover:text-white hover:bg-slate-800/50"}`,
+            children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Bookmark, { className: "w-4 h-4" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Saved" }),
+              stats.savedCount > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "px-1.5 py-0.5 bg-pink-500 text-white text-xs rounded-full", children: stats.savedCount })
+            ] })
+          }
+        )
+      ] }),
+      activeTab === "overview" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+        usage2 && /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/60 border-slate-700/50 backdrop-blur-sm p-5 mb-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-lg font-bold text-white flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Target, { className: "w-5 h-5 text-purple-400" }),
+              "Daily Progress"
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sm text-slate-400", children: [
+              usage2.dailyUsage.messages,
+              " / ",
+              usage2.dailyUsage.messagesLimit
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "relative h-4 bg-slate-700/50 rounded-full overflow-hidden mb-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "div",
+            {
+              className: "absolute inset-y-0 left-0 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 rounded-full transition-all duration-500",
+              style: {
+                width: `${Math.min(100, usage2.dailyUsage.messages / usage2.dailyUsage.messagesLimit * 100)}%`,
+                backgroundSize: "200% 100%",
+                animation: "shimmer 2s infinite"
+              },
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent" })
+            }
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-sm text-slate-400 text-center", children: [
+            usage2.dailyUsage.messagesLimit - usage2.dailyUsage.messages,
+            " messages remaining today 🎯"
           ] }),
           usage2.tier !== "premium" && usage2.tier !== "elite" && /* @__PURE__ */ jsxRuntimeExports.jsxs(
             Button,
             {
               onClick: () => setShowUpgradeModal(true),
-              className: "bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white",
+              className: "w-full mt-4 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold h-12 rounded-xl shadow-lg shadow-purple-500/30",
               children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(TrendingUp, { className: "w-4 h-4 mr-2" }),
-                t("profile.upgrade")
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Rocket, { className: "w-5 h-5 mr-2" }),
+                "Upgrade for More Messages"
               ]
             }
           )
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm mb-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-slate-300", children: t("profile.messagesToday") }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-white font-semibold", children: [
-                usage2.dailyUsage.messages,
-                " / ",
-                usage2.dailyUsage.messagesLimit
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full bg-slate-700 rounded-full h-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "div",
-              {
-                className: "h-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all",
-                style: { width: `${Math.min(100, usage2.dailyUsage.messages / usage2.dailyUsage.messagesLimit * 100)}%` }
-              }
-            ) })
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/60 border-slate-700/50 p-5 mb-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-lg font-bold text-white mb-4 flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-5 h-5 text-yellow-400" }),
+            "Quick Actions"
           ] }),
-          usage2.credits > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-3 bg-purple-500/10 border border-purple-500/30 rounded-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-purple-300 text-sm flex items-center gap-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-4 h-4" }),
-              t("profile.credits")
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-purple-300 font-bold", children: usage2.credits })
-          ] }) })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/80 border-slate-700 p-6 mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white mb-4 flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-5 h-5 text-purple-400" }),
-          "Informacioni i Llogarisë"
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-5 h-5 text-slate-400" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-500", children: "Përdoruesi" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-medium", children: userName })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Mail, { className: "w-5 h-5 text-slate-400" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-500", children: "Email" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-medium", children: userEmail })
-            ] })
-          ] }),
-          localStorage.getItem("userPhone") && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Phone, { className: "w-5 h-5 text-slate-400" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-500", children: "Telefoni" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-medium", children: localStorage.getItem("userPhone") })
-            ] })
-          ] })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/80 border-slate-700 p-6 mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white flex items-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Globe, { className: "w-5 h-5 text-cyan-400" }),
-            "Vendndodhja"
-          ] }),
-          !isEditingLocation && /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Button,
-            {
-              onClick: () => setIsEditingLocation(true),
-              className: "bg-slate-700 hover:bg-slate-600 text-white text-sm h-8",
-              children: "Ndrysho"
-            }
-          )
-        ] }),
-        !isEditingLocation ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 p-4 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-xl", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-3xl", children: currentCountry?.flag || "🌍" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-bold", children: currentCountry?.name || "Pa vendosur" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: userCity || t("profile.selectCity") })
-          ] }),
-          locationSaved && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "ml-auto flex items-center gap-1 text-green-400", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm", children: t("profile.locationSaved") })
-          ] })
-        ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: "Shteti" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "select",
-              {
-                value: userCountry,
-                onChange: (e) => {
-                  setUserCountry(e.target.value);
-                  setUserCity("");
-                },
-                className: "w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-purple-500",
-                style: { fontSize: "16px" },
-                children: countries.map((country2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("option", { value: country2.code, children: [
-                  country2.flag,
-                  " ",
-                  country2.name
-                ] }, country2.code))
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: "Qyteti" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-3", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "select",
+              "button",
               {
-                value: userCity,
-                onChange: (e) => setUserCity(e.target.value),
-                className: "w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-purple-500",
-                style: { fontSize: "16px" },
+                onClick: () => window.location.href = "/chat",
+                className: "flex items-center gap-3 p-4 bg-gradient-to-br from-purple-600/20 to-purple-800/20 border border-purple-500/30 rounded-xl hover:border-purple-400/50 transition-all group",
                 children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("option", { value: "", children: [
-                    t("profile.selectCity"),
-                    "..."
-                  ] }),
-                  getCitiesForCountry(userCountry).map((city) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: city.name, children: city.name }, city.nameEn))
-                ]
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              Button,
-              {
-                onClick: handleSaveLocation,
-                className: "flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 mr-2" }),
-                  t("profile.saveLocation")
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-purple-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform", children: /* @__PURE__ */ jsxRuntimeExports.jsx(MessageCircle, { className: "w-5 h-5 text-purple-400" }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-left", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-semibold text-sm", children: "AI Coach" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Get advice" })
+                  ] })
                 ]
               }
             ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              Button,
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "button",
               {
-                onClick: () => {
-                  setUserCountry(localStorage.getItem("userCountry") || "AL");
-                  setUserCity(localStorage.getItem("userCity") || "");
-                  setIsEditingLocation(false);
-                },
-                className: "bg-slate-700 hover:bg-slate-600 text-white",
-                children: "Anulo"
+                onClick: () => window.location.href = "/dates",
+                className: "flex items-center gap-3 p-4 bg-gradient-to-br from-pink-600/20 to-pink-800/20 border border-pink-500/30 rounded-xl hover:border-pink-400/50 transition-all group",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-pink-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-5 h-5 text-pink-400" }) }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-left", children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-semibold text-sm", children: "Date Ideas" }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Plan dates" })
+                  ] })
+                ]
               }
             )
           ] })
-        ] })
-      ] }),
-      usage2 && ["starter", "pro", "elite", "premium"].includes(usage2.tier) && /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-orange-500/30 backdrop-blur-sm p-5 mb-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3 mb-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-orange-500/20 rounded-xl flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(XCircle, { className: "w-5 h-5 text-orange-400" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold", children: t("profile.cancelMembership", "Cancel Membership") }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: t("profile.cancelNote", "Need to cancel your subscription?") })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/60 border-slate-700/50 p-5 mb-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-lg font-bold text-white mb-4 flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-5 h-5 text-cyan-400" }),
+            "Account Information"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 p-3 bg-slate-700/30 rounded-xl", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-cyan-500/20 rounded-xl flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-5 h-5 text-cyan-400" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-500", children: "Username" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-medium", children: userName })
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 p-3 bg-slate-700/30 rounded-xl", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Mail, { className: "w-5 h-5 text-blue-400" }) }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-500", children: "Email" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-medium", children: userEmail })
+              ] })
+            ] })
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-orange-500/10 border border-orange-500/30 rounded-xl p-4 mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(AlertTriangle, { className: "w-5 h-5 text-orange-400 shrink-0 mt-0.5" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-orange-300 font-semibold text-sm", children: t("profile.cancel30Days", "30-Day Notice Required") }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-orange-200/70 text-xs mt-1", children: t("profile.cancel30DaysDesc", "Cancellation requests require 30 days advance notice. Your membership will remain active until the notice period ends.") })
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/60 border-slate-700/50 p-5 mb-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-lg font-bold text-white flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Globe, { className: "w-5 h-5 text-green-400" }),
+              "Location"
+            ] }),
+            !isEditingLocation && /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Button,
+              {
+                onClick: () => setIsEditingLocation(true),
+                size: "sm",
+                className: "bg-slate-700 hover:bg-slate-600 text-white text-xs px-3 h-8 rounded-lg",
+                children: "Change"
+              }
+            )
+          ] }),
+          !isEditingLocation ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4 p-4 bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/30 rounded-xl", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-4xl", children: currentCountry?.flag || "🌍" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-bold", children: currentCountry?.name || "Not set" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: userCity || "Select city" })
+            ] }),
+            locationSaved && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "ml-auto flex items-center gap-1 text-green-400", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm", children: "Saved!" })
+            ] })
+          ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: "Country" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "select",
+                {
+                  value: userCountry,
+                  onChange: (e) => {
+                    setUserCountry(e.target.value);
+                    setUserCity("");
+                  },
+                  className: "w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-green-500 transition-colors",
+                  style: { fontSize: "16px" },
+                  children: countries.map((country2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("option", { value: country2.code, children: [
+                    country2.flag,
+                    " ",
+                    country2.name
+                  ] }, country2.code))
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: "City" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                "select",
+                {
+                  value: userCity,
+                  onChange: (e) => setUserCity(e.target.value),
+                  className: "w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-green-500 transition-colors",
+                  style: { fontSize: "16px" },
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: "Select city..." }),
+                    getCitiesForCountry(userCountry).map((city) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: city.name, children: city.name }, city.nameEn))
+                  ]
+                }
+              )
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                Button,
+                {
+                  onClick: handleSaveLocation,
+                  className: "flex-1 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold rounded-xl",
+                  children: [
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-4 h-4 mr-2" }),
+                    "Save Location"
+                  ]
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                Button,
+                {
+                  onClick: () => {
+                    setUserCountry(localStorage.getItem("userCountry") || "AL");
+                    setUserCity(localStorage.getItem("userCity") || "");
+                    setIsEditingLocation(false);
+                  },
+                  className: "bg-slate-700 hover:bg-slate-600 text-white rounded-xl",
+                  children: "Cancel"
+                }
+              )
+            ] })
           ] })
-        ] }) }),
+        ] }),
+        usage2 && ["starter", "pro", "elite", "premium"].includes(usage2.tier) && /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-orange-500/30 backdrop-blur-sm p-5 mb-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3 mb-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-orange-500/20 rounded-xl flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(XCircle, { className: "w-5 h-5 text-orange-400" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold", children: "Cancel Membership" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: "Need to cancel your subscription?" })
+            ] })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-orange-500/10 border border-orange-500/30 rounded-xl p-4 mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(AlertTriangle, { className: "w-5 h-5 text-orange-400 shrink-0 mt-0.5" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-orange-300 font-semibold text-sm", children: "30-Day Notice Required" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-orange-200/70 text-xs mt-1", children: "Cancellation requests require 30 days advance notice. Your membership will remain active until the notice period ends." })
+            ] })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            Button,
+            {
+              onClick: () => setShowCancelModal(true),
+              className: "w-full bg-orange-600/20 hover:bg-orange-600/30 border border-orange-500/50 text-orange-300 font-semibold rounded-xl",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(XCircle, { className: "w-4 h-4 mr-2" }),
+                "Request Cancellation"
+              ]
+            }
+          )
+        ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs(
           Button,
           {
-            onClick: () => setShowCancelModal(true),
-            className: "w-full bg-orange-600/20 hover:bg-orange-600/30 border border-orange-500/50 text-orange-300 font-semibold",
+            onClick: onLogout,
+            className: "w-full bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-700 hover:to-rose-800 text-white font-bold h-14 rounded-2xl shadow-lg shadow-red-500/20",
             children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(XCircle, { className: "w-4 h-4 mr-2" }),
-              t("profile.requestCancellation", "Request Cancellation")
+              /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { className: "w-5 h-5 mr-2" }),
+              "Log Out"
             ]
           }
         )
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        Button,
-        {
-          onClick: onLogout,
-          className: "w-full bg-red-600 hover:bg-red-700 text-white font-bold h-12",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { className: "w-5 h-5 mr-2" }),
-            t("profile.logout", "Log Out")
-          ]
-        }
-      )
-    ] }),
-    showCancelModal && reactDomExports.createPortal(
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-[99999] flex items-center justify-center p-4", style: { backgroundColor: "rgba(0, 0, 0, 0.9)" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-md bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl border border-orange-500/30 shadow-2xl overflow-hidden", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative p-6 text-center border-b border-slate-700/50", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: () => {
-                setShowCancelModal(false);
-                setCancelSubmitted(false);
-                setCancelReason("");
-              },
-              className: "absolute top-4 right-4 p-2 text-slate-400 hover:text-white hover:bg-slate-700/50 rounded-xl transition-all",
-              children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5" })
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 mb-4 shadow-lg shadow-orange-500/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx(XCircle, { className: "w-8 h-8 text-white" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white mb-2", children: cancelSubmitted ? t("profile.cancelRequestSent", "Cancellation Request Sent") : t("profile.cancelMembership", "Cancel Membership") }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: cancelSubmitted ? t("profile.cancelConfirmation", "We have received your cancellation request") : t("profile.cancelSubtitle", "We're sorry to see you go") })
-        ] }),
-        cancelSubmitted ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6 space-y-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-green-500/10 border border-green-500/30 rounded-xl p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-400 shrink-0 mt-0.5" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-green-300 font-semibold text-sm", children: t("profile.requestReceived", "Request Received") }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-green-200/70 text-xs mt-1", children: t("profile.cancelProcessing", "Your cancellation will be processed within 30 days. You'll receive a confirmation email shortly.") })
-            ] })
-          ] }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-slate-800/50 rounded-xl p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-slate-300 text-sm", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "w-4 h-4 text-orange-400" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("profile.activeUntil", "Your membership remains active for 30 more days") })
-          ] }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Button,
-            {
-              onClick: () => {
-                setShowCancelModal(false);
-                setCancelSubmitted(false);
-                setCancelReason("");
-              },
-              className: "w-full py-3 bg-gradient-to-r from-slate-600 to-slate-700 text-white rounded-xl font-semibold",
-              children: t("common.close", "Close")
-            }
-          )
-        ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6 space-y-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-orange-500/10 border border-orange-500/30 rounded-xl p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(AlertTriangle, { className: "w-5 h-5 text-orange-400 shrink-0 mt-0.5" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-orange-300 font-semibold text-sm", children: t("profile.cancel30Days", "30-Day Notice Required") }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-orange-200/70 text-xs mt-1", children: t("profile.cancel30DaysDetail", "As per our terms, cancellations require 30 days advance notice. Your membership and all features will remain active during this period.") })
-            ] })
-          ] }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: t("profile.cancelReason", "Why are you cancelling? (Optional)") }),
+      showCancelModal && reactDomExports.createPortal(
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-[99999] flex items-center justify-center p-4", style: { backgroundColor: "rgba(0, 0, 0, 0.9)" }, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-full max-w-md bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-3xl border border-orange-500/30 shadow-2xl overflow-hidden", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative p-6 text-center border-b border-slate-700/50", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "textarea",
+              "button",
               {
-                value: cancelReason,
-                onChange: (e) => setCancelReason(e.target.value),
-                placeholder: t("profile.cancelReasonPlaceholder", "Tell us how we could improve..."),
-                className: "w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-orange-500 resize-none",
-                rows: 3
+                onClick: () => {
+                  setShowCancelModal(false);
+                  setCancelSubmitted(false);
+                  setCancelReason("");
+                },
+                className: "absolute top-4 right-4 p-2 text-slate-400 hover:text-white hover:bg-slate-700/50 rounded-xl transition-all",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5" })
               }
-            )
+            ),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 mb-4 shadow-lg shadow-orange-500/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx(XCircle, { className: "w-8 h-8 text-white" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white mb-2", children: cancelSubmitted ? "Request Sent" : "Cancel Membership" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: cancelSubmitted ? "We have received your cancellation request" : "We're sorry to see you go" })
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-slate-800/50 rounded-xl p-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 text-sm font-semibold mb-2", children: t("profile.whatYouLose", "What you'll lose after cancellation:") }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "space-y-2 text-slate-400 text-sm", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(XCircle, { className: "w-4 h-4 text-red-400" }),
-                t("profile.loseMessages", "Extended daily message limits")
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(XCircle, { className: "w-4 h-4 text-red-400" }),
-                t("profile.loseScreenshots", "Screenshot analysis feature")
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(XCircle, { className: "w-4 h-4 text-red-400" }),
-                t("profile.loseIntimacy", "Access to Intimacy Coach")
+          cancelSubmitted ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6 space-y-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-green-500/10 border border-green-500/30 rounded-xl p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { className: "w-5 h-5 text-green-400 shrink-0 mt-0.5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-green-300 font-semibold text-sm", children: "Request Received" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-green-200/70 text-xs mt-1", children: "Your cancellation will be processed within 30 days. You'll receive a confirmation email shortly." })
               ] })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
+            ] }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-slate-800/50 rounded-xl p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-slate-300 text-sm", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Clock, { className: "w-4 h-4 text-orange-400" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Your membership remains active for 30 more days" })
+            ] }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               Button,
               {
                 onClick: () => {
-                  console.log("Cancellation requested:", { userId, reason: cancelReason });
-                  setCancelSubmitted(true);
+                  setShowCancelModal(false);
+                  setCancelSubmitted(false);
+                  setCancelReason("");
                 },
-                className: "w-full py-4 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white rounded-xl font-bold shadow-lg shadow-orange-500/30",
-                children: t("profile.confirmCancellation", "Confirm Cancellation Request")
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                onClick: () => setShowCancelModal(false),
-                className: "w-full py-3 text-slate-400 hover:text-white text-sm font-medium transition-all",
-                children: t("profile.keepMembership", "Keep My Membership")
+                className: "w-full py-3 bg-gradient-to-r from-slate-600 to-slate-700 text-white rounded-xl font-semibold",
+                children: "Close"
               }
             )
-          ] })
-        ] })
-      ] }) }),
-      document.body
-    ),
-    activeTab === "saved" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-6", children: [
-      localFavorites.venues.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white mb-3 flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Music, { className: "w-5 h-5 text-yellow-400" }),
-          t("profile.savedVenues", "Saved Venues"),
-          " (",
-          localFavorites.venues.length,
-          ")"
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: localFavorites.venues.map((venue) => /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-800/80 border-yellow-500/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold mb-1", children: venue.name }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 text-sm mb-2", children: venue.description }),
-            venue.location && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-400 text-xs flex items-center gap-1", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-3 h-3" }),
-              venue.location
+          ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6 space-y-4", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-orange-500/10 border border-orange-500/30 rounded-xl p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(AlertTriangle, { className: "w-5 h-5 text-orange-400 shrink-0 mt-0.5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-orange-300 font-semibold text-sm", children: "30-Day Notice Required" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-orange-200/70 text-xs mt-1", children: "As per our terms, cancellations require 30 days advance notice. Your membership and all features will remain active during this period." })
+              ] })
+            ] }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: "Why are you cancelling? (Optional)" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "textarea",
+                {
+                  value: cancelReason,
+                  onChange: (e) => setCancelReason(e.target.value),
+                  placeholder: "Tell us how we could improve...",
+                  className: "w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-orange-500 resize-none",
+                  rows: 3
+                }
+              )
             ] }),
-            venue.rating && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-yellow-400 text-xs flex items-center gap-1 mt-1", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Star, { className: "w-3 h-3 fill-yellow-400" }),
-              venue.rating
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "bg-slate-800/50 rounded-xl p-4", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 text-sm font-semibold mb-2", children: "What you'll lose:" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "space-y-2 text-slate-400 text-sm", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center gap-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(XCircle, { className: "w-4 h-4 text-red-400" }),
+                  "Extended daily message limits"
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center gap-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(XCircle, { className: "w-4 h-4 text-red-400" }),
+                  "Screenshot analysis feature"
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center gap-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(XCircle, { className: "w-4 h-4 text-red-400" }),
+                  "Access to Intimacy Coach"
+                ] })
+              ] })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-500 text-xs mt-2", children: [
-              t("profile.savedOn", "Saved"),
-              ": ",
-              new Date(venue.savedAt).toLocaleDateString()
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                Button,
+                {
+                  onClick: () => {
+                    console.log("Cancellation requested:", { userId, reason: cancelReason });
+                    setCancelSubmitted(true);
+                  },
+                  className: "w-full py-4 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white rounded-xl font-bold shadow-lg shadow-orange-500/30",
+                  children: "Confirm Cancellation Request"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  onClick: () => setShowCancelModal(false),
+                  className: "w-full py-3 text-slate-400 hover:text-white text-sm font-medium transition-all",
+                  children: "Keep My Membership"
+                }
+              )
             ] })
+          ] })
+        ] }) }),
+        document.body
+      ),
+      activeTab === "saved" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-6", children: [
+        localFavorites.venues.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white mb-3 flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Music, { className: "w-5 h-5 text-yellow-400" }),
+            "Saved Venues (",
+            localFavorites.venues.length,
+            ")"
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2", children: [
-            venue.googleMapsLink && /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "a",
-              {
-                href: venue.googleMapsLink,
-                target: "_blank",
-                rel: "noopener noreferrer",
-                className: "p-2 bg-yellow-500/20 hover:bg-yellow-500/30 rounded-lg text-yellow-400 transition-colors",
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx(ExternalLink, { className: "w-4 h-4" })
-              }
-            ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: localFavorites.venues.map((venue) => /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-800/80 border-yellow-500/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold mb-1", children: venue.name }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 text-sm mb-2", children: venue.description }),
+              venue.location && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-400 text-xs flex items-center gap-1", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-3 h-3" }),
+                venue.location
+              ] }),
+              venue.rating && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-yellow-400 text-xs flex items-center gap-1 mt-1", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Star, { className: "w-3 h-3 fill-yellow-400" }),
+                venue.rating
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-500 text-xs mt-2", children: [
+                "Saved: ",
+                new Date(venue.savedAt).toLocaleDateString()
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2", children: [
+              venue.googleMapsLink && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "a",
+                {
+                  href: venue.googleMapsLink,
+                  target: "_blank",
+                  rel: "noopener noreferrer",
+                  className: "p-2 bg-yellow-500/20 hover:bg-yellow-500/30 rounded-lg text-yellow-400 transition-colors",
+                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(ExternalLink, { className: "w-4 h-4" })
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  onClick: () => {
+                    removeVenueFavorite(venue.id || venue.name);
+                    setLocalFavorites(getFavorites());
+                  },
+                  className: "p-2 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-400 transition-colors",
+                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4" })
+                }
+              )
+            ] })
+          ] }) }, venue.id || venue.name)) })
+        ] }),
+        localFavorites.dateIdeas.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white mb-3 flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Calendar, { className: "w-5 h-5 text-pink-400" }),
+            "Saved Date Ideas (",
+            localFavorites.dateIdeas.length,
+            ")"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: localFavorites.dateIdeas.map((idea) => /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-800/80 border-pink-500/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold mb-1", children: idea.title || idea.name }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 text-sm mb-2", children: idea.description }),
+              idea.location && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-400 text-xs flex items-center gap-1", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-3 h-3" }),
+                idea.location
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-500 text-xs mt-2", children: [
+                "Saved: ",
+                new Date(idea.savedAt).toLocaleDateString()
+              ] })
+            ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "button",
               {
                 onClick: () => {
-                  removeVenueFavorite(venue.id || venue.name);
+                  removeDateIdeaFavorite(idea.id);
                   setLocalFavorites(getFavorites());
                 },
                 className: "p-2 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-400 transition-colors",
                 children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4" })
               }
             )
-          ] })
-        ] }) }, venue.id || venue.name)) })
-      ] }),
-      localFavorites.dateIdeas.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white mb-3 flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Calendar, { className: "w-5 h-5 text-pink-400" }),
-          t("profile.savedDateIdeas", "Saved Date Ideas"),
-          " (",
-          localFavorites.dateIdeas.length,
-          ")"
+          ] }) }, idea.id)) })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: localFavorites.dateIdeas.map((idea) => /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-800/80 border-pink-500/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold mb-1", children: idea.title || idea.name }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 text-sm mb-2", children: idea.description }),
-            idea.location && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-400 text-xs flex items-center gap-1", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-3 h-3" }),
-              idea.location
+        localFavorites.gifts.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white mb-3 flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Gift, { className: "w-5 h-5 text-rose-400" }),
+            "Saved Gifts (",
+            localFavorites.gifts.length,
+            ")"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: localFavorites.gifts.map((gift) => /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-800/80 border-rose-500/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold mb-1", children: gift.name }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 text-sm mb-2", children: gift.description }),
+              gift.price && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-rose-400 font-semibold text-sm", children: gift.price }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-500 text-xs mt-2", children: [
+                "Saved: ",
+                new Date(gift.savedAt).toLocaleDateString()
+              ] })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-500 text-xs mt-2", children: [
-              t("profile.savedOn", "Saved"),
-              ": ",
-              new Date(idea.savedAt).toLocaleDateString()
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: () => {
-                removeDateIdeaFavorite(idea.id);
-                setLocalFavorites(getFavorites());
-              },
-              className: "p-2 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-400 transition-colors",
-              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4" })
-            }
-          )
-        ] }) }, idea.id)) })
-      ] }),
-      localFavorites.gifts.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white mb-3 flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Gift, { className: "w-5 h-5 text-rose-400" }),
-          t("profile.savedGifts", "Saved Gifts"),
-          " (",
-          localFavorites.gifts.length,
-          ")"
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => {
+                  removeGiftFavorite(gift.id);
+                  setLocalFavorites(getFavorites());
+                },
+                className: "p-2 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-400 transition-colors",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4" })
+              }
+            )
+          ] }) }, gift.id)) })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: localFavorites.gifts.map((gift) => /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-800/80 border-rose-500/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold mb-1", children: gift.name }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 text-sm mb-2", children: gift.description }),
-            gift.price && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-rose-400 font-semibold text-sm", children: gift.price }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-500 text-xs mt-2", children: [
-              t("profile.savedOn", "Saved"),
-              ": ",
-              new Date(gift.savedAt).toLocaleDateString()
-            ] })
+        localFavorites.tips.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white mb-3 flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Lightbulb, { className: "w-5 h-5 text-amber-400" }),
+            "Saved Tips (",
+            localFavorites.tips.length,
+            ")"
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: () => {
-                removeGiftFavorite(gift.id);
-                setLocalFavorites(getFavorites());
-              },
-              className: "p-2 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-400 transition-colors",
-              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4" })
-            }
-          )
-        ] }) }, gift.id)) })
-      ] }),
-      localFavorites.tips.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white mb-3 flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Lightbulb, { className: "w-5 h-5 text-amber-400" }),
-          t("profile.savedTips", "Saved Tips"),
-          " (",
-          localFavorites.tips.length,
-          ")"
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: localFavorites.tips.map((tip) => /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-800/80 border-amber-500/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold mb-1", children: tip.title || "Tip" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 text-sm", children: tip.content }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-500 text-xs mt-2", children: [
+                "Saved: ",
+                new Date(tip.savedAt).toLocaleDateString()
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "button",
+              {
+                onClick: () => {
+                  removeTipFavorite(tip.id);
+                  setLocalFavorites(getFavorites());
+                },
+                className: "p-2 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-400 transition-colors",
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4" })
+              }
+            )
+          ] }) }, tip.id)) })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: localFavorites.tips.map((tip) => /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-800/80 border-amber-500/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold mb-1", children: tip.title || "Këshillë" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 text-sm", children: tip.content }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-500 text-xs mt-2", children: [
-              t("profile.savedOn", "Saved"),
-              ": ",
-              new Date(tip.savedAt).toLocaleDateString()
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
+        localFavorites.venues.length === 0 && localFavorites.dateIdeas.length === 0 && localFavorites.gifts.length === 0 && localFavorites.tips.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center py-16", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 bg-slate-800/50 rounded-full flex items-center justify-center mx-auto mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Bookmark, { className: "w-10 h-10 text-slate-600" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl font-bold text-white mb-2", children: "No Saved Items Yet" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm mb-6", children: "Start saving dates, gifts, and tips you love!" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            Button,
             {
-              onClick: () => {
-                removeTipFavorite(tip.id);
-                setLocalFavorites(getFavorites());
-              },
-              className: "p-2 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-400 transition-colors",
-              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4" })
+              onClick: () => window.location.href = "/dates",
+              className: "bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold px-6 py-3 rounded-xl",
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-4 h-4 mr-2" }),
+                "Explore Date Ideas"
+              ]
             }
           )
-        ] }) }, tip.id)) })
+        ] })
       ] }),
-      localFavorites.venues.length === 0 && localFavorites.dateIdeas.length === 0 && localFavorites.gifts.length === 0 && localFavorites.tips.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center py-12", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Bookmark, { className: "w-16 h-16 text-slate-600 mx-auto mb-4" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl font-bold text-white mb-2", children: t("profile.noSavedItems") }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400", children: "Fillo të ruash takime, dhurata dhe këshilla!" })
-      ] })
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        UpgradeModal,
+        {
+          isOpen: showUpgradeModal,
+          onClose: () => setShowUpgradeModal(false),
+          onSelectPlan: () => setShowUpgradeModal(false)
+        }
+      )
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      UpgradeModal,
-      {
-        isOpen: showUpgradeModal,
-        onClose: () => setShowUpgradeModal(false),
-        onSelectPlan: () => setShowUpgradeModal(false)
-      }
-    )
+    /* @__PURE__ */ jsxRuntimeExports.jsx("style", { children: `
+        @keyframes shimmer {
+          0% { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
+        }
+      ` })
   ] });
 }
 const PrivacyPolicy = () => {
