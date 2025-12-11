@@ -3,39 +3,13 @@
 
 // ⚠️ CRITICAL SCREENSHOT LIMITS - DO NOT MODIFY WITHOUT APPROVAL ⚠️
 // Free/Guest: 1 LIFETIME screenshot upload
-// Paid Plans: Tier-based monthly limits (resets on 1st of each month)
+// Paid Plans (Starter/Pro/Elite): 3 screenshots per MONTH
 // These limits protect revenue - changing them will cause financial loss!
-
-// ⚠️ CRITICAL LIMITS - REVENUE PROTECTION ⚠️
-// These limits are calculated to ensure profitability at all tiers
-// DO NOT MODIFY WITHOUT FINANCIAL ANALYSIS
 
 const SCREENSHOT_LIMITS = {
   FREE_LIFETIME_LIMIT: 1,      // Free users get 1 screenshot TOTAL forever
-  STARTER_MONTHLY_LIMIT: 5,    // Starter (€6.99): 5 screenshots per month
-  PRO_MONTHLY_LIMIT: 15,       // Pro (€12.99): 15 screenshots per month  
-  ELITE_MONTHLY_LIMIT: 50,     // Elite (€19.99): 50 screenshots per month (premium value)
+  PAID_MONTHLY_LIMIT: 3,       // Paid users get 3 screenshots per month
 };
-
-// 💰 PRICING TIERS - All prices in EUR
-const TIER_PRICING = {
-  free_trial: { price: 0, currency: 'EUR', duration: '3 days' },
-  free: { price: 0, currency: 'EUR', duration: 'forever' },
-  starter: { price: 6.99, currency: 'EUR', duration: 'monthly' },
-  pro: { price: 12.99, currency: 'EUR', duration: 'monthly' },
-  elite: { price: 19.99, currency: 'EUR', duration: 'monthly' }
-};
-
-// 📊 COST CALCULATIONS (OpenAI gpt-4o-mini pricing)
-// Input: $0.15/1M tokens, Output: $0.60/1M tokens
-// Average message: ~750 input + ~300 output = $0.0003/message
-// Average image analysis: ~$0.002/analysis
-const COST_PER_MESSAGE = 0.0003;  // USD
-const COST_PER_IMAGE = 0.002;     // USD
-const EUR_TO_USD = 1.09;          // Approximate conversion
-
-// 🎯 PROFIT MARGIN TARGETS (minimum acceptable)
-const MIN_PROFIT_MARGIN = 0.50;   // 50% minimum margin
 
 class User {
   constructor(userId) {
@@ -70,7 +44,7 @@ class User {
     
     // ⚠️ CRITICAL: Screenshot limits - DO NOT MODIFY ⚠️
     // FREE USERS: Lifetime limit of 1 screenshot TOTAL
-    // PAID USERS: Tier-based monthly limits (Starter:5, Pro:15, Elite:30)
+    // PAID USERS: Monthly limit of 3 screenshots (resets each month)
     this.screenshotAnalyses = {
       lifetimeUsed: 0,           // Total screenshots used ever (for free users)
       monthlyUsed: 0,            // Screenshots used this month (for paid users)
@@ -257,32 +231,16 @@ class User {
     return this.subscriptionTier !== 'free' && this.dailyUsage.imageAnalyses < limits.imageAnalysesPerDay;
   }
   
-  // ⚠️ Helper: Get tier-specific screenshot limit ⚠️
-  _getTierScreenshotLimit() {
-    switch (this.subscriptionTier) {
-      case 'starter':
-      case 'basic':  // Legacy tier maps to starter
-        return SCREENSHOT_LIMITS.STARTER_MONTHLY_LIMIT;
-      case 'pro':
-        return SCREENSHOT_LIMITS.PRO_MONTHLY_LIMIT;
-      case 'elite':
-      case 'premium':  // Legacy tier maps to elite
-        return SCREENSHOT_LIMITS.ELITE_MONTHLY_LIMIT;
-      default:
-        return SCREENSHOT_LIMITS.FREE_LIFETIME_LIMIT;
-    }
-  }
-  
   // ⚠️ CRITICAL: Check if user can analyze screenshot ⚠️
   // FREE/GUEST: 1 screenshot LIFETIME - NEVER resets
-  // PAID: Tier-based monthly limits - resets on 1st of each month
+  // PAID (Starter/Pro/Elite): 3 screenshots per MONTH - resets monthly
   canAnalyzeScreenshot() {
     const isPaidUser = ['starter', 'pro', 'elite', 'basic', 'premium'].includes(this.subscriptionTier);
     
     if (isPaidUser) {
-      // PAID USERS: Check tier-specific monthly limit
+      // PAID USERS: Check monthly limit (3 per month)
       this._resetMonthlyScreenshotsIfNeeded();
-      return this.screenshotAnalyses.monthlyUsed < this._getTierScreenshotLimit();
+      return this.screenshotAnalyses.monthlyUsed < SCREENSHOT_LIMITS.PAID_MONTHLY_LIMIT;
     } else {
       // FREE/GUEST/TRIAL USERS: Check lifetime limit (1 total forever)
       return this.screenshotAnalyses.lifetimeUsed < SCREENSHOT_LIMITS.FREE_LIFETIME_LIMIT;
@@ -327,16 +285,16 @@ class User {
     
     if (isPaidUser) {
       this._resetMonthlyScreenshotsIfNeeded();
-      return Math.max(0, this._getTierScreenshotLimit() - this.screenshotAnalyses.monthlyUsed);
+      return Math.max(0, SCREENSHOT_LIMITS.PAID_MONTHLY_LIMIT - this.screenshotAnalyses.monthlyUsed);
     } else {
       return Math.max(0, SCREENSHOT_LIMITS.FREE_LIFETIME_LIMIT - this.screenshotAnalyses.lifetimeUsed);
     }
   }
   
-  // Get screenshot limit for current plan (tier-specific)
+  // Get screenshot limit for current plan
   getScreenshotLimit() {
     const isPaidUser = ['starter', 'pro', 'elite', 'basic', 'premium'].includes(this.subscriptionTier);
-    return isPaidUser ? this._getTierScreenshotLimit() : SCREENSHOT_LIMITS.FREE_LIFETIME_LIMIT;
+    return isPaidUser ? SCREENSHOT_LIMITS.PAID_MONTHLY_LIMIT : SCREENSHOT_LIMITS.FREE_LIFETIME_LIMIT;
   }
   
   // Get screenshot usage for current plan
@@ -378,59 +336,46 @@ class User {
         };
       case 'starter':
         // €6.99/month - Entry tier
-        // Max cost at full usage: 50*30*$0.0003 = $0.45
-        // Revenue: €6.99 = ~$7.65 → Profit: $7.20 (94% margin) ✅
         return {
-          messagesPerDay: 50,            // Entry level - encourages upgrade
-          imageAnalysesPerDay: 0,        // No image analysis - Pro feature
-          screenshotsPerMonth: SCREENSHOT_LIMITS.STARTER_MONTHLY_LIMIT,
+          messagesPerDay: 75,
+          imageAnalysesPerDay: 0,
+          screenshotsPerMonth: SCREENSHOT_LIMITS.PAID_MONTHLY_LIMIT,
           adultContent: true,
-          intimacyCoach: false,          // Pro/Elite only
           isTrial: false
         };
       case 'pro':
         // €12.99/month - Most Popular
-        // Max cost at full usage: 150*30*$0.0003 + 20*30*$0.002 = $1.35 + $1.20 = $2.55
-        // Revenue: €12.99 = ~$14.20 → Profit: $11.65 (82% margin) ✅
         return {
-          messagesPerDay: 150,           // Optimized for profitability
-          imageAnalysesPerDay: 20,       // Optimized for profitability
-          screenshotsPerMonth: SCREENSHOT_LIMITS.PRO_MONTHLY_LIMIT,
+          messagesPerDay: 200,
+          imageAnalysesPerDay: 30,
+          screenshotsPerMonth: SCREENSHOT_LIMITS.PAID_MONTHLY_LIMIT,
           adultContent: true,
-          intimacyCoach: true,           // Pro gets Intimacy Coach too
           isTrial: false
         };
       case 'elite':
         // €19.99/month - Premium tier
-        // Max cost at full usage: 350*30*$0.0003 + 50*30*$0.002 = $3.15 + $3.00 = $6.15
-        // Revenue: €19.99 = ~$21.85 → Profit: $15.70 (72% margin) ✅
         return {
-          messagesPerDay: 350,           // Reduced from 500 for better margin
-          imageAnalysesPerDay: 50,       // Reduced from 100 for better margin
-          screenshotsPerMonth: SCREENSHOT_LIMITS.ELITE_MONTHLY_LIMIT,
+          messagesPerDay: 500,
+          imageAnalysesPerDay: 100,
+          screenshotsPerMonth: SCREENSHOT_LIMITS.PAID_MONTHLY_LIMIT,
           adultContent: true,
-          intimacyCoach: true,           // Exclusive to Elite
-          prioritySupport: true,
           isTrial: false
         };
-      // Legacy tiers (for existing users - map to new tiers)
+      // Legacy tiers (for existing users)
       case 'basic':
         return {
-          messagesPerDay: 50,  // Map to starter limits
+          messagesPerDay: 75, // Map to starter limits
           imageAnalysesPerDay: 0,
-          screenshotsPerMonth: SCREENSHOT_LIMITS.STARTER_MONTHLY_LIMIT,
+          screenshotsPerMonth: SCREENSHOT_LIMITS.PAID_MONTHLY_LIMIT,
           adultContent: true,
-          intimacyCoach: false,
           isTrial: false
         };
       case 'premium':
         return {
-          messagesPerDay: 350, // Map to elite limits
-          imageAnalysesPerDay: 50,
-          screenshotsPerMonth: SCREENSHOT_LIMITS.ELITE_MONTHLY_LIMIT,
+          messagesPerDay: 500, // Map to elite limits
+          imageAnalysesPerDay: 100,
+          screenshotsPerMonth: SCREENSHOT_LIMITS.PAID_MONTHLY_LIMIT,
           adultContent: true,
-          intimacyCoach: true,
-          prioritySupport: true,
           isTrial: false
         };
       default:

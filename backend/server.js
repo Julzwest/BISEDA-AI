@@ -9,74 +9,6 @@ import { dirname, join } from 'path';
 import nodemailer from 'nodemailer';
 import mongoose from 'mongoose';
 import { getUser, saveUser, getAllUsers } from './models/User.js';
-
-// ⚠️ RATE LIMITING - Protect against API abuse
-const rateLimitStore = new Map();
-const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute window
-const RATE_LIMIT_MAX_REQUESTS = {
-  free_trial: 15,    // 15 requests per minute
-  free: 5,           // 5 requests per minute (encourages upgrade)
-  starter: 20,       // 20 requests per minute
-  pro: 40,           // 40 requests per minute
-  elite: 60          // 60 requests per minute
-};
-
-function checkRateLimit(userId, tier) {
-  const now = Date.now();
-  const key = userId;
-  
-  if (!rateLimitStore.has(key)) {
-    rateLimitStore.set(key, { count: 1, windowStart: now });
-    return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS[tier] - 1 };
-  }
-  
-  const data = rateLimitStore.get(key);
-  
-  // Reset window if expired
-  if (now - data.windowStart > RATE_LIMIT_WINDOW) {
-    rateLimitStore.set(key, { count: 1, windowStart: now });
-    return { allowed: true, remaining: RATE_LIMIT_MAX_REQUESTS[tier] - 1 };
-  }
-  
-  const maxRequests = RATE_LIMIT_MAX_REQUESTS[tier] || RATE_LIMIT_MAX_REQUESTS.free;
-  
-  if (data.count >= maxRequests) {
-    return { 
-      allowed: false, 
-      remaining: 0,
-      retryAfter: Math.ceil((RATE_LIMIT_WINDOW - (now - data.windowStart)) / 1000)
-    };
-  }
-  
-  data.count++;
-  return { allowed: true, remaining: maxRequests - data.count };
-}
-
-// Clean up old rate limit entries every 5 minutes
-setInterval(() => {
-  const now = Date.now();
-  for (const [key, data] of rateLimitStore.entries()) {
-    if (now - data.windowStart > RATE_LIMIT_WINDOW * 2) {
-      rateLimitStore.delete(key);
-    }
-  }
-}, 5 * 60 * 1000);
-
-// Rate limit middleware for routes
-const rateLimit = (req, res, next) => {
-  const userId = req.headers['x-user-id'] || req.ip || 'anonymous';
-  const tier = 'free_trial'; // Default tier for simple endpoints
-  
-  const rateCheck = checkRateLimit(userId, tier);
-  if (!rateCheck.allowed) {
-    return res.status(429).json({
-      error: 'Too many requests. Please wait a moment.',
-      code: 'RATE_LIMIT_EXCEEDED',
-      retryAfter: rateCheck.retryAfter
-    });
-  }
-  next();
-};
 import stripeRoutes from './routes/stripe.js';
 import businessRoutes from './routes/businesses.js';
 import creditRoutes from './routes/credits.js';
@@ -105,7 +37,6 @@ const userAccountSchema = new mongoose.Schema({
   username: { type: String, unique: true, sparse: true, lowercase: true, trim: true },
   firstName: { type: String, trim: true },
   lastName: { type: String, trim: true },
-  gender: { type: String, enum: ['male', 'female', null], default: null },
   birthDate: { type: String },
   email: { type: String, required: true, unique: true, lowercase: true, trim: true },
   password: { type: String },
@@ -115,11 +46,6 @@ const userAccountSchema = new mongoose.Schema({
   googleId: { type: String, sparse: true, unique: true },
   isVerified: { type: Boolean, default: false },
   isBlocked: { type: Boolean, default: false },
-  // Subscription fields (persisted to MongoDB)
-  subscriptionTier: { type: String, enum: ['free', 'free_trial', 'starter', 'pro', 'elite', 'premium'], default: 'free_trial' },
-  subscriptionStatus: { type: String, enum: ['active', 'cancelled', 'expired', 'trial', 'none'], default: 'trial' },
-  subscriptionExpiresAt: { type: Date, default: null },
-  credits: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
   lastLogin: { type: Date, default: Date.now }
 });
@@ -172,8 +98,37 @@ app.use(cors({
 }));
 app.use(express.json({ limit: '10mb' }));
 
-// Note: Tier-based rate limiting is implemented above via checkRateLimit() function
-// Applied in the chat/openai endpoint for subscription-aware limiting
+// Rate limiting (simple in-memory store)
+const rateLimitMap = new Map();
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+const RATE_LIMIT_MAX_REQUESTS = 30; // 30 requests per minute
+
+const rateLimit = (req, res, next) => {
+  const ip = req.ip || req.connection.remoteAddress;
+  const now = Date.now();
+  
+  if (!rateLimitMap.has(ip)) {
+    rateLimitMap.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
+    return next();
+  }
+  
+  const limit = rateLimitMap.get(ip);
+  
+  if (now > limit.resetTime) {
+    limit.count = 1;
+    limit.resetTime = now + RATE_LIMIT_WINDOW;
+    return next();
+  }
+  
+  if (limit.count >= RATE_LIMIT_MAX_REQUESTS) {
+    return res.status(429).json({ 
+      error: 'Too many requests. Please wait a moment.' 
+    });
+  }
+  
+  limit.count++;
+  next();
+};
 
 // Stripe routes
 app.use('/api/stripe', stripeRoutes);
@@ -244,30 +199,10 @@ app.post('/api/places/search', rateLimit, async (req, res) => {
 });
 
 // Get user usage stats
-app.get('/api/usage', async (req, res) => {
+app.get('/api/usage', (req, res) => {
   try {
     const userId = getUserId(req);
     const user = getUser(userId);
-    
-    // Sync subscription tier from MongoDB (source of truth)
-    // This ensures admin changes are reflected immediately
-    try {
-      const mongoUser = await UserAccountModel.findOne({ odId: userId });
-      if (mongoUser && mongoUser.subscriptionTier) {
-        if (user.subscriptionTier !== mongoUser.subscriptionTier) {
-          console.log(`🔄 Syncing tier from MongoDB: ${user.subscriptionTier} -> ${mongoUser.subscriptionTier} for user ${userId}`);
-          user.subscriptionTier = mongoUser.subscriptionTier;
-          user.subscriptionStatus = mongoUser.subscriptionStatus || 'active';
-          user.subscriptionExpiresAt = mongoUser.subscriptionExpiresAt;
-          user.credits = mongoUser.credits || user.credits || 0;
-          saveUser(user);
-        }
-      }
-    } catch (dbError) {
-      console.log('Could not sync with MongoDB:', dbError.message);
-      // Continue with in-memory data
-    }
-    
     res.json(user.getUsageStats());
   } catch (error) {
     console.error('Error getting usage:', error);
@@ -276,27 +211,10 @@ app.get('/api/usage', async (req, res) => {
 });
 
 // Get subscription info
-app.get('/api/subscription', async (req, res) => {
+app.get('/api/subscription', (req, res) => {
   try {
     const userId = getUserId(req);
     const user = getUser(userId);
-    
-    // Sync subscription tier from MongoDB (source of truth)
-    try {
-      const mongoUser = await UserAccountModel.findOne({ odId: userId });
-      if (mongoUser && mongoUser.subscriptionTier) {
-        if (user.subscriptionTier !== mongoUser.subscriptionTier) {
-          console.log(`🔄 Syncing tier from MongoDB: ${user.subscriptionTier} -> ${mongoUser.subscriptionTier}`);
-          user.subscriptionTier = mongoUser.subscriptionTier;
-          user.subscriptionStatus = mongoUser.subscriptionStatus || 'active';
-          user.subscriptionExpiresAt = mongoUser.subscriptionExpiresAt;
-          saveUser(user);
-        }
-      }
-    } catch (dbError) {
-      console.log('Could not sync with MongoDB:', dbError.message);
-    }
-    
     res.json({
       tier: user.subscriptionTier,
       status: user.subscriptionStatus,
@@ -309,15 +227,10 @@ app.get('/api/subscription', async (req, res) => {
   }
 });
 
-// Get user ID from request (check header first, fallback to IP)
+// Get user ID from request (for MVP, use IP or generate session ID)
 function getUserId(req) {
-  // Check for authenticated user ID from header (set by frontend when logged in)
-  const authenticatedUserId = req.get('x-user-id');
-  if (authenticatedUserId && authenticatedUserId.trim()) {
-    return authenticatedUserId.trim();
-  }
-  
-  // Fallback: Use IP address + user agent as user ID for non-authenticated users
+  // For MVP: Use IP address + user agent as user ID
+  // In production: Use JWT token or session ID
   const ip = req.ip || req.connection.remoteAddress;
   const userAgent = req.get('user-agent') || '';
   return Buffer.from(`${ip}-${userAgent}`).toString('base64').substring(0, 32);
@@ -358,17 +271,6 @@ function checkSubscriptionLimits(req, res, next) {
     });
   }
   
-  // ⚠️ RATE LIMIT CHECK - Prevent API abuse
-  const rateCheck = checkRateLimit(userId, user.subscriptionTier);
-  if (!rateCheck.allowed) {
-    console.log(`⚠️ Rate limit exceeded for user ${userId} (${user.subscriptionTier})`);
-    return res.status(429).json({
-      error: 'Too many requests. Please wait a moment before trying again.',
-      code: 'RATE_LIMIT_EXCEEDED',
-      retryAfter: rateCheck.retryAfter
-    });
-  }
-  
   // Check message limit BEFORE processing request
   const limits = user.getLimits();
   const used = user.dailyUsage.messages;
@@ -384,8 +286,7 @@ function checkSubscriptionLimits(req, res, next) {
     console.log(`🚫 Limit check failed for user ${userId}: ${used}/${limit} messages, ${credits} credits - BLOCKED`);
     
     return res.status(429).json({ 
-      error: 'Daily limit reached! Upgrade your plan or buy credits to continue.',
-      code: 'DAILY_LIMIT_REACHED',
+      error: 'Limiti ditor u arrit! Përmirëso planin ose bli kredite për të vazhduar.',
       code: 'LIMIT_EXCEEDED',
       limit: limit,
       used: used,
@@ -506,13 +407,12 @@ app.post('/api/chat', rateLimit, checkSubscriptionLimits, async (req, res) => {
       // Add current user message with images if provided
       if (fileUrls && fileUrls.length > 0) {
         // ⚠️ CRITICAL: Check screenshot analysis limit ⚠️
-        // FREE/GUEST: 1 lifetime, PAID: tier-based monthly limits
+        // FREE/GUEST: 1 lifetime, PAID: 3 per month
         if (!user.canAnalyzeScreenshot()) {
           const isPaidUser = ['starter', 'pro', 'elite', 'basic', 'premium'].includes(user.subscriptionTier);
-          const userLimit = user.getScreenshotLimit();
           const errorMsg = isPaidUser 
-            ? `You've used your ${userLimit} screenshot analyses this month! Wait for next month or upgrade your plan 📸`
-            : 'You\'ve used your free screenshot analysis! Upgrade for more analyses 📸';
+            ? 'Ke përdorur 3 analizat e screenshot për këtë muaj! Prit muajin tjetër ose bli kredite shtesë 📸'
+            : 'Ke përdorur analizën tënde falas të screenshot! Përmirëso planin për 3 analiza në muaj 📸';
           
           return res.status(403).json({
             error: errorMsg,
@@ -649,8 +549,7 @@ app.post('/api/chat', rateLimit, checkSubscriptionLimits, async (req, res) => {
         // This shouldn't happen as we checked before, but handle it anyway
         console.error(`⚠️ Failed to use credit for user ${user.userId}`);
         return res.status(429).json({ 
-          error: 'Daily limit reached! Upgrade your plan or buy credits to continue.',
-      code: 'DAILY_LIMIT_REACHED',
+          error: 'Limiti ditor u arrit! Përmirëso planin ose bli kredite për të vazhduar.',
           code: 'LIMIT_EXCEEDED',
           upgradeRequired: true
         });
@@ -850,9 +749,9 @@ async function findUserByEmailOrUsername(email, username) {
 // User registration endpoint
 app.post('/api/auth/register', async (req, res) => {
   try {
-    const { firstName, lastName, gender, birthDate, username, email, phoneNumber, password, appleId, country } = req.body;
+    const { firstName, lastName, birthDate, username, email, phoneNumber, password, appleId, country } = req.body;
     
-    console.log('📝 Registration attempt:', { firstName, lastName, gender, birthDate, username, email, hasPassword: !!password });
+    console.log('📝 Registration attempt:', { firstName, lastName, birthDate, username, email, hasPassword: !!password });
     
     // Validate required fields (if not using Apple Sign In)
     if (!appleId && (!email || !password)) {
@@ -882,8 +781,7 @@ app.post('/api/auth/register', async (req, res) => {
     const existingEmail = await UserAccountModel.findOne({ email: normalizedEmail });
     if (existingEmail) {
       return res.status(409).json({ 
-        error: 'This email is already registered. Login or use another email.',
-        code: 'EMAIL_EXISTS' 
+        error: 'Ky email është përdorur tashmë. Kyçu ose përdor email tjetër.' 
       });
     }
     
@@ -894,7 +792,6 @@ app.post('/api/auth/register', async (req, res) => {
       username: normalizedUsername,
       firstName: firstName?.trim() || null,
       lastName: lastName?.trim() || null,
-      gender: gender || null,
       birthDate: birthDate || null,
       email: normalizedEmail,
       phoneNumber: phoneNumber || null,
@@ -921,7 +818,6 @@ app.post('/api/auth/register', async (req, res) => {
         username: newUser.username,
         firstName: newUser.firstName,
         lastName: newUser.lastName,
-        gender: newUser.gender,
         birthDate: newUser.birthDate,
         email: newUser.email,
         phoneNumber: newUser.phoneNumber,
@@ -972,8 +868,7 @@ app.post('/api/auth/login', async (req, res) => {
       // Verify password
       if (!userAccount || userAccount.password !== password) {
         return res.status(401).json({ 
-          error: 'Invalid email/username or password',
-          code: 'INVALID_CREDENTIALS'
+          error: 'Email/username ose fjalëkalimi i gabuar' 
         });
       }
     }
@@ -990,61 +885,17 @@ app.post('/api/auth/login', async (req, res) => {
       { lastLogin: new Date() }
     );
     
-    // Sync subscription info from MongoDB to in-memory profile
-    const usageProfile = getUser(userAccount.odId);
-    
-    // If MongoDB has subscription data, sync it to in-memory (MongoDB is source of truth)
-    if (userAccount.subscriptionTier) {
-      usageProfile.subscriptionTier = userAccount.subscriptionTier;
-      usageProfile.subscriptionStatus = userAccount.subscriptionStatus || 'active';
-      usageProfile.subscriptionExpiresAt = userAccount.subscriptionExpiresAt;
-      usageProfile.credits = userAccount.credits || usageProfile.credits || 0;
-      
-      // Ensure paid users have proper screenshot limits
-      const isPaidTier = ['starter', 'pro', 'elite', 'premium'].includes(userAccount.subscriptionTier);
-      if (isPaidTier && usageProfile.screenshotAnalyses) {
-        // Check if monthly reset is needed
-        const now = new Date();
-        if (usageProfile.screenshotAnalyses.currentMonth !== now.getMonth() ||
-            usageProfile.screenshotAnalyses.currentYear !== now.getFullYear()) {
-          usageProfile.screenshotAnalyses.monthlyUsed = 0;
-          usageProfile.screenshotAnalyses.currentMonth = now.getMonth();
-          usageProfile.screenshotAnalyses.currentYear = now.getFullYear();
-        }
-      }
-      
-      saveUser(usageProfile);
-    }
-    
-    const subscriptionTier = usageProfile.subscriptionTier || 'free_trial';
-    const subscriptionStatus = usageProfile.subscriptionStatus || 'trial';
-    
-    console.log(`✅ User logged in: ${userAccount.username} (${subscriptionTier}) - Credits: ${usageProfile.credits}`);
-    
-    // Get screenshot limits for response
-    const screenshotLimits = {
-      used: usageProfile.getScreenshotUsed(),
-      limit: usageProfile.getScreenshotLimit(),
-      remaining: usageProfile.getRemainingScreenshotAnalyses(),
-      isPaidUser: ['starter', 'pro', 'elite', 'premium'].includes(subscriptionTier)
-    };
+    console.log(`✅ User logged in: ${userAccount.username}`);
     
     res.json({
       success: true,
       user: {
         odId: userAccount.odId,
         username: userAccount.username,
-        firstName: userAccount.firstName,
-        lastName: userAccount.lastName,
-        gender: userAccount.gender,
         email: userAccount.email,
         phoneNumber: userAccount.phoneNumber,
         createdAt: userAccount.createdAt,
-        country: userAccount.country,
-        subscriptionTier: subscriptionTier,
-        subscriptionStatus: subscriptionStatus,
-        credits: usageProfile.credits || 0,
-        screenshotLimits: screenshotLimits
+        country: userAccount.country
       },
       message: 'Login successful'
     });
@@ -1151,7 +1002,7 @@ app.post('/api/auth/forgot-password', async (req, res) => {
     const { email } = req.body;
     
     if (!email) {
-      return res.status(400).json({ error: 'Email is required', code: 'EMAIL_REQUIRED' });
+      return res.status(400).json({ error: 'Email është i detyrueshëm' });
     }
     
     // Find user by email in MongoDB
@@ -1161,7 +1012,7 @@ app.post('/api/auth/forgot-password', async (req, res) => {
       // Don't reveal if email exists or not for security
       return res.json({ 
         success: true, 
-        message: 'If email exists, you will receive a reset code.' 
+        message: 'Nëse email ekziston, do të marrësh një kod rivendosjeje.' 
       });
     }
     
@@ -1185,15 +1036,15 @@ app.post('/api/auth/forgot-password', async (req, res) => {
     res.json({ 
       success: true, 
       message: emailSent 
-        ? 'Reset code sent to your email.' 
-        : 'Reset code sent to your email.',
+        ? 'Kodi i rivendosjes u dërgua në email.' 
+        : 'Kodi i rivendosjes u dërgua në email.',
       // Show code in dev mode if email not configured
       _devCode: (!emailSent || process.env.NODE_ENV !== 'production') ? resetCode : undefined
     });
     
   } catch (error) {
     console.error('Forgot password error:', error);
-    res.status(500).json({ error: 'Server error. Please try again.', code: 'SERVER_ERROR' });
+    res.status(500).json({ error: 'Gabim në server. Provoni përsëri.' });
   }
 });
 
@@ -1203,29 +1054,29 @@ app.post('/api/auth/verify-reset-code', async (req, res) => {
     const { email, code } = req.body;
     
     if (!email || !code) {
-      return res.status(400).json({ error: 'Email and code are required', code: 'FIELDS_REQUIRED' });
+      return res.status(400).json({ error: 'Email dhe kodi janë të detyrueshëm' });
     }
     
     const resetData = passwordResetCodes.get(email);
     
     if (!resetData) {
-      return res.status(400).json({ error: 'Code not found or expired', code: 'CODE_EXPIRED' });
+      return res.status(400).json({ error: 'Kodi nuk u gjet ose ka skaduar' });
     }
     
     if (Date.now() > resetData.expiresAt) {
       passwordResetCodes.delete(email);
-      return res.status(400).json({ error: 'Code expired. Request a new code.', code: 'CODE_EXPIRED' });
+      return res.status(400).json({ error: 'Kodi ka skaduar. Kërkoni një kod të ri.' });
     }
     
     if (resetData.code !== code) {
-      return res.status(400).json({ error: 'Invalid code', code: 'INVALID_CODE' });
+      return res.status(400).json({ error: 'Kodi i gabuar' });
     }
     
-    res.json({ success: true, message: 'Code verified successfully' });
+    res.json({ success: true, message: 'Kodi u verifikua me sukses' });
     
   } catch (error) {
     console.error('Verify reset code error:', error);
-    res.status(500).json({ error: 'Server error', code: 'SERVER_ERROR' });
+    res.status(500).json({ error: 'Gabim në server' });
   }
 });
 
@@ -1235,33 +1086,33 @@ app.post('/api/auth/reset-password', async (req, res) => {
     const { email, code, newPassword } = req.body;
     
     if (!email || !code || !newPassword) {
-      return res.status(400).json({ error: 'All fields are required', code: 'FIELDS_REQUIRED' });
+      return res.status(400).json({ error: 'Të gjitha fushat janë të detyrueshme' });
     }
     
     if (newPassword.length < 6) {
-      return res.status(400).json({ error: 'Password must be at least 6 characters', code: 'PASSWORD_TOO_SHORT' });
+      return res.status(400).json({ error: 'Fjalëkalimi duhet të ketë së paku 6 karaktere' });
     }
     
     const resetData = passwordResetCodes.get(email);
     
     if (!resetData) {
-      return res.status(400).json({ error: 'Code not found or expired', code: 'CODE_EXPIRED' });
+      return res.status(400).json({ error: 'Kodi nuk u gjet ose ka skaduar' });
     }
     
     if (Date.now() > resetData.expiresAt) {
       passwordResetCodes.delete(email);
-      return res.status(400).json({ error: 'Code expired. Request a new code.', code: 'CODE_EXPIRED' });
+      return res.status(400).json({ error: 'Kodi ka skaduar. Kërkoni një kod të ri.' });
     }
     
     if (resetData.code !== code) {
-      return res.status(400).json({ error: 'Invalid code', code: 'INVALID_CODE' });
+      return res.status(400).json({ error: 'Kodi i gabuar' });
     }
     
     // Find and update user password in MongoDB
     const userAccount = await UserAccountModel.findOne({ email: email });
     
     if (!userAccount) {
-      return res.status(404).json({ error: 'User not found', code: 'USER_NOT_FOUND' });
+      return res.status(404).json({ error: 'Përdoruesi nuk u gjet' });
     }
     
     // Update password in MongoDB (in production, hash this!)
@@ -1277,12 +1128,12 @@ app.post('/api/auth/reset-password', async (req, res) => {
     
     res.json({ 
       success: true, 
-      message: 'Password changed successfully! You can now login.' 
+      message: 'Fjalëkalimi u ndryshua me sukses! Tani mund të kyçeni.' 
     });
     
   } catch (error) {
     console.error('Reset password error:', error);
-    res.status(500).json({ error: 'Server error', code: 'SERVER_ERROR' });
+    res.status(500).json({ error: 'Gabim në server' });
   }
 });
 
@@ -1750,39 +1601,29 @@ app.get('/api/admin/stats', checkAdminAuth, (req, res) => {
   }
 });
 
-// Get all users list - Now fetches from MongoDB (persistent) + in-memory (usage data)
-app.get('/api/admin/users', checkAdminAuth, async (req, res) => {
+// Get all users list
+app.get('/api/admin/users', checkAdminAuth, (req, res) => {
   try {
-    // Fetch all registered users from MongoDB (persistent storage)
-    const mongoUsers = await UserAccountModel.find({}).sort({ createdAt: -1 }).lean();
+    const allUsers = Array.from(getAllUsers().values());
     
-    // Get in-memory usage data
-    const inMemoryUsers = getAllUsers();
-    
-    const usersList = mongoUsers.map(mongoUser => {
-      const usageData = inMemoryUsers.get(mongoUser.odId);
-      return {
-        odId: mongoUser.odId,
-        userId: mongoUser.odId,
-        username: mongoUser.username,
-        email: mongoUser.email,
-        subscriptionTier: usageData?.subscriptionTier || mongoUser.subscriptionTier || 'free_trial',
-        subscriptionStatus: usageData?.subscriptionStatus || 'active',
-        subscriptionExpiresAt: usageData?.subscriptionExpiresAt,
-        createdAt: mongoUser.createdAt,
-        lastActiveAt: usageData?.lastActiveAt || mongoUser.lastLogin,
-        dailyUsage: usageData?.dailyUsage || { messages: 0 },
-        monthlyUsage: usageData?.monthlyUsage || { totalMessages: 0 },
-        costTracking: usageData?.costTracking || { totalSpent: 0 },
-        credits: usageData?.credits || mongoUser.credits || 0,
-        isBlocked: usageData?.isBlocked || false,
-        securityStrikes: usageData?.securityStrikes || 0,
-        stripeCustomerId: usageData?.stripeCustomerId || mongoUser.stripeCustomerId
-      };
-    });
+    const usersList = allUsers.map(u => ({
+      userId: u.userId,
+      subscriptionTier: u.subscriptionTier,
+      subscriptionStatus: u.subscriptionStatus,
+      subscriptionExpiresAt: u.subscriptionExpiresAt,
+      createdAt: u.createdAt,
+      lastActiveAt: u.lastActiveAt,
+      dailyUsage: u.dailyUsage,
+      monthlyUsage: u.monthlyUsage,
+      costTracking: u.costTracking,
+      credits: u.credits || 0,
+      isBlocked: u.isBlocked || false,
+      securityStrikes: u.securityStrikes || 0,
+      stripeCustomerId: u.stripeCustomerId
+    }));
     
     // Sort by last active (most recent first)
-    usersList.sort((a, b) => new Date(b.lastActiveAt || 0) - new Date(a.lastActiveAt || 0));
+    usersList.sort((a, b) => new Date(b.lastActiveAt) - new Date(a.lastActiveAt));
     
     res.json({
       users: usersList,
@@ -2014,13 +1855,7 @@ app.post('/api/admin/users/:odId/gift-credits', checkAdminAuth, async (req, res)
     
     saveUser(user);
     
-    // Also update MongoDB
-    await UserAccountModel.updateOne(
-      { odId: odId },
-      { credits: user.credits }
-    );
-    
-    console.log(`🎁 Gifted ${amount} credits to user: ${odId} [Saved to MongoDB]`);
+    console.log(`🎁 Gifted ${amount} credits to user: ${odId}`);
     
     res.json({
       success: true,
@@ -2034,138 +1869,24 @@ app.post('/api/admin/users/:odId/gift-credits', checkAdminAuth, async (req, res)
   }
 });
 
-// Update user subscription tier (admin only)
-app.post('/api/admin/users/:odId/update-tier', checkAdminAuth, async (req, res) => {
-  try {
-    const { odId } = req.params;
-    const { tier } = req.body;
-    
-    const validTiers = ['free', 'free_trial', 'starter', 'pro', 'elite', 'premium'];
-    if (!tier || !validTiers.includes(tier)) {
-      return res.status(400).json({ error: 'Invalid tier. Must be one of: ' + validTiers.join(', ') });
-    }
-    
-    // Find user in MongoDB first
-    const mongoUser = await UserAccountModel.findOne({ odId: odId });
-    if (!mongoUser) {
-      return res.status(404).json({ error: 'User not found in database' });
-    }
-    
-    // Get in-memory user and update tier
-    const user = getUser(odId);
-    const oldTier = mongoUser.subscriptionTier || user.subscriptionTier;
-    user.subscriptionTier = tier;
-    user.subscriptionStatus = tier === 'free' ? 'none' : 'active';
-    
-    // Set expiration for paid tiers
-    if (tier !== 'free' && tier !== 'free_trial') {
-      user.subscriptionExpiresAt = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000); // 1 year
-    }
-    
-    // Auto-assign credits based on tier
-    const tierCredits = {
-      free: 0,
-      free_trial: 0,
-      starter: 25,    // €6.99 plan gets 25 bonus credits
-      pro: 50,        // €12.99 plan gets 50 bonus credits
-      elite: 100,     // €19.99 plan gets 100 bonus credits
-      premium: 100    // Legacy tier same as elite
-    };
-    
-    const creditsToAdd = tierCredits[tier] || 0;
-    if (creditsToAdd > 0) {
-      user.credits = (user.credits || 0) + creditsToAdd;
-      user.creditHistory = user.creditHistory || [];
-      user.creditHistory.push({
-        date: new Date(),
-        type: 'added',
-        amount: creditsToAdd,
-        source: `tier_upgrade_${tier}`
-      });
-    }
-    
-    // Reset daily usage for fresh start
-    user.dailyUsage = {
-      date: new Date().toDateString(),
-      messages: 0,
-      imageAnalyses: 0
-    };
-    
-    // Reset screenshot usage for paid users (they get fresh monthly limit)
-    const isPaidTier = ['starter', 'pro', 'elite', 'premium'].includes(tier);
-    if (isPaidTier) {
-      user.screenshotAnalyses = {
-        lifetimeUsed: user.screenshotAnalyses?.lifetimeUsed || 0,  // Keep lifetime record
-        monthlyUsed: 0,  // Reset monthly to 0 for paid users
-        currentMonth: new Date().getMonth(),
-        currentYear: new Date().getFullYear()
-      };
-    }
-    
-    saveUser(user);
-    
-    // ALSO update MongoDB (source of truth for tier data)
-    await UserAccountModel.updateOne(
-      { odId: odId },
-      { 
-        subscriptionTier: tier,
-        subscriptionStatus: tier === 'free' ? 'none' : 'active',
-        subscriptionExpiresAt: tier !== 'free' && tier !== 'free_trial' 
-          ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) 
-          : null,
-        credits: user.credits
-      }
-    );
-    
-    console.log(`🔄 Updated user ${odId} tier: ${oldTier} -> ${tier} (+${creditsToAdd} credits) [Saved to MongoDB]`);
-    
-    res.json({
-      success: true,
-      message: `Subscription tier updated to ${tier}`,
-      odId,
-      oldTier,
-      newTier: tier,
-      creditsAdded: creditsToAdd,
-      newCreditsBalance: user.credits
-    });
-  } catch (error) {
-    console.error('Update tier error:', error);
-    res.status(500).json({ error: 'Failed to update subscription tier' });
-  }
-});
-
 // Create test user (admin only)
 app.post('/api/admin/create-test-user', checkAdminAuth, async (req, res) => {
   try {
-    const { firstName, lastName, email, password, gender, tier } = req.body;
+    const { firstName, lastName, email, password, tier } = req.body;
     const timestamp = Date.now();
-    const testUserId = `user-${timestamp}-${Math.random().toString(36).substring(7)}`;
+    const testUserId = `test_${timestamp}`;
     const testUsername = email ? email.split('@')[0] : `testuser_${timestamp}`;
     
-    // Check if email already exists
-    if (email) {
-      const existingUser = await UserAccountModel.findOne({ email: email.toLowerCase().trim() });
-      if (existingUser) {
-        return res.status(409).json({ error: 'This email is already registered' });
-      }
-    }
-    
-    // Create account in MongoDB with subscription data
-    const subscriptionTier = tier || 'pro';
+    // Create account in MongoDB
     const testAccount = new UserAccountModel({
       odId: testUserId,
       username: testUsername,
       firstName: firstName || 'Test',
       lastName: lastName || 'User',
-      gender: gender || null,
-      email: email ? email.toLowerCase().trim() : `${testUsername}@biseda.ai`,
+      email: email || `${testUsername}@biseda.ai`,
       password: password || 'testpassword123',
       country: 'AL',
       isVerified: true,
-      subscriptionTier: subscriptionTier,
-      subscriptionStatus: 'active',
-      subscriptionExpiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
-      credits: 100,
       createdAt: new Date(),
       lastLogin: new Date()
     });
@@ -2173,6 +1894,7 @@ app.post('/api/admin/create-test-user', checkAdminAuth, async (req, res) => {
     await testAccount.save();
     
     // Create usage profile using getUser (which creates a proper User instance)
+    const subscriptionTier = tier || 'pro';
     const user = getUser(testUserId);
     user.subscriptionTier = subscriptionTier;
     user.subscriptionStatus = 'active';
@@ -2187,39 +1909,26 @@ app.post('/api/admin/create-test-user', checkAdminAuth, async (req, res) => {
       totalTokens: 0,
       totalOpenAICalls: 0
     };
-    // Set screenshot limits based on tier (fresh monthly quota for paid users)
-    user.screenshotAnalyses = {
-      lifetimeUsed: 0,
-      monthlyUsed: 0,
-      currentMonth: new Date().getMonth(),
-      currentYear: new Date().getFullYear()
-    };
     user.costTracking = { totalSpent: 0, lastResetDate: new Date().toDateString(), dailyCost: 0 };
     user.credits = 100;
     user.lastActiveAt = new Date();
     saveUser(user);
     
-    console.log(`✅ New user created by admin: ${testAccount.email} (${subscriptionTier})`);
-    
     res.json({
       success: true,
-      message: `${subscriptionTier.toUpperCase()} user created successfully`,
+      message: `${subscriptionTier.toUpperCase()} test user created successfully`,
       user: {
         odId: testUserId,
         email: testAccount.email,
         password: password || 'testpassword123',
         name: `${testAccount.firstName} ${testAccount.lastName}`,
-        gender: testAccount.gender,
         username: testUsername,
         tier: subscriptionTier
       }
     });
   } catch (error) {
-    console.error('Create user error:', error);
-    if (error.code === 11000) {
-      return res.status(409).json({ error: 'Email or username already exists' });
-    }
-    res.status(500).json({ error: 'Failed to create user', details: error.message });
+    console.error('Create test user error:', error);
+    res.status(500).json({ error: 'Failed to create test user', details: error.message });
   }
 });
 

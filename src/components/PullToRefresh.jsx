@@ -1,9 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { RefreshCw } from 'lucide-react';
 
 export default function PullToRefresh({ onRefresh, children, disabled = false }) {
-  const { t } = useTranslation();
   const [pullDistance, setPullDistance] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isPulling, setIsPulling] = useState(false);
@@ -121,7 +119,7 @@ export default function PullToRefresh({ onRefresh, children, disabled = false })
           style={{ top: 70 }}
         >
           <span className="text-sm font-medium text-purple-400">
-            {t('common.refreshing', 'Refreshing...')}
+            Duke rifreskuar...
           </span>
         </div>
       )}

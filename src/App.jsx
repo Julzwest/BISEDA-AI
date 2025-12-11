@@ -15,10 +15,6 @@ import Admin from './pages/Admin.jsx';
 import Auth, { clearAllUserData } from '@/pages/AuthComponent';
 import UserProfile from './pages/UserProfile.jsx';
 import PrivacyPolicy from './pages/PrivacyPolicy.jsx';
-import MoodCheck from './pages/MoodCheck.jsx';
-import ProfileOptimizer from './pages/ProfileOptimizer.jsx';
-import DatePlanner from './pages/DatePlanner.jsx';
-import DateRehearsal from './pages/DateRehearsal.jsx';
 import OnboardingTutorial from './components/OnboardingTutorial.jsx';
 import ScrollToTop from './components/ScrollToTop.jsx';
 
@@ -75,7 +71,7 @@ function App() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-slate-400">Loading...</p>
+          <p className="text-slate-400">Duke ngarkuar...</p>
         </div>
       </div>
     );
@@ -144,10 +140,6 @@ function App() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/profile" element={<UserProfile onLogout={handleLogout} />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
-          <Route path="/mood" element={<MoodCheck />} />
-          <Route path="/profileoptimizer" element={<ProfileOptimizer />} />
-          <Route path="/dateplanner" element={<DatePlanner />} />
-          <Route path="/rehearsal" element={<DateRehearsal />} />
         </Routes>
       </Layout>
     </Router>

@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Bookmark, BookmarkCheck } from 'lucide-react';
 import { getBackendUrl } from '@/utils/getBackendUrl';
 
 export function SaveButton({ item, type, onSaved, className = '' }) {
-  const { t } = useTranslation();
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   
@@ -15,7 +13,7 @@ export function SaveButton({ item, type, onSaved, className = '' }) {
     e.stopPropagation();
     
     if (!userId) {
-      alert(t('common.loginToSave', 'Please log in to save'));
+      alert('Duhet të jesh i kyçur për të ruajtur');
       return;
     }
 
@@ -40,11 +38,11 @@ export function SaveButton({ item, type, onSaved, className = '' }) {
           setSaved(false);
         }, 2000);
       } else {
-        alert(t('common.saveError', 'Error saving'));
+        alert('Gabim gjatë ruajtjes');
       }
     } catch (error) {
       console.error('Save error:', error);
-      alert(t('common.saveError', 'Error saving'));
+      alert('Gabim gjatë ruajtjes');
     } finally {
       setSaving(false);
     }
@@ -63,12 +61,12 @@ export function SaveButton({ item, type, onSaved, className = '' }) {
       {saved ? (
         <>
           <BookmarkCheck className="w-4 h-4" />
-          <span className="text-sm">{t('common.saved', 'Saved!')}</span>
+          <span className="text-sm">Ruajtur!</span>
         </>
       ) : (
         <>
           <Bookmark className="w-4 h-4" />
-          <span className="text-sm">{saving ? t('common.saving', 'Saving...') : t('common.save', 'Save')}</span>
+          <span className="text-sm">{saving ? 'Duke ruajtur...' : 'Ruaj'}</span>
         </>
       )}
     </button>

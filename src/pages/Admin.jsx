@@ -47,31 +47,11 @@ export default function Admin() {
   const [giftCreditsAmount, setGiftCreditsAmount] = useState(10);
   const [giftCreditsUser, setGiftCreditsUser] = useState(null);
   
-  // Change tier modal
-  const [showChangeTier, setShowChangeTier] = useState(false);
-  const [changeTierUser, setChangeTierUser] = useState(null);
-  const [selectedTier, setSelectedTier] = useState('starter');
-  const [changeTierLoading, setChangeTierLoading] = useState(false);
-  
   // Conversations
   const [conversations, setConversations] = useState([]);
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [showConversationModal, setShowConversationModal] = useState(false);
   const [loadingConversations, setLoadingConversations] = useState(false);
-  
-  // Create User
-  const [showCreateUser, setShowCreateUser] = useState(false);
-  const [createUserLoading, setCreateUserLoading] = useState(false);
-  const [createUserSuccess, setCreateUserSuccess] = useState('');
-  const [createUserError, setCreateUserError] = useState('');
-  const [newUser, setNewUser] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    gender: '',
-    tier: 'starter'
-  });
   
   const backendUrl = getBackendUrl();
   const adminToken = localStorage.getItem('adminToken');
@@ -106,7 +86,7 @@ export default function Admin() {
       }
     } catch (error) {
       console.error('Login error:', error);
-      setAuthError('Server connection error');
+      setAuthError('Gabim lidhje me serverin');
     } finally {
       setLoading(false);
     }
@@ -194,106 +174,12 @@ export default function Admin() {
     }
   };
 
-  const handleChangeTier = async () => {
-    if (!changeTierUser) return;
-    const token = localStorage.getItem('adminToken');
-    setChangeTierLoading(true);
-    
-    try {
-      const response = await fetch(`${backendUrl}/api/admin/users/${changeTierUser.odId}/update-tier`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify({ tier: selectedTier })
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        setShowChangeTier(false);
-        setChangeTierUser(null);
-        setSelectedTier('starter');
-        fetchData();
-        alert(`✅ Plan changed to ${selectedTier.toUpperCase()}!\n\n📊 Messages/day: ${selectedTier === 'elite' ? 500 : selectedTier === 'pro' ? 200 : selectedTier === 'starter' ? 75 : 3}\n💰 Credits added: +${data.creditsAdded || 0}\n💎 New balance: ${data.newCreditsBalance || 0} credits`);
-      } else {
-        const data = await response.json();
-        alert(data.error || 'Failed to change tier');
-      }
-    } catch (error) {
-      console.error('Change tier error:', error);
-      alert('Error changing tier');
-    } finally {
-      setChangeTierLoading(false);
-    }
-  };
-
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
     localStorage.removeItem('adminUsername');
     setIsAuthenticated(false);
     setUsername('');
     setPassword('');
-  };
-
-  const handleCreateUser = async (e) => {
-    e.preventDefault();
-    setCreateUserError('');
-    setCreateUserSuccess('');
-    
-    // Validation
-    if (!newUser.firstName.trim() || !newUser.lastName.trim()) {
-      setCreateUserError('First name and last name are required');
-      return;
-    }
-    if (!newUser.email.trim() || !newUser.email.includes('@')) {
-      setCreateUserError('Valid email is required');
-      return;
-    }
-    if (!newUser.password || newUser.password.length < 6) {
-      setCreateUserError('Password must be at least 6 characters');
-      return;
-    }
-    
-    const token = localStorage.getItem('adminToken');
-    setCreateUserLoading(true);
-    
-    try {
-      const response = await fetch(`${backendUrl}/api/admin/create-test-user`, {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json', 
-          'Authorization': `Bearer ${token}` 
-        },
-        body: JSON.stringify({
-          firstName: newUser.firstName.trim(),
-          lastName: newUser.lastName.trim(),
-          email: newUser.email.trim(),
-          password: newUser.password,
-          gender: newUser.gender || null,
-          tier: newUser.tier
-        })
-      });
-      
-      const data = await response.json();
-      
-      if (response.ok) {
-        setCreateUserSuccess(`✅ User created successfully! Email: ${data.user.email}, Tier: ${data.user.tier}`);
-        setNewUser({
-          firstName: '',
-          lastName: '',
-          email: '',
-          password: '',
-          gender: '',
-          tier: 'starter'
-        });
-        fetchData(); // Refresh user list
-      } else {
-        setCreateUserError(data.error || 'Failed to create user');
-      }
-    } catch (error) {
-      console.error('Create user error:', error);
-      setCreateUserError('Connection error. Please try again.');
-    } finally {
-      setCreateUserLoading(false);
-    }
   };
 
   const fetchConversations = async () => {
@@ -440,36 +326,31 @@ export default function Admin() {
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950/20 to-slate-950 p-4 md:p-6">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
-        <div className="flex-1 min-w-0">
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-1 flex items-center gap-2 sm:gap-3">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center flex-shrink-0">
-              <Shield className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold text-white mb-1 flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
+              <Shield className="w-5 h-5 text-white" />
             </div>
-            <span className="truncate">Admin</span>
+            Biseda.ai Admin
           </h1>
-          <p className="text-slate-400 text-xs sm:text-sm truncate">Manage app and users</p>
+          <p className="text-slate-400 text-sm">Menaxho aplikacionin dhe përdoruesit</p>
         </div>
-        <div className="flex gap-1.5 sm:gap-2 flex-shrink-0">
-          <Button onClick={fetchData} disabled={refreshing} className="bg-slate-700 hover:bg-slate-600 text-white px-2 sm:px-4 py-2">
-            <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
-            <span className="hidden sm:inline ml-2">Refresh</span>
+        <div className="flex gap-2">
+          <Button onClick={fetchData} disabled={refreshing} className="bg-slate-700 hover:bg-slate-600 text-white">
+            <RefreshCw className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} /> Rifresko
           </Button>
-          <Button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 text-white px-2 sm:px-4 py-2">
-            <span className="sm:hidden">Exit</span>
-            <span className="hidden sm:inline">Logout</span>
-          </Button>
+          <Button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 text-white">Dil</Button>
         </div>
       </div>
 
-      {/* Tab Navigation - Scrollable on mobile */}
-      <div className="flex gap-2 mb-6 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide" style={{ WebkitOverflowScrolling: 'touch' }}>
+      {/* Tab Navigation */}
+      <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
         {[
-          { id: 'overview', label: '📊 Overview', icon: '📊' },
-          { id: 'users', label: '👥 Users', icon: '👥' },
-          { id: 'createUser', label: '➕ Create', icon: '➕' },
-          { id: 'conversations', label: '💬 Chats', icon: '💬' },
-          { id: 'subscriptions', label: '💎 Subs', icon: '💎' },
-          { id: 'activity', label: '📈 Activity', icon: '📈' },
+          { id: 'overview', label: '📊 Përmbledhje' },
+          { id: 'users', label: '👥 Përdoruesit' },
+          { id: 'conversations', label: '💬 Bisedat' },
+          { id: 'subscriptions', label: '💎 Abonimet' },
+          { id: 'activity', label: '📈 Aktiviteti' },
         ].map(tab => (
           <button
             key={tab.id}
@@ -477,7 +358,7 @@ export default function Admin() {
               setActiveTab(tab.id);
               if (tab.id === 'conversations') fetchConversations();
             }}
-            className={`px-3 py-2 rounded-xl font-medium text-xs sm:text-sm whitespace-nowrap transition-all flex-shrink-0 ${
+            className={`px-4 py-2 rounded-xl font-medium text-sm whitespace-nowrap transition-all ${
               activeTab === tab.id
                 ? 'bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-lg'
                 : 'bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-700/50'
@@ -491,171 +372,78 @@ export default function Admin() {
       {/* Overview Tab */}
       {activeTab === 'overview' && (
         <>
-          {/* Quick Stats - Clickable Cards */}
+          {/* Quick Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
-            <button 
-              onClick={() => setActiveTab('users')}
-              className="text-left transition-all hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <Card className="bg-gradient-to-br from-blue-900/40 to-cyan-900/40 border-blue-500/30 hover:border-blue-400/50 p-4 h-full">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
-                    <Users className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-slate-400 text-[10px] sm:text-xs">Total Users</p>
-                    <p className="text-white text-xl sm:text-2xl font-bold">{registeredUsers.length || stats?.overview?.totalUsers || 0}</p>
-                  </div>
+            <Card className="bg-gradient-to-br from-blue-900/40 to-cyan-900/40 border-blue-500/30 p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
+                  <Users className="w-6 h-6 text-white" />
                 </div>
-              </Card>
-            </button>
+                <div>
+                  <p className="text-slate-400 text-xs">Total Përdorues</p>
+                  <p className="text-white text-2xl font-bold">{registeredUsers.length || stats?.overview?.totalUsers || 0}</p>
+                </div>
+              </div>
+            </Card>
 
-            <button 
-              onClick={() => setActiveTab('activity')}
-              className="text-left transition-all hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <Card className="bg-gradient-to-br from-green-900/40 to-emerald-900/40 border-green-500/30 hover:border-green-400/50 p-4 h-full">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg relative">
-                    <Activity className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                    <span className="absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 bg-green-400 rounded-full border-2 border-slate-900 animate-pulse"></span>
-                  </div>
-                  <div>
-                    <p className="text-slate-400 text-[10px] sm:text-xs">Online Now</p>
-                    <p className="text-white text-xl sm:text-2xl font-bold">{registeredUsers.filter(u => u.onlineStatus === 'online').length}</p>
-                  </div>
+            <Card className="bg-gradient-to-br from-green-900/40 to-emerald-900/40 border-green-500/30 p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg relative">
+                  <Activity className="w-6 h-6 text-white" />
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-slate-900 animate-pulse"></span>
                 </div>
-              </Card>
-            </button>
+                <div>
+                  <p className="text-slate-400 text-xs">Online Tani</p>
+                  <p className="text-white text-2xl font-bold">{registeredUsers.filter(u => u.onlineStatus === 'online').length}</p>
+                </div>
+              </div>
+            </Card>
 
-            <button 
-              onClick={() => { setActiveTab('conversations'); fetchConversations(); }}
-              className="text-left transition-all hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <Card className="bg-gradient-to-br from-purple-900/40 to-pink-900/40 border-purple-500/30 hover:border-purple-400/50 p-4 h-full">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
-                    <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-slate-400 text-[10px] sm:text-xs">Total Messages</p>
-                    <p className="text-white text-xl sm:text-2xl font-bold">{stats?.overview?.totalMessages || 0}</p>
-                  </div>
+            <Card className="bg-gradient-to-br from-purple-900/40 to-pink-900/40 border-purple-500/30 p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
+                  <MessageSquare className="w-6 h-6 text-white" />
                 </div>
-              </Card>
-            </button>
+                <div>
+                  <p className="text-slate-400 text-xs">Total Mesazhe</p>
+                  <p className="text-white text-2xl font-bold">{stats?.overview?.totalMessages || 0}</p>
+                </div>
+              </div>
+            </Card>
 
-            <button 
-              onClick={() => setActiveTab('subscriptions')}
-              className="text-left transition-all hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <Card className="bg-gradient-to-br from-amber-900/40 to-orange-900/40 border-amber-500/30 hover:border-amber-400/50 p-4 h-full">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
-                    <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-slate-400 text-[10px] sm:text-xs">Revenue/Month</p>
-                    <p className="text-white text-xl sm:text-2xl font-bold">€{stats?.overview?.monthlyRevenue || '0.00'}</p>
-                  </div>
+            <Card className="bg-gradient-to-br from-amber-900/40 to-orange-900/40 border-amber-500/30 p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+                  <DollarSign className="w-6 h-6 text-white" />
                 </div>
-              </Card>
-            </button>
-          </div>
-
-          {/* Quick Navigation - Large Icon Cards */}
-          <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 mb-6">
-            <button 
-              onClick={() => setActiveTab('users')}
-              className="transition-all hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <Card className="bg-gradient-to-br from-blue-600/30 to-blue-800/30 border-blue-500/40 hover:border-blue-400/60 p-4 sm:p-5 h-full">
-                <div className="flex flex-col items-center justify-center gap-2">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
-                    <Users className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-                  </div>
-                  <p className="text-white text-xs sm:text-sm font-semibold">Users</p>
+                <div>
+                  <p className="text-slate-400 text-xs">Të Ardhura/Muaj</p>
+                  <p className="text-white text-2xl font-bold">€{stats?.overview?.monthlyRevenue || '0.00'}</p>
                 </div>
-              </Card>
-            </button>
-
-            <button 
-              onClick={() => setActiveTab('createUser')}
-              className="transition-all hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <Card className="bg-gradient-to-br from-emerald-600/30 to-emerald-800/30 border-emerald-500/40 hover:border-emerald-400/60 p-4 sm:p-5 h-full">
-                <div className="flex flex-col items-center justify-center gap-2">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
-                    <UserPlus className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-                  </div>
-                  <p className="text-white text-xs sm:text-sm font-semibold">Create</p>
-                </div>
-              </Card>
-            </button>
-
-            <button 
-              onClick={() => { setActiveTab('conversations'); fetchConversations(); }}
-              className="transition-all hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <Card className="bg-gradient-to-br from-purple-600/30 to-purple-800/30 border-purple-500/40 hover:border-purple-400/60 p-4 sm:p-5 h-full">
-                <div className="flex flex-col items-center justify-center gap-2">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
-                    <MessageSquare className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-                  </div>
-                  <p className="text-white text-xs sm:text-sm font-semibold">Chats</p>
-                </div>
-              </Card>
-            </button>
-
-            <button 
-              onClick={() => setActiveTab('subscriptions')}
-              className="transition-all hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <Card className="bg-gradient-to-br from-cyan-600/30 to-cyan-800/30 border-cyan-500/40 hover:border-cyan-400/60 p-4 sm:p-5 h-full">
-                <div className="flex flex-col items-center justify-center gap-2">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg">
-                    <Crown className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-                  </div>
-                  <p className="text-white text-xs sm:text-sm font-semibold">Subs</p>
-                </div>
-              </Card>
-            </button>
-
-            <button 
-              onClick={() => setActiveTab('activity')}
-              className="transition-all hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <Card className="bg-gradient-to-br from-orange-600/30 to-orange-800/30 border-orange-500/40 hover:border-orange-400/60 p-4 sm:p-5 h-full">
-                <div className="flex flex-col items-center justify-center gap-2">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg">
-                    <Activity className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
-                  </div>
-                  <p className="text-white text-xs sm:text-sm font-semibold">Activity</p>
-                </div>
-              </Card>
-            </button>
+              </div>
+            </Card>
           </div>
 
           {/* Financial Overview */}
-          <Card className="bg-slate-800/50 border-slate-700/50 p-4 sm:p-5 mb-6">
-            <h2 className="text-base sm:text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-green-400" /> Financial Overview
+          <Card className="bg-slate-800/50 border-slate-700/50 p-5 mb-6">
+            <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+              <TrendingUp className="w-5 h-5 text-green-400" /> Pasqyra Financiare
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-              <div className="bg-slate-700/30 p-3 sm:p-4 rounded-xl">
-                <p className="text-slate-400 text-xs sm:text-sm mb-1">Monthly Revenue</p>
-                <p className="text-white text-lg sm:text-xl font-bold">€{stats?.overview?.monthlyRevenue || '0.00'}</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-slate-700/30 p-4 rounded-xl">
+                <p className="text-slate-400 text-sm mb-1">Të Ardhura Mujore</p>
+                <p className="text-white text-xl font-bold">€{stats?.overview?.monthlyRevenue || '0.00'}</p>
               </div>
               <div className="bg-slate-700/30 p-4 rounded-xl">
-                <p className="text-slate-400 text-xs sm:text-sm mb-1">API Cost (OpenAI)</p>
+                <p className="text-slate-400 text-sm mb-1">Kosto API (OpenAI)</p>
                 <p className="text-white text-xl font-bold">${stats?.overview?.totalCost || '0.00'}</p>
               </div>
               <div className="bg-slate-700/30 p-4 rounded-xl">
-                <p className="text-slate-400 text-xs sm:text-sm mb-1">Net Profit</p>
+                <p className="text-slate-400 text-sm mb-1">Fitimi Neto</p>
                 <p className="text-green-400 text-xl font-bold">€{stats?.overview?.profit || '0.00'}</p>
               </div>
               <div className="bg-slate-700/30 p-4 rounded-xl">
-                <p className="text-slate-400 text-xs sm:text-sm mb-1">Active Credits</p>
+                <p className="text-slate-400 text-sm mb-1">Kredite Aktive</p>
                 <p className="text-purple-400 text-xl font-bold">{stats?.overview?.totalCreditsBalance || 0}</p>
               </div>
             </div>
@@ -664,7 +452,7 @@ export default function Admin() {
           {/* App Features */}
           <Card className="bg-slate-800/50 border-slate-700/50 p-5 mb-6">
             <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <Zap className="w-5 h-5 text-yellow-400" /> App Features
+              <Zap className="w-5 h-5 text-yellow-400" /> Veçoritë e Aplikacionit
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
               {[
@@ -685,7 +473,7 @@ export default function Admin() {
           {/* Recent Signups */}
           <Card className="bg-slate-800/50 border-slate-700/50 p-5">
             <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <UserPlus className="w-5 h-5 text-blue-400" /> Recent Registrations
+              <UserPlus className="w-5 h-5 text-blue-400" /> Regjistrimet e Fundit
             </h2>
             <div className="space-y-2">
               {registeredUsers.slice(0, 5).map((user, i) => (
@@ -796,7 +584,7 @@ export default function Admin() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-white flex items-center gap-2">
               <Users className="w-5 h-5 text-blue-400" /> 
-              Users ({filteredUsers.length})
+              Përdoruesit ({filteredUsers.length})
             </h2>
           </div>
           
@@ -885,32 +673,26 @@ export default function Admin() {
                         onClick={() => viewUserConversations(user)}
                         className="bg-cyan-600 hover:bg-cyan-500 text-white text-xs h-9 px-3"
                       >
-                        <MessageSquare className="w-3 h-3 mr-1" /> Chats
+                        <MessageSquare className="w-3 h-3 mr-1" /> Bisedat
                       </Button>
                       <Button
                         onClick={() => { setGiftCreditsUser(user); setShowGiftCredits(true); }}
                         className="bg-purple-600 hover:bg-purple-500 text-white text-xs h-9 px-3"
                       >
-                        <Gift className="w-3 h-3 mr-1" /> Credits
-                      </Button>
-                      <Button
-                        onClick={() => { setChangeTierUser(user); setSelectedTier(user.subscriptionTier || 'free'); setShowChangeTier(true); }}
-                        className="bg-amber-600 hover:bg-amber-500 text-white text-xs h-9 px-3"
-                      >
-                        <Crown className="w-3 h-3 mr-1" /> Plan
+                        <Gift className="w-3 h-3 mr-1" /> Kredite
                       </Button>
                       <Button
                         onClick={() => handleBlockUser(user.odId, !user.isBlocked)}
                         className={`${user.isBlocked ? 'bg-green-600 hover:bg-green-500' : 'bg-orange-600 hover:bg-orange-500'} text-white text-xs h-9 px-3`}
                       >
                         {user.isBlocked ? <Unlock className="w-3 h-3 mr-1" /> : <Lock className="w-3 h-3 mr-1" />}
-                        {user.isBlocked ? 'Unblock' : 'Block'}
+                        {user.isBlocked ? 'Zhblloko' : 'Blloko'}
                       </Button>
                       <Button
                         onClick={() => { setUserToDelete(user); setShowDeleteConfirm(true); }}
                         className="bg-red-600 hover:bg-red-500 text-white text-xs h-9 px-3"
                       >
-                        <Trash2 className="w-3 h-3 mr-1" /> Delete
+                        <Trash2 className="w-3 h-3 mr-1" /> Fshi
                       </Button>
                     </div>
                   </div>
@@ -923,204 +705,6 @@ export default function Admin() {
               <p className="text-slate-400 text-lg">Asnjë përdorues u gjet</p>
             </div>
           )}
-        </Card>
-      )}
-
-      {/* Create User Tab */}
-      {activeTab === 'createUser' && (
-        <Card className="bg-slate-800/50 border-slate-700/50 p-6 max-w-2xl mx-auto">
-          <div className="text-center mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-green-500/30">
-              <UserPlus className="w-8 h-8 text-white" />
-            </div>
-            <h2 className="text-2xl font-bold text-white mb-2">Create New User</h2>
-            <p className="text-slate-400">Krijo llogari të re me planin e dëshiruar</p>
-          </div>
-
-          <form onSubmit={handleCreateUser} className="space-y-4">
-            {/* Name Fields */}
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">👤 Emri</label>
-                <input
-                  type="text"
-                  value={newUser.firstName}
-                  onChange={(e) => setNewUser({...newUser, firstName: e.target.value})}
-                  className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-green-500/50"
-                  placeholder="Emri"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-300 mb-2">👤 Mbiemri</label>
-                <input
-                  type="text"
-                  value={newUser.lastName}
-                  onChange={(e) => setNewUser({...newUser, lastName: e.target.value})}
-                  className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-green-500/50"
-                  placeholder="Mbiemri"
-                  required
-                />
-              </div>
-            </div>
-
-            {/* Gender Selection */}
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">⚧ Gjinia</label>
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  onClick={() => setNewUser({...newUser, gender: 'male'})}
-                  className={`py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 ${
-                    newUser.gender === 'male'
-                      ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30 border-2 border-blue-400'
-                      : 'bg-slate-700/50 border-2 border-slate-600/50 text-slate-400 hover:text-white hover:border-blue-500/50'
-                  }`}
-                >
-                  <span className="text-xl">👨</span>
-                  <span>Mashkull</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setNewUser({...newUser, gender: 'female'})}
-                  className={`py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 ${
-                    newUser.gender === 'female'
-                      ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg shadow-pink-500/30 border-2 border-pink-400'
-                      : 'bg-slate-700/50 border-2 border-slate-600/50 text-slate-400 hover:text-white hover:border-pink-500/50'
-                  }`}
-                >
-                  <span className="text-xl">👩</span>
-                  <span>Femër</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">📧 Email</label>
-              <input
-                type="email"
-                value={newUser.email}
-                onChange={(e) => setNewUser({...newUser, email: e.target.value})}
-                className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-green-500/50"
-                placeholder="email@example.com"
-                required
-              />
-            </div>
-
-            {/* Password */}
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">🔐 Fjalëkalimi</label>
-              <input
-                type="text"
-                value={newUser.password}
-                onChange={(e) => setNewUser({...newUser, password: e.target.value})}
-                className="w-full px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-green-500/50"
-                placeholder="Minimum 6 karaktere"
-                required
-              />
-            </div>
-
-            {/* Subscription Tier */}
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">💎 Subscription Plan</label>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {[
-                  { id: 'free', name: 'Falas', price: '€0', color: 'slate', icon: '🆓' },
-                  { id: 'starter', name: 'Starter', price: '€6.99', color: 'blue', icon: '⭐' },
-                  { id: 'pro', name: 'Pro', price: '€12.99', color: 'purple', icon: '💎' },
-                  { id: 'elite', name: 'Elite', price: '€19.99', color: 'amber', icon: '👑' },
-                ].map((tier) => (
-                  <button
-                    key={tier.id}
-                    type="button"
-                    onClick={() => setNewUser({...newUser, tier: tier.id})}
-                    className={`p-4 rounded-xl font-semibold transition-all text-center ${
-                      newUser.tier === tier.id
-                        ? tier.id === 'elite' ? 'bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/30 border-2 border-amber-400' :
-                          tier.id === 'pro' ? 'bg-gradient-to-br from-purple-500 to-pink-600 text-white shadow-lg shadow-purple-500/30 border-2 border-purple-400' :
-                          tier.id === 'starter' ? 'bg-gradient-to-br from-blue-500 to-cyan-600 text-white shadow-lg shadow-blue-500/30 border-2 border-blue-400' :
-                          'bg-gradient-to-br from-slate-500 to-slate-600 text-white shadow-lg border-2 border-slate-400'
-                        : 'bg-slate-700/50 border-2 border-slate-600/50 text-slate-400 hover:text-white hover:border-slate-500/50'
-                    }`}
-                  >
-                    <span className="text-2xl block mb-1">{tier.icon}</span>
-                    <span className="block text-sm font-bold">{tier.name}</span>
-                    <span className="block text-xs opacity-75">{tier.price}/muaj</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Error Message */}
-            {createUserError && (
-              <div className="p-4 bg-red-500/10 border border-red-500/30 rounded-xl">
-                <p className="text-red-400 text-sm text-center flex items-center justify-center gap-2">
-                  <AlertCircle className="w-4 h-4" /> {createUserError}
-                </p>
-              </div>
-            )}
-
-            {/* Success Message */}
-            {createUserSuccess && (
-              <div className="p-4 bg-green-500/10 border border-green-500/30 rounded-xl">
-                <p className="text-green-400 text-sm text-center flex items-center justify-center gap-2">
-                  <CheckCircle className="w-4 h-4" /> {createUserSuccess}
-                </p>
-              </div>
-            )}
-
-            {/* Submit Button */}
-            <Button
-              type="submit"
-              disabled={createUserLoading}
-              className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold h-14 rounded-xl text-base shadow-lg shadow-green-500/20 transition-all"
-            >
-              {createUserLoading ? (
-                <RefreshCw className="w-5 h-5 animate-spin" />
-              ) : (
-                <>
-                  <UserPlus className="w-5 h-5 mr-2" />
-                  Create User
-                </>
-              )}
-            </Button>
-          </form>
-
-          {/* Quick Create Buttons */}
-          <div className="mt-6 pt-6 border-t border-slate-700">
-            <p className="text-slate-400 text-sm text-center mb-4">Ose krijo shpejt një llogari testi:</p>
-            <div className="grid grid-cols-2 gap-3">
-              <Button
-                type="button"
-                onClick={() => setNewUser({
-                  firstName: 'Test',
-                  lastName: 'User',
-                  email: `test${Date.now()}@test.com`,
-                  password: 'testpassword123',
-                  gender: 'male',
-                  tier: 'elite'
-                })}
-                className="bg-amber-600 hover:bg-amber-500 text-white"
-              >
-                👑 Elite Test User
-              </Button>
-              <Button
-                type="button"
-                onClick={() => setNewUser({
-                  firstName: 'Test',
-                  lastName: 'User',
-                  email: `test${Date.now()}@test.com`,
-                  password: 'testpassword123',
-                  gender: 'female',
-                  tier: 'pro'
-                })}
-                className="bg-purple-600 hover:bg-purple-500 text-white"
-              >
-                💎 Pro Test User
-              </Button>
-            </div>
-          </div>
         </Card>
       )}
 
@@ -1150,7 +734,7 @@ export default function Admin() {
 
           <Card className="bg-slate-800/50 border-slate-700/50 p-5">
             <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <DollarSign className="w-5 h-5 text-green-400" /> Subscription Revenue
+              <DollarSign className="w-5 h-5 text-green-400" /> Të Ardhura nga Abonime
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-gradient-to-br from-green-900/30 to-emerald-900/30 border border-green-500/30 p-5 rounded-xl">
@@ -1162,7 +746,7 @@ export default function Admin() {
                 <p className="text-white text-3xl font-bold">€{((parseFloat(stats?.overview?.monthlyRevenue) || 0) * 12).toFixed(2)}</p>
               </div>
               <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 border border-purple-500/30 p-5 rounded-xl">
-                <p className="text-purple-300 text-xs sm:text-sm mb-2">Net Profit/Month</p>
+                <p className="text-purple-300 text-sm mb-2">Fitimi Neto/Muaj</p>
                 <p className="text-white text-3xl font-bold">€{stats?.overview?.profit || '0.00'}</p>
               </div>
             </div>
@@ -1176,7 +760,7 @@ export default function Admin() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-white flex items-center gap-2">
               <MessagesSquare className="w-5 h-5 text-cyan-400" />
-              {selectedUser ? `Chats by ${selectedUser.firstName || selectedUser.email}` : 'All Chats'}
+              {selectedUser ? `Bisedat e ${selectedUser.firstName || selectedUser.email}` : 'Të Gjitha Bisedat'}
             </h2>
             {selectedUser && (
               <Button onClick={() => { setSelectedUser(null); fetchConversations(); }} className="bg-slate-600 hover:bg-slate-500 text-white text-xs">
@@ -1244,7 +828,7 @@ export default function Admin() {
             <div className="text-center py-12">
               <MessagesSquare className="w-16 h-16 text-slate-600 mx-auto mb-4" />
               <p className="text-slate-400 text-lg mb-2">Asnjë bisedë ende</p>
-              <p className="text-slate-500 text-sm">User conversations will appear here</p>
+              <p className="text-slate-500 text-sm">Bisedat e përdoruesve do të shfaqen këtu</p>
             </div>
           )}
         </Card>
@@ -1254,7 +838,7 @@ export default function Admin() {
       {activeTab === 'activity' && (
         <Card className="bg-slate-800/50 border-slate-700/50 p-5">
           <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-            <Activity className="w-5 h-5 text-green-400" /> Recent Activity
+            <Activity className="w-5 h-5 text-green-400" /> Aktiviteti i Fundit
           </h2>
           <div className="space-y-3">
             {stats?.topUsers?.map((user, i) => (
@@ -1290,7 +874,7 @@ export default function Admin() {
           <Card className="bg-slate-900 border-slate-700 p-6 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                <Eye className="w-5 h-5 text-purple-400" /> User Details
+                <Eye className="w-5 h-5 text-purple-400" /> Detajet e Përdoruesit
               </h2>
               <button onClick={() => setShowUserModal(false)} className="text-slate-400 hover:text-white">
                 <X className="w-6 h-6" />
@@ -1333,7 +917,7 @@ export default function Admin() {
                 <div className="p-4 bg-slate-800/50 rounded-xl">
                   <p className="text-slate-400 text-sm mb-1">Status</p>
                   <p className={`font-semibold ${selectedUser.isBlocked ? 'text-red-400' : 'text-green-400'}`}>
-                    {selectedUser.isBlocked ? 'Blocked' : 'Active'}
+                    {selectedUser.isBlocked ? 'Bllokuar' : 'Aktiv'}
                   </p>
                 </div>
                 <div className="p-4 bg-slate-800/50 rounded-xl">
@@ -1341,11 +925,11 @@ export default function Admin() {
                   <p className="text-white font-semibold">{selectedUser.monthlyUsage?.totalMessages || 0}</p>
                 </div>
                 <div className="p-4 bg-slate-800/50 rounded-xl">
-                  <p className="text-slate-400 text-sm mb-1">Credits</p>
+                  <p className="text-slate-400 text-sm mb-1">Kredite</p>
                   <p className="text-purple-400 font-semibold">{selectedUser.credits || 0}</p>
                 </div>
                 <div className="p-4 bg-slate-800/50 rounded-xl">
-                  <p className="text-slate-400 text-xs sm:text-sm mb-1">API Cost</p>
+                  <p className="text-slate-400 text-sm mb-1">Kosto API</p>
                   <p className="text-green-400 font-semibold">${selectedUser.costTracking?.totalSpent?.toFixed(4) || '0.00'}</p>
                 </div>
                 <div className="p-4 bg-slate-800/50 rounded-xl">
@@ -1357,16 +941,16 @@ export default function Admin() {
               <div className="flex gap-2 pt-4">
                 <Button onClick={() => { setGiftCreditsUser(selectedUser); setShowGiftCredits(true); setShowUserModal(false); }}
                   className="flex-1 bg-purple-600 hover:bg-purple-500 text-white">
-                  <Gift className="w-4 h-4 mr-2" /> Gift Credits
+                  <Gift className="w-4 h-4 mr-2" /> Dhuro Kredite
                 </Button>
                 <Button onClick={() => { handleBlockUser(selectedUser.odId, !selectedUser.isBlocked); setShowUserModal(false); }}
                   className={`flex-1 ${selectedUser.isBlocked ? 'bg-green-600 hover:bg-green-500' : 'bg-orange-600 hover:bg-orange-500'} text-white`}>
                   {selectedUser.isBlocked ? <Unlock className="w-4 h-4 mr-2" /> : <Lock className="w-4 h-4 mr-2" />}
-                  {selectedUser.isBlocked ? 'Unblock' : 'Block'}
+                  {selectedUser.isBlocked ? 'Zhblloko' : 'Blloko'}
                 </Button>
                 <Button onClick={() => { setUserToDelete(selectedUser); setShowDeleteConfirm(true); setShowUserModal(false); }}
                   className="flex-1 bg-red-600 hover:bg-red-500 text-white">
-                  <Trash2 className="w-4 h-4 mr-2" /> Delete
+                  <Trash2 className="w-4 h-4 mr-2" /> Fshi
                 </Button>
               </div>
             </div>
@@ -1382,7 +966,7 @@ export default function Admin() {
               <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <AlertTriangle className="w-8 h-8 text-red-400" />
               </div>
-              <h2 className="text-xl font-bold text-white mb-2">Delete Account?</h2>
+              <h2 className="text-xl font-bold text-white mb-2">Fshi Llogarinë?</h2>
               <p className="text-slate-400">
                 Je i sigurt që dëshiron të fshish llogarinë e <span className="text-white font-semibold">{userToDelete.email}</span>?
                 Ky veprim nuk mund të kthehet!
@@ -1391,11 +975,11 @@ export default function Admin() {
             <div className="flex gap-3">
               <Button onClick={() => { setShowDeleteConfirm(false); setUserToDelete(null); }}
                 className="flex-1 bg-slate-700 hover:bg-slate-600 text-white">
-                Cancel
+                Anulo
               </Button>
               <Button onClick={handleDeleteUser} disabled={deleteLoading}
                 className="flex-1 bg-red-600 hover:bg-red-500 text-white">
-                {deleteLoading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <><Trash2 className="w-4 h-4 mr-2" /> Delete Permanently</>}
+                {deleteLoading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <><Trash2 className="w-4 h-4 mr-2" /> Fshi Përgjithmonë</>}
               </Button>
             </div>
           </Card>
@@ -1410,14 +994,14 @@ export default function Admin() {
               <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Gift className="w-8 h-8 text-purple-400" />
               </div>
-              <h2 className="text-xl font-bold text-white mb-2">Gift Credits</h2>
+              <h2 className="text-xl font-bold text-white mb-2">Dhuro Kredite</h2>
               <p className="text-slate-400">
-                Gift credits to <span className="text-white font-semibold">{giftCreditsUser.email}</span>
+                Dhuro kredite për <span className="text-white font-semibold">{giftCreditsUser.email}</span>
               </p>
             </div>
             
             <div className="mb-6">
-              <label className="block text-sm font-medium text-slate-300 mb-2">Credit Amount</label>
+              <label className="block text-sm font-medium text-slate-300 mb-2">Sasia e Krediteve</label>
               <input
                 type="number"
                 value={giftCreditsAmount}
@@ -1441,72 +1025,11 @@ export default function Admin() {
             <div className="flex gap-3">
               <Button onClick={() => { setShowGiftCredits(false); setGiftCreditsUser(null); }}
                 className="flex-1 bg-slate-700 hover:bg-slate-600 text-white">
-                Cancel
+                Anulo
               </Button>
               <Button onClick={handleGiftCredits}
                 className="flex-1 bg-purple-600 hover:bg-purple-500 text-white">
-                <Gift className="w-4 h-4 mr-2" /> Gift {giftCreditsAmount} Credits
-              </Button>
-            </div>
-          </Card>
-        </div>
-      )}
-
-      {/* Change Tier Modal */}
-      {showChangeTier && changeTierUser && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50">
-          <Card className="bg-slate-900 border-amber-500/30 p-6 rounded-2xl max-w-md w-full">
-            <div className="text-center mb-6">
-              <div className="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Crown className="w-8 h-8 text-amber-400" />
-              </div>
-              <h2 className="text-xl font-bold text-white mb-2">Change Plan</h2>
-              <p className="text-slate-400">
-                Change plan for <span className="text-white font-semibold">{changeTierUser.email}</span>
-              </p>
-              <p className="text-slate-500 text-sm mt-1">
-                Current plan: <span className="text-amber-400 font-semibold">{changeTierUser.subscriptionTier || 'free'}</span>
-              </p>
-            </div>
-            
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-slate-300 mb-3">Select New Plan</label>
-              <div className="grid grid-cols-2 gap-3">
-                {[
-                  { id: 'free', name: 'Falas', price: '€0', credits: 0, messages: 3 },
-                  { id: 'starter', name: 'Starter', price: '€6.99', credits: 25, messages: 75 },
-                  { id: 'pro', name: 'Pro', price: '€12.99', credits: 50, messages: 200 },
-                  { id: 'elite', name: 'Elite', price: '€19.99', credits: 100, messages: 500 },
-                ].map((tier) => (
-                  <button
-                    key={tier.id}
-                    onClick={() => setSelectedTier(tier.id)}
-                    className={`p-3 rounded-xl font-semibold transition-all text-center ${
-                      selectedTier === tier.id
-                        ? tier.id === 'elite' ? 'bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-lg border-2 border-amber-400' :
-                          tier.id === 'pro' ? 'bg-gradient-to-br from-purple-500 to-pink-600 text-white shadow-lg border-2 border-purple-400' :
-                          tier.id === 'starter' ? 'bg-gradient-to-br from-blue-500 to-cyan-600 text-white shadow-lg border-2 border-blue-400' :
-                          'bg-gradient-to-br from-slate-500 to-slate-600 text-white shadow-lg border-2 border-slate-400'
-                        : 'bg-slate-700/50 border-2 border-slate-600/50 text-slate-400 hover:text-white hover:border-slate-500/50'
-                    }`}
-                  >
-                    <span className="block text-sm font-bold">{tier.name}</span>
-                    <span className="block text-xs opacity-75">{tier.price}/muaj</span>
-                    <span className="block text-xs mt-1 opacity-60">{tier.messages} msg/ditë</span>
-                    {tier.credits > 0 && <span className="block text-xs text-green-300">+{tier.credits} kredite</span>}
-                  </button>
-                ))}
-              </div>
-            </div>
-            
-            <div className="flex gap-3">
-              <Button onClick={() => { setShowChangeTier(false); setChangeTierUser(null); }}
-                className="flex-1 bg-slate-700 hover:bg-slate-600 text-white">
-                Cancel
-              </Button>
-              <Button onClick={handleChangeTier} disabled={changeTierLoading}
-                className="flex-1 bg-amber-600 hover:bg-amber-500 text-white">
-                {changeTierLoading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <><Crown className="w-4 h-4 mr-2" /> Change Plan</>}
+                <Gift className="w-4 h-4 mr-2" /> Dhuro {giftCreditsAmount} Kredite
               </Button>
             </div>
           </Card>
@@ -1549,7 +1072,7 @@ export default function Admin() {
                         <Bot className="w-4 h-4" />
                       )}
                       <span className="text-xs opacity-75">
-                        {msg.role === 'user' ? 'User' : 'AI Coach'}
+                        {msg.role === 'user' ? 'Përdoruesi' : 'AI Coach'}
                       </span>
                       {msg.hasImages && <Image className="w-3 h-3" />}
                     </div>

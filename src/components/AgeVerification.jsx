@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Shield, AlertTriangle } from 'lucide-react';
 
 export default function AgeVerification({ onVerified }) {
-  const { t } = useTranslation();
   const [birthDate, setBirthDate] = useState('');
   const [error, setError] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
@@ -29,7 +27,7 @@ export default function AgeVerification({ onVerified }) {
 
   const verifyAge = () => {
     if (!birthDate) {
-      setError(t('ageVerification.enterBirthdate', 'Please enter your birthdate'));
+      setError('Ju lutem shkruani datëlindjen tuaj');
       return;
     }
 
@@ -55,7 +53,7 @@ export default function AgeVerification({ onVerified }) {
         localStorage.setItem('ageVerifiedDate', Date.now().toString());
         onVerified(true);
       } else {
-        setError(t('ageVerification.mustBe18', 'You must be at least 18 years old to use this app'));
+        setError('Duhet të jeni të paktën 18 vjeç për të përdorur këtë aplikacion');
       }
     }, 500);
   };
@@ -68,10 +66,10 @@ export default function AgeVerification({ onVerified }) {
             <Shield className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-2xl font-bold text-white mb-2">
-            {t('ageVerification.title', 'Age Verification')}
+            Verifikimi i Moshës
           </h1>
           <p className="text-slate-400 text-sm">
-            {t('ageVerification.subtitle', 'This app contains explicit content and is only for adults 18+')}
+            Ky aplikacion përmban përmbajtje eksplicite dhe është vetëm për persona mbi 18 vjeç
           </p>
         </div>
 
@@ -79,9 +77,10 @@ export default function AgeVerification({ onVerified }) {
           <div className="flex items-start gap-3">
             <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
             <div className="text-sm text-amber-200">
-              <p className="font-semibold mb-1">{t('ageVerification.warning', 'Warning: Explicit Content')}</p>
+              <p className="font-semibold mb-1">Kujdes: Përmbajtje Eksplicite</p>
               <p className="text-amber-300/80">
-                {t('ageVerification.warningDesc', 'This app contains explicit sexual content, adult language, and detailed discussions about sex. Only adults 18+ may use this app.')}
+                Ky aplikacion përmban përmbajtje seksuale eksplicite, gjuhë të pashtershme, dhe diskutime të detajuara për seks. 
+                Vetëm persona mbi 18 vjeç mund të përdorin këtë aplikacion.
               </p>
             </div>
           </div>
@@ -90,7 +89,7 @@ export default function AgeVerification({ onVerified }) {
         <div className="space-y-4 mb-6">
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-2">
-              {t('ageVerification.birthDate', 'Date of birth')}
+              Data e lindjes
             </label>
             <input
               type="date"
@@ -120,10 +119,10 @@ export default function AgeVerification({ onVerified }) {
             {isVerifying ? (
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                <span>{t('ageVerification.verifying', 'Verifying...')}</span>
+                <span>Duke verifikuar...</span>
               </div>
             ) : (
-              t('ageVerification.confirmAge', 'Confirm I am 18+')
+              'Konfirmo që jam mbi 18 vjeç'
             )}
           </Button>
 
@@ -134,12 +133,12 @@ export default function AgeVerification({ onVerified }) {
             variant="outline"
             className="w-full border-slate-600 text-slate-400 hover:bg-slate-700 hover:text-white"
           >
-            {t('ageVerification.notAdult', "I'm not 18+ - Exit")}
+            Nuk jam mbi 18 vjeç - Dil
           </Button>
         </div>
 
         <p className="text-xs text-slate-500 text-center mt-6">
-          {t('ageVerification.disclaimer', 'By clicking "Confirm", you confirm that you are 18+ and accept the explicit content of this app.')}
+          Duke klikuar "Konfirmo", ju konfirmoni që jeni mbi 18 vjeç dhe pranoni përmbajtjen eksplicite të këtij aplikacioni.
         </p>
       </Card>
     </div>

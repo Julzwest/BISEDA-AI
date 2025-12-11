@@ -2,14 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { createPageUrl } from '../utils';
-import { Lightbulb, TrendingUp, Zap, Star, Sparkles, Heart, MessageSquare, Calendar, Bot, Gift, PartyPopper, Smile, Camera, BookOpen, Users, Lock, Crown } from 'lucide-react';
+import { Lightbulb, TrendingUp, Zap, Star, Sparkles, Heart, MessageSquare, Calendar, Bot, Gift, PartyPopper } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import UsageDisplay from '@/components/UsageDisplay';
 import UpgradeModal from '@/components/UpgradeModal';
 
 export default function Home() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [userName, setUserName] = useState(null);
   const navigate = useNavigate();
@@ -40,12 +40,6 @@ export default function Home() {
     }, 2000);
   };
 
-  // Check if user has Pro or Elite subscription
-  const hasProOrElite = () => {
-    const tier = (localStorage.getItem('userSubscriptionTier') || '').toLowerCase();
-    return ['pro', 'elite', 'premium'].includes(tier);
-  };
-
   useEffect(() => {
     // Get user name if exists
     const name = localStorage.getItem('userName');
@@ -68,41 +62,6 @@ export default function Home() {
       description: t('home.features.aiCoach.desc'),
       color: 'from-purple-500 to-pink-500',
       page: 'Chat'
-    },
-    {
-      icon: Users,
-      title: t('home.features.rehearsal.title', 'Date Rehearsal'),
-      description: t('home.features.rehearsal.desc', 'Practice conversations with AI roleplay'),
-      color: 'from-violet-500 to-fuchsia-500',
-      page: 'Rehearsal',
-      isNew: true,
-      requiresProOrElite: true
-    },
-    {
-      icon: Smile,
-      title: t('home.features.mood.title', 'Mood Check'),
-      description: t('home.features.mood.desc', 'Get tailored advice based on how you feel'),
-      color: 'from-pink-500 to-purple-500',
-      page: 'Mood',
-      isNew: true,
-      requiresProOrElite: true
-    },
-    {
-      icon: Camera,
-      title: t('home.features.profileOptimizer.title', 'Profile Optimizer'),
-      description: t('home.features.profileOptimizer.desc', 'AI-powered dating profile review'),
-      color: 'from-indigo-500 to-purple-500',
-      page: 'ProfileOptimizer',
-      isNew: true,
-      requiresProOrElite: true
-    },
-    {
-      icon: BookOpen,
-      title: t('home.features.datePlanner.title', 'Date Planner'),
-      description: t('home.features.datePlanner.desc', 'Plan dates & track what works'),
-      color: 'from-rose-500 to-pink-500',
-      page: 'DatePlanner',
-      isNew: true
     },
     {
       icon: Calendar,
@@ -142,7 +101,7 @@ export default function Home() {
 
 
   return (
-    <div className="w-full overflow-x-hidden" key={i18n.language}>
+    <div className="w-full overflow-x-hidden">
       {/* Hero Section */}
       <div className="px-4 pt-6 pb-6 w-full max-w-full">
         <div className="text-center mb-6">
@@ -222,42 +181,26 @@ export default function Home() {
             const linkUrl = feature.category 
               ? `${createPageUrl(feature.page)}?category=${feature.category}`
               : createPageUrl(feature.page);
-            const isLocked = feature.requiresProOrElite && !hasProOrElite();
             return (
               <Link 
                 key={index} 
                 to={linkUrl}
                 className="block group"
               >
-                <Card className={`bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-slate-700/50 backdrop-blur-sm hover:border-purple-500/50 hover:from-slate-800/90 hover:to-slate-900/90 transition-all hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg hover:shadow-purple-500/20 ${isLocked ? 'relative' : ''}`}>
+                <Card className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-slate-700/50 backdrop-blur-sm hover:border-purple-500/50 hover:from-slate-800/90 hover:to-slate-900/90 transition-all hover:scale-[1.02] active:scale-[0.98] hover:shadow-lg hover:shadow-purple-500/20">
                   <div className="p-4">
                     <div className="flex items-center gap-4">
-                      <div className={`w-14 h-14 bg-gradient-to-br ${feature.color} rounded-xl flex items-center justify-center shadow-xl shrink-0 group-hover:scale-110 transition-transform relative ${isLocked ? 'opacity-70' : ''}`}>
+                      <div className={`w-14 h-14 bg-gradient-to-br ${feature.color} rounded-xl flex items-center justify-center shadow-xl shrink-0 group-hover:scale-110 transition-transform`}>
                         <Icon className="w-7 h-7 text-white" />
-                        {feature.isNew && !isLocked && (
-                          <div className="absolute -top-1 -right-1 bg-green-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full">
-                            NEW
-                          </div>
-                        )}
-                        {feature.requiresProOrElite && (
-                          <div className="absolute -top-1 -right-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
-                            <Crown className="w-2.5 h-2.5" />
-                            PRO
-                          </div>
-                        )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <h3 className="font-bold text-lg text-white mb-0.5 group-hover:text-purple-300 transition-colors">{feature.title}</h3>
                         <p className="text-slate-400 text-sm leading-relaxed">{feature.description}</p>
                       </div>
                       <div className="text-slate-500 group-hover:text-purple-400 transition-colors">
-                        {isLocked ? (
-                          <Lock className="w-5 h-5 text-amber-500" />
-                        ) : (
-                          <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
-                        )}
+                        <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
                       </div>
                     </div>
                   </div>
@@ -271,24 +214,24 @@ export default function Home() {
         <div className="mt-6">
           <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
             <Star className="w-4 h-4 text-purple-400" />
-            {t('home.whyBiseda', 'Why Biseda.ai?')}
+            Pse Biseda.ai?
           </h3>
           <div className="space-y-2">
             <div className="flex items-start gap-3 text-slate-300">
               <div className="w-1.5 h-1.5 rounded-full bg-purple-400 mt-2 shrink-0"></div>
-              <p className="text-sm">{t('home.benefit1', 'Learn how to talk to guys/girls on WhatsApp, Instagram, Messenger, Tinder and other apps')}</p>
+              <p className="text-sm">Mëso si të flasësh me djem/vajza në WhatsApp, Instagram, Facebook Messenger, Tinder dhe aplikacione të tjera</p>
             </div>
             <div className="flex items-start gap-3 text-slate-300">
               <div className="w-1.5 h-1.5 rounded-full bg-purple-400 mt-2 shrink-0"></div>
-              <p className="text-sm">{t('home.benefit2', 'Get dating advice and learn how to start interesting conversations')}</p>
+              <p className="text-sm">Merr këshilla për dating dhe si të fillosh biseda interesante</p>
             </div>
             <div className="flex items-start gap-3 text-slate-300">
               <div className="w-1.5 h-1.5 rounded-full bg-purple-400 mt-2 shrink-0"></div>
-              <p className="text-sm">{t('home.benefit3', 'Improve your game and become more confident in chats')}</p>
+              <p className="text-sm">Përmirëso lojën tënde dhe bëhu më i sigurt në chat-et</p>
             </div>
             <div className="flex items-start gap-3 text-slate-300">
               <div className="w-1.5 h-1.5 rounded-full bg-purple-400 mt-2 shrink-0"></div>
-              <p className="text-sm">{t('home.benefit4', 'Smart AI that understands emotions for better responses')}</p>
+              <p className="text-sm">AI inteligjent që kupton emocionet dhe dialektet shqipe për përgjigje më të mira</p>
             </div>
           </div>
         </div>

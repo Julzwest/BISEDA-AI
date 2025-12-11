@@ -1,37 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { MessageSquare, Bot, Calendar, PartyPopper, Lightbulb, ChevronRight, ChevronLeft, X, Sparkles, Check } from 'lucide-react';
 
-const getSteps = (t) => [
+const steps = [
   {
     id: 1,
-    title: t('onboarding.steps.welcome.title'),
-    description: t('onboarding.steps.welcome.description'),
+    title: 'Mirësevini në Biseda.ai! 👋',
+    description: 'AI Coach-i yt personal për dating dhe biseda. Le të të tregojmë si funksionon!',
     icon: Sparkles,
     color: 'from-purple-500 to-pink-500',
-    features: t('onboarding.steps.welcome.features', { returnObjects: true })
+    features: [
+      'Kopjo biseda dhe merr këshilla',
+      'Praktiko me AI Coach',
+      'Gjej vende për takime'
+    ]
   },
   {
     id: 2,
-    title: t('onboarding.steps.chat.title'),
-    description: t('onboarding.steps.chat.description'),
+    title: 'Biseda Chat & AI Coach 🤖',
+    description: 'Kopjo mesazhe nga WhatsApp, Instagram ose Tinder dhe merr përgjigje të sugjeruara. Ose bisedo direkt me AI Coach për këshilla!',
     icon: Bot,
     color: 'from-blue-500 to-cyan-500',
-    features: t('onboarding.steps.chat.features', { returnObjects: true })
+    features: [
+      'Ngjit mesazhin që ke marrë',
+      'Merr 3 përgjigje të ndryshme',
+      'Praktiko biseda me AI'
+    ]
   },
   {
     id: 3,
-    title: t('onboarding.steps.events.title'),
-    description: t('onboarding.steps.events.description'),
+    title: 'Takime & Evente 🎉',
+    description: 'Gjej vende perfekte për takimin e parë dhe evente lokale në qytetin tënd!',
     icon: PartyPopper,
     color: 'from-yellow-500 to-orange-500',
-    features: t('onboarding.steps.events.features', { returnObjects: true })
+    features: [
+      'Sugjerime restorantesh & kafenesh',
+      'Koncerte dhe klube nate',
+      'Të dhëna live nga Google'
+    ]
   }
 ];
 
 export default function OnboardingTutorial({ onComplete, isGuest = false }) {
-  const { t } = useTranslation();
-  const steps = getSteps(t);
   const [currentStep, setCurrentStep] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [direction, setDirection] = useState('next');
@@ -88,7 +97,7 @@ export default function OnboardingTutorial({ onComplete, isGuest = false }) {
           onClick={handleSkip}
           className="absolute -top-12 right-0 text-slate-500 hover:text-white text-sm flex items-center gap-1 transition-colors"
         >
-          {t('onboarding.skip')} <X className="w-4 h-4" />
+          Kalo <X className="w-4 h-4" />
         </button>
 
         {/* Progress dots */}
@@ -158,7 +167,7 @@ export default function OnboardingTutorial({ onComplete, isGuest = false }) {
           {isGuest && currentStep === 0 && (
             <div className="mb-6 p-3 bg-cyan-500/10 border border-cyan-500/30 rounded-xl">
               <p className="text-cyan-300 text-xs text-center">
-                {t('onboarding.guestNotice')}
+                👋 Po eksploron si vizitor - regjistrohu për të ruajtur progresin
               </p>
             </div>
           )}
@@ -171,7 +180,7 @@ export default function OnboardingTutorial({ onComplete, isGuest = false }) {
                 className="flex-1 py-3 bg-slate-700 hover:bg-slate-600 text-white font-semibold rounded-xl transition-all flex items-center justify-center gap-2"
               >
                 <ChevronLeft className="w-5 h-5" />
-                {t('onboarding.back')}
+                Prapa
               </button>
             )}
             <button
@@ -180,12 +189,12 @@ export default function OnboardingTutorial({ onComplete, isGuest = false }) {
             >
               {isLastStep ? (
                 <>
-                  {t('onboarding.startNow')}
+                  Fillo Tani
                   <Sparkles className="w-5 h-5" />
                 </>
               ) : (
                 <>
-                  {t('onboarding.continue')}
+                  Vazhdo
                   <ChevronRight className="w-5 h-5" />
                 </>
               )}
@@ -195,7 +204,7 @@ export default function OnboardingTutorial({ onComplete, isGuest = false }) {
 
         {/* Step counter */}
         <p className="text-center text-slate-500 text-sm mt-4">
-          {t('onboarding.step', { current: currentStep + 1, total: steps.length })}
+          Hapi {currentStep + 1} nga {steps.length}
         </p>
       </div>
 

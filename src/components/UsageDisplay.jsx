@@ -22,23 +22,10 @@ export default function UsageDisplay({ onUpgrade, onLimitReached }) {
 
   const fetchUsage = async () => {
     try {
-      // Get logged-in user's ID from localStorage
-      const userId = localStorage.getItem('userId');
-      
-      const headers = {};
-      if (userId) {
-        headers['x-user-id'] = userId;
-      }
-      
-      const response = await fetch(`${backendUrl}/api/usage`, { headers });
+      const response = await fetch(`${backendUrl}/api/usage`);
       if (response.ok) {
         const data = await response.json();
         setUsage(data);
-        
-        // Sync subscription tier to localStorage (keeps it up to date if admin changed it)
-        if (data.tier) {
-          localStorage.setItem('userSubscriptionTier', data.tier);
-        }
         
         // Check if limit is reached and notify parent
         if (onLimitReached && data.dailyUsage.remainingMessages === 0 && (!data.credits || data.credits === 0)) {

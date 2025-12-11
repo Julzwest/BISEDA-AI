@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { createPortal } from 'react-dom';
 import { Check, ChevronDown, X, Languages } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { languages } from '@/i18n';
@@ -7,7 +6,6 @@ import { languages } from '@/i18n';
 export default function LanguageSwitcher() {
   const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const triggerRef = useRef(null);
   const dropdownRef = useRef(null);
 
   const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
@@ -15,10 +13,7 @@ export default function LanguageSwitcher() {
   // Close on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
-      const clickedInsideTrigger = triggerRef.current && triggerRef.current.contains(event.target);
-      const clickedInsideDropdown = dropdownRef.current && dropdownRef.current.contains(event.target);
-      
-      if (!clickedInsideTrigger && !clickedInsideDropdown) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
       }
     };
@@ -68,18 +63,8 @@ export default function LanguageSwitcher() {
     }));
   };
 
-  // Get trigger button position for desktop dropdown
-  const getTriggerRect = () => {
-    if (triggerRef.current) {
-      return triggerRef.current.getBoundingClientRect();
-    }
-    return null;
-  };
-
-  const triggerRect = isOpen ? getTriggerRect() : null;
-
   return (
-    <div className="relative" ref={triggerRef}>
+    <div className="relative" ref={dropdownRef}>
       {/* Trigger Button */}
       <button
         onClick={(e) => {
@@ -92,7 +77,6 @@ export default function LanguageSwitcher() {
         aria-expanded={isOpen}
         type="button"
       >
-        <Languages className="w-3.5 h-3.5 text-slate-400 group-hover:text-purple-400" />
         <span className="text-lg">{currentLanguage?.flag}</span>
         <ChevronDown 
           className={`w-3.5 h-3.5 text-slate-400 group-hover:text-purple-400 transition-all duration-200 ${
@@ -101,8 +85,8 @@ export default function LanguageSwitcher() {
         />
       </button>
 
-      {/* Modal Overlay - Rendered via Portal to escape header stacking context */}
-      {isOpen && createPortal(
+      {/* Modal Overlay - Full screen on mobile, dropdown on desktop */}
+      {isOpen && (
         <>
           {/* Backdrop - only visible on mobile */}
           <div 
@@ -116,18 +100,8 @@ export default function LanguageSwitcher() {
           
           {/* Dropdown/Modal Container */}
           <div 
-            ref={dropdownRef}
-            className="fixed left-4 right-4 bottom-4 md:fixed md:left-auto md:right-auto md:bottom-auto bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-[10001]"
-            style={{ 
-              maxHeight: 'calc(100vh - 120px)',
-              ...(triggerRect && window.innerWidth >= 768 ? {
-                top: triggerRect.bottom + 8,
-                right: window.innerWidth - triggerRect.right,
-                width: 256,
-                left: 'auto',
-                bottom: 'auto'
-              } : {})
-            }}
+            className="fixed left-4 right-4 bottom-4 md:absolute md:left-auto md:right-0 md:bottom-auto md:top-full md:mt-2 md:w-64 bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-[10001]"
+            style={{ maxHeight: 'calc(100vh - 120px)' }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -195,8 +169,7 @@ export default function LanguageSwitcher() {
               </p>
             </div>
           </div>
-        </>,
-        document.body
+        </>
       )}
     </div>
   );

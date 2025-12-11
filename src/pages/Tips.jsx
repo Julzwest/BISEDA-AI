@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { SaveButton } from '@/components/SaveButton';
@@ -11,12 +10,7 @@ import UpgradeModal from '@/components/UpgradeModal';
 import { getBackendUrl } from '@/utils/getBackendUrl';
 
 export default function Tips() {
-  const { t, i18n } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState(null);
-  
-  // Get current language for prompts
-  const currentLang = i18n.language || 'en';
-  const isAlbanian = currentLang === 'sq' || currentLang.startsWith('sq');
   const [customQuestion, setCustomQuestion] = useState('');
   const [answer, setAnswer] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -28,72 +22,63 @@ export default function Tips() {
   const [visibleCount, setVisibleCount] = useState(5); // Initially show 5 tips for faster loading
   const backendUrl = getBackendUrl();
 
-  // Language-aware prompts
-  const getPrompt = (type) => {
-    const langInstruction = isAlbanian ? 'Shkruaj në shqip.' : `Write in ${currentLang === 'en' ? 'English' : currentLang}.`;
-    
-    const prompts = {
-      first_message: `Write 15 original first messages for dating apps.
-
-RULES:
-- ${langInstruction}
-- Each message 1-2 sentences maximum  
-- Creative, flirty, and interesting
-- Not cringy or boring
-
-FORMAT (one message per line):
-1. "Message here"
-2. "Next message"
-
-Now write 15 new creative messages:`,
-      conversation: `Give advice on how to keep an interesting conversation going. How to avoid awkward moments and how to create emotional connection. ${langInstruction}`,
-      compliments: `Give 20 creative and authentic compliments that can be used in conversations. Not the usual ones, but something that really makes an impression. Format each on a separate line. ${langInstruction}`,
-      red_flags: `List red flags to avoid when talking to someone you're interested in. Things that should be avoided absolutely. ${langInstruction}`,
-      confidence: `Give practical advice on how to increase your confidence when talking to someone you're interested in. Tips for body language, mindset and attitude. ${langInstruction}`
-    };
-    return prompts[type];
-  };
-
   const categories = [
     {
       id: 'first_message',
       icon: MessageSquare,
-      title: t('tips.firstMessage'),
+      title: 'Mesazhi i parë',
       color: 'from-blue-500 to-cyan-600',
-      prompt: getPrompt('first_message')
+      prompt: `Shkruaj 15 mesazhe të para origjinale për dating apps.
+
+RREGULLA:
+- VETËM shqip, asnjë gjuhë tjetër
+- Çdo mesazh 1-2 fjali maksimum  
+- Krijuese dhe interesante
+- Jo cringe
+
+FORMATI (një mesazh për rresht):
+1. "Mesazhi këtu"
+2. "Mesazhi tjetër"
+
+SHEMBUJ:
+1. "A ke pare filmin e fundit? Doja ta shihja me dikë special..."
+2. "Buzëqeshja jote me beri te ndaloj scrolling!"
+3. "Çfarë do bëje nëse do kishim vetem nje dit së bashku?"
+
+Tani shkruaj 15 mesazhe të reja:`
     },
     {
       id: 'conversation',
       icon: TrendingUp,
-      title: t('tips.keepConversation'),
+      title: 'Ruajtja e bisedës',
       color: 'from-green-500 to-emerald-600',
-      prompt: getPrompt('conversation')
+      prompt: 'Jep këshilla në shqip se si të mbash një bisedë interesante me një vajzë. Si të shmangësh momentet e sikletshme dhe si të krijosh lidhje emocionale.'
     },
     {
       id: 'compliments',
       icon: Heart,
-      title: t('tips.compliments'),
+      title: 'Komplimente',
       color: 'from-pink-500 to-rose-600',
-      prompt: getPrompt('compliments')
+      prompt: 'Jep 20 komplimente krijuese dhe autentike në shqip që mund të përdoren në biseda. Jo të zakonshmet, por diçka që vërtetë bën përshtypje. Formato secilën në një rresht të veçantë.'
     },
     {
       id: 'red_flags',
       icon: Shield,
-      title: t('tips.redFlags'),
+      title: 'Red flags',
       color: 'from-red-500 to-orange-600',
-      prompt: getPrompt('red_flags')
+      prompt: 'Listo red flags që duhet të shmangësh kur flet me vajza në shqip. Gjëra që duhen evituar absolutisht.'
     },
     {
       id: 'confidence',
       icon: Sparkles,
-      title: t('tips.confidence'),
+      title: 'Konfidenca',
       color: 'from-purple-500 to-indigo-600',
-      prompt: getPrompt('confidence')
+      prompt: 'Jep këshilla praktike në shqip se si të rritësh konfidencën tënde kur flet me vajza. Tips për body language, mentalitet dhe attitude.'
     },
     {
       id: 'analyze',
       icon: Upload,
-      title: t('tips.analyzeChat'),
+      title: 'Analizo bisedë',
       color: 'from-amber-500 to-yellow-600',
       special: 'screenshot'
     }
@@ -205,20 +190,21 @@ Now write 15 new creative messages:`,
     setConversation([]);
     setVisibleCount(5); // Reset visible count
     try {
-      const langInstruction = isAlbanian ? 'Përgjigju në shqip.' : `Respond in ${currentLang === 'en' ? 'English' : currentLang}.`;
       const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `Analyze this screenshot of a conversation. Give detailed feedback. ${langInstruction}
+        prompt: `Analizo këtë screenshot të një bisede. Jep feedback të detajuar në shqip:
         
-1. What's going well in this conversation
-2. What could be improved
-3. Specific suggestions for future responses
-4. Overall rating 1-10
+1. Çfarë po shkon mirë në këtë bisedë
+2. Çfarë mund të përmirësohet
+3. Sugjerime konkrete për përgjigje të ardhshme
+4. Rating i përgjithshëm 1-10
 
-${customQuestion ? `\nSpecific question: ${customQuestion}` : ''}`,
+
+
+${customQuestion ? `\nPyetje specifike: ${customQuestion}` : ''}`,
         file_urls: [screenshot]
       });
       setAnswer(response);
-      setConversation([{ question: t('tips.chatAnalysis', 'Chat Analysis'), answer: response }]);
+      setConversation([{ question: 'Analiza e bisedës', answer: response }]);
     } catch (error) {
       console.error('Error:', error);
       if (error.code === 'LIMIT_EXCEEDED' || error.message?.includes('Limiti ditor')) {
@@ -267,9 +253,8 @@ ${customQuestion ? `\nSpecific question: ${customQuestion}` : ''}`,
     setVisibleCount(5); // Reset visible count
 
     try {
-      const langInstruction = isAlbanian ? 'Përgjigju në shqip.' : `Respond in ${currentLang === 'en' ? 'English' : currentLang}.`;
       const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `Answer this question about dating and relationships: ${customQuestion}\n\nGive detailed and practical advice. ${langInstruction}`
+        prompt: `Përgjigju kësaj pyetjeje në shqip për dating dhe marrëdhënie: ${customQuestion}\n\nJep këshilla të detajuara dhe praktike.`
       });
       setAnswer(response);
       setConversation([{ question: customQuestion, answer: response }]);
@@ -299,17 +284,22 @@ ${customQuestion ? `\nSpecific question: ${customQuestion}` : ''}`,
     setIsLoading(true);
 
     try {
-      const conversationContext = conversation.map(c => `Question: ${c.question}\nAnswer: ${c.answer}`).join('\n\n');
-      const langInstruction = isAlbanian ? 'Përgjigju në shqip.' : `Respond in ${currentLang === 'en' ? 'English' : currentLang}.`;
+      const conversationContext = conversation.map(c => `Pyetje: ${c.question}\nPërgjigje: ${c.answer}`).join('\n\n');
       
       const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `This is the context of the previous conversation:
+        prompt: `Ky është konteksti i bisedës së mëparshme:
+
+
 
 ${conversationContext}
 
-New question: ${newQuestion}
 
-Respond based on the previous context. Give detailed and practical advice. ${langInstruction}`
+
+Pyetja e re: ${newQuestion}
+
+
+
+Përgjigju në shqip duke u bazuar në kontekstin e mëparshëm. Jep këshilla të detajuara dhe praktike.`
       });
 
       setConversation(prev => [...prev, { question: newQuestion, answer: response }]);
@@ -339,22 +329,21 @@ Respond based on the previous context. Give detailed and practical advice. ${lan
     setIsLoading(true);
 
     try {
-      const langInstruction = isAlbanian ? 'Shkruaj në shqip.' : `Write in ${currentLang === 'en' ? 'English' : currentLang}.`;
       const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `Write 10 new original first messages for dating apps.
+        prompt: `Shkruaj 10 mesazhe të reja të para origjinale për dating apps.
 
-RULES:
-- ${langInstruction}
-- Each message 1-2 sentences maximum  
-- Creative, flirty or funny
-- Not cringy, not common
-- Must be DIFFERENT from previous messages
+RREGULLA:
+- VETËM shqip, asnjë gjuhë tjetër
+- Çdo mesazh 1-2 fjali maksimum  
+- Krijuese, flirty ose funny
+- Jo cringe, jo të zakonshme
+- DUHET të jenë NDRYSHE nga mesazhet e mëparshme
 
-FORMAT (one message per line):
-1. "Message here"
-2. "Next message"
+FORMATI (një mesazh për rresht):
+1. "Mesazhi këtu"
+2. "Mesazhi tjetër"
 
-Now write 10 COMPLETELY new messages:`
+Tani shkruaj 10 mesazhe KREJTËSISHT të reja:`
       });
       
       // Filter the new response
@@ -421,8 +410,8 @@ Now write 10 COMPLETELY new messages:`
             </div>
           </div>
         </div>
-        <h1 className="text-2xl font-bold text-white mb-1">{t('tips.title')}</h1>
-        <p className="text-slate-400 text-sm">{t('tips.subtitle')}</p>
+        <h1 className="text-2xl font-bold text-white mb-1">Këshilla & Tips</h1>
+        <p className="text-slate-400 text-sm">Përmirëso lojën tënde ✨</p>
       </div>
 
       <div className="px-0 py-4">
@@ -431,7 +420,7 @@ Now write 10 COMPLETELY new messages:`
             {/* Categories Grid */}
             <div>
               <h2 className="text-sm font-semibold text-slate-400 mb-3 uppercase tracking-wide">
-                {t('tips.categories')}
+                Kategorite
               </h2>
               <div className="grid grid-cols-2 gap-3">
                 {categories.map((category) => {
@@ -459,12 +448,12 @@ Now write 10 COMPLETELY new messages:`
             <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm p-5">
               <h3 className="font-semibold text-white mb-3 flex items-center gap-2">
                 <MessageSquare className="w-5 h-5" />
-                {t('tips.askQuestion')}
+                Bëj një pyetje
               </h3>
               <Textarea
                 value={customQuestion}
                 onChange={(e) => setCustomQuestion(e.target.value)}
-                placeholder={t('tips.questionPlaceholder')}
+                placeholder="Shkruaj pyetjen tënde këtu..."
                 className="bg-slate-900 border-slate-700 text-white mb-3 min-h-[100px]"
               />
               <Button
@@ -472,7 +461,7 @@ Now write 10 COMPLETELY new messages:`
                 disabled={!customQuestion.trim() || isLoading}
                 className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold"
               >
-                {isLoading ? t('tips.preparing') : t('tips.getAnswer')}
+                {isLoading ? 'Duke përgatitur...' : 'Merr përgjigje'}
               </Button>
             </Card>
           </div>
@@ -490,11 +479,11 @@ Now write 10 COMPLETELY new messages:`
               }}
               className="text-slate-400 hover:text-white mb-2"
             >
-              ← {t('tips.back')}
+              ← Kthehu
             </Button>
 
             <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm p-6">
-              <h2 className="text-lg font-bold text-white mb-4">{t('tips.analyzeYourChat', 'Analyze your chat')}</h2>
+              <h2 className="text-lg font-bold text-white mb-4">Analizo bisedën tënde</h2>
               
               <div className="space-y-4">
                 <div>
@@ -514,13 +503,13 @@ Now write 10 COMPLETELY new messages:`
                             alt="Screenshot" 
                             className="w-full h-64 object-contain rounded-lg"
                           />
-                          <p className="text-sm text-green-400">✓ {t('tips.screenshotUploaded', 'Screenshot uploaded')}</p>
+                          <p className="text-sm text-green-400">✓ Screenshot u ngarkua</p>
                         </div>
                       ) : (
                         <div>
                           <Upload className="w-8 h-8 mx-auto mb-2 text-slate-500" />
                           <p className="text-sm text-slate-400">
-                            {t('tips.uploadScreenshot', 'Upload chat screenshot')}
+                            Ngarko screenshot të bisedës
                           </p>
                         </div>
                       )}
@@ -531,7 +520,7 @@ Now write 10 COMPLETELY new messages:`
                 <Textarea
                   value={customQuestion}
                   onChange={(e) => setCustomQuestion(e.target.value)}
-                  placeholder={t('tips.specificQuestion', 'Specific question? (optional)')}
+                  placeholder="Pyetje specifike? (opsionale)"
                   className="bg-slate-900 border-slate-700 text-white"
                 />
 
@@ -540,7 +529,7 @@ Now write 10 COMPLETELY new messages:`
                   disabled={!screenshot || isLoading}
                   className="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-semibold"
                 >
-                  {isLoading ? t('tips.analyzing', 'Analyzing...') : t('tips.analyze', 'Analyze')}
+                  {isLoading ? 'Duke analizuar...' : 'Analizo'}
                 </Button>
               </div>
             </Card>
@@ -563,7 +552,7 @@ Now write 10 COMPLETELY new messages:`
               }}
               className="text-slate-400 hover:text-white"
             >
-              ← {t('tips.back')}
+              ← Kthehu
             </Button>
 
             {/* Conversation History */}
@@ -710,10 +699,10 @@ Now write 10 COMPLETELY new messages:`
                               onClick={() => setVisibleCount(prev => prev + 5)}
                               className="w-full bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-500/30 text-base"
                             >
-                              {t('tips.showMore', 'Show More')} 👇
+                              Më shumë 👇
                             </Button>
                             <p className="text-center text-slate-400 text-xs mt-2">
-                              {Math.min(visibleCount, totalSections)} {t('tips.of', 'of')} {totalSections} {t('tips.results', 'results')}
+                              {Math.min(visibleCount, totalSections)} nga {totalSections} rezultate
                             </p>
                           </div>
                         );
@@ -742,10 +731,10 @@ Now write 10 COMPLETELY new messages:`
                           disabled={isLoading}
                           className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-purple-500/30 text-base"
                         >
-                          {isLoading ? t('tips.generating', 'Generating...') : t('tips.generateMore', 'Generate More')} 🔄
+                          {isLoading ? 'Duke gjeneruar...' : 'Gjenero më shumë 🔄'}
                         </Button>
                         <p className="text-center text-slate-400 text-xs mt-2">
-                          {t('tips.clickForNewMessages', 'Click to get new messages')}
+                          Kliko për të marrë mesazhe të reja
                         </p>
                       </div>
                     )}
@@ -759,7 +748,7 @@ Now write 10 COMPLETELY new messages:`
               <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm p-6">
                 <div className="text-center py-8">
                   <div className="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-                  <p className="text-slate-400">{t('tips.preparingAnswer', 'Preparing your answer...')}</p>
+                  <p className="text-slate-400">Duke përgatitur përgjigjen...</p>
                 </div>
               </Card>
             )}
@@ -769,14 +758,14 @@ Now write 10 COMPLETELY new messages:`
               <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm p-4">
                 <div className="space-y-3">
                   <label className="text-sm font-medium text-slate-300">
-                    {t('tips.followUpQuestion', 'Follow-up question?')}
+                    Pyetje shtesë?
                   </label>
                   <div className="flex gap-2">
                     <Input
                       value={followUpQuestion}
                       onChange={(e) => setFollowUpQuestion(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && askFollowUp()}
-                      placeholder={t('tips.askMore', 'Ask more...')}
+                      placeholder="Pyet më shumë..."
                       className="bg-slate-900 border-slate-700 text-white flex-1"
                     />
                     <Button

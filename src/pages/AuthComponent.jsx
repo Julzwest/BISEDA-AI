@@ -23,7 +23,6 @@ export const clearAllUserData = () => {
   localStorage.removeItem('userId');
   localStorage.removeItem('userEmail');
   localStorage.removeItem('userName');
-  localStorage.removeItem('userGender');
   localStorage.removeItem('userCountry');
   localStorage.removeItem('isAuthenticated');
   localStorage.removeItem('isGuest');
@@ -34,34 +33,11 @@ export const clearAllUserData = () => {
   console.log('🔓 User logged out - all data cleared');
 };
 
-// Helper to translate backend error codes
-const getTranslatedError = (data, t) => {
-  if (data.code) {
-    const codeToKey = {
-      'INVALID_CREDENTIALS': 'authErrors.invalidCredentials',
-      'EMAIL_EXISTS': 'authErrors.emailExists',
-      'USER_NOT_FOUND': 'authErrors.userNotFound',
-      'CODE_EXPIRED': 'authErrors.codeExpired',
-      'INVALID_CODE': 'authErrors.invalidCode',
-      'SERVER_ERROR': 'authErrors.serverError',
-      'FIELDS_REQUIRED': 'authErrors.somethingWrong',
-      'PASSWORD_TOO_SHORT': 'authErrors.passwordLength',
-      'EMAIL_REQUIRED': 'authErrors.enterEmail',
-    };
-    const translationKey = codeToKey[data.code];
-    if (translationKey) {
-      return t(translationKey);
-    }
-  }
-  return data.error || t('authErrors.somethingWrong');
-};
-
 export default function Auth({ onAuthSuccess }) {
   const { t, i18n } = useTranslation();
   const [isLogin, setIsLogin] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [gender, setGender] = useState(''); // 'male' or 'female'
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -77,6 +53,9 @@ export default function Auth({ onAuthSuccess }) {
   const [resetCode, setResetCode] = useState('');
   const [newPassword, setNewPassword] = useState('');
   
+  // Age verification state
+  const [showAgeVerification, setShowAgeVerification] = useState(false);
+  const [selectedAge, setSelectedAge] = useState('');
 
   const backendUrl = getBackendUrl();
   
@@ -121,17 +100,13 @@ export default function Auth({ onAuthSuccess }) {
             localStorage.setItem('userName', data.user.firstName || data.user.email?.split('@')[0]);
             localStorage.setItem('isAuthenticated', 'true');
             localStorage.setItem('userCountry', data.user.country || 'AL');
-            if (data.user.gender) {
-              localStorage.setItem('userGender', data.user.gender);
-            }
             
             if (onAuthSuccess) {
               onAuthSuccess({
                 userId: data.user.odId || data.user.userId,
                 email: data.user.email,
                 userName: data.user.firstName || data.user.email?.split('@')[0],
-                country: data.user.country || 'AL',
-                gender: data.user.gender
+                country: data.user.country || 'AL'
               });
             }
           } else {
@@ -166,6 +141,29 @@ export default function Auth({ onAuthSuccess }) {
     return () => clearInterval(interval);
   }, []);
 
+  // Show age verification modal when guest button is clicked
+  const handleGuestButtonClick = () => {
+    setShowAgeVerification(true);
+    setSelectedAge('');
+  };
+
+  // Proceed with guest login after age verification
+  const handleGuestLogin = () => {
+    if (!selectedAge || parseInt(selectedAge) < 18) {
+      return;
+    }
+    
+    const guestId = `guest_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    clearAllUserData();
+    localStorage.setItem('isGuest', 'true');
+    localStorage.setItem('guestId', guestId);
+    localStorage.setItem('isAuthenticated', 'true');
+    localStorage.setItem('userCountry', 'AL');
+    localStorage.setItem('userAge', selectedAge);
+    console.log('👤 Guest session started:', guestId, 'Age:', selectedAge);
+    setShowAgeVerification(false);
+    if (onAuthSuccess) onAuthSuccess({ isGuest: true, guestId });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -178,11 +176,6 @@ export default function Auth({ onAuthSuccess }) {
     
     if (!isLogin && !lastName.trim()) {
       setError(t('authErrors.enterLastName'));
-      return;
-    }
-    
-    if (!isLogin && !gender) {
-      setError(t('authErrors.selectGender'));
       return;
     }
 
@@ -205,7 +198,6 @@ export default function Auth({ onAuthSuccess }) {
         : {
             firstName: firstName.trim(),
             lastName: lastName.trim(),
-            gender: gender,
             email: email.trim(),
             password,
             country: 'AL'
@@ -240,14 +232,8 @@ export default function Auth({ onAuthSuccess }) {
         localStorage.setItem('userName', userName);
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('userCountry', data.user.country || 'AL');
-        if (data.user.gender) {
-          localStorage.setItem('userGender', data.user.gender);
-        }
-        if (data.user.subscriptionTier) {
-          localStorage.setItem('userSubscriptionTier', data.user.subscriptionTier);
-        }
 
-        console.log('✅ Auth successful:', { userId, userName, email: data.user.email, gender: data.user.gender, tier: data.user.subscriptionTier });
+        console.log('✅ Auth successful:', { userId, userName, email: data.user.email });
 
         if (onAuthSuccess) {
           onAuthSuccess({
@@ -255,11 +241,10 @@ export default function Auth({ onAuthSuccess }) {
             email: data.user.email,
             userName,
             country: data.user.country || 'AL',
-            subscriptionTier: data.user.subscriptionTier,
           });
         }
       } else {
-        setError(getTranslatedError(data, t));
+        setError(data.error || t('authErrors.somethingWrong'));
       }
     } catch (err) {
       console.error('Auth error:', err);
@@ -560,34 +545,6 @@ export default function Auth({ onAuthSuccess }) {
                     />
                   </div>
                 </div>
-                
-                {/* Gender Selection */}
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => { setGender('male'); setError(''); }}
-                    className={`py-4 rounded-xl font-semibold text-base transition-all duration-300 flex items-center justify-center gap-2 ${
-                      gender === 'male'
-                        ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/30 border-2 border-blue-400'
-                        : 'bg-slate-800/50 border-2 border-slate-700/50 text-slate-400 hover:text-white hover:border-blue-500/50'
-                    }`}
-                  >
-                    <span className="text-xl">👨</span>
-                    <span>{t('auth.male')}</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => { setGender('female'); setError(''); }}
-                    className={`py-4 rounded-xl font-semibold text-base transition-all duration-300 flex items-center justify-center gap-2 ${
-                      gender === 'female'
-                        ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg shadow-pink-500/30 border-2 border-pink-400'
-                        : 'bg-slate-800/50 border-2 border-slate-700/50 text-slate-400 hover:text-white hover:border-pink-500/50'
-                    }`}
-                  >
-                    <span className="text-xl">👩</span>
-                    <span>{t('auth.female')}</span>
-                  </button>
-                </div>
               </>
             )}
 
@@ -647,6 +604,14 @@ export default function Auth({ onAuthSuccess }) {
                 )}
               </Button>
 
+              <button
+                type="button"
+                onClick={handleGuestButtonClick}
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white font-bold h-14 rounded-xl text-base shadow-lg shadow-slate-500/20 transition-all duration-300 inline-flex items-center justify-center disabled:opacity-50"
+              >
+                👤 {t('auth.guest')}
+              </button>
             </div>
 
             {/* Apple Sign In Button */}
@@ -684,6 +649,62 @@ export default function Auth({ onAuthSuccess }) {
         </Card>
       </div>
 
+      {/* Age Verification Modal */}
+      {showAgeVerification && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <Card className="bg-slate-900/95 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20 max-w-md w-full">
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl">🔞</span>
+              </div>
+              <h2 className="text-2xl font-bold text-white mb-2">{t('ageVerification.title')}</h2>
+              <p className="text-slate-400 text-sm">{t('ageVerification.subtitle')}</p>
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-slate-300 text-sm font-medium mb-2">
+                {t('ageVerification.selectAge')}
+              </label>
+              <div className="flex items-center gap-3">
+                <select
+                  value={selectedAge}
+                  onChange={(e) => setSelectedAge(e.target.value)}
+                  className="flex-1 px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white text-lg focus:outline-none focus:border-purple-500/50 transition-all appearance-none cursor-pointer"
+                  style={{ fontSize: '18px' }}
+                >
+                  <option value="" disabled>{t('ageVerification.chooseAge')}</option>
+                  {Array.from({ length: 83 }, (_, i) => i + 18).map(age => (
+                    <option key={age} value={age}>{age}</option>
+                  ))}
+                </select>
+                <span className="text-slate-300 text-lg font-medium whitespace-nowrap">
+                  {t('ageVerification.yearsOld')}
+                </span>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <Button
+                onClick={handleGuestLogin}
+                disabled={!selectedAge || parseInt(selectedAge) < 18}
+                className="w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl text-base shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                ✅ {t('ageVerification.confirm')}
+              </Button>
+              <button
+                onClick={() => setShowAgeVerification(false)}
+                className="w-full text-slate-400 hover:text-white py-3 transition-colors text-sm"
+              >
+                {t('common.cancel')}
+              </button>
+            </div>
+
+            <p className="mt-4 text-center text-xs text-slate-500">
+              {t('ageVerification.disclaimer')}
+            </p>
+          </Card>
+        </div>
+      )}
 
       {/* Custom animations */}
       <style>{`
