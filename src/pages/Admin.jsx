@@ -491,78 +491,98 @@ export default function Admin() {
       {/* Overview Tab */}
       {activeTab === 'overview' && (
         <>
-          {/* Quick Stats */}
+          {/* Quick Stats - Clickable Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
-            <Card className="bg-gradient-to-br from-blue-900/40 to-cyan-900/40 border-blue-500/30 p-4">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
-                  <Users className="w-6 h-6 text-white" />
+            <button 
+              onClick={() => setActiveTab('users')}
+              className="text-left transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <Card className="bg-gradient-to-br from-blue-900/40 to-cyan-900/40 border-blue-500/30 hover:border-blue-400/50 p-4 h-full">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
+                    <Users className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-slate-400 text-[10px] sm:text-xs">Total Users</p>
+                    <p className="text-white text-xl sm:text-2xl font-bold">{registeredUsers.length || stats?.overview?.totalUsers || 0}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-slate-400 text-xs">Total Përdorues</p>
-                  <p className="text-white text-2xl font-bold">{registeredUsers.length || stats?.overview?.totalUsers || 0}</p>
-                </div>
-              </div>
-            </Card>
+              </Card>
+            </button>
 
-            <Card className="bg-gradient-to-br from-green-900/40 to-emerald-900/40 border-green-500/30 p-4">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg relative">
-                  <Activity className="w-6 h-6 text-white" />
-                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-slate-900 animate-pulse"></span>
+            <button 
+              onClick={() => setActiveTab('activity')}
+              className="text-left transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <Card className="bg-gradient-to-br from-green-900/40 to-emerald-900/40 border-green-500/30 hover:border-green-400/50 p-4 h-full">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg relative">
+                    <Activity className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                    <span className="absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 bg-green-400 rounded-full border-2 border-slate-900 animate-pulse"></span>
+                  </div>
+                  <div>
+                    <p className="text-slate-400 text-[10px] sm:text-xs">Online Now</p>
+                    <p className="text-white text-xl sm:text-2xl font-bold">{registeredUsers.filter(u => u.onlineStatus === 'online').length}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-slate-400 text-xs">Online Tani</p>
-                  <p className="text-white text-2xl font-bold">{registeredUsers.filter(u => u.onlineStatus === 'online').length}</p>
-                </div>
-              </div>
-            </Card>
+              </Card>
+            </button>
 
-            <Card className="bg-gradient-to-br from-purple-900/40 to-pink-900/40 border-purple-500/30 p-4">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
-                  <MessageSquare className="w-6 h-6 text-white" />
+            <button 
+              onClick={() => { setActiveTab('conversations'); fetchConversations(); }}
+              className="text-left transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <Card className="bg-gradient-to-br from-purple-900/40 to-pink-900/40 border-purple-500/30 hover:border-purple-400/50 p-4 h-full">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
+                    <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-slate-400 text-[10px] sm:text-xs">Total Messages</p>
+                    <p className="text-white text-xl sm:text-2xl font-bold">{stats?.overview?.totalMessages || 0}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-slate-400 text-xs">Total Mesazhe</p>
-                  <p className="text-white text-2xl font-bold">{stats?.overview?.totalMessages || 0}</p>
-                </div>
-              </div>
-            </Card>
+              </Card>
+            </button>
 
-            <Card className="bg-gradient-to-br from-amber-900/40 to-orange-900/40 border-amber-500/30 p-4">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
-                  <DollarSign className="w-6 h-6 text-white" />
+            <button 
+              onClick={() => setActiveTab('subscriptions')}
+              className="text-left transition-all hover:scale-[1.02] active:scale-[0.98]"
+            >
+              <Card className="bg-gradient-to-br from-amber-900/40 to-orange-900/40 border-amber-500/30 hover:border-amber-400/50 p-4 h-full">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+                    <DollarSign className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-slate-400 text-[10px] sm:text-xs">Revenue/Month</p>
+                    <p className="text-white text-xl sm:text-2xl font-bold">€{stats?.overview?.monthlyRevenue || '0.00'}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-slate-400 text-xs">Të Ardhura/Muaj</p>
-                  <p className="text-white text-2xl font-bold">€{stats?.overview?.monthlyRevenue || '0.00'}</p>
-                </div>
-              </div>
-            </Card>
+              </Card>
+            </button>
           </div>
 
           {/* Financial Overview */}
-          <Card className="bg-slate-800/50 border-slate-700/50 p-5 mb-6">
-            <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-green-400" /> Pasqyra Financiare
+          <Card className="bg-slate-800/50 border-slate-700/50 p-4 sm:p-5 mb-6">
+            <h2 className="text-base sm:text-lg font-bold text-white mb-4 flex items-center gap-2">
+              <TrendingUp className="w-5 h-5 text-green-400" /> Financial Overview
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-slate-700/30 p-4 rounded-xl">
-                <p className="text-slate-400 text-sm mb-1">Të Ardhura Mujore</p>
-                <p className="text-white text-xl font-bold">€{stats?.overview?.monthlyRevenue || '0.00'}</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+              <div className="bg-slate-700/30 p-3 sm:p-4 rounded-xl">
+                <p className="text-slate-400 text-xs sm:text-sm mb-1">Monthly Revenue</p>
+                <p className="text-white text-lg sm:text-xl font-bold">€{stats?.overview?.monthlyRevenue || '0.00'}</p>
               </div>
               <div className="bg-slate-700/30 p-4 rounded-xl">
-                <p className="text-slate-400 text-sm mb-1">Kosto API (OpenAI)</p>
+                <p className="text-slate-400 text-xs sm:text-sm mb-1">API Cost (OpenAI)</p>
                 <p className="text-white text-xl font-bold">${stats?.overview?.totalCost || '0.00'}</p>
               </div>
               <div className="bg-slate-700/30 p-4 rounded-xl">
-                <p className="text-slate-400 text-sm mb-1">Fitimi Neto</p>
+                <p className="text-slate-400 text-xs sm:text-sm mb-1">Net Profit</p>
                 <p className="text-green-400 text-xl font-bold">€{stats?.overview?.profit || '0.00'}</p>
               </div>
               <div className="bg-slate-700/30 p-4 rounded-xl">
-                <p className="text-slate-400 text-sm mb-1">Kredite Aktive</p>
+                <p className="text-slate-400 text-xs sm:text-sm mb-1">Active Credits</p>
                 <p className="text-purple-400 text-xl font-bold">{stats?.overview?.totalCreditsBalance || 0}</p>
               </div>
             </div>
@@ -1069,7 +1089,7 @@ export default function Admin() {
                 <p className="text-white text-3xl font-bold">€{((parseFloat(stats?.overview?.monthlyRevenue) || 0) * 12).toFixed(2)}</p>
               </div>
               <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 border border-purple-500/30 p-5 rounded-xl">
-                <p className="text-purple-300 text-sm mb-2">Fitimi Neto/Muaj</p>
+                <p className="text-purple-300 text-xs sm:text-sm mb-2">Net Profit/Month</p>
                 <p className="text-white text-3xl font-bold">€{stats?.overview?.profit || '0.00'}</p>
               </div>
             </div>
@@ -1252,7 +1272,7 @@ export default function Admin() {
                   <p className="text-purple-400 font-semibold">{selectedUser.credits || 0}</p>
                 </div>
                 <div className="p-4 bg-slate-800/50 rounded-xl">
-                  <p className="text-slate-400 text-sm mb-1">Kosto API</p>
+                  <p className="text-slate-400 text-xs sm:text-sm mb-1">API Cost</p>
                   <p className="text-green-400 font-semibold">${selectedUser.costTracking?.totalSpent?.toFixed(4) || '0.00'}</p>
                 </div>
                 <div className="p-4 bg-slate-800/50 rounded-xl">
