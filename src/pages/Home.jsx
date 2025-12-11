@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { createPageUrl } from '../utils';
-import { Lightbulb, TrendingUp, Zap, Star, Sparkles, Heart, MessageSquare, Calendar, Bot, Gift, PartyPopper, Smile, Camera, BookOpen, Users, Lock, Crown } from 'lucide-react';
+import { Lightbulb, TrendingUp, Zap, Star, Sparkles, Heart, MessageSquare, Calendar, Bot, Gift, PartyPopper, Smile, Camera, BookOpen, Users, User, Lock, Crown } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import UsageDisplay from '@/components/UsageDisplay';

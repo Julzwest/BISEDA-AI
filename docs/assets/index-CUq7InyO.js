@@ -11580,7 +11580,7 @@ const UserX = createLucideIcon("UserX", [
   ["line", { x1: "17", x2: "22", y1: "8", y2: "13", key: "3nzzx3" }],
   ["line", { x1: "22", x2: "17", y1: "8", y2: "13", key: "1swrse" }]
 ]);
-const User$1 = createLucideIcon("User", [
+const User = createLucideIcon("User", [
   ["path", { d: "M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2", key: "975kel" }],
   ["circle", { cx: "12", cy: "7", r: "4", key: "17ys0d" }]
 ]);
@@ -13790,7 +13790,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-C2VXLZCM.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-DFyc8Oku.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -14667,7 +14667,7 @@ function Layout({ children, onLogout }) {
           ),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(RegionSwitcher, {}),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/profile", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg hover:scale-105 hover:shadow-purple-500/30 transition-all duration-200", children: /* @__PURE__ */ jsxRuntimeExports.jsx(User$1, { className: "w-5 h-5 text-white" }) }) })
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/profile", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg hover:scale-105 hover:shadow-purple-500/30 transition-all duration-200", children: /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-5 h-5 text-white" }) }) })
           ] })
         ] })
       }
@@ -22299,7 +22299,7 @@ function Admin() {
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-4 space-y-4", children: selectedConversation.messages?.map((msg, i) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `flex ${msg.role === "user" ? "justify-end" : "justify-start"}`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `max-w-[80%] p-3 rounded-2xl ${msg.role === "user" ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-br-md" : "bg-slate-700 text-slate-200 rounded-bl-md"}`, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-1", children: [
-          msg.role === "user" ? /* @__PURE__ */ jsxRuntimeExports.jsx(User$1, { className: "w-4 h-4" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Bot, { className: "w-4 h-4" }),
+          msg.role === "user" ? /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-4 h-4" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Bot, { className: "w-4 h-4" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs opacity-75", children: msg.role === "user" ? "Përdoruesi" : "AI Coach" }),
           msg.hasImages && /* @__PURE__ */ jsxRuntimeExports.jsx(Image, { className: "w-3 h-3" })
         ] }),
@@ -22455,7 +22455,7 @@ function UserProfile({ onLogout }) {
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative z-10", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4 mb-4", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl shadow-purple-500/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx(User$1, { className: "w-10 h-10 text-white" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl shadow-purple-500/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-10 h-10 text-white" }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center border-2 border-slate-900 shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-bold text-white", children: userLevel.level }) })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
@@ -22620,12 +22620,12 @@ function UserProfile({ onLogout }) {
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/80 border-slate-700 p-6 mb-6", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white mb-4 flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(User$1, { className: "w-5 h-5 text-purple-400" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-5 h-5 text-purple-400" }),
           "Account Information"
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(User$1, { className: "w-5 h-5 text-slate-400" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-5 h-5 text-slate-400" }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-500", children: "Username" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-medium", children: userName })
@@ -24909,7 +24909,7 @@ ${langInstruction}`;
           ),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "font-semibold text-white mb-1.5 flex items-center gap-2 text-sm", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center text-xs", children: "2" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(User$1, { className: "w-4 h-4 text-purple-400" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-4 h-4 text-purple-400" }),
             getNameLabel()
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs mb-3", children: t("rehearsal.enterTheirName", "Enter the name for the roleplay") }),
