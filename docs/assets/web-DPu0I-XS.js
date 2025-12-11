@@ -1,4 +1,4 @@
-import { W as WebPlugin } from "./index-CjPV-u29.js";
+import { W as WebPlugin } from "./index-DcEFKMEY.js";
 var script = { exports: {} };
 var hasRequiredScript;
 function requireScript() {
