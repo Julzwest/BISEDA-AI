@@ -11138,6 +11138,10 @@ const Copy$1 = createLucideIcon("Copy", [
   ["rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2", key: "17jyea" }],
   ["path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2", key: "zix9uf" }]
 ]);
+const CreditCard = createLucideIcon("CreditCard", [
+  ["rect", { width: "20", height: "14", x: "2", y: "5", rx: "2", key: "ynyp8z" }],
+  ["line", { x1: "2", x2: "22", y1: "10", y2: "10", key: "1b3vmo" }]
+]);
 const Crown = createLucideIcon("Crown", [
   ["path", { d: "m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14", key: "zkxr6b" }]
 ]);
@@ -11385,6 +11389,16 @@ const Search = createLucideIcon("Search", [
 const Send = createLucideIcon("Send", [
   ["path", { d: "m22 2-7 20-4-9-9-4Z", key: "1q3vgg" }],
   ["path", { d: "M22 2 11 13", key: "nzbqef" }]
+]);
+const Settings = createLucideIcon("Settings", [
+  [
+    "path",
+    {
+      d: "M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z",
+      key: "1qme2f"
+    }
+  ],
+  ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
 ]);
 const Shield = createLucideIcon("Shield", [
   ["path", { d: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10", key: "1irkt0" }]
@@ -12646,10 +12660,6 @@ const isAlbanian = () => {
 const getCountryByCode = (code) => {
   return countries.find((c) => c.code === code) || countries[0];
 };
-const getCitiesForCountry = (countryCode) => {
-  const country2 = getCountryByCode(countryCode);
-  return country2 ? country2.cities : [];
-};
 const getLocalizedCitiesForCountry = (countryCode) => {
   const country2 = getCountryByCode(countryCode);
   if (!country2) return [];
@@ -13711,7 +13721,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-BIiMbU7_.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-CltJo9AU.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -21160,13 +21170,23 @@ const removeGiftFavorite = (giftId) => {
   return true;
 };
 function UserProfile({ onLogout }) {
-  const [userInfo, setUserInfo] = reactExports.useState(null);
+  const [stats, setStats] = reactExports.useState({
+    totalMessages: 0,
+    messagesThisWeek: 0,
+    datesPlanned: 0,
+    rehearsalsSessions: 0,
+    tipsViewed: 0,
+    photosFeedback: 0,
+    conversationStartersUsed: 0,
+    currentStreak: 0,
+    level: 1
+  });
+  const [weeklyActivity, setWeeklyActivity] = reactExports.useState([0, 0, 0, 0, 0, 0, 0]);
   const [usage2, setUsage] = reactExports.useState(null);
-  const [savedItems, setSavedItems] = reactExports.useState(null);
   const [localFavorites, setLocalFavorites] = reactExports.useState(getFavorites());
   const [loading, setLoading] = reactExports.useState(true);
   const [showUpgradeModal, setShowUpgradeModal] = reactExports.useState(false);
-  const [activeTab, setActiveTab] = reactExports.useState("overview");
+  const [activeSection, setActiveSection] = reactExports.useState("progress");
   const [userCountry, setUserCountry] = reactExports.useState(localStorage.getItem("userCountry") || "AL");
   const [userCity, setUserCity] = reactExports.useState(localStorage.getItem("userCity") || "");
   const [isEditingLocation, setIsEditingLocation] = reactExports.useState(false);
@@ -21175,14 +21195,6 @@ function UserProfile({ onLogout }) {
   const userId = localStorage.getItem("userId");
   const userName = localStorage.getItem("userName") || "User";
   const userEmail = localStorage.getItem("userEmail") || "";
-  const handleSaveLocation = () => {
-    localStorage.setItem("userCountry", userCountry);
-    localStorage.setItem("userCity", userCity);
-    setIsEditingLocation(false);
-    setLocationSaved(true);
-    setTimeout(() => setLocationSaved(false), 2e3);
-  };
-  const currentCountry = getCountryByCode(userCountry);
   reactExports.useEffect(() => {
     fetchData();
     const handleFavoritesChanged = () => {
@@ -21195,6 +21207,12 @@ function UserProfile({ onLogout }) {
   }, []);
   const fetchData = async () => {
     try {
+      const savedStats = localStorage.getItem("userProgressStats");
+      if (savedStats) {
+        setStats(JSON.parse(savedStats));
+      }
+      const activity = Array(7).fill(0).map((_, i) => Math.floor(Math.random() * 20));
+      setWeeklyActivity(activity);
       const usageRes = await fetch(`${backendUrl2}/api/usage`, {
         headers: { "x-user-id": userId }
       });
@@ -21202,544 +21220,434 @@ function UserProfile({ onLogout }) {
         const usageData = await usageRes.json();
         setUsage(usageData);
       }
-      const savedRes = await fetch(`${backendUrl2}/api/user/saved`, {
-        headers: { "x-user-id": userId }
-      });
-      if (savedRes.ok) {
-        const savedData = await savedRes.json();
-        setSavedItems(savedData.savedItems);
-      }
-      setUserInfo({ userName, userEmail });
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
     }
   };
+  const handleSaveLocation = () => {
+    localStorage.setItem("userCountry", userCountry);
+    localStorage.setItem("userCity", userCity);
+    setIsEditingLocation(false);
+    setLocationSaved(true);
+    setTimeout(() => setLocationSaved(false), 2e3);
+    window.dispatchEvent(new CustomEvent("countryChanged", {
+      detail: { countryCode: userCountry }
+    }));
+  };
+  const handleRemoveFavorite = (type, item) => {
+    try {
+      if (type === "venue") {
+        removeVenueFavorite(item);
+      } else if (type === "dateIdea") {
+        removeDateIdeaFavorite(item);
+      } else if (type === "tip") {
+        removeTipFavorite(item);
+      } else if (type === "gift") {
+        removeGiftFavorite(item);
+      }
+      setLocalFavorites(getFavorites());
+    } catch (error) {
+      console.error("Error removing favorite:", error);
+    }
+  };
   const getTierBadge = (tier) => {
     const badges = {
-      free: { label: "Free", color: "bg-slate-500/20 text-slate-300", icon: Shield },
-      free_trial: { label: "Free Trial", color: "bg-emerald-500/20 text-emerald-300", icon: Star },
-      starter: { label: "Starter", color: "bg-blue-500/20 text-blue-300", icon: Zap },
-      pro: { label: "Pro", color: "bg-purple-500/20 text-purple-300", icon: Crown },
-      elite: { label: "Elite", color: "bg-amber-500/20 text-amber-300", icon: Crown },
-      premium: { label: "Premium", color: "bg-amber-500/20 text-amber-300", icon: Star }
+      free: { label: "Free", color: "bg-slate-500/20 text-slate-300 border-slate-500/30", icon: Shield },
+      pro: { label: "Pro", color: "bg-purple-500/20 text-purple-300 border-purple-500/30", icon: Crown },
+      elite: { label: "Elite", color: "bg-amber-500/20 text-amber-300 border-amber-500/30", icon: Crown }
     };
     return badges[tier?.toLowerCase()] || badges.free;
   };
+  const currentTier = usage2?.tier || localStorage.getItem("userSubscriptionTier") || "free";
+  const tierBadge = getTierBadge(currentTier);
+  const TierIcon = tierBadge.icon;
+  const currentCountry = getCountryByCode(userCountry);
+  const achievements = [
+    { id: "first_message", title: "First Message", desc: "Sent your first AI chat", icon: "🎯", unlocked: stats.totalMessages > 0 },
+    { id: "conversationalist", title: "Conversationalist", desc: "Sent 50 messages", icon: "💬", unlocked: stats.totalMessages >= 50 },
+    { id: "date_planner", title: "Date Planner", desc: "Planned 5 dates", icon: "📅", unlocked: stats.datesPlanned >= 5 },
+    { id: "rehearsal_pro", title: "Rehearsal Pro", desc: "Completed 3 rehearsals", icon: "🎭", unlocked: stats.rehearsalsSessions >= 3 },
+    { id: "photo_perfectionist", title: "Photo Perfectionist", desc: "Got photo feedback", icon: "📸", unlocked: stats.photosFeedback > 0 },
+    { id: "smooth_talker", title: "Smooth Talker", desc: "Used 10 conversation starters", icon: "😎", unlocked: stats.conversationStartersUsed >= 10 },
+    { id: "wisdom_seeker", title: "Wisdom Seeker", desc: "Read 20 tips", icon: "📚", unlocked: stats.tipsViewed >= 20 },
+    { id: "on_fire", title: "On Fire", desc: "7-day streak", icon: "🔥", unlocked: stats.currentStreak >= 7 }
+  ];
+  const unlockedCount = achievements.filter((a) => a.unlocked).length;
+  const progressPercent = unlockedCount / achievements.length * 100;
+  const statCards = [
+    { label: "Total Messages", value: usage2?.dailyUsage?.messages || stats.totalMessages, icon: MessageSquare, color: "from-purple-500 to-pink-500" },
+    { label: "This Week", value: stats.messagesThisWeek, icon: Zap, color: "from-blue-500 to-cyan-500" },
+    { label: "Dates Planned", value: stats.datesPlanned, icon: Calendar, color: "from-rose-500 to-pink-500" },
+    { label: "Current Level", value: stats.level, icon: Star, color: "from-yellow-500 to-orange-500" }
+  ];
+  const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const maxActivity = Math.max(...weeklyActivity, 1);
+  const totalFavorites = localFavorites.venues.length + localFavorites.dateIdeas.length + localFavorites.tips.length + localFavorites.gifts.length;
   if (loading) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400", children: "Loading profile..." })
     ] }) });
   }
-  const currentTier = usage2?.tier || localStorage.getItem("userSubscriptionTier") || "free";
-  const tierBadge = getTierBadge(currentTier);
-  const TierIcon = tierBadge.icon;
-  const calculateLevel = () => {
-    const totalMessages = usage2?.dailyUsage?.messages || 0;
-    const level = Math.floor(totalMessages / 10) + 1;
-    const nextLevelMessages = level * 10;
-    const progress = totalMessages % 10 / 10 * 100;
-    return { level, progress, nextLevelMessages };
-  };
-  const userLevel = calculateLevel();
-  const getGreeting = () => {
-    const hour = (/* @__PURE__ */ new Date()).getHours();
-    if (hour < 12) return "Good morning";
-    if (hour < 18) return "Good afternoon";
-    return "Good evening";
-  };
-  const quickStats = [
-    {
-      label: "Level",
-      value: userLevel.level,
-      icon: Star,
-      color: "from-yellow-500 to-orange-500",
-      bgColor: "bg-yellow-500/10",
-      textColor: "text-yellow-400"
-    },
-    {
-      label: "Messages",
-      value: usage2?.dailyUsage?.messages || 0,
-      icon: MessageSquare,
-      color: "from-purple-500 to-pink-500",
-      bgColor: "bg-purple-500/10",
-      textColor: "text-purple-400"
-    },
-    {
-      label: "Credits",
-      value: usage2?.credits || 0,
-      icon: Zap,
-      color: "from-cyan-500 to-blue-500",
-      bgColor: "bg-cyan-500/10",
-      textColor: "text-cyan-400"
-    },
-    {
-      label: "Saved",
-      value: localFavorites.venues.length + localFavorites.dateIdeas.length + localFavorites.tips.length + localFavorites.gifts.length,
-      icon: Bookmark,
-      color: "from-rose-500 to-pink-500",
-      bgColor: "bg-rose-500/10",
-      textColor: "text-rose-400"
-    }
-  ];
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 pt-20 pb-32 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-purple-500/30 backdrop-blur-sm p-6 mb-4 relative overflow-hidden", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-3xl" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-cyan-500/20 to-blue-500/20 rounded-full blur-3xl" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative z-10", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4 mb-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl shadow-purple-500/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-10 h-10 text-white" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center border-2 border-slate-900 shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-bold text-white", children: userLevel.level }) })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-400 text-xs mb-1", children: [
-              getGreeting(),
-              " 👋"
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-white mb-1", children: userName }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `px-2 py-0.5 ${tierBadge.color} rounded-lg text-xs font-semibold flex items-center gap-1`, children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(TierIcon, { className: "w-3 h-3" }),
-              tierBadge.label
-            ] }) })
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 pt-20 pb-32 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950 min-h-screen", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-purple-500/30 backdrop-blur-sm p-5 mb-4 relative overflow-hidden", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-3xl" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative z-10 flex items-center justify-between", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-7 h-7 text-white" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-lg font-bold text-white", children: userName }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-slate-400", children: userEmail })
           ] })
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-xs mb-1.5", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-slate-400", children: [
-              "Level ",
-              userLevel.level,
-              " Progress"
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-purple-400 font-semibold", children: [
-              userLevel.progress.toFixed(0),
-              "%"
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full bg-slate-700/50 rounded-full h-2 overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "div",
-            {
-              className: "h-2 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-600 rounded-full transition-all duration-500 relative",
-              style: { width: `${userLevel.progress}%` },
-              children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-white/20 animate-pulse" })
-            }
-          ) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-500 text-xs mt-1", children: [
-            10 - (usage2?.dailyUsage?.messages || 0) % 10,
-            " messages to level ",
-            userLevel.level + 1
-          ] })
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `flex items-center gap-1.5 px-3 py-1.5 rounded-xl border ${tierBadge.color}`, children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(TierIcon, { className: "w-4 h-4" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-bold", children: tierBadge.label })
         ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 mt-4", children: [
+        currentTier === "free" && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          Button,
+          {
+            onClick: () => setShowUpgradeModal(true),
+            className: "flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-2 rounded-xl text-sm font-semibold",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Crown, { className: "w-4 h-4 mr-1.5" }),
+              "Upgrade to Pro"
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          Button,
+          {
+            onClick: onLogout,
+            variant: "outline",
+            className: "px-4 py-2 bg-slate-800/50 border-slate-700 hover:bg-slate-700/50 text-slate-300 rounded-xl text-sm",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { className: "w-4 h-4 mr-1.5" }),
+              "Logout"
+            ]
+          }
+        )
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-4 gap-2 mb-4", children: quickStats.map((stat, i) => {
-      const Icon = stat.icon;
-      return /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: `${stat.bgColor} border-none p-3 text-center`, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { className: `w-5 h-5 ${stat.textColor} mx-auto mb-1` }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: `text-xl font-bold ${stat.textColor}`, children: stat.value }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-500 text-xs", children: stat.label })
-      ] }, i);
-    }) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 mb-4 bg-slate-900/50 p-1 rounded-xl", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 mb-6 bg-slate-900/50 p-1.5 rounded-2xl border border-slate-700/50", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "button",
         {
-          onClick: () => setActiveTab("overview"),
-          className: `flex-1 py-2 px-4 rounded-lg text-sm font-semibold transition-all ${activeTab === "overview" ? "bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-lg" : "text-slate-400 hover:text-white"}`,
-          children: "Dashboard"
+          onClick: () => setActiveSection("progress"),
+          className: `flex-1 py-2.5 px-3 rounded-xl font-semibold text-sm transition-all ${activeSection === "progress" ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg" : "text-slate-400 hover:text-white hover:bg-slate-800/50"}`,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Trophy, { className: "w-4 h-4 inline mr-1.5" }),
+            "Progress"
+          ]
         }
       ),
-      /* @__PURE__ */ jsxRuntimeExports.jsx(
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
         "button",
         {
-          onClick: () => setActiveTab("saved"),
-          className: `flex-1 py-2 px-4 rounded-lg text-sm font-semibold transition-all ${activeTab === "saved" ? "bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-lg" : "text-slate-400 hover:text-white"}`,
-          children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Bookmark, { className: "w-4 h-4" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Saved" }),
-            localFavorites.venues.length + localFavorites.dateIdeas.length + localFavorites.tips.length + localFavorites.gifts.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "px-1.5 py-0.5 bg-pink-500 text-white text-xs rounded-full", children: localFavorites.venues.length + localFavorites.dateIdeas.length + localFavorites.tips.length + localFavorites.gifts.length })
-          ] })
+          onClick: () => setActiveSection("saved"),
+          className: `flex-1 py-2.5 px-3 rounded-xl font-semibold text-sm transition-all ${activeSection === "saved" ? "bg-gradient-to-r from-rose-500 to-pink-500 text-white shadow-lg" : "text-slate-400 hover:text-white hover:bg-slate-800/50"}`,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Bookmark, { className: "w-4 h-4 inline mr-1.5" }),
+            "Saved (",
+            totalFavorites,
+            ")"
+          ]
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "button",
+        {
+          onClick: () => setActiveSection("settings"),
+          className: `flex-1 py-2.5 px-3 rounded-xl font-semibold text-sm transition-all ${activeSection === "settings" ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg" : "text-slate-400 hover:text-white hover:bg-slate-800/50"}`,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Settings, { className: "w-4 h-4 inline mr-1.5" }),
+            "Settings"
+          ]
         }
       )
     ] }),
-    activeTab === "overview" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-4 mb-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-sm font-semibold text-white mb-3 flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 text-yellow-400" }),
-          "Quick Actions"
+    activeSection === "progress" && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 gap-3 mb-6", children: statCards.map((stat, i) => {
+        const Icon = stat.icon;
+        return /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-10 h-10 bg-gradient-to-r ${stat.color} bg-opacity-20 rounded-xl flex items-center justify-center mb-2`, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { className: "w-5 h-5 text-white" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-2xl font-bold text-white mb-1", children: stat.value }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-slate-400", children: stat.label })
+        ] }, i);
+      }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5 mb-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-white font-semibold mb-4 flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Flame, { className: "w-5 h-5 text-orange-400" }),
+          "This Week's Activity"
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-3 gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/chat", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-xl hover:scale-105 transition-transform", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(MessageSquare, { className: "w-5 h-5 text-purple-400 mb-1" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-sm font-semibold", children: "AI Coach" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Start chatting" })
-          ] }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/events", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-xl hover:scale-105 transition-transform", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(PartyPopper, { className: "w-5 h-5 text-yellow-400 mb-1" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-sm font-semibold", children: "Events" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Near you" })
-          ] }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/gifts", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 bg-gradient-to-br from-rose-500/20 to-red-500/20 border border-rose-500/30 rounded-xl hover:scale-105 transition-transform", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Gift, { className: "w-5 h-5 text-rose-400 mb-1" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-sm font-semibold", children: "Gifts" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Find perfect gift" })
-          ] }) })
-        ] })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-end justify-between gap-2 h-32", children: weeklyActivity.map((activity, i) => {
+          const height = activity / maxActivity * 100;
+          return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full bg-slate-700 rounded-t relative", style: { height: `${height}%`, minHeight: "8px" }, children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-t from-purple-500 to-pink-500 rounded-t" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-slate-400", children: weekDays[i] })
+          ] }, i);
+        }) })
       ] }),
-      usage2 && /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-4 mb-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5 mb-4", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-sm font-semibold text-white flex items-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(TrendingUp, { className: "w-4 h-4 text-cyan-400" }),
-            "Your Plan & Usage"
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-white font-semibold flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Award, { className: "w-5 h-5 text-yellow-400" }),
+            "Achievements"
           ] }),
-          currentTier !== "premium" && currentTier !== "elite" && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            Button,
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sm text-slate-400", children: [
+            unlockedCount,
+            "/",
+            achievements.length
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full bg-slate-700 rounded-full h-3 overflow-hidden mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "div",
+          {
+            className: "h-3 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full transition-all duration-500",
+            style: { width: `${progressPercent}%` }
+          }
+        ) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 gap-3", children: achievements.map((achievement) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "div",
+          {
+            className: `p-3 rounded-xl border-2 transition-all ${achievement.unlocked ? "bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border-yellow-500/30" : "bg-slate-900 border-slate-700 opacity-50"}`,
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-2xl mb-2", children: achievement.icon }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-semibold text-white mb-1", children: achievement.title }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-slate-400", children: achievement.desc }),
+              achievement.unlocked && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-2 text-xs text-green-400 font-semibold", children: "✓ Unlocked!" })
+            ]
+          },
+          achievement.id
+        )) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-white font-semibold mb-3 flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Target, { className: "w-5 h-5 text-cyan-400" }),
+          "Continue Your Journey"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/chat", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "w-full p-3 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-xl text-left hover:scale-[1.02] transition-transform", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(MessageSquare, { className: "w-5 h-5 text-purple-400" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-white font-semibold text-sm", children: "Chat with AI Coach" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-slate-400 text-xs", children: "Get personalized advice" })
+            ] })
+          ] }) }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/rehearsal", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "w-full p-3 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-500/30 rounded-xl text-left hover:scale-[1.02] transition-transform", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Calendar, { className: "w-5 h-5 text-blue-400" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-white font-semibold text-sm", children: "Practice Date Scenarios" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-slate-400 text-xs", children: "Build confidence" })
+            ] })
+          ] }) }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/tips", children: /* @__PURE__ */ jsxRuntimeExports.jsx("button", { className: "w-full p-3 bg-gradient-to-r from-rose-500/20 to-pink-500/20 border border-rose-500/30 rounded-xl text-left hover:scale-[1.02] transition-transform", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-5 h-5 text-rose-400" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-white font-semibold text-sm", children: "Browse Dating Tips" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-slate-400 text-xs", children: "Expert advice & strategies" })
+            ] })
+          ] }) }) })
+        ] })
+      ] })
+    ] }),
+    activeSection === "saved" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-4", children: totalFavorites === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-8 text-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Bookmark, { className: "w-12 h-12 text-slate-600 mx-auto mb-3" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-semibold mb-2", children: "No Saved Items Yet" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: "Start exploring and save your favorite venues, tips, and gift ideas!" })
+    ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      localFavorites.venues.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-white font-semibold mb-3 flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-5 h-5 text-purple-400" }),
+          "Saved Venues (",
+          localFavorites.venues.length,
+          ")"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-2", children: localFavorites.venues.map((venue, index) => /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-800/50 border-slate-700 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-white font-semibold", children: venue.name }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: venue.description || venue.location })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
             {
-              onClick: () => setShowUpgradeModal(true),
-              className: "bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white h-8 text-xs",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Crown, { className: "w-3 h-3 mr-1" }),
-                "Upgrade"
-              ]
+              onClick: () => handleRemoveFavorite("venue", venue),
+              className: "text-slate-400 hover:text-red-400 transition-colors",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4" })
             }
           )
+        ] }) }, index)) })
+      ] }),
+      localFavorites.tips.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-white font-semibold mb-3 flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-5 h-5 text-rose-400" }),
+          "Saved Tips (",
+          localFavorites.tips.length,
+          ")"
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/30 rounded-xl", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex justify-between text-sm mb-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-slate-300 flex items-center gap-1.5", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(MessageSquare, { className: "w-4 h-4 text-purple-400" }),
-                "Messages Today"
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-2", children: localFavorites.tips.map((tip, index) => /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-800/50 border-slate-700 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 text-sm flex-1", children: tip.content || tip.text || tip.title }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => handleRemoveFavorite("tip", tip),
+              className: "text-slate-400 hover:text-red-400 transition-colors ml-3",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4" })
+            }
+          )
+        ] }) }, index)) })
+      ] }),
+      localFavorites.gifts.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-white font-semibold mb-3 flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Star, { className: "w-5 h-5 text-yellow-400" }),
+          "Saved Gift Ideas (",
+          localFavorites.gifts.length,
+          ")"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-2", children: localFavorites.gifts.map((gift, index) => /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-800/50 border-slate-700 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-white font-semibold", children: gift.name || gift.title }),
+            gift.description && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm mt-1", children: gift.description })
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "button",
+            {
+              onClick: () => handleRemoveFavorite("gift", gift),
+              className: "text-slate-400 hover:text-red-400 transition-colors ml-3",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4" })
+            }
+          )
+        ] }) }, index)) })
+      ] })
+    ] }) }),
+    activeSection === "settings" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-white font-semibold mb-4 flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-5 h-5 text-cyan-400" }),
+          "Your Location"
+        ] }),
+        !isEditingLocation ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-white font-semibold", children: [
+                currentCountry?.flag,
+                " ",
+                getLocalizedCountryName(userCountry)
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-white font-bold", children: [
-                usage2.dailyUsage.messages,
-                " / ",
-                usage2.dailyUsage.messagesLimit
-              ] })
+              userCity && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-slate-400 text-sm", children: userCity })
             ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full bg-slate-700/50 rounded-full h-2 overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "div",
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              Button,
               {
-                className: "h-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all relative",
-                style: { width: `${Math.min(100, usage2.dailyUsage.messages / usage2.dailyUsage.messagesLimit * 100)}%` },
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-white/20 animate-pulse" })
+                onClick: () => setIsEditingLocation(true),
+                className: "px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-sm",
+                children: "Change"
               }
-            ) })
+            )
           ] }),
-          usage2.credits > 0 && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-3 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-slate-300 text-sm flex items-center gap-1.5", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-4 h-4 text-cyan-400" }),
-              "Available Credits"
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-cyan-400 font-bold text-lg", children: usage2.credits })
-          ] }) })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-4 mb-4", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-sm font-semibold text-white mb-3 flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Trophy, { className: "w-4 h-4 text-yellow-400" }),
-          "Achievements"
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-3 gap-2", children: [
-          { icon: "🎯", label: "First Chat", unlocked: (usage2?.dailyUsage?.messages || 0) > 0 },
-          { icon: "💬", label: "Chatty", unlocked: (usage2?.dailyUsage?.messages || 0) >= 10 },
-          { icon: "🔥", label: "On Fire", unlocked: (usage2?.dailyUsage?.messages || 0) >= 50 },
-          { icon: "⭐", label: "Rising Star", unlocked: userLevel.level >= 5 },
-          { icon: "💎", label: currentTier === "elite" || currentTier === "premium" ? "VIP" : "Locked", unlocked: currentTier === "elite" || currentTier === "premium" },
-          { icon: "❤️", label: "Romantic", unlocked: localFavorites.dateIdeas.length >= 5 }
-        ].map((badge, i) => /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `p-3 rounded-xl text-center transition-all ${badge.unlocked ? "bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border border-yellow-500/30" : "bg-slate-700/30 border border-slate-600/30 opacity-50"}`, children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-2xl mb-1", children: badge.icon }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-xs font-semibold", children: badge.label })
-        ] }, i)) })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/80 border-slate-700 p-6 mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white mb-4 flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-5 h-5 text-purple-400" }),
-          "Account Information"
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-5 h-5 text-slate-400" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-500", children: "Username" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-medium", children: userName })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Mail, { className: "w-5 h-5 text-slate-400" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-500", children: "Email" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-medium", children: userEmail })
-            ] })
-          ] }),
-          localStorage.getItem("userPhone") && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 p-3 bg-slate-700/30 rounded-lg", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Phone, { className: "w-5 h-5 text-slate-400" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-500", children: "Phone" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-medium", children: localStorage.getItem("userPhone") })
-            ] })
+          locationSaved && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 px-3 py-2 bg-green-500/20 border border-green-500/30 rounded-lg", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Check$1, { className: "w-4 h-4 text-green-400" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm text-green-400", children: "Location saved!" })
           ] })
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/80 border-slate-700 p-6 mb-6", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white flex items-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Globe, { className: "w-5 h-5 text-cyan-400" }),
-            "Location"
-          ] }),
-          !isEditingLocation && /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Button,
-            {
-              onClick: () => setIsEditingLocation(true),
-              className: "bg-slate-700 hover:bg-slate-600 text-white text-sm h-8",
-              children: "Change"
-            }
-          )
-        ] }),
-        !isEditingLocation ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 p-4 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-xl", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-3xl", children: currentCountry?.flag || "🌍" }),
+        ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-bold", children: userCountry ? getLocalizedCountryName(userCountry) : "Not set" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: userCity || "Select city" })
-          ] }),
-          locationSaved && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "ml-auto flex items-center gap-1 text-green-400", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Check$1, { className: "w-4 h-4" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm", children: "Saved!" })
-          ] })
-        ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: "Country" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-sm text-slate-400 mb-1 block", children: "Country" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               "select",
               {
                 value: userCountry,
-                onChange: (e) => {
-                  setUserCountry(e.target.value);
-                  setUserCity("");
-                },
-                className: "w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-purple-500",
-                style: { fontSize: "16px" },
+                onChange: (e) => setUserCountry(e.target.value),
+                className: "w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white",
                 children: countries.map((country2) => /* @__PURE__ */ jsxRuntimeExports.jsxs("option", { value: country2.code, children: [
                   country2.flag,
                   " ",
-                  country2.name
+                  country2.nameEn
                 ] }, country2.code))
               }
             )
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: "City" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "select",
+            /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "text-sm text-slate-400 mb-1 block", children: "City (optional)" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
+              "input",
               {
+                type: "text",
                 value: userCity,
                 onChange: (e) => setUserCity(e.target.value),
-                className: "w-full px-4 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-purple-500",
-                style: { fontSize: "16px" },
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "", children: "Select city..." }),
-                  getCitiesForCountry(userCountry).map((city) => /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: city.name, children: city.name }, city.nameEn))
-                ]
+                placeholder: "Enter your city",
+                className: "w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500"
               }
             )
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            /* @__PURE__ */ jsxRuntimeExports.jsx(
               Button,
               {
                 onClick: handleSaveLocation,
-                className: "flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Check$1, { className: "w-4 h-4 mr-2" }),
-                  "Save Location"
-                ]
+                className: "flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white py-2 rounded-xl",
+                children: "Save Location"
               }
             ),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
               Button,
               {
-                onClick: () => {
-                  setUserCountry(localStorage.getItem("userCountry") || "AL");
-                  setUserCity(localStorage.getItem("userCity") || "");
-                  setIsEditingLocation(false);
-                },
-                className: "bg-slate-700 hover:bg-slate-600 text-white",
+                onClick: () => setIsEditingLocation(false),
+                variant: "outline",
+                className: "px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-xl",
                 children: "Cancel"
               }
             )
           ] })
         ] })
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        Button,
-        {
-          onClick: onLogout,
-          className: "w-full bg-red-600 hover:bg-red-700 text-white font-bold h-12",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { className: "w-5 h-5 mr-2" }),
-            "Logout"
-          ]
-        }
-      )
-    ] }),
-    activeTab === "saved" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-6", children: [
-      localFavorites.venues.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white mb-3 flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Music, { className: "w-5 h-5 text-yellow-400" }),
-          "Vende të Ruajtura (",
-          localFavorites.venues.length,
-          ")"
+      currentTier !== "free" && /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-white font-semibold mb-4 flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(CreditCard, { className: "w-5 h-5 text-purple-400" }),
+          "Subscription"
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: localFavorites.venues.map((venue) => /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-800/80 border-yellow-500/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold mb-1", children: venue.name }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 text-sm mb-2", children: venue.description }),
-            venue.location && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-400 text-xs flex items-center gap-1", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-3 h-3" }),
-              venue.location
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border ${tierBadge.color} mb-2`, children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(TierIcon, { className: "w-4 h-4" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sm font-bold", children: [
+                tierBadge.label,
+                " Plan"
+              ] })
             ] }),
-            venue.rating && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-yellow-400 text-xs flex items-center gap-1 mt-1", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Star, { className: "w-3 h-3 fill-yellow-400" }),
-              venue.rating
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-500 text-xs mt-2", children: [
-              "Ruajtur: ",
-              new Date(venue.savedAt).toLocaleDateString("sq-AL")
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col gap-2", children: [
-            venue.googleMapsLink && /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "a",
-              {
-                href: venue.googleMapsLink,
-                target: "_blank",
-                rel: "noopener noreferrer",
-                className: "p-2 bg-yellow-500/20 hover:bg-yellow-500/30 rounded-lg text-yellow-400 transition-colors",
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx(ExternalLink, { className: "w-4 h-4" })
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                onClick: () => {
-                  removeVenueFavorite(venue.id || venue.name);
-                  setLocalFavorites(getFavorites());
-                },
-                className: "p-2 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-400 transition-colors",
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4" })
-              }
-            )
-          ] })
-        ] }) }, venue.id || venue.name)) })
-      ] }),
-      localFavorites.dateIdeas.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white mb-3 flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Calendar, { className: "w-5 h-5 text-pink-400" }),
-          "Ide Takimesh të Ruajtura (",
-          localFavorites.dateIdeas.length,
-          ")"
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: localFavorites.dateIdeas.map((idea) => /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-800/80 border-pink-500/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold mb-1", children: idea.title || idea.name }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 text-sm mb-2", children: idea.description }),
-            idea.location && /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-400 text-xs flex items-center gap-1", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-3 h-3" }),
-              idea.location
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-500 text-xs mt-2", children: [
-              "Ruajtur: ",
-              new Date(idea.savedAt).toLocaleDateString("sq-AL")
-            ] })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: "Manage your subscription" })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
+            "a",
             {
-              onClick: () => {
-                removeDateIdeaFavorite(idea.id);
-                setLocalFavorites(getFavorites());
-              },
-              className: "p-2 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-400 transition-colors",
-              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4" })
+              href: "https://billing.stripe.com/p/login/test_7sI9Df4Mp8M48zm000",
+              target: "_blank",
+              rel: "noopener noreferrer",
+              className: "px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-sm",
+              children: "Manage"
             }
           )
-        ] }) }, idea.id)) })
+        ] })
       ] }),
-      localFavorites.gifts.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white mb-3 flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Gift, { className: "w-5 h-5 text-rose-400" }),
-          "Dhurata të Ruajtura (",
-          localFavorites.gifts.length,
-          ")"
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: localFavorites.gifts.map((gift) => /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-800/80 border-rose-500/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold mb-1", children: gift.name }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 text-sm mb-2", children: gift.description }),
-            gift.price && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-rose-400 font-semibold text-sm", children: gift.price }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-500 text-xs mt-2", children: [
-              "Ruajtur: ",
-              new Date(gift.savedAt).toLocaleDateString("sq-AL")
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-semibold mb-4", children: "Account" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: onLogout,
+            className: "w-full p-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-left transition-colors",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { className: "w-5 h-5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-semibold", children: "Logout" })
             ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: () => {
-                removeGiftFavorite(gift.id);
-                setLocalFavorites(getFavorites());
-              },
-              className: "p-2 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-400 transition-colors",
-              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4" })
-            }
-          )
-        ] }) }, gift.id)) })
-      ] }),
-      localFavorites.tips.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white mb-3 flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Lightbulb, { className: "w-5 h-5 text-amber-400" }),
-          "Këshilla të Ruajtura (",
-          localFavorites.tips.length,
-          ")"
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: localFavorites.tips.map((tip) => /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "bg-slate-800/80 border-amber-500/30 p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-bold mb-1", children: tip.title || "Këshillë" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 text-sm", children: tip.content }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-500 text-xs mt-2", children: [
-              "Ruajtur: ",
-              new Date(tip.savedAt).toLocaleDateString("sq-AL")
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: () => {
-                removeTipFavorite(tip.id);
-                setLocalFavorites(getFavorites());
-              },
-              className: "p-2 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-400 transition-colors",
-              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4" })
-            }
-          )
-        ] }) }, tip.id)) })
-      ] }),
-      localFavorites.venues.length === 0 && localFavorites.dateIdeas.length === 0 && localFavorites.gifts.length === 0 && localFavorites.tips.length === 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center py-12", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Bookmark, { className: "w-16 h-16 text-slate-600 mx-auto mb-4" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl font-bold text-white mb-2", children: "Asnjë element i ruajtur" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400", children: "Fillo të ruash takime, dhurata dhe këshilla!" })
+          }
+        ) })
       ] })
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      UpgradeModal,
-      {
-        isOpen: showUpgradeModal,
-        onClose: () => setShowUpgradeModal(false),
-        onSelectPlan: () => setShowUpgradeModal(false)
-      }
-    )
+    showUpgradeModal && /* @__PURE__ */ jsxRuntimeExports.jsx(UpgradeModal, { onClose: () => setShowUpgradeModal(false) })
   ] });
 }
 const PrivacyPolicy = () => {
