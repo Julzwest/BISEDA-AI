@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import nodemailer from 'nodemailer';
 import mongoose from 'mongoose';
-import { getUser, saveUser, getAllUsers } from './models/User.js';
+import { getUser, getUserAsync, saveUser, getAllUsers } from './models/User.js';
 import stripeRoutes from './routes/stripe.js';
 import businessRoutes from './routes/businesses.js';
 import creditRoutes from './routes/credits.js';
@@ -198,11 +198,92 @@ app.post('/api/places/search', rateLimit, async (req, res) => {
   }
 });
 
-// Get user usage stats
-app.get('/api/usage', (req, res) => {
+// Auto-verify and fix user tier from Stripe (async helper)
+async function autoVerifyUserTier(user) {
+  try {
+    // Skip if no Stripe customer ID
+    if (!user.stripeCustomerId) {
+      return false;
+    }
+    
+    // Skip if already on correct paid tier
+    if (['pro', 'elite', 'starter', 'premium'].includes(user.subscriptionTier)) {
+      return false;
+    }
+    
+    // Check Stripe for active subscription
+    const Stripe = (await import('stripe')).default;
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+    
+    const subscriptions = await stripe.subscriptions.list({
+      customer: user.stripeCustomerId,
+      status: 'active',
+      limit: 1
+    });
+    
+    if (subscriptions.data.length === 0) {
+      return false; // No active subscription
+    }
+    
+    const subscription = subscriptions.data[0];
+    const priceId = subscription.items.data[0].price.id;
+    
+    // Determine correct tier
+    let correctTier = null;
+    if (priceId === process.env.STRIPE_ELITE_PRICE_ID) {
+      correctTier = 'elite';
+    } else if (priceId === process.env.STRIPE_PRO_PRICE_ID) {
+      correctTier = 'pro';
+    } else if (priceId === process.env.STRIPE_STARTER_PRICE_ID) {
+      correctTier = 'starter';
+    } else if (priceId === process.env.STRIPE_PREMIUM_PRICE_ID) {
+      correctTier = 'premium';
+    }
+    
+    // Auto-fix if tier is wrong
+    if (correctTier && user.subscriptionTier !== correctTier) {
+      const oldTier = user.subscriptionTier;
+      user.subscriptionTier = correctTier;
+      user.subscriptionStatus = 'active';
+      user.subscriptionExpiresAt = new Date(subscription.current_period_end * 1000);
+      user.stripeSubscriptionId = subscription.id;
+      saveUser(user);
+      
+      console.log(`✅ AUTO-FIXED: User ${user.userId} tier: ${oldTier} → ${correctTier}`);
+      return true;
+    }
+    
+    return false;
+  } catch (error) {
+    console.error('Auto-verify tier error:', error.message);
+    return false;
+  }
+}
+
+// Get user usage stats (with MongoDB tier sync and auto verification)
+app.get('/api/usage', async (req, res) => {
   try {
     const userId = getUserId(req);
-    const user = getUser(userId);
+    
+    // Try to load from MongoDB first
+    let mongoUser = null;
+    try {
+      mongoUser = await UserAccountModel.findOne({ odId: userId });
+      if (mongoUser) {
+        console.log(`📥 Loaded tier from MongoDB for ${userId}: ${mongoUser.subscriptionTier}`);
+      }
+    } catch (mongoError) {
+      console.error('MongoDB lookup error:', mongoError.message);
+    }
+    
+    // Get user with MongoDB sync
+    const user = mongoUser ? await getUserAsync(userId, mongoUser) : getUser(userId);
+    
+    // Auto-verify and fix tier from Stripe (non-blocking)
+    if (mongoUser) {
+      autoVerifyUserTier(user).catch(err => console.error('Auto-verify failed:', err));
+    }
+    
     res.json(user.getUsageStats());
   } catch (error) {
     console.error('Error getting usage:', error);

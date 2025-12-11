@@ -518,7 +518,36 @@ class User {
 // In-memory user store (replace with database in production)
 const users = new Map();
 
-// Get or create user
+// Get or create user (async version with MongoDB sync)
+async function getUserAsync(userId, mongoUser = null) {
+  if (!users.has(userId)) {
+    const user = new User(userId);
+    
+    // Sync tier from MongoDB if available
+    if (mongoUser) {
+      if (mongoUser.subscriptionTier) {
+        user.subscriptionTier = mongoUser.subscriptionTier;
+      }
+      if (mongoUser.subscriptionStatus) {
+        user.subscriptionStatus = mongoUser.subscriptionStatus;
+      }
+      if (mongoUser.subscriptionExpiresAt) {
+        user.subscriptionExpiresAt = new Date(mongoUser.subscriptionExpiresAt);
+      }
+      if (mongoUser.stripeCustomerId) {
+        user.stripeCustomerId = mongoUser.stripeCustomerId;
+      }
+      if (mongoUser.stripeSubscriptionId) {
+        user.stripeSubscriptionId = mongoUser.stripeSubscriptionId;
+      }
+    }
+    
+    users.set(userId, user);
+  }
+  return users.get(userId);
+}
+
+// Get or create user (sync version - maintains compatibility)
 function getUser(userId) {
   if (!users.has(userId)) {
     users.set(userId, new User(userId));
@@ -537,4 +566,4 @@ function getAllUsers() {
   return users;
 }
 
-export { User, getUser, saveUser, getAllUsers, SCREENSHOT_LIMITS };
+export { User, getUser, getUserAsync, saveUser, getAllUsers, SCREENSHOT_LIMITS };
