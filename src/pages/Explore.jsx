@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MapPin, Coffee, UtensilsCrossed, Film, Music, Dumbbell, Palette, TreePine, Sparkles, Heart, Star, Crown, TrendingUp, Globe, X, Search, Plus, ChevronRight, PartyPopper } from 'lucide-react';
+import { MapPin, Coffee, UtensilsCrossed, Film, Music, Dumbbell, Palette, TreePine, Sparkles, Heart, Star, Crown, TrendingUp, Globe, X, Search, Plus, ChevronRight, PartyPopper, Calendar, Gift, Flag } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { SaveButton } from '@/components/SaveButton';
@@ -9,6 +9,54 @@ import { base44 } from '@/api/base44Client';
 import { countries, getLocalizedCitiesForCountry, getCountryByCode, getCityNameEn, getLocalizedCountryName } from '@/config/countries';
 
 const backendUrl = getBackendUrl();
+
+// Festive dates data by country - Key holidays and celebrations
+const festiveDatesByCountry = {
+  // Albania
+  AL: [
+    { month: 0, date: 1, name: 'Dita e Vitit të Ri', emoji: '🎆' },
+    { month: 1, date: 14, name: 'Dita e Dashurisë', emoji: '💕' },
+    { month: 2, date: 8, name: 'Dita Ndërkombëtare e Gruas', emoji: '👩' },
+    { month: 2, date: 14, name: 'Dita e Verës', emoji: '🌸' },
+    { month: 4, date: 1, name: 'Dita e Punëtorëve', emoji: '✊' },
+    { month: 4, date: 12, name: 'Dita e Nënës', emoji: '💐' },
+    { month: 5, date: 16, name: 'Dita e Babait', emoji: '👨' },
+    { month: 9, date: 31, name: 'Halloween', emoji: '🎃' },
+    { month: 10, date: 28, name: 'Dita e Flamurit', emoji: '🇦🇱' },
+    { month: 11, date: 24, name: 'Nata e Krishtlindjeve', emoji: '🌟' },
+    { month: 11, date: 25, name: 'Krishtlindjet', emoji: '🎄' },
+    { month: 11, date: 26, name: 'Boxing Day', emoji: '🎁' },
+    { month: 11, date: 31, name: 'Nata e Vitit të Ri', emoji: '🎉' }
+  ],
+  // United Kingdom
+  GB: [
+    { month: 0, date: 1, name: 'New Year\'s Day', emoji: '🎆' },
+    { month: 1, date: 14, name: 'Valentine\'s Day', emoji: '💕' },
+    { month: 2, date: 17, name: 'St Patrick\'s Day', emoji: '☘️' },
+    { month: 9, date: 31, name: 'Halloween', emoji: '🎃' },
+    { month: 10, date: 5, name: 'Bonfire Night', emoji: '🎆' },
+    { month: 11, date: 24, name: 'Christmas Eve', emoji: '🌟' },
+    { month: 11, date: 25, name: 'Christmas Day', emoji: '🎄' },
+    { month: 11, date: 26, name: 'Boxing Day', emoji: '🎁' },
+    { month: 11, date: 31, name: 'New Year\'s Eve', emoji: '🎉' }
+  ],
+  // United States
+  US: [
+    { month: 0, date: 1, name: 'New Year\'s Day', emoji: '🎆' },
+    { month: 1, date: 14, name: 'Valentine\'s Day', emoji: '💕' },
+    { month: 2, date: 17, name: 'St. Patrick\'s Day', emoji: '☘️' },
+    { month: 4, date: 12, name: 'Mother\'s Day', emoji: '💐' },
+    { month: 5, date: 16, name: 'Father\'s Day', emoji: '👨' },
+    { month: 6, date: 4, name: 'Independence Day', emoji: '🇺🇸' },
+    { month: 9, date: 31, name: 'Halloween', emoji: '🎃' },
+    { month: 10, date: 28, name: 'Thanksgiving', emoji: '🦃' },
+    { month: 11, date: 24, name: 'Christmas Eve', emoji: '🌟' },
+    { month: 11, date: 25, name: 'Christmas Day', emoji: '🎄' },
+    { month: 11, date: 31, name: 'New Year\'s Eve', emoji: '🎉' }
+  ]
+};
+
+const defaultFestiveDates = festiveDatesByCountry.GB;
 
 export default function Explore() {
   const { t, i18n } = useTranslation();
@@ -35,7 +83,7 @@ export default function Explore() {
   const [showAllFestive, setShowAllFestive] = useState(false);
   
   // Get user's country from localStorage
-  const userCountry = localStorage.getItem('userCountry') || 'AL';
+  const [userCountry, setUserCountry] = useState(localStorage.getItem('userCountry') || 'AL');
   const currentCountry = getCountryByCode(userCountry);
   
   // Get localized cities - depends on i18n.language for reactivity
@@ -49,6 +97,54 @@ export default function Explore() {
   }, [userCountry, i18n.language]);
   
   const cities = localizedCities.map(c => c.displayName);
+  
+  // Get upcoming festive dates
+  const getUpcomingFestiveDates = () => {
+    const festiveDates = festiveDatesByCountry[userCountry] || defaultFestiveDates;
+    const today = new Date();
+    const currentYear = today.getFullYear();
+    
+    const upcomingDates = festiveDates.map(festive => {
+      let festiveDate = new Date(currentYear, festive.month, festive.date);
+      
+      if (festiveDate < today) {
+        festiveDate = new Date(currentYear + 1, festive.month, festive.date);
+      }
+      
+      const diffTime = festiveDate - today;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      
+      return {
+        ...festive,
+        daysUntil: diffDays,
+        fullDate: festiveDate
+      };
+    });
+    
+    return upcomingDates.sort((a, b) => a.daysUntil - b.daysUntil);
+  };
+  
+  const upcomingFestiveDates = getUpcomingFestiveDates();
+  
+  // Listen for country changes
+  useEffect(() => {
+    const handleCountryChange = (event) => {
+      const newCountry = event.detail?.countryCode || localStorage.getItem('userCountry') || 'AL';
+      setUserCountry(newCountry);
+      setSelectedCity(''); // Reset city when country changes
+    };
+
+    window.addEventListener('countryChanged', handleCountryChange);
+    
+    const storedCountry = localStorage.getItem('userCountry') || 'AL';
+    if (storedCountry !== userCountry) {
+      setUserCountry(storedCountry);
+    }
+
+    return () => {
+      window.removeEventListener('countryChanged', handleCountryChange);
+    };
+  }, []);
 
   const timeOfDayOptions = [
     { id: 'morning', label: 'Morning', emoji: '🌅', color: 'from-yellow-400 to-orange-400' },
@@ -998,18 +1094,103 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
       {/* EVENTS TAB CONTENT */}
       {activeTab === 'events' && (
         <div className="space-y-6">
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4 animate-bounce">🎉</div>
-            <h3 className="text-2xl font-bold text-white mb-2">Events Coming Soon!</h3>
-            <p className="text-slate-400 mb-4">
-              {selectedCity ? `Discover local events in ${selectedCity}` : 'Select a city to see local events and festivals'}
-            </p>
-            <div className="inline-block px-6 py-3 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/40 rounded-2xl">
-              <p className="text-purple-300 text-sm font-semibold">
-                🎪 Concerts • 🎭 Shows • 🎨 Festivals • ⚽ Sports
-              </p>
+          {/* Upcoming Festive Dates */}
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                <Calendar className="w-6 h-6 text-purple-400" />
+                Upcoming Celebrations
+              </h2>
+              <span className="text-xs text-slate-500">{currentCountry?.flag} {localizedCountryName}</span>
             </div>
+            
+            {/* Next Festive Date - Big Card */}
+            {upcomingFestiveDates[0] && (
+              <Card className="mb-4 bg-gradient-to-br from-purple-900/40 via-pink-900/30 to-rose-900/40 border-2 border-pink-500/40 shadow-lg shadow-pink-500/10 overflow-hidden">
+                <div className="p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="text-6xl">{upcomingFestiveDates[0].emoji}</div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="px-3 py-1 bg-pink-500/20 border border-pink-500/40 rounded-full text-xs font-bold text-pink-300">
+                          {upcomingFestiveDates[0].daysUntil === 0 ? 'TODAY!' : upcomingFestiveDates[0].daysUntil === 1 ? 'TOMORROW!' : `IN ${upcomingFestiveDates[0].daysUntil} DAYS`}
+                        </span>
+                      </div>
+                      <h3 className="text-2xl font-bold text-white mb-1">{upcomingFestiveDates[0].name}</h3>
+                      <p className="text-slate-300">
+                        {upcomingFestiveDates[0].fullDate.toLocaleDateString(i18n.language, { 
+                          weekday: 'long',
+                          month: 'long', 
+                          day: 'numeric',
+                          year: 'numeric'
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            )}
+            
+            {/* More Upcoming Dates */}
+            <div className="space-y-3">
+              {upcomingFestiveDates.slice(1, showAllFestive ? upcomingFestiveDates.length : 6).map((festive, index) => (
+                <Card 
+                  key={index}
+                  className="bg-slate-800/60 border border-slate-700/50 hover:border-purple-500/40 transition-all"
+                >
+                  <div className="p-4">
+                    <div className="flex items-center gap-4">
+                      <div className="text-4xl">{festive.emoji}</div>
+                      <div className="flex-1">
+                        <h4 className="text-white font-bold text-lg">{festive.name}</h4>
+                        <p className="text-slate-400 text-sm">
+                          {festive.fullDate.toLocaleDateString(i18n.language, { 
+                            month: 'long', 
+                            day: 'numeric'
+                          })}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <div className="px-3 py-1 bg-purple-500/20 border border-purple-500/40 rounded-full">
+                          <span className="text-sm font-bold text-purple-300">
+                            {festive.daysUntil === 0 ? 'Today' : festive.daysUntil === 1 ? 'Tomorrow' : `${festive.daysUntil}d`}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+            
+            {/* Show More Button */}
+            {upcomingFestiveDates.length > 6 && (
+              <Button
+                onClick={() => setShowAllFestive(!showAllFestive)}
+                className="w-full mt-4 py-3 bg-slate-800/50 hover:bg-slate-700/50 text-white border border-slate-700 rounded-xl"
+              >
+                {showAllFestive ? 'Show Less' : `Show All ${upcomingFestiveDates.length} Celebrations`}
+              </Button>
+            )}
           </div>
+          
+          {/* Local Events Section - Placeholder for future */}
+          {selectedCity && (
+            <div className="mt-8 text-center py-8 bg-slate-900/50 rounded-2xl border border-slate-700/50">
+              <div className="text-5xl mb-3">🎭</div>
+              <h3 className="text-xl font-bold text-white mb-2">Local Events in {selectedCity}</h3>
+              <p className="text-slate-400 text-sm">
+                Live events integration coming soon!
+              </p>
+              <div className="mt-4 flex items-center justify-center gap-4 text-slate-500 text-xs">
+                <span>🎵 Concerts</span>
+                <span>•</span>
+                <span>🎪 Festivals</span>
+                <span>•</span>
+                <span>⚽ Sports</span>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

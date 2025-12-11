@@ -13711,7 +13711,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-C142BwOs.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-BIiMbU7_.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -18060,6 +18060,51 @@ CRITICAL REMINDER: The user has shared a screenshot of a conversation earlier in
   ] });
 }
 const backendUrl = getBackendUrl();
+const festiveDatesByCountry = {
+  // Albania
+  AL: [
+    { month: 0, date: 1, name: "Dita e Vitit të Ri", emoji: "🎆" },
+    { month: 1, date: 14, name: "Dita e Dashurisë", emoji: "💕" },
+    { month: 2, date: 8, name: "Dita Ndërkombëtare e Gruas", emoji: "👩" },
+    { month: 2, date: 14, name: "Dita e Verës", emoji: "🌸" },
+    { month: 4, date: 1, name: "Dita e Punëtorëve", emoji: "✊" },
+    { month: 4, date: 12, name: "Dita e Nënës", emoji: "💐" },
+    { month: 5, date: 16, name: "Dita e Babait", emoji: "👨" },
+    { month: 9, date: 31, name: "Halloween", emoji: "🎃" },
+    { month: 10, date: 28, name: "Dita e Flamurit", emoji: "🇦🇱" },
+    { month: 11, date: 24, name: "Nata e Krishtlindjeve", emoji: "🌟" },
+    { month: 11, date: 25, name: "Krishtlindjet", emoji: "🎄" },
+    { month: 11, date: 26, name: "Boxing Day", emoji: "🎁" },
+    { month: 11, date: 31, name: "Nata e Vitit të Ri", emoji: "🎉" }
+  ],
+  // United Kingdom
+  GB: [
+    { month: 0, date: 1, name: "New Year's Day", emoji: "🎆" },
+    { month: 1, date: 14, name: "Valentine's Day", emoji: "💕" },
+    { month: 2, date: 17, name: "St Patrick's Day", emoji: "☘️" },
+    { month: 9, date: 31, name: "Halloween", emoji: "🎃" },
+    { month: 10, date: 5, name: "Bonfire Night", emoji: "🎆" },
+    { month: 11, date: 24, name: "Christmas Eve", emoji: "🌟" },
+    { month: 11, date: 25, name: "Christmas Day", emoji: "🎄" },
+    { month: 11, date: 26, name: "Boxing Day", emoji: "🎁" },
+    { month: 11, date: 31, name: "New Year's Eve", emoji: "🎉" }
+  ],
+  // United States
+  US: [
+    { month: 0, date: 1, name: "New Year's Day", emoji: "🎆" },
+    { month: 1, date: 14, name: "Valentine's Day", emoji: "💕" },
+    { month: 2, date: 17, name: "St. Patrick's Day", emoji: "☘️" },
+    { month: 4, date: 12, name: "Mother's Day", emoji: "💐" },
+    { month: 5, date: 16, name: "Father's Day", emoji: "👨" },
+    { month: 6, date: 4, name: "Independence Day", emoji: "🇺🇸" },
+    { month: 9, date: 31, name: "Halloween", emoji: "🎃" },
+    { month: 10, date: 28, name: "Thanksgiving", emoji: "🦃" },
+    { month: 11, date: 24, name: "Christmas Eve", emoji: "🌟" },
+    { month: 11, date: 25, name: "Christmas Day", emoji: "🎄" },
+    { month: 11, date: 31, name: "New Year's Eve", emoji: "🎉" }
+  ]
+};
+const defaultFestiveDates = festiveDatesByCountry.GB;
 function Explore() {
   const { t, i18n } = useTranslation();
   const [activeTab, setActiveTab] = reactExports.useState("venues");
@@ -18075,7 +18120,7 @@ function Explore() {
   const [localEvents, setLocalEvents] = reactExports.useState([]);
   const [isLoadingEvents, setIsLoadingEvents] = reactExports.useState(false);
   const [showAllFestive, setShowAllFestive] = reactExports.useState(false);
-  const userCountry = localStorage.getItem("userCountry") || "AL";
+  const [userCountry, setUserCountry] = reactExports.useState(localStorage.getItem("userCountry") || "AL");
   const currentCountry = getCountryByCode(userCountry);
   const localizedCities = React.useMemo(() => {
     return getLocalizedCitiesForCountry(userCountry);
@@ -18084,6 +18129,41 @@ function Explore() {
     return getLocalizedCountryName(userCountry);
   }, [userCountry, i18n.language]);
   const cities = localizedCities.map((c) => c.displayName);
+  const getUpcomingFestiveDates = () => {
+    const festiveDates2 = festiveDatesByCountry[userCountry] || defaultFestiveDates;
+    const today = /* @__PURE__ */ new Date();
+    const currentYear = today.getFullYear();
+    const upcomingDates = festiveDates2.map((festive) => {
+      let festiveDate = new Date(currentYear, festive.month, festive.date);
+      if (festiveDate < today) {
+        festiveDate = new Date(currentYear + 1, festive.month, festive.date);
+      }
+      const diffTime = festiveDate - today;
+      const diffDays = Math.ceil(diffTime / (1e3 * 60 * 60 * 24));
+      return {
+        ...festive,
+        daysUntil: diffDays,
+        fullDate: festiveDate
+      };
+    });
+    return upcomingDates.sort((a, b) => a.daysUntil - b.daysUntil);
+  };
+  const upcomingFestiveDates = getUpcomingFestiveDates();
+  reactExports.useEffect(() => {
+    const handleCountryChange = (event) => {
+      const newCountry = event.detail?.countryCode || localStorage.getItem("userCountry") || "AL";
+      setUserCountry(newCountry);
+      setSelectedCity("");
+    };
+    window.addEventListener("countryChanged", handleCountryChange);
+    const storedCountry = localStorage.getItem("userCountry") || "AL";
+    if (storedCountry !== userCountry) {
+      setUserCountry(storedCountry);
+    }
+    return () => {
+      window.removeEventListener("countryChanged", handleCountryChange);
+    };
+  }, []);
   const timeOfDayOptions = [
     { id: "morning", label: "Morning", emoji: "🌅", color: "from-yellow-400 to-orange-400" },
     { id: "afternoon", label: "Afternoon", emoji: "☀️", color: "from-orange-400 to-amber-500" },
@@ -18825,12 +18905,75 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400", children: t("dates.selectCategoryToStart") })
       ] })
     ] }),
-    activeTab === "events" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center py-12", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-6xl mb-4 animate-bounce", children: "🎉" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-2xl font-bold text-white mb-2", children: "Events Coming Soon!" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 mb-4", children: selectedCity ? `Discover local events in ${selectedCity}` : "Select a city to see local events and festivals" }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-block px-6 py-3 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/40 rounded-2xl", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-purple-300 text-sm font-semibold", children: "🎪 Concerts • 🎭 Shows • 🎨 Festivals • ⚽ Sports" }) })
-    ] }) })
+    activeTab === "events" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-6", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xl font-bold text-white flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Calendar, { className: "w-6 h-6 text-purple-400" }),
+            "Upcoming Celebrations"
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs text-slate-500", children: [
+            currentCountry?.flag,
+            " ",
+            localizedCountryName
+          ] })
+        ] }),
+        upcomingFestiveDates[0] && /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "mb-4 bg-gradient-to-br from-purple-900/40 via-pink-900/30 to-rose-900/40 border-2 border-pink-500/40 shadow-lg shadow-pink-500/10 overflow-hidden", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-6", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-4", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-6xl", children: upcomingFestiveDates[0].emoji }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-2 mb-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "px-3 py-1 bg-pink-500/20 border border-pink-500/40 rounded-full text-xs font-bold text-pink-300", children: upcomingFestiveDates[0].daysUntil === 0 ? "TODAY!" : upcomingFestiveDates[0].daysUntil === 1 ? "TOMORROW!" : `IN ${upcomingFestiveDates[0].daysUntil} DAYS` }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-2xl font-bold text-white mb-1", children: upcomingFestiveDates[0].name }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300", children: upcomingFestiveDates[0].fullDate.toLocaleDateString(i18n.language, {
+              weekday: "long",
+              month: "long",
+              day: "numeric",
+              year: "numeric"
+            }) })
+          ] })
+        ] }) }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: upcomingFestiveDates.slice(1, showAllFestive ? upcomingFestiveDates.length : 6).map((festive, index) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Card,
+          {
+            className: "bg-slate-800/60 border border-slate-700/50 hover:border-purple-500/40 transition-all",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-4xl", children: festive.emoji }),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-white font-bold text-lg", children: festive.name }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: festive.fullDate.toLocaleDateString(i18n.language, {
+                  month: "long",
+                  day: "numeric"
+                }) })
+              ] }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-3 py-1 bg-purple-500/20 border border-purple-500/40 rounded-full", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-sm font-bold text-purple-300", children: festive.daysUntil === 0 ? "Today" : festive.daysUntil === 1 ? "Tomorrow" : `${festive.daysUntil}d` }) }) })
+            ] }) })
+          },
+          index
+        )) }),
+        upcomingFestiveDates.length > 6 && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Button,
+          {
+            onClick: () => setShowAllFestive(!showAllFestive),
+            className: "w-full mt-4 py-3 bg-slate-800/50 hover:bg-slate-700/50 text-white border border-slate-700 rounded-xl",
+            children: showAllFestive ? "Show Less" : `Show All ${upcomingFestiveDates.length} Celebrations`
+          }
+        )
+      ] }),
+      selectedCity && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-8 text-center py-8 bg-slate-900/50 rounded-2xl border border-slate-700/50", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-5xl mb-3", children: "🎭" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xl font-bold text-white mb-2", children: [
+          "Local Events in ",
+          selectedCity
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: "Live events integration coming soon!" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 flex items-center justify-center gap-4 text-slate-500 text-xs", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "🎵 Concerts" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "•" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "🎪 Festivals" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "•" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "⚽ Sports" })
+        ] })
+      ] })
+    ] })
   ] });
 }
 function GiftSuggestions() {
