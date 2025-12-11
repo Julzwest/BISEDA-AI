@@ -13813,7 +13813,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-NgK-OHNr.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-hvbFzhUk.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -16787,7 +16787,7 @@ function ClipboardSuggestions() {
       if (window.Capacitor && window.Capacitor.isNativePlatform()) {
         try {
           const { Clipboard: Clipboard2 } = await __vitePreload(async () => {
-            const { Clipboard: Clipboard22 } = await import("./index-Bp3kZ6Jc.js");
+            const { Clipboard: Clipboard22 } = await import("./index-CYhoLHl9.js");
             return { Clipboard: Clipboard22 };
           }, true ? [] : void 0);
           const { value } = await Clipboard2.read();
@@ -22874,16 +22874,11 @@ function UserProfile({ onLogout }) {
           /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 text-yellow-400" }),
           "Quick Actions"
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-2", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-3 gap-2", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/chat", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-xl hover:scale-105 transition-transform", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(MessageSquare, { className: "w-5 h-5 text-purple-400 mb-1" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-sm font-semibold", children: "AI Coach" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Start chatting" })
-          ] }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/dates", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 bg-gradient-to-br from-pink-500/20 to-rose-500/20 border border-pink-500/30 rounded-xl hover:scale-105 transition-transform", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-5 h-5 text-pink-400 mb-1" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white text-sm font-semibold", children: "Find Dates" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs", children: "Local ideas" })
           ] }) }),
           /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/events", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-xl hover:scale-105 transition-transform", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx(PartyPopper, { className: "w-5 h-5 text-yellow-400 mb-1" }),

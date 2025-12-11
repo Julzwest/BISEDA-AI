@@ -292,19 +292,12 @@ export default function UserProfile({ onLogout }) {
               <Sparkles className="w-4 h-4 text-yellow-400" />
               Quick Actions
             </h3>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               <Link to="/chat">
                 <div className="p-3 bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-xl hover:scale-105 transition-transform">
                   <MessageSquare className="w-5 h-5 text-purple-400 mb-1" />
                   <p className="text-white text-sm font-semibold">AI Coach</p>
                   <p className="text-slate-400 text-xs">Start chatting</p>
-                </div>
-              </Link>
-              <Link to="/dates">
-                <div className="p-3 bg-gradient-to-br from-pink-500/20 to-rose-500/20 border border-pink-500/30 rounded-xl hover:scale-105 transition-transform">
-                  <Heart className="w-5 h-5 text-pink-400 mb-1" />
-                  <p className="text-white text-sm font-semibold">Find Dates</p>
-                  <p className="text-slate-400 text-xs">Local ideas</p>
                 </div>
               </Link>
               <Link to="/events">
