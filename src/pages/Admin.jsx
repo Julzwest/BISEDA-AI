@@ -343,48 +343,25 @@ export default function Admin() {
         </div>
       </div>
 
-      {/* Tab Navigation */}
-      <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-        {[
-          { id: 'overview', label: '📊 Përmbledhje' },
-          { id: 'users', label: '👥 Përdoruesit' },
-          { id: 'conversations', label: '💬 Bisedat' },
-          { id: 'subscriptions', label: '💎 Abonimet' },
-          { id: 'activity', label: '📈 Aktiviteti' },
-        ].map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => {
-              setActiveTab(tab.id);
-              if (tab.id === 'conversations') fetchConversations();
-            }}
-            className={`px-4 py-2 rounded-xl font-medium text-sm whitespace-nowrap transition-all ${
-              activeTab === tab.id
-                ? 'bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-lg'
-                : 'bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-700/50'
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
 
       {/* Overview Tab */}
       {activeTab === 'overview' && (
         <>
-          {/* Quick Stats */}
+          {/* Quick Stats - Clickable */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
-            <Card className="bg-gradient-to-br from-blue-900/40 to-cyan-900/40 border-blue-500/30 p-4">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
-                  <Users className="w-6 h-6 text-white" />
+            <button onClick={() => setActiveTab('users')} className="text-left transition-all hover:scale-[1.02] active:scale-[0.98]">
+              <Card className="bg-gradient-to-br from-blue-900/40 to-cyan-900/40 border-blue-500/30 p-4 hover:border-blue-400/50 transition-all h-full">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg">
+                    <Users className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-slate-400 text-xs">Total Users</p>
+                    <p className="text-white text-2xl font-bold">{registeredUsers.length || stats?.overview?.totalUsers || 0}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-slate-400 text-xs">Total Përdorues</p>
-                  <p className="text-white text-2xl font-bold">{registeredUsers.length || stats?.overview?.totalUsers || 0}</p>
-                </div>
-              </div>
-            </Card>
+              </Card>
+            </button>
 
             <Card className="bg-gradient-to-br from-green-900/40 to-emerald-900/40 border-green-500/30 p-4">
               <div className="flex items-center gap-3">
@@ -393,7 +370,7 @@ export default function Admin() {
                   <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-slate-900 animate-pulse"></span>
                 </div>
                 <div>
-                  <p className="text-slate-400 text-xs">Online Tani</p>
+                  <p className="text-slate-400 text-xs">Online Now</p>
                   <p className="text-white text-2xl font-bold">{registeredUsers.filter(u => u.onlineStatus === 'online').length}</p>
                 </div>
               </div>
@@ -405,7 +382,7 @@ export default function Admin() {
                   <MessageSquare className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-slate-400 text-xs">Total Mesazhe</p>
+                  <p className="text-slate-400 text-xs">Total Messages</p>
                   <p className="text-white text-2xl font-bold">{stats?.overview?.totalMessages || 0}</p>
                 </div>
               </div>
@@ -417,11 +394,70 @@ export default function Admin() {
                   <DollarSign className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-slate-400 text-xs">Të Ardhura/Muaj</p>
+                  <p className="text-slate-400 text-xs">Revenue/Month</p>
                   <p className="text-white text-2xl font-bold">€{stats?.overview?.monthlyRevenue || '0.00'}</p>
                 </div>
               </div>
             </Card>
+          </div>
+
+          {/* Quick Navigation - 4 Cards matching top stats style */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
+            <button onClick={() => setActiveTab('create')} className="text-left transition-all hover:scale-[1.02] active:scale-[0.98]">
+              <Card className="bg-gradient-to-br from-indigo-900/40 to-violet-900/40 border-indigo-500/30 p-4 hover:border-indigo-400/50 transition-all h-full">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-violet-500 rounded-xl flex items-center justify-center shadow-lg">
+                    <UserPlus className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-slate-400 text-xs">Create</p>
+                    <p className="text-white text-lg font-bold">New User</p>
+                  </div>
+                </div>
+              </Card>
+            </button>
+
+            <button onClick={() => { setActiveTab('conversations'); fetchConversations(); }} className="text-left transition-all hover:scale-[1.02] active:scale-[0.98]">
+              <Card className="bg-gradient-to-br from-cyan-900/40 to-teal-900/40 border-cyan-500/30 p-4 hover:border-cyan-400/50 transition-all h-full">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-xl flex items-center justify-center shadow-lg">
+                    <MessageSquare className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-slate-400 text-xs">View</p>
+                    <p className="text-white text-lg font-bold">Chats</p>
+                  </div>
+                </div>
+              </Card>
+            </button>
+
+            <button onClick={() => setActiveTab('subscriptions')} className="text-left transition-all hover:scale-[1.02] active:scale-[0.98]">
+              <Card className="bg-gradient-to-br from-rose-900/40 to-pink-900/40 border-rose-500/30 p-4 hover:border-rose-400/50 transition-all h-full">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-rose-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
+                    <Crown className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-slate-400 text-xs">Manage</p>
+                    <p className="text-white text-lg font-bold">Subs</p>
+                  </div>
+                </div>
+              </Card>
+            </button>
+
+            <button onClick={() => setActiveTab('activity')} className="text-left transition-all hover:scale-[1.02] active:scale-[0.98]">
+              <Card className="bg-gradient-to-br from-lime-900/40 to-green-900/40 border-lime-500/30 p-4 hover:border-lime-400/50 transition-all h-full">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-lime-500 to-green-500 rounded-xl flex items-center justify-center shadow-lg">
+                    <TrendingUp className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-slate-400 text-xs">View</p>
+                    <p className="text-white text-lg font-bold">Activity</p>
+                  </div>
+                </div>
+              </Card>
+            </button>
           </div>
 
           {/* Financial Overview */}
