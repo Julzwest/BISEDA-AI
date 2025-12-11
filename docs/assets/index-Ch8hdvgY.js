@@ -13882,7 +13882,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-DrPZ56BN.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-B4fVxaCW.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -14540,14 +14540,8 @@ function GuestBanner({ onSignUp }) {
       }
     );
   }
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 px-3 py-1.5 bg-slate-800/80 rounded-xl border border-slate-700/50", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-6 h-6 rounded-lg bg-cyan-500/20 border border-cyan-500/50 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(UserX, { className: "w-3 h-3 text-cyan-400" }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "hidden sm:block", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-slate-400 leading-tight", children: "Mënyra" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-bold text-white leading-tight", children: visitorLabel })
-      ] })
-    ] }),
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 bg-slate-800/80 rounded-lg sm:rounded-xl border border-slate-700/50", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hidden sm:flex items-center gap-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-cyan-500/20 border border-cyan-500/50 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(UserX, { className: "w-2.5 h-2.5 sm:w-3 sm:h-3 text-cyan-400" }) }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs(
       "button",
       {
@@ -14555,10 +14549,10 @@ function GuestBanner({ onSignUp }) {
           clearGuestSession();
           if (onSignUp) onSignUp();
         },
-        className: "px-2.5 py-1 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white text-xs font-bold rounded-lg transition-all flex items-center gap-1",
+        className: "px-2 sm:px-2.5 py-0.5 sm:py-1 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white text-[10px] sm:text-xs font-bold rounded-md sm:rounded-lg transition-all flex items-center gap-0.5 sm:gap-1",
         children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-3 h-3" }),
-          "Regjistrohu"
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-2.5 h-2.5 sm:w-3 sm:h-3" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "whitespace-nowrap", children: "Sign Up" })
         ]
       }
     ),
@@ -14567,7 +14561,7 @@ function GuestBanner({ onSignUp }) {
       {
         onClick: () => setDismissed(true),
         className: "p-0.5 text-slate-500 hover:text-white transition-colors",
-        children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-3.5 h-3.5" })
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-3 h-3 sm:w-3.5 sm:h-3.5" })
       }
     )
   ] });
@@ -14786,15 +14780,15 @@ function Layout({ children, onLogout }) {
           backdropFilter: "blur(12px)",
           borderBottom: "1px solid var(--border-color, rgba(148, 163, 184, 0.1))"
         },
-        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-14 px-4 flex items-center justify-between max-w-screen-xl mx-auto", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, { to: "/home", className: "flex items-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 text-white" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-bold text-white text-lg hidden sm:block", children: [
+        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-14 px-2 sm:px-4 flex items-center justify-between max-w-screen-xl mx-auto", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center flex-shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, { to: "/home", className: "flex items-center gap-1.5 sm:gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-bold text-white text-base sm:text-lg hidden sm:block", children: [
               "Biseda",
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-purple-400", children: ".ai" })
             ] })
           ] }) }),
-          isGuest && /* @__PURE__ */ jsxRuntimeExports.jsx(
+          isGuest && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "hidden xs:block flex-shrink mx-1", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
             GuestBanner,
             {
               onExpired: () => {
@@ -14806,11 +14800,11 @@ function Layout({ children, onLogout }) {
                 if (onLogout) onLogout();
               }
             }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(LanguageSwitcher, {}),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(CountrySwitcher, {}),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/profile", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg hover:scale-105 hover:shadow-purple-500/30 transition-all duration-200", children: /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-5 h-5 text-white" }) }) })
+          ) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1 sm:gap-2 flex-shrink-0", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "scale-90 sm:scale-100 origin-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LanguageSwitcher, {}) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "scale-90 sm:scale-100 origin-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx(CountrySwitcher, {}) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Link, { to: "/profile", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg sm:rounded-xl flex items-center justify-center shadow-lg hover:scale-105 hover:shadow-purple-500/30 transition-all duration-200", children: /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-4 h-4 sm:w-5 sm:h-5 text-white" }) }) })
           ] })
         ] })
       }
@@ -16913,7 +16907,7 @@ function ClipboardSuggestions() {
       if (window.Capacitor && window.Capacitor.isNativePlatform()) {
         try {
           const { Clipboard: Clipboard2 } = await __vitePreload(async () => {
-            const { Clipboard: Clipboard22 } = await import("./index-Ct2GWlP2.js");
+            const { Clipboard: Clipboard22 } = await import("./index-DNwRNkFG.js");
             return { Clipboard: Clipboard22 };
           }, true ? [] : void 0);
           const { value } = await Clipboard2.read();
