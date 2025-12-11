@@ -4,8 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { createPageUrl } from './utils';
 import { Lightbulb, Home, Calendar, Bot, Flag, User, PartyPopper, Sparkles, MessageCircle, Heart, MapPin } from 'lucide-react';
 import RegionSwitcher from '@/components/RegionSwitcher';
-import GuestBanner from '@/components/GuestBanner';
-import { clearGuestSession } from '@/pages/AuthComponent';
+// Guest login removed - all users must register
 import { trackPageView } from '@/utils/analytics';
 
 export default function Layout({ children, onLogout }) {
@@ -13,7 +12,7 @@ export default function Layout({ children, onLogout }) {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPageName = location.pathname.split('/')[1]?.charAt(0).toUpperCase() + location.pathname.split('/')[1]?.slice(1) || 'Home';
-  const isGuest = localStorage.getItem('isGuest') === 'true';
+  // Guest login removed
 
   // Scroll to top on route change
   useEffect(() => {
@@ -129,21 +128,8 @@ export default function Layout({ children, onLogout }) {
             </div>
           </Link>
           
-          {/* Center - Guest Banner (if guest) */}
-          {isGuest && (
-            <div className="flex-1 flex justify-center mx-2">
-              <GuestBanner 
-                onExpired={() => {
-                  clearGuestSession();
-                  if (onLogout) onLogout();
-                }}
-                onSignUp={() => {
-                  clearGuestSession();
-                  if (onLogout) onLogout();
-                }}
-              />
-            </div>
-          )}
+          {/* Spacer */}
+          <div className="flex-1"></div>
           
           {/* Right side - Region Switcher & Profile */}
           <div className="flex items-center gap-2 flex-shrink-0">
