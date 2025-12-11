@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { createPageUrl } from '../utils';
-import { Lightbulb, TrendingUp, Zap, Star, Sparkles, Heart, MessageSquare, Calendar, Bot, Gift, PartyPopper, Smile, Camera, BookOpen, Users, User, Lock, Crown } from 'lucide-react';
+import { Lightbulb, TrendingUp, Zap, Star, Sparkles, Heart, MessageSquare, Calendar, Bot, Gift, PartyPopper, Smile, Camera, BookOpen, Users, User, MapPin, Lock, Crown } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import UsageDisplay from '@/components/UsageDisplay';
@@ -113,18 +113,11 @@ export default function Home() {
       requiresProOrElite: true
     },
     {
-      icon: Calendar,
-      title: 'Date Ideas',
-      description: 'Discover perfect venues for dates',
-      color: 'from-pink-500 to-rose-500',
-      page: 'dates'
-    },
-    {
-      icon: PartyPopper,
-      title: 'Events Near You',
-      description: 'Local events & activities',
-      color: 'from-yellow-500 to-orange-500',
-      page: 'Events'
+      icon: MapPin,
+      title: 'Explore Dates & Events',
+      description: 'Find venues and local events',
+      color: 'from-pink-500 via-purple-500 to-blue-500',
+      page: 'explore'
     },
     {
       icon: Gift,

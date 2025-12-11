@@ -10,19 +10,29 @@ import { countries, getLocalizedCitiesForCountry, getCountryByCode, getCityNameE
 
 const backendUrl = getBackendUrl();
 
-export default function FirstDates() {
+export default function Explore() {
   const { t, i18n } = useTranslation();
+  
+  // TAB STATE - 'venues' or 'events'
+  const [activeTab, setActiveTab] = useState('venues');
+  
+  // Shared: City selection
   const [selectedCity, setSelectedCity] = useState('');
+  const [showCityModal, setShowCityModal] = useState(false);
+  const [customCityInput, setCustomCityInput] = useState('');
+  const [showMoreCities, setShowMoreCities] = useState(false);
+  
+  // Venues tab state (from FirstDates)
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedTimeOfDay, setSelectedTimeOfDay] = useState(''); // New: time filter
+  const [selectedTimeOfDay, setSelectedTimeOfDay] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   
-  // City selection modal
-  const [showCityModal, setShowCityModal] = useState(false);
-  const [customCityInput, setCustomCityInput] = useState('');
-  const [showMoreCities, setShowMoreCities] = useState(false);
+  // Events tab state (from Events)
+  const [localEvents, setLocalEvents] = useState([]);
+  const [isLoadingEvents, setIsLoadingEvents] = useState(false);
+  const [showAllFestive, setShowAllFestive] = useState(false);
   
   // Get user's country from localStorage
   const userCountry = localStorage.getItem('userCountry') || 'AL';
@@ -459,20 +469,50 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
       <div className="mb-6 text-center">
         <div className="inline-block mb-3">
           <div className="relative">
-            <div className="w-20 h-20 bg-gradient-to-br from-pink-500 via-rose-500 to-red-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-pink-500/50 animate-pulse">
-              <Heart className="w-10 h-10 text-white" fill="currentColor" />
+            <div className="w-20 h-20 bg-gradient-to-br from-pink-500 via-purple-500 to-blue-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-pink-500/50 animate-pulse">
+              <MapPin className="w-10 h-10 text-white" />
             </div>
             <div className="absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center animate-bounce">
               <Sparkles className="w-3 h-3 text-slate-900" />
             </div>
           </div>
         </div>
-        <h1 className="text-3xl font-extrabold bg-gradient-to-r from-pink-300 via-rose-300 to-red-300 bg-clip-text text-transparent mb-2">
-          Date Ideas
+        <h1 className="text-3xl font-extrabold bg-gradient-to-r from-pink-300 via-purple-300 to-blue-300 bg-clip-text text-transparent mb-2">
+          Explore Dates & Events
         </h1>
-        <p className="text-slate-400 text-sm">Discover the perfect venues for your dates</p>
+        <p className="text-slate-400 text-sm">Find perfect venues and discover local events</p>
       </div>
-      {/* City Selection - Modern Design */}
+      
+      {/* TAB NAVIGATION */}
+      <div className="mb-6 flex gap-2 bg-slate-900/50 p-1.5 rounded-2xl border border-slate-700/50">
+        <button
+          onClick={() => setActiveTab('venues')}
+          className={`flex-1 py-3 px-4 rounded-xl font-bold text-sm transition-all ${
+            activeTab === 'venues'
+              ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg shadow-pink-500/40'
+              : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+          }`}
+        >
+          <span className="flex items-center justify-center gap-2">
+            <Coffee className="w-4 h-4" />
+            Date Venues
+          </span>
+        </button>
+        <button
+          onClick={() => setActiveTab('events')}
+          className={`flex-1 py-3 px-4 rounded-xl font-bold text-sm transition-all ${
+            activeTab === 'events'
+              ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg shadow-purple-500/40'
+              : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+          }`}
+        >
+          <span className="flex items-center justify-center gap-2">
+            <PartyPopper className="w-4 h-4" />
+            Events
+          </span>
+        </button>
+      </div>
+      {/* SHARED: City Selection - Modern Design */}
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-3">
           <MapPin className="w-5 h-5 text-purple-400" />
@@ -533,9 +573,12 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
         )}
       </div>
 
-      {/* Time of Day Filter */}
-      <div className="mb-6">
-        <h2 className="text-lg font-bold text-white mb-3">⏰ Time of Day</h2>
+      {/* VENUES TAB CONTENT */}
+      {activeTab === 'venues' && (
+        <>
+          {/* Time of Day Filter */}
+          <div className="mb-6">
+            <h2 className="text-lg font-bold text-white mb-3">⏰ Time of Day</h2>
         <div className="flex flex-wrap gap-2">
           {timeOfDayOptions.map((time) => (
             <button
@@ -947,6 +990,26 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
         <div className="text-center py-12">
           <div className="text-6xl mb-3 animate-pulse">💭</div>
           <p className="text-slate-400">{t('dates.selectCategoryToStart')}</p>
+        </div>
+      )}
+        </>
+      )}
+      
+      {/* EVENTS TAB CONTENT */}
+      {activeTab === 'events' && (
+        <div className="space-y-6">
+          <div className="text-center py-12">
+            <div className="text-6xl mb-4 animate-bounce">🎉</div>
+            <h3 className="text-2xl font-bold text-white mb-2">Events Coming Soon!</h3>
+            <p className="text-slate-400 mb-4">
+              {selectedCity ? `Discover local events in ${selectedCity}` : 'Select a city to see local events and festivals'}
+            </p>
+            <div className="inline-block px-6 py-3 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/40 rounded-2xl">
+              <p className="text-purple-300 text-sm font-semibold">
+                🎪 Concerts • 🎭 Shows • 🎨 Festivals • ⚽ Sports
+              </p>
+            </div>
+          </div>
         </div>
       )}
     </div>
