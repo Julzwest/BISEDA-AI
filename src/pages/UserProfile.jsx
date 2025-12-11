@@ -4,8 +4,10 @@ import { Button } from '@/components/ui/button';
 import { 
   User, Mail, Phone, Crown, Zap, TrendingUp, Bookmark, 
   Heart, Gift, Lightbulb, Calendar, Trash2, ExternalLink,
-  CreditCard, LogOut, Shield, Star, MapPin, Globe, Check, Music, Share2
+  CreditCard, LogOut, Shield, Star, MapPin, Globe, Check, Music, Share2,
+  MessageSquare, Sparkles, Trophy, PartyPopper
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { getBackendUrl } from '@/utils/getBackendUrl';
 import UpgradeModal from '@/components/UpgradeModal';
 import { countries, getCitiesForCountry, getCountryByCode } from '@/config/countries';
@@ -125,19 +127,132 @@ export default function UserProfile({ onLogout }) {
   const tierBadge = getTierBadge(currentTier);
   const TierIcon = tierBadge.icon;
 
+  // Calculate user level based on messages (gamification)
+  const calculateLevel = () => {
+    const totalMessages = usage?.dailyUsage?.messages || 0;
+    const level = Math.floor(totalMessages / 10) + 1;
+    const nextLevelMessages = (level * 10);
+    const progress = ((totalMessages % 10) / 10) * 100;
+    return { level, progress, nextLevelMessages };
+  };
+
+  const userLevel = calculateLevel();
+  
+  // Get time-based greeting
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good morning";
+    if (hour < 18) return "Good afternoon";
+    return "Good evening";
+  };
+
+  // Quick stats for dashboard
+  const quickStats = [
+    { 
+      label: 'Level', 
+      value: userLevel.level, 
+      icon: Star, 
+      color: 'from-yellow-500 to-orange-500',
+      bgColor: 'bg-yellow-500/10',
+      textColor: 'text-yellow-400'
+    },
+    { 
+      label: 'Messages', 
+      value: usage?.dailyUsage?.messages || 0, 
+      icon: MessageSquare, 
+      color: 'from-purple-500 to-pink-500',
+      bgColor: 'bg-purple-500/10',
+      textColor: 'text-purple-400'
+    },
+    { 
+      label: 'Credits', 
+      value: usage?.credits || 0, 
+      icon: Zap, 
+      color: 'from-cyan-500 to-blue-500',
+      bgColor: 'bg-cyan-500/10',
+      textColor: 'text-cyan-400'
+    },
+    { 
+      label: 'Saved', 
+      value: localFavorites.venues.length + localFavorites.dateIdeas.length + localFavorites.tips.length + localFavorites.gifts.length, 
+      icon: Bookmark, 
+      color: 'from-rose-500 to-pink-500',
+      bgColor: 'bg-rose-500/10',
+      textColor: 'text-rose-400'
+    }
+  ];
+
   return (
-    <div className="px-6 pt-20 pb-32 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950">
-      {/* Header */}
-      <div className="text-center mb-6">
-        <div className="w-24 h-24 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-2xl shadow-purple-500/50">
-          <User className="w-12 h-12 text-white" />
+    <div className="px-4 pt-20 pb-32 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950">
+      {/* Hero Card with Profile */}
+      <Card className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-purple-500/30 backdrop-blur-sm p-6 mb-4 relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-cyan-500/20 to-blue-500/20 rounded-full blur-3xl"></div>
+        
+        <div className="relative z-10">
+          <div className="flex items-center gap-4 mb-4">
+            {/* Profile Picture with Level Badge */}
+            <div className="relative">
+              <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center shadow-xl shadow-purple-500/30">
+                <User className="w-10 h-10 text-white" />
+              </div>
+              {/* Level Badge */}
+              <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center border-2 border-slate-900 shadow-lg">
+                <span className="text-xs font-bold text-white">{userLevel.level}</span>
+              </div>
+            </div>
+            
+            {/* User Info */}
+            <div className="flex-1">
+              <p className="text-slate-400 text-xs mb-1">{getGreeting()} 👋</p>
+              <h1 className="text-2xl font-bold text-white mb-1">{userName}</h1>
+              <div className="flex items-center gap-2">
+                <div className={`px-2 py-0.5 ${tierBadge.color} rounded-lg text-xs font-semibold flex items-center gap-1`}>
+                  <TierIcon className="w-3 h-3" />
+                  {tierBadge.label}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Level Progress Bar */}
+          <div>
+            <div className="flex justify-between text-xs mb-1.5">
+              <span className="text-slate-400">Level {userLevel.level} Progress</span>
+              <span className="text-purple-400 font-semibold">{userLevel.progress.toFixed(0)}%</span>
+            </div>
+            <div className="w-full bg-slate-700/50 rounded-full h-2 overflow-hidden">
+              <div 
+                className="h-2 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-600 rounded-full transition-all duration-500 relative"
+                style={{ width: `${userLevel.progress}%` }}
+              >
+                <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
+              </div>
+            </div>
+            <p className="text-slate-500 text-xs mt-1">
+              {10 - (usage?.dailyUsage?.messages || 0) % 10} messages to level {userLevel.level + 1}
+            </p>
+          </div>
         </div>
-        <h1 className="text-3xl font-bold text-white mb-1">{userName}</h1>
-        <p className="text-slate-400 text-sm">{userEmail}</p>
+      </Card>
+
+      {/* Quick Stats Grid */}
+      <div className="grid grid-cols-4 gap-2 mb-4">
+        {quickStats.map((stat, i) => {
+          const Icon = stat.icon;
+          return (
+            <Card key={i} className={`${stat.bgColor} border-none p-3 text-center`}>
+              <Icon className={`w-5 h-5 ${stat.textColor} mx-auto mb-1`} />
+              <p className={`text-xl font-bold ${stat.textColor}`}>{stat.value}</p>
+              <p className="text-slate-500 text-xs">{stat.label}</p>
+            </Card>
+          );
+        })}
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 mb-6 bg-slate-900/50 p-1 rounded-xl">
+      <div className="flex gap-2 mb-4 bg-slate-900/50 p-1 rounded-xl">
         <button
           onClick={() => setActiveTab('overview')}
           className={`flex-1 py-2 px-4 rounded-lg text-sm font-semibold transition-all ${
@@ -146,7 +261,7 @@ export default function UserProfile({ onLogout }) {
               : 'text-slate-400 hover:text-white'
           }`}
         >
-          Overview
+          Dashboard
         </button>
         <button
           onClick={() => setActiveTab('saved')}
@@ -171,61 +286,127 @@ export default function UserProfile({ onLogout }) {
       {/* Overview Tab */}
       {activeTab === 'overview' && (
         <>
-          {/* Membership Card */}
-          {usage && (
-            <Card className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-purple-500/50 backdrop-blur-sm p-6 mb-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className={`w-12 h-12 ${tierBadge.color} rounded-xl flex items-center justify-center`}>
-                    <TierIcon className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h2 className="text-xl font-bold text-white">Plan: {tierBadge.label}</h2>
-                    <p className="text-slate-400 text-sm">Current membership</p>
-                  </div>
+          {/* Quick Actions */}
+          <Card className="bg-slate-800/50 border-slate-700 p-4 mb-4">
+            <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-yellow-400" />
+              Quick Actions
+            </h3>
+            <div className="grid grid-cols-2 gap-2">
+              <Link to="/chat">
+                <div className="p-3 bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-xl hover:scale-105 transition-transform">
+                  <MessageSquare className="w-5 h-5 text-purple-400 mb-1" />
+                  <p className="text-white text-sm font-semibold">AI Coach</p>
+                  <p className="text-slate-400 text-xs">Start chatting</p>
                 </div>
+              </Link>
+              <Link to="/dates">
+                <div className="p-3 bg-gradient-to-br from-pink-500/20 to-rose-500/20 border border-pink-500/30 rounded-xl hover:scale-105 transition-transform">
+                  <Heart className="w-5 h-5 text-pink-400 mb-1" />
+                  <p className="text-white text-sm font-semibold">Find Dates</p>
+                  <p className="text-slate-400 text-xs">Local ideas</p>
+                </div>
+              </Link>
+              <Link to="/events">
+                <div className="p-3 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 rounded-xl hover:scale-105 transition-transform">
+                  <PartyPopper className="w-5 h-5 text-yellow-400 mb-1" />
+                  <p className="text-white text-sm font-semibold">Events</p>
+                  <p className="text-slate-400 text-xs">Near you</p>
+                </div>
+              </Link>
+              <Link to="/gifts">
+                <div className="p-3 bg-gradient-to-br from-rose-500/20 to-red-500/20 border border-rose-500/30 rounded-xl hover:scale-105 transition-transform">
+                  <Gift className="w-5 h-5 text-rose-400 mb-1" />
+                  <p className="text-white text-sm font-semibold">Gifts</p>
+                  <p className="text-slate-400 text-xs">Find perfect gift</p>
+                </div>
+              </Link>
+            </div>
+          </Card>
+
+          {/* Usage & Plan Card */}
+          {usage && (
+            <Card className="bg-slate-800/50 border-slate-700 p-4 mb-4">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 text-cyan-400" />
+                  Your Plan & Usage
+                </h3>
                 {currentTier !== 'premium' && currentTier !== 'elite' && (
                   <Button
                     onClick={() => setShowUpgradeModal(true)}
-                    className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white"
+                    className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white h-8 text-xs"
                   >
-                    <TrendingUp className="w-4 h-4 mr-2" />
+                    <Crown className="w-3 h-3 mr-1" />
                     Upgrade
                   </Button>
                 )}
               </div>
 
-              {/* Usage Stats */}
               <div className="space-y-3">
-                <div>
+                {/* Messages Progress */}
+                <div className="p-3 bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/30 rounded-xl">
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="text-slate-300">Messages Today</span>
-                    <span className="text-white font-semibold">
+                    <span className="text-slate-300 flex items-center gap-1.5">
+                      <MessageSquare className="w-4 h-4 text-purple-400" />
+                      Messages Today
+                    </span>
+                    <span className="text-white font-bold">
                       {usage.dailyUsage.messages} / {usage.dailyUsage.messagesLimit}
                     </span>
                   </div>
-                  <div className="w-full bg-slate-700 rounded-full h-2">
+                  <div className="w-full bg-slate-700/50 rounded-full h-2 overflow-hidden">
                     <div
-                      className="h-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all"
+                      className="h-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all relative"
                       style={{ width: `${Math.min(100, (usage.dailyUsage.messages / usage.dailyUsage.messagesLimit) * 100)}%` }}
-                    ></div>
+                    >
+                      <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
+                    </div>
                   </div>
                 </div>
 
+                {/* Credits */}
                 {usage.credits > 0 && (
-                  <div className="p-3 bg-purple-500/10 border border-purple-500/30 rounded-lg">
+                  <div className="p-3 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-xl">
                     <div className="flex items-center justify-between">
-                      <span className="text-purple-300 text-sm flex items-center gap-2">
-                        <Zap className="w-4 h-4" />
-                        Credits
+                      <span className="text-slate-300 text-sm flex items-center gap-1.5">
+                        <Zap className="w-4 h-4 text-cyan-400" />
+                        Available Credits
                       </span>
-                      <span className="text-purple-300 font-bold">{usage.credits}</span>
+                      <span className="text-cyan-400 font-bold text-lg">{usage.credits}</span>
                     </div>
                   </div>
                 )}
               </div>
             </Card>
           )}
+
+          {/* Achievements/Badges */}
+          <Card className="bg-slate-800/50 border-slate-700 p-4 mb-4">
+            <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+              <Trophy className="w-4 h-4 text-yellow-400" />
+              Achievements
+            </h3>
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { icon: '🎯', label: 'First Chat', unlocked: (usage?.dailyUsage?.messages || 0) > 0 },
+                { icon: '💬', label: 'Chatty', unlocked: (usage?.dailyUsage?.messages || 0) >= 10 },
+                { icon: '🔥', label: 'On Fire', unlocked: (usage?.dailyUsage?.messages || 0) >= 50 },
+                { icon: '⭐', label: 'Rising Star', unlocked: userLevel.level >= 5 },
+                { icon: '💎', label: currentTier === 'elite' || currentTier === 'premium' ? 'VIP' : 'Locked', unlocked: currentTier === 'elite' || currentTier === 'premium' },
+                { icon: '❤️', label: 'Romantic', unlocked: localFavorites.dateIdeas.length >= 5 },
+              ].map((badge, i) => (
+                <div key={i} className={`p-3 rounded-xl text-center transition-all ${
+                  badge.unlocked 
+                    ? 'bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border border-yellow-500/30' 
+                    : 'bg-slate-700/30 border border-slate-600/30 opacity-50'
+                }`}>
+                  <div className="text-2xl mb-1">{badge.icon}</div>
+                  <p className="text-white text-xs font-semibold">{badge.label}</p>
+                </div>
+              ))}
+            </div>
+          </Card>
 
           {/* Account Info */}
           <Card className="bg-slate-800/80 border-slate-700 p-6 mb-6">
