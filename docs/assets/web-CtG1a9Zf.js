@@ -1,4 +1,4 @@
-import { W as WebPlugin } from "./index-BMdheguX.js";
+import { W as WebPlugin } from "./index-A0-fNaPi.js";
 var script = { exports: {} };
 var hasRequiredScript;
 function requireScript() {
