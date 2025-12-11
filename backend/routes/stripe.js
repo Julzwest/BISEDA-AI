@@ -135,9 +135,14 @@ async function handleCheckoutCompleted(session) {
         tier = 'starter';
       } else if (process.env.STRIPE_PRO_PRICE_ID === priceId) {
         tier = 'pro';
+      } else if (process.env.STRIPE_ELITE_PRICE_ID === priceId) {
+        tier = 'elite';
       } else if (process.env.STRIPE_PREMIUM_PRICE_ID === priceId) {
         tier = 'premium';
       }
+      
+      console.log('🔍 Stripe Price ID:', priceId);
+      console.log('🎯 Mapped to tier:', tier);
       
       const expiresAt = new Date(subscription.current_period_end * 1000);
       user.upgradeTo(tier, subscription.customer, subscriptionId, expiresAt);
@@ -167,9 +172,14 @@ async function handleSubscriptionUpdate(subscription) {
       tier = 'starter';
     } else if (process.env.STRIPE_PRO_PRICE_ID === priceId) {
       tier = 'pro';
+    } else if (process.env.STRIPE_ELITE_PRICE_ID === priceId) {
+      tier = 'elite';
     } else if (process.env.STRIPE_PREMIUM_PRICE_ID === priceId) {
       tier = 'premium';
     }
+    
+    console.log('🔍 Stripe Price ID:', priceId);
+    console.log('🎯 Mapped to tier:', tier);
     
     const expiresAt = new Date(subscription.current_period_end * 1000);
     user.upgradeTo(tier, subscription.customer, subscription.id, expiresAt);

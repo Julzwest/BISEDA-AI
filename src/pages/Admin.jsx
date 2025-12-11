@@ -948,7 +948,49 @@ export default function Admin() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 bg-slate-800/50 rounded-xl">
                   <p className="text-slate-400 text-sm mb-1">Plan</p>
-                  <p className="text-white font-semibold">{selectedUser.subscriptionTier || 'Free'}</p>
+                  <div className="flex items-center gap-2">
+                    <select
+                      value={selectedUser.subscriptionTier || 'free'}
+                      onChange={async (e) => {
+                        const newTier = e.target.value;
+                        if (confirm(`Change ${selectedUser.firstName}'s tier to ${newTier}?`)) {
+                          try {
+                            const response = await fetch(`${backendUrl}/api/admin/update-user-tier`, {
+                              method: 'PUT',
+                              headers: {
+                                'Content-Type': 'application/json',
+                                'x-admin-key': localStorage.getItem('adminKey')
+                              },
+                              body: JSON.stringify({
+                                odId: selectedUser.odId,
+                                tier: newTier
+                              })
+                            });
+                            
+                            if (response.ok) {
+                              alert(`✅ Tier updated to ${newTier}!`);
+                              setSelectedUser({ ...selectedUser, subscriptionTier: newTier });
+                              fetchUsers(); // Refresh user list
+                            } else {
+                              const error = await response.json();
+                              alert(`❌ Failed: ${error.error}`);
+                            }
+                          } catch (error) {
+                            console.error('Update tier error:', error);
+                            alert('❌ Failed to update tier');
+                          }
+                        }
+                      }}
+                      className="bg-slate-700 text-white text-sm px-2 py-1 rounded border border-slate-600 hover:bg-slate-600 cursor-pointer"
+                    >
+                      <option value="free">Free</option>
+                      <option value="free_trial">Free Trial</option>
+                      <option value="starter">Starter</option>
+                      <option value="pro">Pro</option>
+                      <option value="elite">Elite</option>
+                      <option value="premium">Premium</option>
+                    </select>
+                  </div>
                 </div>
                 <div className="p-4 bg-slate-800/50 rounded-xl">
                   <p className="text-slate-400 text-sm mb-1">Status</p>

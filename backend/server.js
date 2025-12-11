@@ -1932,6 +1932,50 @@ app.post('/api/admin/create-test-user', checkAdminAuth, async (req, res) => {
   }
 });
 
+// Update user subscription tier (admin only)
+app.put('/api/admin/update-user-tier', checkAdminAuth, async (req, res) => {
+  try {
+    const { odId, tier } = req.body;
+    
+    if (!odId || !tier) {
+      return res.status(400).json({ error: 'odId and tier are required' });
+    }
+    
+    const validTiers = ['free', 'free_trial', 'starter', 'pro', 'elite', 'premium'];
+    if (!validTiers.includes(tier)) {
+      return res.status(400).json({ error: 'Invalid tier. Must be one of: ' + validTiers.join(', ') });
+    }
+    
+    // Get user
+    const user = getUser(odId);
+    const oldTier = user.subscriptionTier;
+    
+    // Update tier
+    user.subscriptionTier = tier;
+    user.subscriptionStatus = (tier === 'free' || tier === 'free_trial') ? 'inactive' : 'active';
+    
+    // If upgrading to paid tier, extend expiration
+    if (['starter', 'pro', 'elite', 'premium'].includes(tier)) {
+      user.subscriptionExpiresAt = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000); // 1 year
+    }
+    
+    saveUser(user);
+    
+    console.log(`✅ Admin updated user ${odId} tier: ${oldTier} → ${tier}`);
+    
+    res.json({
+      success: true,
+      message: `User tier updated from ${oldTier} to ${tier}`,
+      odId,
+      oldTier,
+      newTier: tier
+    });
+  } catch (error) {
+    console.error('Update user tier error:', error);
+    res.status(500).json({ error: 'Failed to update user tier' });
+  }
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Backend server running on http://localhost:${PORT}`);

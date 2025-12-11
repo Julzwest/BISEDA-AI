@@ -13727,7 +13727,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-D__i5iot.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-BKCcyUZA.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -20582,7 +20582,50 @@ function Admin() {
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-4", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-slate-800/50 rounded-xl", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm mb-1", children: "Plan" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-semibold", children: selectedUser.subscriptionTier || "Free" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-2", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              "select",
+              {
+                value: selectedUser.subscriptionTier || "free",
+                onChange: async (e) => {
+                  const newTier = e.target.value;
+                  if (confirm(`Change ${selectedUser.firstName}'s tier to ${newTier}?`)) {
+                    try {
+                      const response = await fetch(`${backendUrl2}/api/admin/update-user-tier`, {
+                        method: "PUT",
+                        headers: {
+                          "Content-Type": "application/json",
+                          "x-admin-key": localStorage.getItem("adminKey")
+                        },
+                        body: JSON.stringify({
+                          odId: selectedUser.odId,
+                          tier: newTier
+                        })
+                      });
+                      if (response.ok) {
+                        alert(`✅ Tier updated to ${newTier}!`);
+                        setSelectedUser({ ...selectedUser, subscriptionTier: newTier });
+                        fetchUsers();
+                      } else {
+                        const error = await response.json();
+                        alert(`❌ Failed: ${error.error}`);
+                      }
+                    } catch (error) {
+                      console.error("Update tier error:", error);
+                      alert("❌ Failed to update tier");
+                    }
+                  }
+                },
+                className: "bg-slate-700 text-white text-sm px-2 py-1 rounded border border-slate-600 hover:bg-slate-600 cursor-pointer",
+                children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "free", children: "Free" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "free_trial", children: "Free Trial" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "starter", children: "Starter" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "pro", children: "Pro" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "elite", children: "Elite" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("option", { value: "premium", children: "Premium" })
+                ]
+              }
+            ) })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-slate-800/50 rounded-xl", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm mb-1", children: "Status" }),
