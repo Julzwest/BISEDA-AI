@@ -13717,7 +13717,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-D8kGFyY4.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-Dymw31ib.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -14595,9 +14595,17 @@ function Layout({ children, onLogout }) {
       "main",
       {
         id: "main-content",
-        className: "w-full max-w-full overflow-x-hidden",
-        style: { paddingTop: "calc(56px + env(safe-area-inset-top, 0px))", paddingBottom: "90px", minHeight: "100vh" },
-        children
+        className: "w-full max-w-full",
+        style: {
+          paddingTop: "calc(56px + env(safe-area-inset-top, 0px))",
+          paddingBottom: "90px",
+          minHeight: "100vh",
+          overflowX: "hidden",
+          overflowY: "auto",
+          maxWidth: "100vw",
+          width: "100%"
+        },
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { style: { overflowX: "hidden", maxWidth: "100%", width: "100%" }, children })
       }
     ),
     /* @__PURE__ */ jsxRuntimeExports.jsx("nav", { style: {

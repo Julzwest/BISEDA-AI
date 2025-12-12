@@ -159,12 +159,23 @@ export default function Layout({ children, onLogout }) {
       </header>
       
       {/* Main Content - with top padding for fixed header + safe area */}
+      {/* 🔒 LOCKED: No horizontal scrolling - only vertical */}
       <main 
         id="main-content"
-        className="w-full max-w-full overflow-x-hidden"
-        style={{ paddingTop: 'calc(56px + env(safe-area-inset-top, 0px))', paddingBottom: '90px', minHeight: '100vh' }}
+        className="w-full max-w-full"
+        style={{ 
+          paddingTop: 'calc(56px + env(safe-area-inset-top, 0px))', 
+          paddingBottom: '90px', 
+          minHeight: '100vh',
+          overflowX: 'hidden',
+          overflowY: 'auto',
+          maxWidth: '100vw',
+          width: '100%'
+        }}
       >
-        {children}
+        <div style={{ overflowX: 'hidden', maxWidth: '100%', width: '100%' }}>
+          {children}
+        </div>
       </main>
 
       {/* Fixed Bottom Navigation - Modern Design */}
