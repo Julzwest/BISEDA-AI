@@ -152,6 +152,26 @@ export default function DateRehearsal() {
       emoji: '💕',
       setting: 'reconnecting with someone from your past who you run into unexpectedly',
       roleType: 'ex' // AI plays as an ex
+    },
+    {
+      id: 'coming_out',
+      icon: Heart,
+      title: t('rehearsal.comingOut', 'Coming Out'),
+      description: t('rehearsal.comingOutDesc', 'Practice coming out to friends or family'),
+      color: 'from-violet-500 to-purple-600',
+      emoji: '🏳️‍🌈',
+      setting: 'having an important conversation to come out as gay/LGBTQ+ to someone close to you',
+      roleType: 'family' // AI plays as family member or friend
+    },
+    {
+      id: 'cheating_confrontation',
+      icon: AlertCircle,
+      title: t('rehearsal.cheating', 'Cheating Confrontation'),
+      description: t('rehearsal.cheatingDesc', 'Practice addressing infidelity or suspicions'),
+      color: 'from-red-600 to-orange-700',
+      emoji: '💔',
+      setting: 'confronting your partner about suspected or confirmed cheating',
+      roleType: 'partner' // AI plays as partner
     }
   ];
 
