@@ -144,14 +144,6 @@ export default function Home() {
       description: t('home.features.mood.desc', 'Check your dating readiness'),
       color: 'from-pink-500 to-rose-400', // Pink-Rose for emotions/mood
       page: 'MoodCheck'
-    },
-    {
-      icon: User,
-      title: t('home.features.profileOptimizer.title', 'Profile Optimizer'),
-      description: t('home.features.profileOptimizer.desc', 'Improve your dating profile'),
-      color: 'from-indigo-500 to-blue-600', // Indigo-Blue for profile/optimization
-      page: 'ProfileOptimizer',
-      requiresProOrElite: true
     }
   ];
 
