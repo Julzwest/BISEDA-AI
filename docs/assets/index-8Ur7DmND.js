@@ -13717,7 +13717,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-T3Knb15S.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-wtbffvge.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -15073,6 +15073,15 @@ function Home() {
       page: "Chat"
     },
     {
+      icon: Heart,
+      title: "Intimacy Coach",
+      description: "Expert guidance on intimacy & bedroom",
+      color: "from-pink-600 to-rose-500",
+      // Pink-Rose for intimacy
+      page: "IntimacyCoach",
+      requiresProOrElite: true
+    },
+    {
       icon: Users,
       title: "Date Rehearsal",
       description: "Practice with AI roleplay",
@@ -15105,15 +15114,6 @@ function Home() {
       color: "from-pink-500 to-rose-400",
       // Pink-Rose for emotions/mood
       page: "MoodCheck"
-    },
-    {
-      icon: Heart,
-      title: "Intimacy Coach",
-      description: "Expert guidance on intimacy & bedroom",
-      color: "from-pink-600 to-rose-500",
-      // Pink-Rose for intimacy
-      page: "IntimacyCoach",
-      requiresProOrElite: true
     }
   ];
   const stats = [
