@@ -13019,7 +13019,7 @@ const getRuntimeOverride = (runtimeWindow) => {
   return runtimeWindow.__BISEDA_BACKEND_URL || runtimeWindow.__BisedaBackendUrl || runtimeWindow.__BACKEND_URL__ || runtimeWindow.__ENV_BACKEND_URL__;
 };
 const isLocalHost = (hostname) => LOCAL_HOSTNAMES.includes(hostname) || hostname.endsWith(".local");
-function getBackendUrl$1() {
+function getBackendUrl() {
   const runtimeWindow = getRuntimeWindow();
   if (runtimeWindow) {
     const runtimeOverride = getRuntimeOverride(runtimeWindow);
@@ -13711,13 +13711,13 @@ function Auth({ onAuthSuccess }) {
   const [newPassword, setNewPassword] = reactExports.useState("");
   const [showAgeVerification, setShowAgeVerification] = reactExports.useState(false);
   const [selectedAge, setSelectedAge] = reactExports.useState("");
-  const backendUrl2 = getBackendUrl$1();
+  const backendUrl2 = getBackendUrl();
   const isNativeIOS = Capacitor.isNativePlatform() && Capacitor.getPlatform() === "ios";
   const handleAppleSignIn = async () => {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-Bp-Cz3Fs.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-D8kGFyY4.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -14632,7 +14632,7 @@ function CreditsModal({ isOpen, onClose }) {
   const [packages, setPackages] = reactExports.useState(null);
   const [balance, setBalance] = reactExports.useState(0);
   const [loading, setLoading] = reactExports.useState(false);
-  const backendUrl2 = getBackendUrl$1();
+  const backendUrl2 = getBackendUrl();
   const userId = localStorage.getItem("userId") || "anonymous";
   reactExports.useEffect(() => {
     if (isOpen) {
@@ -14753,7 +14753,7 @@ function UsageDisplay({ onUpgrade, onLimitReached }) {
   const [usage2, setUsage] = reactExports.useState(null);
   const [loading, setLoading] = reactExports.useState(true);
   const [showCreditsModal, setShowCreditsModal] = reactExports.useState(false);
-  const backendUrl2 = getBackendUrl$1();
+  const backendUrl2 = getBackendUrl();
   reactExports.useEffect(() => {
     fetchUsage();
     const interval = setInterval(fetchUsage, 3e4);
@@ -14897,7 +14897,7 @@ function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
       return;
     }
     try {
-      const backendUrl2 = getBackendUrl$1();
+      const backendUrl2 = getBackendUrl();
       const response = await fetch(`${backendUrl2}/api/stripe/create-checkout-session`, {
         method: "POST",
         headers: {
@@ -15217,7 +15217,7 @@ function SaveButton({ item, type, onSaved, className = "" }) {
   const { t } = useTranslation();
   const [saving, setSaving] = reactExports.useState(false);
   const [saved, setSaved] = reactExports.useState(false);
-  const backendUrl2 = getBackendUrl$1();
+  const backendUrl2 = getBackendUrl();
   const userId = localStorage.getItem("userId");
   const handleSave = async (e) => {
     e.stopPropagation();
@@ -15286,7 +15286,7 @@ function Input({ className = "", ...props }) {
   );
 }
 const callOpenAI = async (prompt, conversationHistory = [], customSystemPrompt = null, fileUrls = []) => {
-  const backendUrl2 = getBackendUrl$1();
+  const backendUrl2 = getBackendUrl();
   try {
     console.log("🚀 Calling backend API...", { backendUrl: backendUrl2, promptLength: prompt?.length });
     const sessionId = window.chatSessionId || `session_${Date.now()}`;
@@ -15448,7 +15448,7 @@ function Tips() {
   const [showUpgradeModal, setShowUpgradeModal] = reactExports.useState(false);
   const [visibleCount, setVisibleCount] = reactExports.useState(5);
   const [copiedIndex, setCopiedIndex] = reactExports.useState(null);
-  const backendUrl2 = getBackendUrl$1();
+  const backendUrl2 = getBackendUrl();
   const getPrompt = (type) => {
     const langInstruction = isAlbanian2 ? "Shkruaj në shqip." : `Write in ${currentLang === "en" ? "English" : currentLang}.`;
     const prompts = {
@@ -17037,7 +17037,7 @@ function Chat() {
   const [showAdultVerificationModal, setShowAdultVerificationModal] = reactExports.useState(false);
   const [pendingCategorySwitch, setPendingCategorySwitch] = reactExports.useState(null);
   const [subscriptionTier, setSubscriptionTier] = reactExports.useState(localStorage.getItem("userSubscriptionTier") || "");
-  const backendUrl2 = getBackendUrl$1();
+  const backendUrl2 = getBackendUrl();
   reactExports.useEffect(() => {
     const handleStorageChange = () => {
       const newTier = localStorage.getItem("userSubscriptionTier") || "";
@@ -18081,7 +18081,7 @@ CRITICAL REMINDER: The user has shared a screenshot of a conversation earlier in
     )
   ] });
 }
-const backendUrl = getBackendUrl$1();
+const backendUrl = getBackendUrl();
 const festiveDatesByCountry = {
   // Albania
   AL: [
@@ -19820,7 +19820,7 @@ function Admin() {
   const [selectedConversation, setSelectedConversation] = reactExports.useState(null);
   const [showConversationModal, setShowConversationModal] = reactExports.useState(false);
   const [loadingConversations, setLoadingConversations] = reactExports.useState(false);
-  const backendUrl2 = getBackendUrl$1();
+  const backendUrl2 = getBackendUrl();
   const adminToken = localStorage.getItem("adminToken");
   reactExports.useEffect(() => {
     if (adminToken) {
@@ -20973,7 +20973,7 @@ function UserProfile({ onLogout }) {
   const [cancelSubmitted, setCancelSubmitted] = reactExports.useState(false);
   const [showDeleteModal, setShowDeleteModal] = reactExports.useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = reactExports.useState("");
-  const backendUrl2 = getBackendUrl$1();
+  const backendUrl2 = getBackendUrl();
   const userId = localStorage.getItem("userId");
   const userName = localStorage.getItem("userName") || "User";
   const userEmail = localStorage.getItem("userEmail") || "";
@@ -22008,7 +22008,7 @@ function MoodCheck() {
   const [advice, setAdvice] = reactExports.useState(null);
   const [isLoading, setIsLoading] = reactExports.useState(false);
   const [step, setStep] = reactExports.useState(1);
-  getBackendUrl$1();
+  getBackendUrl();
   const currentLang = i18n.language || "en";
   const isAlbanian2 = currentLang === "sq" || currentLang.startsWith("sq");
   const moods = [
@@ -22545,33 +22545,35 @@ Then naturally transition - offer a drink, invite them to sit, maybe compliment 
       const safeUserName = userName || "there";
       const safeDateName = dateName?.trim() || "them";
       const safePartnerName = partnerName?.trim() || "my child";
-      const openingSystemPrompt = `🎭 ROLEPLAY START
+      const prompt = `🎭 ROLEPLAY SCENARIO START
 
-YOUR IDENTITY:
-- Name: ${safeDateName}
-- Role: A real ${selectedScenario.roleType === "parent" ? "parent" : "person"} (NOT an AI assistant)
-- Personality: ${personality?.label} ${personality?.emoji}
-- Situation: ${selectedScenario.setting}
+=== YOUR IDENTITY ===
+YOU ARE: ${safeDateName}
+YOUR ROLE: A real ${selectedScenario.roleType === "parent" ? "parent" : "person"} (NOT an AI, NOT an assistant)
+YOUR PERSONALITY: ${personality?.label} ${personality?.emoji}
+SITUATION: ${selectedScenario.setting}
 
-THE SCENE:
+=== THE SCENE ===
 ${scenarioOpener}
 
-RULES:
-1. ❌ NEVER say: "How can I help?", "I'm here to assist", or ANY AI phrases
-2. ✅ You ARE ${safeDateName} - respond as this real person would
-3. ✅ Keep response SHORT: 1-3 sentences only
-4. ✅ Use casual, natural language
-5. ✅ Show genuine warmth and personality
-6. ✅ Start the conversation naturally based on scenario
+=== 🔒 ABSOLUTE RULES ===
+1. ❌ NEVER say: "How can I help?", "I'm here to...", "Let me assist...", or ANY AI phrases
+2. ❌ NEVER break character or mention AI/assistant/practice
+3. ✅ You ARE ${safeDateName} - respond exactly as this real person would
+4. ✅ Be natural, warm, and conversational
+5. ✅ Keep response SHORT: 1-3 sentences maximum
+6. ✅ Use casual language: "Oh!", "Come in!", "So lovely!", "Hey there!"
+7. ✅ Show genuine personality - excitement, warmth, curiosity
+8. ✅ Start the conversation naturally as the scenario describes
 
-${langInstruction}`;
+=== HOW TO START ===
+${selectedScenario.roleType === "parent" ? `Open the door warmly and greet ${safeUserName}. Maybe offer them a drink or compliment them. Be welcoming but show you're a protective parent sizing them up.` : selectedScenario.roleType === "stranger" ? `Notice ${safeUserName} approaching. React based on your personality - smile if friendly, look intrigued if confident, be shy if reserved.` : selectedScenario.roleType === "partner" ? `You need to have this conversation. Start by bringing up what's on your mind in a natural way.` : `Start the conversation naturally - compliment them or ask about their day.`}
+
+${langInstruction}
+
+${safeDateName} (speaking naturally, 1-3 sentences):`;
       console.log("📡 Calling OpenAI for opening greeting");
-      const responseText = await base44.integrations.Core.InvokeLLM({
-        prompt: `Start the conversation naturally as ${safeDateName}. Greet ${safeUserName} warmly. Keep it 1-3 sentences.`,
-        conversationHistory: [],
-        // Empty for first message
-        systemPrompt: openingSystemPrompt
-      });
+      const responseText = await callAIWithRetry(prompt, 3);
       console.log("🎭 Got opening response:", responseText);
       const suggestions = generateSuggestedReplies(responseText, selectedScenario);
       setSuggestedReplies(suggestions);
@@ -22653,59 +22655,75 @@ ${langInstruction}`;
       const personality = personalities.find((p) => p.id === datePersonality);
       const intention = intentions.find((i) => i.id === selectedIntention);
       const roleDescription = getRoleDescription(scenario, personality);
-      const conversationHistory = updatedMessages.map((m, i) => ({
-        role: m.sender === "user" ? "user" : "assistant",
-        content: m.text
-      }));
-      console.log("🎭 Sending to OpenAI API:", {
-        scenario: scenario.id,
-        personality: datePersonality,
-        userMessage,
-        historyLength: conversationHistory.length,
-        backend: getBackendUrl()
-      });
-      const userJustSaid = userMessage;
+      const conversationHistory = updatedMessages.map(
+        (m) => `${m.sender === "user" ? userName || "User" : dateName}: ${m.text}`
+      ).join("\n");
+      console.log("🎭 Sending roleplay message:", { scenario: scenario.id, personality: datePersonality, userMessage });
       const alreadyAsked = messages.filter((m) => m.sender === "date" && m.text.includes("?")).map((m) => m.text).join(" | ");
       const safeUserName = userName || "there";
       const safeDateName = dateName?.trim() || "them";
       const safePartnerName = partnerName?.trim() || "my child";
-      const systemPrompt = `🎭 ROLEPLAY MODE: You are ${safeDateName}, a REAL PERSON in a REAL CONVERSATION.
+      const prompt = `🎭 ROLEPLAY MODE: You are a REAL PERSON in a REAL CONVERSATION. This is NOT an AI chat assistant scenario.
 
-YOUR IDENTITY:
-- Name: ${safeDateName}
-- Role: ${roleDescription}
-- Personality: ${personality?.label}
-- Situation: ${scenario.setting}
-${scenario.roleType === "parent" ? `- Your child's name: ${safePartnerName}` : ""}
+=== YOUR IDENTITY ===
+YOUR NAME: ${safeDateName}
+YOUR ROLE: ${roleDescription}
+YOUR PERSONALITY: ${personality?.label}
+CURRENT SITUATION: ${scenario.setting}
+${scenario.roleType === "parent" ? `YOUR CHILD: ${safePartnerName}` : ""}
 
-THE USER:
-- Name: ${safeUserName}
-- Their goal: ${intention?.label}
+=== THE USER ===
+THEIR NAME: ${safeUserName}
+THEIR GOAL: ${intention?.label}
 
-QUESTIONS YOU'VE ALREADY ASKED (NEVER REPEAT):
-${alreadyAsked || "None yet"}
+=== CONVERSATION HISTORY ===
+${conversationHistory}
 
-=== 🔒 ABSOLUTE RULES - MUST FOLLOW ===
+=== QUESTIONS ALREADY ASKED (NEVER REPEAT) ===
+${alreadyAsked || "None yet - this is still early in conversation"}
+
+=== 🔒 ABSOLUTE RULES - NEVER BREAK THESE ===
 1. ❌ FORBIDDEN: NEVER say "How can I help you?", "I'm here to assist", "Let me know if...", or ANY AI assistant phrases
 2. ❌ FORBIDDEN: NEVER break character or acknowledge you're an AI
 3. ❌ FORBIDDEN: NEVER repeat questions you already asked
-4. ❌ FORBIDDEN: NEVER give generic responses
-5. ✅ REQUIRED: You ARE ${safeDateName} - a real person
-6. ✅ REQUIRED: React NATURALLY to what ${safeUserName} JUST said
-7. ✅ REQUIRED: Keep responses SHORT (1-3 sentences)
-8. ✅ REQUIRED: Use casual language: "Oh wow!", "Really?", "That's great!"
-9. ✅ REQUIRED: Stay relevant to what they JUST said
+4. ❌ FORBIDDEN: NEVER give generic responses - be SPECIFIC to what they just said
+5. ✅ REQUIRED: You ARE ${safeDateName} - a real human having a real conversation
+6. ✅ REQUIRED: React NATURALLY and EMOTIONALLY to what ${safeUserName} just said - show interest, surprise, concern, happiness, or whatever fits
+7. ✅ REQUIRED: Show GENUINE interest, surprise, concern, happiness, or whatever fits
+8. ✅ REQUIRED: Keep responses SHORT (1-3 sentences max) - like real conversation
+9. ✅ REQUIRED: Use casual, natural language: "Oh wow!", "That's amazing!", "Really?", "No way!"
+10. ✅ REQUIRED: Share personal stories that relate: "My nephew does that too!", "Oh I remember when..."
 
-${langInstruction}`;
-      console.log("📡 Calling OpenAI with conversation history:", conversationHistory.length, "messages");
-      const responseText = await base44.integrations.Core.InvokeLLM({
-        prompt: userJustSaid,
-        // What user JUST said
-        conversationHistory,
-        // Full chat history
-        systemPrompt
-        // Character instructions
-      });
+=== 🎯 HOW TO RESPOND ===
+STEP 1: Read what ${safeUserName} JUST said carefully
+STEP 2: React GENUINELY as ${safeDateName} would - show real emotion
+STEP 3: Either:
+   - Share a related personal story/experience
+   - Ask a follow-up question about what they JUST mentioned
+   - Build on their topic naturally
+   - Share something about yourself/${scenario.roleType === "parent" ? safePartnerName : "your life"}
+
+STEP 4: Keep it natural, warm, and conversational
+
+=== 💡 REALISTIC CONVERSATION EXAMPLES ===
+If they mention a drink: "Oh of course! Let me get you a ${userMessage.includes("coke") || userMessage.includes("Coke") ? "coke" : "drink"}. Make yourself comfortable!"
+If they mention work: "Oh that's fascinating! My brother actually works in tech too - do you work with specific technology?"
+If they mention sports: "Really? I used to play tennis back in the day! How long have you been into that?"
+If they mention family: "That's lovely! Family is so important. Do you get to see them often?"
+If nervous: "Don't worry, just relax! Tell me more about yourself - how did you two meet?"
+
+=== VARY YOUR STYLE ===
+- Sometimes ask questions
+- Sometimes share stories
+- Sometimes just react enthusiastically
+- Sometimes change topic smoothly
+- But ALWAYS stay relevant to what they just said
+
+${langInstruction}
+
+${safeDateName} responds naturally (1-3 sentences, NO AI phrases, GENUINE reaction to what ${safeUserName} said):`;
+      console.log("📡 Calling OpenAI for roleplay response");
+      const responseText = await callAIWithRetry(prompt, 3);
       console.log("🎭 Got roleplay response:", responseText);
       const suggestions = generateSuggestedReplies(responseText, scenario);
       setSuggestedReplies(suggestions);
