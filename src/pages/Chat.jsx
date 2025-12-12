@@ -363,21 +363,54 @@ export default function Chat() {
   };
 
   // Handle adult verification confirmed
-  const handleAdultVerificationConfirmed = () => {
+  const handleAdultVerificationConfirmed = async () => {
     setShowAdultVerificationModal(false);
     if (pendingCategorySwitch) {
-      // Check paid subscription after verification
       const categoryConfig = CATEGORIES[pendingCategorySwitch];
-      if (categoryConfig?.requiresProOrElite && !hasProOrEliteSubscription()) {
-        setShowUpgradeModal(true);
-        setPendingCategorySwitch(null);
-        return;
+      
+      // For Pro/Elite features, fetch latest tier from backend first (same as category switch)
+      if (categoryConfig?.requiresProOrElite) {
+        try {
+          const userId = localStorage.getItem('userId');
+          const headers = userId ? { 'x-user-id': userId } : {};
+          const response = await fetch(`${backendUrl}/api/usage`, { headers });
+          if (response.ok) {
+            const data = await response.json();
+            if (data.tier) {
+              localStorage.setItem('userSubscriptionTier', data.tier);
+              setSubscriptionTier(data.tier);
+              console.log('🔄 [After Adult Verification] Fetched latest tier from backend:', data.tier);
+              
+              // Check with fresh tier
+              const freshTier = data.tier.toLowerCase();
+              if (!['pro', 'elite', 'premium'].includes(freshTier)) {
+                console.log('❌ [After Adult Verification] Tier check failed:', freshTier);
+                setShowUpgradeModal(true);
+                setPendingCategorySwitch(null);
+                return;
+              } else {
+                console.log('✅ [After Adult Verification] Tier check passed:', freshTier);
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching tier after verification:', error);
+          // Fall back to local check
+          if (!hasProOrEliteSubscription()) {
+            setShowUpgradeModal(true);
+            setPendingCategorySwitch(null);
+            return;
+          }
+        }
       }
+      
+      // Check if category requires any paid plan
       if (categoryConfig?.requiresPaidPlan && !hasPaidSubscription()) {
         setShowUpgradeModal(true);
         setPendingCategorySwitch(null);
         return;
       }
+      
       switchToCategory(pendingCategorySwitch);
       setPendingCategorySwitch(null);
     }

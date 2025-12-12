@@ -13727,7 +13727,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-0UzauES_.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-arfxHpR0.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -17179,14 +17179,40 @@ function Chat() {
     addMessageToConversation(convId, { role: "assistant", content: greeting });
     setChatHistoryList(getRecentConversations(10));
   };
-  const handleAdultVerificationConfirmed = () => {
+  const handleAdultVerificationConfirmed = async () => {
     setShowAdultVerificationModal(false);
     if (pendingCategorySwitch) {
       const categoryConfig = CATEGORIES[pendingCategorySwitch];
-      if (categoryConfig?.requiresProOrElite && !hasProOrEliteSubscription()) {
-        setShowUpgradeModal(true);
-        setPendingCategorySwitch(null);
-        return;
+      if (categoryConfig?.requiresProOrElite) {
+        try {
+          const userId = localStorage.getItem("userId");
+          const headers = userId ? { "x-user-id": userId } : {};
+          const response = await fetch(`${backendUrl2}/api/usage`, { headers });
+          if (response.ok) {
+            const data = await response.json();
+            if (data.tier) {
+              localStorage.setItem("userSubscriptionTier", data.tier);
+              setSubscriptionTier(data.tier);
+              console.log("🔄 [After Adult Verification] Fetched latest tier from backend:", data.tier);
+              const freshTier = data.tier.toLowerCase();
+              if (!["pro", "elite", "premium"].includes(freshTier)) {
+                console.log("❌ [After Adult Verification] Tier check failed:", freshTier);
+                setShowUpgradeModal(true);
+                setPendingCategorySwitch(null);
+                return;
+              } else {
+                console.log("✅ [After Adult Verification] Tier check passed:", freshTier);
+              }
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching tier after verification:", error);
+          if (!hasProOrEliteSubscription()) {
+            setShowUpgradeModal(true);
+            setPendingCategorySwitch(null);
+            return;
+          }
+        }
       }
       if (categoryConfig?.requiresPaidPlan && !hasPaidSubscription()) {
         setShowUpgradeModal(true);
