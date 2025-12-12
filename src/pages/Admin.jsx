@@ -1025,15 +1025,33 @@ export default function Admin() {
                     localStorage.setItem('adminOriginalUserId', localStorage.getItem('userId') || '');
                     localStorage.setItem('adminKey', localStorage.getItem('adminKey') || '');
                     
+                    // Safely get user's display name - handle cases where firstName/lastName might be undefined
+                    const firstName = selectedUser.firstName?.trim() || '';
+                    const lastName = selectedUser.lastName?.trim() || '';
+                    let displayName;
+                    
+                    if (firstName && lastName) {
+                      displayName = `${firstName} ${lastName}`;
+                    } else if (firstName) {
+                      displayName = firstName;
+                    } else if (lastName) {
+                      displayName = lastName;
+                    } else if (selectedUser.email) {
+                      // Use email username part if no name available
+                      displayName = selectedUser.email.split('@')[0];
+                    } else {
+                      displayName = 'User';
+                    }
+                    
                     // Set user session
                     localStorage.setItem('userId', selectedUser.odId);
                     localStorage.setItem('userEmail', selectedUser.email);
-                    localStorage.setItem('userName', `${selectedUser.firstName} ${selectedUser.lastName}`);
+                    localStorage.setItem('userName', displayName);
                     localStorage.setItem('userSubscriptionTier', selectedUser.subscriptionTier || 'free_trial');
                     localStorage.setItem('isAuthenticated', 'true');
                     
                     // Show success message
-                    alert(`🎭 Now viewing as: ${selectedUser.firstName} ${selectedUser.lastName}\n\nYou can see exactly what they see!\n\nClick "Exit Impersonation" in your profile to return to admin.`);
+                    alert(`🎭 Now viewing as: ${displayName}\n\nYou can see exactly what they see!\n\nClick "Exit Impersonation" in your profile to return to admin.`);
                     
                     // Redirect to home
                     window.location.hash = '#/';

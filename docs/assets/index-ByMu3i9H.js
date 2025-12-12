@@ -13727,7 +13727,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-C4ogwfCA.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-wbcEY0LD.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -20676,12 +20676,26 @@ function Admin() {
                 localStorage.setItem("adminImpersonating", "true");
                 localStorage.setItem("adminOriginalUserId", localStorage.getItem("userId") || "");
                 localStorage.setItem("adminKey", localStorage.getItem("adminKey") || "");
+                const firstName = selectedUser.firstName?.trim() || "";
+                const lastName = selectedUser.lastName?.trim() || "";
+                let displayName;
+                if (firstName && lastName) {
+                  displayName = `${firstName} ${lastName}`;
+                } else if (firstName) {
+                  displayName = firstName;
+                } else if (lastName) {
+                  displayName = lastName;
+                } else if (selectedUser.email) {
+                  displayName = selectedUser.email.split("@")[0];
+                } else {
+                  displayName = "User";
+                }
                 localStorage.setItem("userId", selectedUser.odId);
                 localStorage.setItem("userEmail", selectedUser.email);
-                localStorage.setItem("userName", `${selectedUser.firstName} ${selectedUser.lastName}`);
+                localStorage.setItem("userName", displayName);
                 localStorage.setItem("userSubscriptionTier", selectedUser.subscriptionTier || "free_trial");
                 localStorage.setItem("isAuthenticated", "true");
-                alert(`🎭 Now viewing as: ${selectedUser.firstName} ${selectedUser.lastName}
+                alert(`🎭 Now viewing as: ${displayName}
 
 You can see exactly what they see!
 
