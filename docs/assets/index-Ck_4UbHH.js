@@ -11420,7 +11420,7 @@ const Smile = createLucideIcon("Smile", [
   ["line", { x1: "9", x2: "9.01", y1: "9", y2: "9", key: "yxxnd0" }],
   ["line", { x1: "15", x2: "15.01", y1: "9", y2: "9", key: "1p4y9e" }]
 ]);
-const Sparkles = createLucideIcon("Sparkles", [
+const Sparkles$1 = createLucideIcon("Sparkles", [
   [
     "path",
     {
@@ -13727,7 +13727,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-eyZgBXNX.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-cvYcZ6wA.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -14072,7 +14072,7 @@ function Auth({ onAuthSuccess }) {
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-24 h-24 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/50 relative overflow-hidden animate-bounce-slow", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-white/20 to-transparent" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(MessageSquare, { className: "w-12 h-12 text-white relative z-10", fill: "currentColor", strokeWidth: 1.5 }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 text-yellow-300 absolute top-2 right-2 animate-pulse" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-4 h-4 text-yellow-300 absolute top-2 right-2 animate-pulse" })
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center shadow-lg border-2 border-slate-900", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-3 h-3 bg-white rounded-full" }) })
         ] }) }),
@@ -14352,7 +14352,7 @@ function GuestBanner({ onSignUp }) {
         },
         className: "px-2.5 py-1 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white text-xs font-bold rounded-lg transition-all flex items-center gap-1",
         children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-3 h-3" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-3 h-3" }),
           "Regjistrohu"
         ]
       }
@@ -14496,7 +14496,7 @@ function Layout({ children, onLogout }) {
   }, [currentPageName]);
   const navItems = [
     { name: t("nav.home"), icon: Home$1, page: "Home" },
-    { name: t("nav.aiCoach"), icon: Sparkles, page: "Chat" },
+    { name: t("nav.aiCoach"), icon: Sparkles$1, page: "Chat" },
     { name: t("nav.dates"), icon: Heart, page: "FirstDates" },
     { name: t("nav.events"), icon: MapPin, page: "Events" },
     { name: t("nav.tips"), icon: Lightbulb, page: "Tips" }
@@ -14575,7 +14575,7 @@ function Layout({ children, onLogout }) {
         },
         children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "h-14 px-4 flex items-center justify-between max-w-screen-xl mx-auto", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Link, { to: "/home", className: "flex items-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 text-white" }) }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-4 h-4 text-white" }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-bold text-white text-lg", children: [
               "Biseda",
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-purple-400", children: ".ai" })
@@ -14955,7 +14955,7 @@ function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
             plan.popular && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -top-3 left-1/2 transform -translate-x-1/2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "bg-gradient-to-r from-purple-500 to-pink-600 text-white text-xs font-semibold px-3 py-1 rounded-full", children: t("plans.mostPopular") }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-4", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-12 h-12 bg-gradient-to-br ${plan.color} rounded-xl flex items-center justify-center`, children: plan.popular ? /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-6 h-6 text-white" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-6 h-6 text-white" }) }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-12 h-12 bg-gradient-to-br ${plan.color} rounded-xl flex items-center justify-center`, children: plan.popular ? /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-6 h-6 text-white" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-6 h-6 text-white" }) }),
                 /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl font-bold text-white", children: plan.name }),
                   /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-baseline gap-1", children: [
@@ -15105,7 +15105,7 @@ function Home() {
       requiresProOrElite: true
     },
     {
-      icon: Sparkles,
+      icon: Sparkles$1,
       title: t("home.features.styleAdvisor.title", "Style Advisor"),
       description: t("home.features.styleAdvisor.desc", "Get fashion advice"),
       color: "from-amber-500 to-orange-500",
@@ -15131,7 +15131,7 @@ function Home() {
               /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "w-24 h-24 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/50 relative overflow-hidden", children: [
                 /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute inset-0 bg-gradient-to-br from-white/20 to-transparent" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx(MessageSquare, { className: "w-12 h-12 text-white relative z-10", fill: "currentColor", strokeWidth: 1.5 }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-4 h-4 text-yellow-300 absolute top-2 right-2 animate-pulse" })
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-4 h-4 text-yellow-300 absolute top-2 right-2 animate-pulse" })
               ] }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center shadow-lg border-2 border-slate-900", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-3 h-3 bg-white rounded-full" }) })
             ] })
@@ -15160,7 +15160,7 @@ function Home() {
     ] }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-6 pb-24", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-2xl font-bold mb-4 text-white flex items-center gap-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5 text-purple-400" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-5 h-5 text-purple-400" }),
         t("home.getStarted")
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: features.map((feature, index) => {
@@ -15518,7 +15518,7 @@ Now write 15 new creative messages:`,
     },
     {
       id: "confidence",
-      icon: Sparkles,
+      icon: Sparkles$1,
       title: t("tips.confidence"),
       color: "from-purple-500 to-indigo-600",
       prompt: getPrompt("confidence")
@@ -15799,7 +15799,7 @@ Now write 10 COMPLETELY new messages:`
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6 text-center", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-block mb-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-amber-500/50 animate-pulse", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Lightbulb, { className: "w-10 h-10 text-white" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center animate-bounce", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-3 h-3 text-slate-900" }) })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center animate-bounce", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-3 h-3 text-slate-900" }) })
       ] }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-white mb-1", children: t("tips.title") }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: t("tips.subtitle") })
@@ -16174,7 +16174,7 @@ function LimitReachedModal({ isOpen, onClose, onUpgrade }) {
             onClick: onUpgrade,
             className: "w-full bg-gradient-to-r from-purple-500 via-pink-500 to-rose-500 hover:from-purple-600 hover:via-pink-600 hover:to-rose-600 text-white font-bold h-14 text-lg flex items-center justify-center gap-2 shadow-lg shadow-pink-500/30 animate-pulse",
             children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-5 h-5" }),
               randomMessage.cta
             ]
           }
@@ -18200,7 +18200,7 @@ function Explore() {
     {
       id: "bars",
       name: t("dates.bars"),
-      icon: Sparkles,
+      icon: Sparkles$1,
       color: "from-purple-500 to-pink-500",
       description: t("dates.barsDesc")
     },
@@ -18539,7 +18539,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6 text-center", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-block mb-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 bg-gradient-to-br from-pink-500 via-purple-500 to-blue-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-pink-500/50 animate-pulse", children: /* @__PURE__ */ jsxRuntimeExports.jsx(MapPin, { className: "w-10 h-10 text-white" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center animate-bounce", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-3 h-3 text-slate-900" }) })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center animate-bounce", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-3 h-3 text-slate-900" }) })
       ] }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-3xl font-extrabold bg-gradient-to-r from-pink-300 via-purple-300 to-blue-300 bg-clip-text text-transparent mb-2", children: "Explore Dates & Events" }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: "Find perfect venues and discover local events" })
@@ -18744,7 +18744,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
       ] }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-lg font-bold text-white mb-4 flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5 text-purple-400" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-5 h-5 text-purple-400" }),
           t("dates.selectCategory")
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 gap-3", children: categories.map((category) => {
@@ -18778,7 +18778,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("dates.generating") })
             ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-5 h-5" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("dates.generateSuggestions") })
             ] })
           }
@@ -18900,7 +18900,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
               href: "mailto:partnerships@biseda.ai?subject=Business Partnership",
               className: "inline-flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg text-xs font-semibold text-white hover:from-purple-600 hover:to-pink-600 transition-all",
               children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-3 h-3" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-3 h-3" }),
                 t("dates.becomePartner")
               ]
             }
@@ -19337,7 +19337,7 @@ Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6 text-center", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-block mb-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 bg-gradient-to-br from-pink-500 via-rose-500 to-red-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-pink-500/50 animate-pulse", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Gift, { className: "w-10 h-10 text-white", fill: "currentColor" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center animate-bounce", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-3 h-3 text-slate-900" }) })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center animate-bounce", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-3 h-3 text-slate-900" }) })
       ] }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-3xl font-extrabold bg-gradient-to-r from-pink-300 via-rose-300 to-red-300 bg-clip-text text-transparent mb-2", children: t("gifts.title") }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: t("gifts.subtitle") })
@@ -19450,7 +19450,7 @@ Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("gifts.generating") })
         ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center justify-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-5 h-5" }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("gifts.generateSuggestions") })
         ] })
       }
@@ -19677,7 +19677,7 @@ function SubscriptionSuccess() {
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-screen overflow-y-auto px-6 pt-20 pb-20 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-md w-full", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-gradient-to-br from-slate-800/90 to-slate-900/90 border-purple-500/50 backdrop-blur-sm p-8 text-center", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-6 flex justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-24 h-24 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-2xl shadow-green-500/50 animate-pulse", children: /* @__PURE__ */ jsxRuntimeExports.jsx(CheckCircle, { className: "w-12 h-12 text-white", fill: "currentColor" }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -top-2 -right-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-8 h-8 text-yellow-400 animate-bounce" }) })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -top-2 -right-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-8 h-8 text-yellow-400 animate-bounce" }) })
     ] }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-3xl font-extrabold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent mb-3", children: "Abonimi Aktivizuar! 🎉" }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-300 mb-6 leading-relaxed", children: [
@@ -19743,7 +19743,7 @@ function SubscriptionCancel() {
   return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-screen overflow-y-auto px-6 pt-20 pb-20 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950 flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-w-md w-full", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-gradient-to-br from-slate-800/90 to-slate-900/90 border-slate-700/50 backdrop-blur-sm p-8 text-center", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mb-6 flex justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-24 h-24 bg-gradient-to-br from-slate-600 to-slate-700 rounded-full flex items-center justify-center shadow-2xl", children: /* @__PURE__ */ jsxRuntimeExports.jsx(XCircle, { className: "w-12 h-12 text-slate-400" }) }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -top-2 -right-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-8 h-8 text-slate-500" }) })
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -top-2 -right-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-8 h-8 text-slate-500" }) })
     ] }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-3xl font-extrabold bg-gradient-to-r from-slate-300 to-slate-400 bg-clip-text text-transparent mb-3", children: "Pagesa Anuluar" }),
     /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 mb-6 leading-relaxed", children: "Mos u merzit! Pagesa jote nuk u procesua. Mund të përmirësosh kur të duash nga aplikacioni." }),
@@ -21648,6 +21648,36 @@ function UserProfile({ onLogout }) {
         ) })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-white font-semibold mb-4 flex items-center gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5 text-purple-400" }),
+          "About App"
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-3 bg-slate-700/50 rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(User, { className: "w-5 h-5 text-purple-400 mt-0.5" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-slate-400 mb-1", children: "DEVELOPER" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-sm font-semibold text-white", children: "Emilio Gashi" })
+            ] })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-3 bg-slate-700/50 rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Mail, { className: "w-5 h-5 text-purple-400 mt-0.5" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs text-slate-400 mb-1", children: "Email" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "a",
+                {
+                  href: "mailto:thehiddenclinic@gmail.com",
+                  className: "text-sm font-semibold text-purple-300 hover:text-purple-200",
+                  children: "thehiddenclinic@gmail.com"
+                }
+              )
+            ] })
+          ] }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-center pt-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-500", children: "Biseda.ai v1.0 • © 2025" }) })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 p-5", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-semibold mb-4", children: "Account Actions" }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
           "button",
@@ -21957,7 +21987,7 @@ function MoodCheck() {
   const currentLang = i18n.language || "en";
   const isAlbanian2 = currentLang === "sq" || currentLang.startsWith("sq");
   const moods = [
-    { id: "confident", icon: Sparkles, label: t("mood.confident", "Confident"), color: "from-green-500 to-emerald-600", emoji: "😎" },
+    { id: "confident", icon: Sparkles$1, label: t("mood.confident", "Confident"), color: "from-green-500 to-emerald-600", emoji: "😎" },
     { id: "nervous", icon: Zap, label: t("mood.nervous", "Nervous"), color: "from-yellow-500 to-orange-600", emoji: "😰" },
     { id: "excited", icon: Heart, label: t("mood.excited", "Excited"), color: "from-pink-500 to-rose-600", emoji: "🥰" },
     { id: "anxious", icon: Frown, label: t("mood.anxious", "Anxious"), color: "from-purple-500 to-indigo-600", emoji: "😟" },
@@ -22037,7 +22067,7 @@ Format with clear sections using emojis.`
     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-6 text-center", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-block mb-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/50", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-10 h-10 text-white" }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center animate-bounce", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-3 h-3 text-slate-900" }) })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center animate-bounce", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-3 h-3 text-slate-900" }) })
       ] }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-white mb-1", children: t("mood.title", "Mood Check") }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-sm", children: t("mood.subtitle", "How are you feeling today?") })
@@ -22126,7 +22156,7 @@ Format with clear sections using emojis.`
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" }),
             t("mood.analyzing", "Analyzing...")
           ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-5 h-5" }),
             t("mood.getAdvice", "Get Personalized Advice"),
             /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowRight, { className: "w-5 h-5" })
           ] })
@@ -22149,7 +22179,7 @@ Format with clear sections using emojis.`
         ] }),
         /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-slate-800/50 border-slate-700 backdrop-blur-sm p-5", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "font-semibold text-white mb-4 flex items-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5 text-purple-400" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-5 h-5 text-purple-400" }),
             t("mood.yourAdvice", "Your Personalized Advice")
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-slate-300 leading-relaxed whitespace-pre-wrap", children: advice })
@@ -22456,7 +22486,7 @@ ${langInstruction}`;
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" }),
             t("profileOptimizer.analyzing", "Analyzing your profile...")
           ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-5 h-5" }),
             t("profileOptimizer.analyzeProfile", "Analyze My Profile")
           ] })
         }
@@ -22677,7 +22707,7 @@ KRITIKE: Shiko foton e ngarkuar dhe analizo atë që sheh në foto. Jep këshill
   };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen pb-4", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-slate-900/50 backdrop-blur-lg border-b border-slate-800 px-6 py-4 sticky top-0 z-10", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5 text-white" }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-5 h-5 text-white" }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-xl font-bold text-white", children: t("styleAdvisor.title") }),
         /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-400", children: t("styleAdvisor.subtitle") })
@@ -22746,7 +22776,7 @@ KRITIKE: Shiko foton e ngarkuar dhe analizo atë që sheh në foto. Jep këshill
               /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" }),
               /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: t("styleAdvisor.generating") })
             ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5 mr-2" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-5 h-5 mr-2" }),
               t("styleAdvisor.getAdvice")
             ] })
           }
@@ -22755,7 +22785,7 @@ KRITIKE: Shiko foton e ngarkuar dhe analizo atë që sheh në foto. Jep këshill
       advice && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "bg-gradient-to-br from-purple-500/10 to-pink-600/10 border-purple-500/30 backdrop-blur-sm p-6", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5 text-purple-400" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-5 h-5 text-purple-400" }),
             /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-lg font-bold text-white", children: t("styleAdvisor.yourAdvice") })
           ] }),
           uploadedImage && /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -24002,7 +24032,7 @@ ${langInstruction}`;
           ),
           /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "font-semibold text-white mb-2 flex items-center gap-2", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center text-xs", children: "4" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5 text-purple-400" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-5 h-5 text-purple-400" }),
             t("rehearsal.personality", "Their personality")
           ] }),
           /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400 text-xs mb-4", children: t("rehearsal.selectPersonality", "Choose a personality type") }),
@@ -24172,7 +24202,7 @@ ${langInstruction}`;
     ] }),
     !showFeedback && suggestedReplies.length > 0 && !isLoading && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 py-2 border-t border-slate-800 bg-slate-900/50", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-slate-400 text-xs mb-2 flex items-center gap-1", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-3 h-3" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-3 h-3" }),
         t("rehearsal.suggestedReplies", "Suggested replies:")
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex flex-wrap gap-2", children: suggestedReplies.slice(0, 4).map((reply, index) => /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -24220,7 +24250,7 @@ const getSteps = (t) => [
     id: 1,
     title: t("onboarding.steps.welcome.title"),
     description: t("onboarding.steps.welcome.description"),
-    icon: Sparkles,
+    icon: Sparkles$1,
     color: "from-purple-500 to-pink-500",
     features: t("onboarding.steps.welcome.features", { returnObjects: true })
   },
@@ -24349,7 +24379,7 @@ function OnboardingTutorial({ onComplete, isGuest = false }) {
                   className: `flex-1 py-3 bg-gradient-to-r ${step.color} hover:opacity-90 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg`,
                   children: isLastStep ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
                     t("onboarding.startNow"),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { className: "w-5 h-5" })
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-5 h-5" })
                   ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
                     t("onboarding.continue"),
                     /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "w-5 h-5" })

@@ -872,6 +872,42 @@ export default function UserProfile({ onLogout }) {
             </div>
           </Card>
 
+          {/* About App */}
+          <Card className="bg-slate-800/50 border-slate-700 p-5">
+            <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-purple-400" />
+              About App
+            </h3>
+            <div className="space-y-3">
+              <div className="p-3 bg-slate-700/50 rounded-xl">
+                <div className="flex items-start gap-3">
+                  <User className="w-5 h-5 text-purple-400 mt-0.5" />
+                  <div>
+                    <div className="text-xs text-slate-400 mb-1">DEVELOPER</div>
+                    <div className="text-sm font-semibold text-white">Emilio Gashi</div>
+                  </div>
+                </div>
+              </div>
+              <div className="p-3 bg-slate-700/50 rounded-xl">
+                <div className="flex items-start gap-3">
+                  <Mail className="w-5 h-5 text-purple-400 mt-0.5" />
+                  <div>
+                    <div className="text-xs text-slate-400 mb-1">Email</div>
+                    <a 
+                      href="mailto:thehiddenclinic@gmail.com"
+                      className="text-sm font-semibold text-purple-300 hover:text-purple-200"
+                    >
+                      thehiddenclinic@gmail.com
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div className="text-center pt-2">
+                <p className="text-xs text-slate-500">Biseda.ai v1.0 • © 2025</p>
+              </div>
+            </div>
+          </Card>
+
           {/* Account Actions */}
           <Card className="bg-slate-800/50 border-slate-700 p-5">
             <h3 className="text-white font-semibold mb-4">Account Actions</h3>
