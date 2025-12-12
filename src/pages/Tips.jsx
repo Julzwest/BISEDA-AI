@@ -90,13 +90,6 @@ Now write 15 new creative messages:`,
       title: t('tips.confidence'),
       color: 'from-purple-500 to-indigo-600',
       prompt: getPrompt('confidence')
-    },
-    {
-      id: 'analyze',
-      icon: Upload,
-      title: t('tips.analyzeChat'),
-      color: 'from-amber-500 to-yellow-600',
-      special: 'screenshot'
     }
   ];
 

@@ -13717,7 +13717,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-BUuuQ-6k.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-B_Vzyx4K.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -15528,13 +15528,6 @@ Now write 15 new creative messages:`,
       title: t("tips.confidence"),
       color: "from-purple-500 to-indigo-600",
       prompt: getPrompt("confidence")
-    },
-    {
-      id: "analyze",
-      icon: Upload,
-      title: t("tips.analyzeChat"),
-      color: "from-amber-500 to-yellow-600",
-      special: "screenshot"
     }
   ];
   const handleCategoryClick = async (category) => {
