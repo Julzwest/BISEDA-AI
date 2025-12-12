@@ -13727,7 +13727,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-BvpPQDyV.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-C4ogwfCA.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -22781,14 +22781,16 @@ function DateRehearsal() {
     return userGender === "male" ? "daughter" : "son";
   };
   const getRoleDescription = (selectedScenario, personality) => {
+    const safeUserName = userName;
+    const safeDateName = dateName?.trim() || "them";
+    const safePartnerName = partnerName?.trim() || "my child";
     const genderLabel = personGender === "female" ? "woman" : personGender === "male" ? "man" : "person";
     const genderPronoun = personGender === "female" ? "she/her" : personGender === "male" ? "he/him" : "they/them";
     const parentType = personGender === "female" ? "mother" : personGender === "male" ? "father" : "parent";
     const childRelation = getPartnerRelationship();
-    const partnerDisplay = partnerName || "my child";
     switch (selectedScenario.roleType) {
       case "parent":
-        return `You are ${dateName}, ${partnerDisplay}'s ${parentType}. You are a ${personality?.label} ${parentType} (${genderLabel}, ${genderPronoun}) meeting your ${childRelation}'s partner (${userName}) for the first time.
+        return `You are ${safeDateName}, ${safePartnerName}'s ${parentType}. You are a ${personality?.label} ${parentType} (${genderLabel}, ${genderPronoun}) meeting your ${childRelation}'s partner (${safeUserName}) for the first time.
 
 IMPORTANT CHARACTER TRAITS:
 - You are OPEN-MINDED and ACCEPTING of all relationships (straight, gay, lesbian, bisexual - love is love!)
@@ -22797,48 +22799,55 @@ IMPORTANT CHARACTER TRAITS:
 - You use casual language and slang sometimes - "that's awesome!", "no way!", "oh lovely!", "brilliant!"
 - You're genuinely curious and NEVER repeat the same questions
 - You share your own stories and experiences to keep conversation flowing
-- You remember what ${userName} tells you and build on it
+- You remember what ${safeUserName} tells you and build on it
 - You speak and act naturally as a ${genderLabel} ${parentType} would
 
 CONVERSATION STYLE:
-- Ask varied questions: about hobbies, family, how they met ${partnerDisplay}, travel, food, movies, music
+- Ask varied questions: about hobbies, family, how they met ${safePartnerName}, travel, food, movies, music
 - React genuinely to answers - if they say something interesting, show enthusiasm!
 - Share relevant stories: "Oh my nephew works in tech too!", "I used to play tennis back in the day!"
-- If nervous silence, help by sharing something about yourself or ${partnerDisplay}
-- Be warm but also protective of your child - you want to know ${userName} is a good person`;
+- If nervous silence, help by sharing something about yourself or ${safePartnerName}
+- Be warm but also protective of your child - you want to know ${safeUserName} is a good person`;
       case "stranger":
-        return `You are ${dateName}, a ${personality?.label} ${genderLabel} (${genderPronoun}) at a bar/party. Someone attractive (${userName}) is approaching you.
+        return `You are ${safeDateName}, a ${personality?.label} ${genderLabel} (${genderPronoun}) at a bar/party. Someone attractive (${safeUserName}) is approaching you.
 
 PERSONALITY: Be realistic and natural as a ${genderLabel}. Use casual language. React based on your personality - if shy, be a bit nervous but interested. If confident, be flirty and engaging. Speak naturally as a ${genderLabel} would.`;
       case "partner":
-        return `You are ${dateName}, ${userName}'s partner. You are a ${personality?.label} ${genderLabel} (${genderPronoun}) having an important relationship conversation.
+        return `You are ${safeDateName}, ${safeUserName}'s partner. You are a ${personality?.label} ${genderLabel} (${genderPronoun}) having an important relationship conversation.
 
-Be emotionally realistic as a ${genderLabel}. Express feelings, concerns, hopes. Listen and respond to what ${userName} says.`;
+Be emotionally realistic as a ${genderLabel}. Express feelings, concerns, hopes. Listen and respond to what ${safeUserName} says.`;
       case "ex":
-        return `You are ${dateName}, ${userName}'s ex. You're a ${personality?.label} ${genderLabel} (${genderPronoun}). You've bumped into each other unexpectedly.
+        return `You are ${safeDateName}, ${safeUserName}'s ex. You're a ${personality?.label} ${genderLabel} (${genderPronoun}). You've bumped into each other unexpectedly.
 
-Mixed emotions - surprise, maybe some old feelings, possibly awkwardness. React naturally as a ${genderLabel} would to whatever ${userName} says.`;
+Mixed emotions - surprise, maybe some old feelings, possibly awkwardness. React naturally as a ${genderLabel} would to whatever ${safeUserName} says.`;
+      case "family":
+        return `You are ${safeDateName}, a ${personality?.label} ${genderLabel} (${genderPronoun}) who is a close friend or family member of ${safeUserName}. ${safeUserName} wants to have an important conversation with you.
+
+Be realistic and natural. Show genuine care but also realistic reactions based on your personality.`;
       default:
-        return `You are ${dateName}, a ${personality?.label} ${genderLabel} (${genderPronoun}) on a first date with ${userName} at a coffee shop. Be natural, curious, and engaging! Speak naturally as a ${genderLabel} would.`;
+        return `You are ${safeDateName}, a ${personality?.label} ${genderLabel} (${genderPronoun}) on a first date with ${safeUserName} at a coffee shop. Be natural, curious, and engaging! Speak naturally as a ${genderLabel} would.`;
     }
   };
   const getScenarioOpener = (selectedScenario) => {
-    const partnerDisplay = partnerName || "my child";
+    const safeUserName = userName;
+    const safePartnerName = partnerName?.trim() || "my child";
     switch (selectedScenario.roleType) {
       case "parent":
-        return `${userName} has just arrived at your home with ${partnerDisplay}. Open the door warmly.
+        return `${safeUserName} has just arrived at your home with ${safePartnerName}. Open the door warmly.
 
-Start with a warm greeting like: "Oh hello! You must be ${userName}! Come in, come in! ${partnerDisplay} has told us so much about you! How was the drive over?"
+Start with a warm greeting like: "Oh hello! You must be ${safeUserName}! Come in, come in! ${safePartnerName} has told us so much about you! How was the drive over?"
 
 Then naturally transition - offer a drink, invite them to sit, maybe compliment something about them.`;
       case "stranger":
-        return `You're at a bar/party and ${userName} is walking toward you. React naturally - maybe smile, maybe look intrigued.`;
+        return `You're at a bar/party and ${safeUserName} is walking toward you. React naturally - maybe smile, maybe look intrigued.`;
       case "partner":
-        return `You and ${userName} need to have an important conversation. Start by bringing up what's been on your mind.`;
+        return `You and ${safeUserName} need to have an important conversation. Start by bringing up what's been on your mind.`;
       case "ex":
-        return `You've just spotted ${userName} unexpectedly. Make eye contact and react - surprise, awkwardness, or whatever fits.`;
+        return `You've just spotted ${safeUserName} unexpectedly. Make eye contact and react - surprise, awkwardness, or whatever fits.`;
+      case "family":
+        return `${safeUserName} has asked to talk to you privately. You can sense this is important. Greet them warmly and ask what's on their mind.`;
       default:
-        return `You've just sat down at the coffee shop for a first date with ${userName}. Start the conversation naturally - maybe compliment them or ask about their day.`;
+        return `You've just sat down at the coffee shop for a first date with ${safeUserName}. Start the conversation naturally - maybe compliment them or ask about their day.`;
     }
   };
   const startScenario = async (selectedScenario) => {
@@ -22899,13 +22908,14 @@ ${dateName} says:`;
     setIsLoading(false);
   };
   const getFallbackGreeting = (selectedScenario) => {
-    const partnerDisplay = partnerName || "my child";
+    const safeUserName = userName;
+    const safePartnerName = partnerName?.trim() || "my child";
     const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
     switch (selectedScenario.roleType) {
       case "parent":
         return pick([
-          `Oh hello ${userName}! Come in, come in! ${partnerDisplay} has told us so much about you. Can I get you something to drink?`,
-          `${userName}! So lovely to finally meet you! Please, make yourself at home. How was your journey here?`,
+          `Oh hello ${safeUserName}! Come in, come in! ${safePartnerName} has told us so much about you. Can I get you something to drink?`,
+          `${safeUserName}! So lovely to finally meet you! Please, make yourself at home. How was your journey here?`,
           `Well hello there! You must be ${userName}! ${partnerDisplay} didn't tell us you'd be so charming. Come in!`,
           `Hi ${userName}! Welcome to our home. ${partnerDisplay} is just finishing up - can I offer you some tea or coffee?`
         ]);
@@ -22962,7 +22972,7 @@ ${dateName} says:`;
       ).join("\n");
       console.log("🎭 Sending roleplay message:", { scenario: scenario.id, personality: datePersonality, userMessage });
       const alreadyAsked = messages.filter((m) => m.sender === "date" && m.text.includes("?")).map((m) => m.text).join(" | ");
-      const partnerDisplay = partnerName || "my child";
+      const partnerDisplay2 = partnerName || "my child";
       const prompt = `You are roleplaying in a practice conversation scenario. STAY COMPLETELY IN CHARACTER.
 
 YOUR ROLE: ${roleDescription}
@@ -22970,7 +22980,7 @@ YOUR NAME: ${dateName}
 YOUR PERSONALITY: ${personality?.label}
 SCENARIO: ${scenario.setting}
 USER'S GOAL: ${intention?.label}
-${scenario.roleType === "parent" ? `YOUR CHILD'S NAME: ${partnerDisplay}` : ""}
+${scenario.roleType === "parent" ? `YOUR CHILD'S NAME: ${partnerDisplay2}` : ""}
 
 CONVERSATION SO FAR:
 ${conversationHistory}
@@ -23030,52 +23040,52 @@ ${dateName} responds naturally:`;
     personality?.id === "warm" || personality?.id === "friendly";
     const isShy = personality?.id === "shy";
     const isConfident = personality?.id === "confident";
-    const partnerDisplay = partnerName || "them";
+    const partnerDisplay2 = partnerName || "them";
     const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
     if (scenario?.roleType === "parent") {
       if (lowerMsg.includes("hi") || lowerMsg.includes("hello") || lowerMsg.includes("hey") || lowerMsg.includes("good")) {
         return pick([
           `Welcome, welcome! Come on in, make yourself at home. Can I get you something to drink?`,
-          `Oh hello! ${partnerDisplay} has told us so much about you. Please, sit down!`,
+          `Oh hello! ${partnerDisplay2} has told us so much about you. Please, sit down!`,
           `Hi there! So lovely to finally put a face to the name. How was your journey here?`,
-          `Hello! Don't be shy, come in! ${partnerDisplay} is just getting ready.`
+          `Hello! Don't be shy, come in! ${partnerDisplay2} is just getting ready.`
         ]);
       }
       if (lowerMsg.includes("work") || lowerMsg.includes("job") || lowerMsg.includes("software") || lowerMsg.includes("nurse") || lowerMsg.includes("business") || lowerMsg.includes("marketing")) {
         return pick([
           `Oh that sounds fascinating! How did you get into that field?`,
           `Really? My cousin works in something similar! Do you enjoy it?`,
-          `That's impressive! Is that how you met ${partnerDisplay}?`,
+          `That's impressive! Is that how you met ${partnerDisplay2}?`,
           `Interesting! What's the best part about your job?`
         ]);
       }
       if (lowerMsg.includes("met") || lowerMsg.includes("dating app") || lowerMsg.includes("friends") || lowerMsg.includes("coffee")) {
         return pick([
-          `Aww that's such a sweet story! ${partnerDisplay} never told us that part.`,
+          `Aww that's such a sweet story! ${partnerDisplay2} never told us that part.`,
           `How romantic! So how long have you two been together now?`,
           `That's lovely! You two seem really happy together.`,
-          `Oh wonderful! I can see why ${partnerDisplay} is so smitten with you.`
+          `Oh wonderful! I can see why ${partnerDisplay2} is so smitten with you.`
         ]);
       }
       if (lowerMsg.includes("hobby") || lowerMsg.includes("football") || lowerMsg.includes("gym") || lowerMsg.includes("hiking") || lowerMsg.includes("cook") || lowerMsg.includes("read")) {
         return pick([
-          `Oh that's great! Do you and ${partnerDisplay} do that together?`,
+          `Oh that's great! Do you and ${partnerDisplay2} do that together?`,
           `Lovely! It's so important to have your own interests too.`,
           `That sounds fun! I used to enjoy that when I was younger.`,
-          `Wonderful! ${partnerDisplay} mentioned you're quite passionate about that.`
+          `Wonderful! ${partnerDisplay2} mentioned you're quite passionate about that.`
         ]);
       }
       if (lowerMsg.includes("serious") || lowerMsg.includes("future") || lowerMsg.includes("care") || lowerMsg.includes("love")) {
         return pick([
-          `That's really lovely to hear. ${partnerDisplay} clearly means a lot to you.`,
-          `I can see you're genuine. That's all we want for ${partnerDisplay}.`,
-          `That makes me happy. As long as you treat ${partnerDisplay} well, you're welcome here.`,
+          `That's really lovely to hear. ${partnerDisplay2} clearly means a lot to you.`,
+          `I can see you're genuine. That's all we want for ${partnerDisplay2}.`,
+          `That makes me happy. As long as you treat ${partnerDisplay2} well, you're welcome here.`,
           `Well said. I can tell you've thought about this seriously.`
         ]);
       }
       if (lowerMsg.includes("thank") || lowerMsg.includes("lovely home") || lowerMsg.includes("nice")) {
         return pick([
-          `Oh you're too kind! Would you like to see some photos of ${partnerDisplay} as a kid?`,
+          `Oh you're too kind! Would you like to see some photos of ${partnerDisplay2} as a kid?`,
           `Thank you! We've been in this house for 20 years now. Lots of memories.`,
           `That's sweet of you to say. So tell me more about yourself!`,
           `You're very welcome here. Now, are you hungry? I made some snacks.`
@@ -23083,7 +23093,7 @@ ${dateName} responds naturally:`;
       }
       return pick([
         `So tell me, what are your plans for the future?`,
-        `That reminds me of when ${partnerDisplay} was little... anyway, tell me more!`,
+        `That reminds me of when ${partnerDisplay2} was little... anyway, tell me more!`,
         `Interesting! And what does your family think about you two?`,
         `I see! So how do you two spend your weekends usually?`,
         `That's nice. Do you have any siblings?`
@@ -23148,13 +23158,13 @@ ${dateName} responds naturally:`;
   };
   const generateSuggestedReplies = (aiMessage, currentScenario) => {
     const lowerMsg = aiMessage.toLowerCase();
-    const partnerDisplay = partnerName || "your child";
+    const partnerDisplay2 = partnerName || "your child";
     if (currentScenario?.roleType === "parent") {
       if (lowerMsg.includes("come in") || lowerMsg.includes("welcome") || lowerMsg.includes("hello") || lowerMsg.includes("nice to meet") || lowerMsg.includes("finally meet")) {
         return [
           `Thank you so much! It's wonderful to finally meet you too`,
           `Hi! Thank you for having me, your home is beautiful`,
-          `Hello! I've heard so many great things about you from ${partnerDisplay}`,
+          `Hello! I've heard so many great things about you from ${partnerDisplay2}`,
           `Thanks! I have to admit, I was a little nervous but you've made me feel welcome`
         ];
       }
@@ -23184,9 +23194,9 @@ ${dateName} responds naturally:`;
       }
       if (lowerMsg.includes("future") || lowerMsg.includes("plan") || lowerMsg.includes("serious") || lowerMsg.includes("intention") || lowerMsg.includes("where do you see")) {
         return [
-          `I'm very serious about this relationship - ${partnerDisplay} means everything to me`,
+          `I'm very serious about this relationship - ${partnerDisplay2} means everything to me`,
           `I see a real future together - that's why meeting you was so important to me`,
-          `I'm committed to building something lasting with ${partnerDisplay}`,
+          `I'm committed to building something lasting with ${partnerDisplay2}`,
           `Honestly, I've never felt this way about anyone before`
         ];
       }
@@ -23202,29 +23212,29 @@ ${dateName} responds naturally:`;
         return [
           `I come from a close-knit family - we're very supportive of each other`,
           `I have a great relationship with my parents, they'd love to meet you too`,
-          `Family is really important to me, just like it is to ${partnerDisplay}`,
+          `Family is really important to me, just like it is to ${partnerDisplay2}`,
           `I'm lucky to have a wonderful family - they're excited about us`
         ];
       }
       if (lowerMsg.includes("lovely") || lowerMsg.includes("wonderful") || lowerMsg.includes("raised") || lowerMsg.includes("proud")) {
         return [
           `Thank you, that means so much coming from you`,
-          `${partnerDisplay} is amazing - you've done a wonderful job raising them`,
-          `I feel very lucky to have ${partnerDisplay} in my life`,
-          `You have such a wonderful family, I can see where ${partnerDisplay} gets it from`
+          `${partnerDisplay2} is amazing - you've done a wonderful job raising them`,
+          `I feel very lucky to have ${partnerDisplay2} in my life`,
+          `You have such a wonderful family, I can see where ${partnerDisplay2} gets it from`
         ];
       }
       if (lowerMsg.includes("remember") || lowerMsg.includes("story") || lowerMsg.includes("when") || lowerMsg.includes("used to") || lowerMsg.includes("tell you")) {
         return [
-          `That's such a sweet story! ${partnerDisplay} never told me that`,
+          `That's such a sweet story! ${partnerDisplay2} never told me that`,
           `I love hearing these stories, please tell me more!`,
           `That's so lovely - you can really tell how close your family is`,
-          `${partnerDisplay} must have had such a wonderful childhood`
+          `${partnerDisplay2} must have had such a wonderful childhood`
         ];
       }
       return [
         `I've been really looking forward to meeting you`,
-        `${partnerDisplay} speaks so highly of you`,
+        `${partnerDisplay2} speaks so highly of you`,
         `You have such a warm and welcoming home`,
         `I'm so happy we could finally do this`
       ];

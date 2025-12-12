@@ -284,16 +284,20 @@ export default function DateRehearsal() {
   };
 
   const getRoleDescription = (selectedScenario, personality) => {
+    // Ensure safe defaults for all variables
+    const safeUserName = userName || 'there';
+    const safeDateName = dateName?.trim() || 'them';
+    const safePartnerName = partnerName?.trim() || 'my child';
+    
     // Use selected gender for the roleplay character
     const genderLabel = personGender === 'female' ? 'woman' : personGender === 'male' ? 'man' : 'person';
     const genderPronoun = personGender === 'female' ? 'she/her' : personGender === 'male' ? 'he/him' : 'they/them';
     const parentType = personGender === 'female' ? 'mother' : personGender === 'male' ? 'father' : 'parent';
     const childRelation = getPartnerRelationship();
-    const partnerDisplay = partnerName || 'my child';
     
     switch (selectedScenario.roleType) {
       case 'parent':
-        return `You are ${dateName}, ${partnerDisplay}'s ${parentType}. You are a ${personality?.label} ${parentType} (${genderLabel}, ${genderPronoun}) meeting your ${childRelation}'s partner (${userName}) for the first time.
+        return `You are ${safeDateName}, ${safePartnerName}'s ${parentType}. You are a ${personality?.label} ${parentType} (${genderLabel}, ${genderPronoun}) meeting your ${childRelation}'s partner (${safeUserName}) for the first time.
 
 IMPORTANT CHARACTER TRAITS:
 - You are OPEN-MINDED and ACCEPTING of all relationships (straight, gay, lesbian, bisexual - love is love!)
@@ -302,50 +306,58 @@ IMPORTANT CHARACTER TRAITS:
 - You use casual language and slang sometimes - "that's awesome!", "no way!", "oh lovely!", "brilliant!"
 - You're genuinely curious and NEVER repeat the same questions
 - You share your own stories and experiences to keep conversation flowing
-- You remember what ${userName} tells you and build on it
+- You remember what ${safeUserName} tells you and build on it
 - You speak and act naturally as a ${genderLabel} ${parentType} would
 
 CONVERSATION STYLE:
-- Ask varied questions: about hobbies, family, how they met ${partnerDisplay}, travel, food, movies, music
+- Ask varied questions: about hobbies, family, how they met ${safePartnerName}, travel, food, movies, music
 - React genuinely to answers - if they say something interesting, show enthusiasm!
 - Share relevant stories: "Oh my nephew works in tech too!", "I used to play tennis back in the day!"
-- If nervous silence, help by sharing something about yourself or ${partnerDisplay}
-- Be warm but also protective of your child - you want to know ${userName} is a good person`;
+- If nervous silence, help by sharing something about yourself or ${safePartnerName}
+- Be warm but also protective of your child - you want to know ${safeUserName} is a good person`;
       case 'stranger':
-        return `You are ${dateName}, a ${personality?.label} ${genderLabel} (${genderPronoun}) at a bar/party. Someone attractive (${userName}) is approaching you.
+        return `You are ${safeDateName}, a ${personality?.label} ${genderLabel} (${genderPronoun}) at a bar/party. Someone attractive (${safeUserName}) is approaching you.
 
 PERSONALITY: Be realistic and natural as a ${genderLabel}. Use casual language. React based on your personality - if shy, be a bit nervous but interested. If confident, be flirty and engaging. Speak naturally as a ${genderLabel} would.`;
       case 'partner':
-        return `You are ${dateName}, ${userName}'s partner. You are a ${personality?.label} ${genderLabel} (${genderPronoun}) having an important relationship conversation.
+        return `You are ${safeDateName}, ${safeUserName}'s partner. You are a ${personality?.label} ${genderLabel} (${genderPronoun}) having an important relationship conversation.
 
-Be emotionally realistic as a ${genderLabel}. Express feelings, concerns, hopes. Listen and respond to what ${userName} says.`;
+Be emotionally realistic as a ${genderLabel}. Express feelings, concerns, hopes. Listen and respond to what ${safeUserName} says.`;
       case 'ex':
-        return `You are ${dateName}, ${userName}'s ex. You're a ${personality?.label} ${genderLabel} (${genderPronoun}). You've bumped into each other unexpectedly.
+        return `You are ${safeDateName}, ${safeUserName}'s ex. You're a ${personality?.label} ${genderLabel} (${genderPronoun}). You've bumped into each other unexpectedly.
 
-Mixed emotions - surprise, maybe some old feelings, possibly awkwardness. React naturally as a ${genderLabel} would to whatever ${userName} says.`;
+Mixed emotions - surprise, maybe some old feelings, possibly awkwardness. React naturally as a ${genderLabel} would to whatever ${safeUserName} says.`;
+      case 'family':
+        return `You are ${safeDateName}, a ${personality?.label} ${genderLabel} (${genderPronoun}) who is a close friend or family member of ${safeUserName}. ${safeUserName} wants to have an important conversation with you.
+
+Be realistic and natural. Show genuine care but also realistic reactions based on your personality.`;
       default:
-        return `You are ${dateName}, a ${personality?.label} ${genderLabel} (${genderPronoun}) on a first date with ${userName} at a coffee shop. Be natural, curious, and engaging! Speak naturally as a ${genderLabel} would.`;
+        return `You are ${safeDateName}, a ${personality?.label} ${genderLabel} (${genderPronoun}) on a first date with ${safeUserName} at a coffee shop. Be natural, curious, and engaging! Speak naturally as a ${genderLabel} would.`;
     }
   };
 
   const getScenarioOpener = (selectedScenario) => {
-    const partnerDisplay = partnerName || 'my child';
+    // Ensure safe defaults for all variables
+    const safeUserName = userName || 'there';
+    const safePartnerName = partnerName?.trim() || 'my child';
     
     switch (selectedScenario.roleType) {
       case 'parent':
-        return `${userName} has just arrived at your home with ${partnerDisplay}. Open the door warmly.
+        return `${safeUserName} has just arrived at your home with ${safePartnerName}. Open the door warmly.
 
-Start with a warm greeting like: "Oh hello! You must be ${userName}! Come in, come in! ${partnerDisplay} has told us so much about you! How was the drive over?"
+Start with a warm greeting like: "Oh hello! You must be ${safeUserName}! Come in, come in! ${safePartnerName} has told us so much about you! How was the drive over?"
 
 Then naturally transition - offer a drink, invite them to sit, maybe compliment something about them.`;
       case 'stranger':
-        return `You're at a bar/party and ${userName} is walking toward you. React naturally - maybe smile, maybe look intrigued.`;
+        return `You're at a bar/party and ${safeUserName} is walking toward you. React naturally - maybe smile, maybe look intrigued.`;
       case 'partner':
-        return `You and ${userName} need to have an important conversation. Start by bringing up what's been on your mind.`;
+        return `You and ${safeUserName} need to have an important conversation. Start by bringing up what's been on your mind.`;
       case 'ex':
-        return `You've just spotted ${userName} unexpectedly. Make eye contact and react - surprise, awkwardness, or whatever fits.`;
+        return `You've just spotted ${safeUserName} unexpectedly. Make eye contact and react - surprise, awkwardness, or whatever fits.`;
+      case 'family':
+        return `${safeUserName} has asked to talk to you privately. You can sense this is important. Greet them warmly and ask what's on their mind.`;
       default:
-        return `You've just sat down at the coffee shop for a first date with ${userName}. Start the conversation naturally - maybe compliment them or ask about their day.`;
+        return `You've just sat down at the coffee shop for a first date with ${safeUserName}. Start the conversation naturally - maybe compliment them or ask about their day.`;
     }
   };
 
@@ -419,14 +431,16 @@ ${dateName} says:`;
 
   // Fallback greetings when API fails - scenario-specific
   const getFallbackGreeting = (selectedScenario) => {
-    const partnerDisplay = partnerName || 'my child';
+    // Ensure safe defaults
+    const safeUserName = userName || 'there';
+    const safePartnerName = partnerName?.trim() || 'my child';
     const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
     
     switch (selectedScenario.roleType) {
       case 'parent':
         return pick([
-          `Oh hello ${userName}! Come in, come in! ${partnerDisplay} has told us so much about you. Can I get you something to drink?`,
-          `${userName}! So lovely to finally meet you! Please, make yourself at home. How was your journey here?`,
+          `Oh hello ${safeUserName}! Come in, come in! ${safePartnerName} has told us so much about you. Can I get you something to drink?`,
+          `${safeUserName}! So lovely to finally meet you! Please, make yourself at home. How was your journey here?`,
           `Well hello there! You must be ${userName}! ${partnerDisplay} didn't tell us you'd be so charming. Come in!`,
           `Hi ${userName}! Welcome to our home. ${partnerDisplay} is just finishing up - can I offer you some tea or coffee?`
         ]);
