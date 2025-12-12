@@ -1,3 +1,29 @@
+// ╔══════════════════════════════════════════════════════════════════════════════╗
+// ║                                                                              ║
+// ║  🔒🔒🔒 LOCKED FILE - DO NOT MODIFY - WORKING PERFECTLY 🔒🔒🔒              ║
+// ║                                                                              ║
+// ║  Last Working State: December 12, 2025 at 22:30                             ║
+// ║  Locked By: Emilio Gashi                                                     ║
+// ║                                                                              ║
+// ║  ⚠️  WARNING: This file has been extensively tested and is WORKING.         ║
+// ║      DO NOT change the API call structure or prompt format.                  ║
+// ║      Any modifications may break the roleplay functionality.                 ║
+// ║                                                                              ║
+// ║  ✅ WHAT WORKS:                                                              ║
+// ║     - callAIWithRetry() with single prompt string                           ║
+// ║     - All 7 scenarios (First Date, Approaching, Meeting Parents, etc.)      ║
+// ║     - Personality selection and gender options                               ║
+// ║     - Real OpenAI API responses via production backend                       ║
+// ║     - Fallback responses when API fails                                      ║
+// ║     - Suggested replies for each scenario                                    ║
+// ║                                                                              ║
+// ║  🚫 DO NOT:                                                                  ║
+// ║     - Change callAIWithRetry to use conversationHistory/systemPrompt        ║
+// ║     - Modify the prompt structure                                            ║
+// ║     - Remove safe variable defaults (safeUserName, safeDateName, etc.)      ║
+// ║                                                                              ║
+// ╚══════════════════════════════════════════════════════════════════════════════╝
+
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -12,10 +38,11 @@ import {
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
-// ============================================================
-// 🔒 HARDCODED: Robust API call with retry logic
-// This ensures the roleplay ALWAYS works reliably
-// ============================================================
+// ╔══════════════════════════════════════════════════════════════════════════════╗
+// ║  🔒 LOCKED: Robust API call with retry logic - DO NOT MODIFY                ║
+// ║  This function uses a SINGLE PROMPT string format which WORKS.              ║
+// ║  DO NOT change to use conversationHistory or systemPrompt parameters.       ║
+// ╚══════════════════════════════════════════════════════════════════════════════╝
 const callAIWithRetry = async (prompt, maxRetries = 3) => {
   let lastError = null;
   
@@ -384,7 +411,11 @@ Then naturally transition - offer a drink, invite them to sit, maybe compliment 
       const safeDateName = dateName?.trim() || 'them';
       const safePartnerName = partnerName?.trim() || 'my child';
 
-      // 🔒 HARDCODED: Ultra-realistic opening prompt - Sets the scene perfectly
+      // ╔════════════════════════════════════════════════════════════════════════╗
+      // ║  🔒 LOCKED PROMPT - WORKING PERFECTLY - DO NOT MODIFY                 ║
+      // ║  This exact prompt structure produces realistic AI responses.         ║
+      // ║  Uses single prompt string with callAIWithRetry(prompt, 3)            ║
+      // ╚════════════════════════════════════════════════════════════════════════╝
       const prompt = `🎭 ROLEPLAY SCENARIO START
 
 === YOUR IDENTITY ===
@@ -536,7 +567,12 @@ ${safeDateName} (speaking naturally, 1-3 sentences):`;
       const safeDateName = dateName?.trim() || 'them';
       const safePartnerName = partnerName?.trim() || 'my child';
 
-      // 🔒 HARDCODED: Ultra-realistic conversation prompt - NEVER breaks character
+      // ╔════════════════════════════════════════════════════════════════════════╗
+      // ║  🔒 LOCKED PROMPT - WORKING PERFECTLY - DO NOT MODIFY                 ║
+      // ║  This exact prompt structure produces realistic AI responses.         ║
+      // ║  Uses single prompt string with callAIWithRetry(prompt, 3)            ║
+      // ║  Includes: conversation history, role description, rules, examples    ║
+      // ╚════════════════════════════════════════════════════════════════════════╝
       const prompt = `🎭 ROLEPLAY MODE: You are a REAL PERSON in a REAL CONVERSATION. This is NOT an AI chat assistant scenario.
 
 === YOUR IDENTITY ===

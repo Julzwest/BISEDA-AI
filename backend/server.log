@@ -6,3 +6,6 @@
 ✅ OpenAI integration active - All requests use OpenAI API
 🌐 Frontend URL: http://localhost:5173
 ✅ Connected to MongoDB Atlas
+🚀 Calling OpenAI API...
+📝 Sending 1 messages to OpenAI
+❌ OpenAI API key invalid
