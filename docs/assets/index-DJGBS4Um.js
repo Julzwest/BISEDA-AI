@@ -13717,7 +13717,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-B_Vzyx4K.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-_pEAiq9T.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -14491,8 +14491,7 @@ function Layout({ children, onLogout }) {
   const navItems = [
     { name: t("nav.home"), icon: Home$1, page: "Home" },
     { name: t("nav.aiCoach"), icon: Sparkles$1, page: "Chat" },
-    { name: t("nav.dates"), icon: Heart, page: "FirstDates" },
-    { name: t("nav.events"), icon: MapPin, page: "Events" },
+    { name: "Intimacy", icon: Heart, page: "IntimacyCoach" },
     { name: t("nav.tips"), icon: Lightbulb, page: "Tips" }
   ];
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [

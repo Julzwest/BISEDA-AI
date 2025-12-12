@@ -42,11 +42,11 @@ export default function Layout({ children, onLogout }) {
   }, [currentPageName]);
 
   // Modern nav items with updated icons - using translations
+  // Bottom nav: Home, AI Coach, Intimacy Coach, Tips (4 items only)
   const navItems = [
     { name: t('nav.home'), icon: Home, page: 'Home' },
     { name: t('nav.aiCoach'), icon: Sparkles, page: 'Chat' },
-    { name: t('nav.dates'), icon: Heart, page: 'FirstDates' },
-    { name: t('nav.events'), icon: MapPin, page: 'Events' },
+    { name: 'Intimacy', icon: Heart, page: 'IntimacyCoach' },
     { name: t('nav.tips'), icon: Lightbulb, page: 'Tips' }
   ];
 
