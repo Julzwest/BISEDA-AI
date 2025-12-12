@@ -13717,7 +13717,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-B2tUVbPI.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-FGgE5NUw.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -23750,7 +23750,7 @@ function IntimacyCoach() {
       setShowUpgradeModal(true);
       return;
     }
-    const verified = localStorage.getItem("adultVerified") === "true";
+    const verified = localStorage.getItem("adultContentVerified") === "true" || localStorage.getItem("adultVerified") === "true";
     setIsAdultVerified(verified);
     if (!verified) {
       setShowAdultVerificationModal(true);
@@ -23771,6 +23771,7 @@ function IntimacyCoach() {
     trackFeatureUse("intimacy_coach");
   };
   const handleAdultVerified = () => {
+    localStorage.setItem("adultContentVerified", "true");
     localStorage.setItem("adultVerified", "true");
     setIsAdultVerified(true);
     setShowAdultVerificationModal(false);
@@ -23927,7 +23928,7 @@ Intimacy Coach responds naturally (be direct, explicit, helpful):`;
         {
           isOpen: showAdultVerificationModal,
           onClose: () => navigate("/home"),
-          onVerified: handleAdultVerified
+          onConfirm: handleAdultVerified
         }
       )
     ] });

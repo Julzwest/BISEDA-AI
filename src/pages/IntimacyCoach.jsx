@@ -132,8 +132,8 @@ export default function IntimacyCoach() {
       return;
     }
     
-    // Check adult verification
-    const verified = localStorage.getItem('adultVerified') === 'true';
+    // Check adult verification (modal stores as 'adultContentVerified')
+    const verified = localStorage.getItem('adultContentVerified') === 'true' || localStorage.getItem('adultVerified') === 'true';
     setIsAdultVerified(verified);
     
     if (!verified) {
@@ -162,7 +162,8 @@ export default function IntimacyCoach() {
 
   // Handle adult verification success
   const handleAdultVerified = () => {
-    localStorage.setItem('adultVerified', 'true');
+    localStorage.setItem('adultContentVerified', 'true');
+    localStorage.setItem('adultVerified', 'true'); // For backwards compatibility
     setIsAdultVerified(true);
     setShowAdultVerificationModal(false);
     setAccessGranted(true);
@@ -356,7 +357,7 @@ Intimacy Coach responds naturally (be direct, explicit, helpful):`;
         <AdultVerificationModal
           isOpen={showAdultVerificationModal}
           onClose={() => navigate('/home')}
-          onVerified={handleAdultVerified}
+          onConfirm={handleAdultVerified}
         />
       </div>
     );
