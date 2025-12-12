@@ -133,14 +133,6 @@ export default function Home() {
       color: 'from-indigo-500 to-blue-600', // Indigo-Blue for profile/optimization
       page: 'ProfileOptimizer',
       requiresProOrElite: true
-    },
-    {
-      icon: Sparkles,
-      title: t('home.features.styleAdvisor.title', 'Style Advisor'),
-      description: t('home.features.styleAdvisor.desc', 'Get fashion advice'),
-      color: 'from-amber-500 to-orange-500', // Amber-Orange for style/fashion
-      page: 'StyleAdvisor',
-      requiresProOrElite: true
     }
   ];
 

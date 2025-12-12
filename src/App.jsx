@@ -14,7 +14,6 @@ import UserProfile from './pages/UserProfile.jsx';
 import PrivacyPolicy from './pages/PrivacyPolicy.jsx';
 import MoodCheck from './pages/MoodCheck.jsx';
 import ProfileOptimizer from './pages/ProfileOptimizer.jsx';
-import StyleAdvisor from './pages/StyleAdvisor.jsx';
 import DateRehearsal from './pages/DateRehearsal.jsx';
 import OnboardingTutorial from './components/OnboardingTutorial.jsx';
 import ScrollToTop from './components/ScrollToTop.jsx';
@@ -143,7 +142,6 @@ function App() {
           <Route path="/mood" element={<MoodCheck />} />
           <Route path="/moodcheck" element={<MoodCheck />} />
           <Route path="/profileoptimizer" element={<ProfileOptimizer />} />
-          <Route path="/styleadvisor" element={<StyleAdvisor />} />
           <Route path="/rehearsal" element={<DateRehearsal />} />
           <Route path="/profile" element={<UserProfile onLogout={handleLogout} />} />
           

@@ -2343,9 +2343,6 @@ video {
 .to-pink-600 {
   --tw-gradient-to: #db2777 var(--tw-gradient-to-position);
 }
-.to-pink-600\/10 {
-  --tw-gradient-to: rgb(219 39 119 / 0.1) var(--tw-gradient-to-position);
-}
 .to-pink-900\/30 {
   --tw-gradient-to: rgb(131 24 67 / 0.3) var(--tw-gradient-to-position);
 }
@@ -3079,10 +3076,6 @@ video {
 }
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-.backdrop-blur-lg {
-  --tw-backdrop-blur: blur(16px);
-  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
 }
 .backdrop-blur-md {
   --tw-backdrop-blur: blur(12px);

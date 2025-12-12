@@ -77,3 +77,4 @@ If you need help restoring, refer to:
 - COMPLETE_FEATURE_LIST.md
 - This file (RESTORE_INSTRUCTIONS.md)
 - Git tag: COMPLETE-STABLE-2025-12-11
+
