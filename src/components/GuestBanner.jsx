@@ -6,7 +6,10 @@ export default function GuestBanner({ onSignUp }) {
   const [dismissed, setDismissed] = useState(false);
 
   // Don't show if not a guest (check is done in Layout now)
-  const isGuest = localStorage.getItem('isGuest') === 'true';
+  // 🔒 FIX: If user has a real userId, they're logged in - not a guest
+  const userId = localStorage.getItem('userId');
+  const hasRealAccount = userId && userId.length > 10;
+  const isGuest = localStorage.getItem('isGuest') === 'true' && !hasRealAccount;
   if (!isGuest) return null;
 
   // Get unique visitor number

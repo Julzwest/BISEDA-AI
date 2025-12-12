@@ -13717,7 +13717,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-FGgE5NUw.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-Dn3iiHHx.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -14308,7 +14308,9 @@ function Auth({ onAuthSuccess }) {
 }
 function GuestBanner({ onSignUp }) {
   const [dismissed, setDismissed] = reactExports.useState(false);
-  const isGuest = localStorage.getItem("isGuest") === "true";
+  const userId = localStorage.getItem("userId");
+  const hasRealAccount = userId && userId.length > 10;
+  const isGuest = localStorage.getItem("isGuest") === "true" && !hasRealAccount;
   if (!isGuest) return null;
   const guestNumber = localStorage.getItem("guestNumber") || "";
   const visitorLabel = guestNumber ? `Vizitor #${guestNumber}` : "Vizitor";
@@ -14471,7 +14473,9 @@ function Layout({ children, onLogout }) {
   useNavigate();
   const location = useLocation();
   const currentPageName = location.pathname.split("/")[1]?.charAt(0).toUpperCase() + location.pathname.split("/")[1]?.slice(1) || "Home";
-  const isGuest = localStorage.getItem("isGuest") === "true";
+  const userId = localStorage.getItem("userId");
+  const hasRealAccount = userId && userId.length > 10;
+  const isGuest = localStorage.getItem("isGuest") === "true" && !hasRealAccount;
   reactExports.useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
     const mainContainer = document.getElementById("main-content");

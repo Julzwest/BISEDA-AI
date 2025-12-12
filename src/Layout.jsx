@@ -13,7 +13,12 @@ export default function Layout({ children, onLogout }) {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPageName = location.pathname.split('/')[1]?.charAt(0).toUpperCase() + location.pathname.split('/')[1]?.slice(1) || 'Home';
-  const isGuest = localStorage.getItem('isGuest') === 'true';
+  
+  // 🔒 FIX: Only show guest banner if TRULY a guest (no real userId)
+  // If user has a userId, they're logged in - ignore stale isGuest flag
+  const userId = localStorage.getItem('userId');
+  const hasRealAccount = userId && userId.length > 10; // Real user IDs are long
+  const isGuest = localStorage.getItem('isGuest') === 'true' && !hasRealAccount;
 
   // Scroll to top on route change
   useEffect(() => {
