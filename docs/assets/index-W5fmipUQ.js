@@ -13727,7 +13727,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-CgGb4Ak-.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-kX2RTzf6.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -15020,7 +15020,20 @@ function Home() {
     return ["pro", "elite", "premium"].includes(tier);
   };
   reactExports.useEffect(() => {
-    const name = localStorage.getItem("userName");
+    let name = localStorage.getItem("userName");
+    if (name && (name.includes("undefined") || name === "null null" || name === "null" || name.trim() === "")) {
+      console.warn("⚠️ Detected broken userName in localStorage:", name);
+      const email = localStorage.getItem("userEmail");
+      if (email && email.includes("@")) {
+        name = email.split("@")[0];
+        localStorage.setItem("userName", name);
+        console.log("✅ Fixed userName to:", name);
+      } else {
+        name = null;
+        localStorage.removeItem("userName");
+        console.log("✅ Cleared broken userName");
+      }
+    }
     if (name) {
       setUserName(name);
     }

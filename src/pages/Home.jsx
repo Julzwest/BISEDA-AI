@@ -48,7 +48,26 @@ export default function Home() {
 
   useEffect(() => {
     // Get user name if exists
-    const name = localStorage.getItem('userName');
+    let name = localStorage.getItem('userName');
+    
+    // 🔒 FIX: Detect and remove broken "undefined undefined" values from old impersonation
+    if (name && (name.includes('undefined') || name === 'null null' || name === 'null' || name.trim() === '')) {
+      console.warn('⚠️ Detected broken userName in localStorage:', name);
+      
+      // Try to get a better name from email
+      const email = localStorage.getItem('userEmail');
+      if (email && email.includes('@')) {
+        name = email.split('@')[0];
+        localStorage.setItem('userName', name);
+        console.log('✅ Fixed userName to:', name);
+      } else {
+        // Clear broken value
+        name = null;
+        localStorage.removeItem('userName');
+        console.log('✅ Cleared broken userName');
+      }
+    }
+    
     if (name) {
       setUserName(name);
     }
