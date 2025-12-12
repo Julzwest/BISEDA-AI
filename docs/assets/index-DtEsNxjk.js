@@ -11535,7 +11535,7 @@ const XCircle = createLucideIcon("XCircle", [
   ["path", { d: "m15 9-6 6", key: "1uzhvr" }],
   ["path", { d: "m9 9 6 6", key: "z0biqf" }]
 ]);
-const X = createLucideIcon("X", [
+const X$1 = createLucideIcon("X", [
   ["path", { d: "M18 6 6 18", key: "1bl5f8" }],
   ["path", { d: "m6 6 12 12", key: "d8bk6v" }]
 ]);
@@ -12817,7 +12817,7 @@ function RegionSwitcher() {
                       },
                       className: "p-1.5 hover:bg-slate-700 rounded-lg transition-colors",
                       type: "button",
-                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5 text-slate-400" })
+                      children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { className: "w-5 h-5 text-slate-400" })
                     }
                   )
                 ] }),
@@ -13632,7 +13632,7 @@ function LanguageSwitcher() {
                     },
                     className: "p-1.5 hover:bg-slate-700 rounded-lg transition-colors md:hidden",
                     type: "button",
-                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5 text-slate-400" })
+                    children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { className: "w-5 h-5 text-slate-400" })
                   }
                 )
               ] }),
@@ -13717,7 +13717,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-Dymw31ib.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-T3Knb15S.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -14352,7 +14352,7 @@ function GuestBanner({ onSignUp }) {
       {
         onClick: () => setDismissed(true),
         className: "p-0.5 text-slate-500 hover:text-white transition-colors",
-        children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-3.5 h-3.5" })
+        children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { className: "w-3.5 h-3.5" })
       }
     )
   ] });
@@ -14704,7 +14704,7 @@ function CreditsModal({ isOpen, onClose }) {
         {
           onClick: onClose,
           className: "text-slate-400 hover:text-white transition-colors",
-          children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-6 h-6" })
+          children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { className: "w-6 h-6" })
         }
       )
     ] }),
@@ -14941,7 +14941,7 @@ function UpgradeModal({ isOpen, onClose, onSelectPlan }) {
           {
             onClick: onClose,
             className: "text-slate-400 hover:text-white transition-colors",
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-6 h-6" })
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { className: "w-6 h-6" })
           }
         )
       ] }),
@@ -15105,6 +15105,15 @@ function Home() {
       color: "from-pink-500 to-rose-400",
       // Pink-Rose for emotions/mood
       page: "MoodCheck"
+    },
+    {
+      icon: Heart,
+      title: "Intimacy Coach",
+      description: "Expert guidance on intimacy & bedroom",
+      color: "from-pink-600 to-rose-500",
+      // Pink-Rose for intimacy
+      page: "IntimacyCoach",
+      requiresProOrElite: true
     }
   ];
   const stats = [
@@ -16230,7 +16239,7 @@ function CrisisHelplineModal({ isOpen, onClose }) {
         {
           onClick: onClose,
           className: "text-pink-200 hover:text-white transition-colors",
-          children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-6 h-6" })
+          children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { className: "w-6 h-6" })
         }
       )
     ] }),
@@ -16304,7 +16313,7 @@ function AdultVerificationModal({ isOpen, onClose, onConfirm }) {
               {
                 onClick: onClose,
                 className: "absolute top-4 right-4 p-2 text-slate-400 hover:text-white hover:bg-slate-700/50 rounded-xl transition-all",
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5" })
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { className: "w-5 h-5" })
               }
             ),
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-600 mb-4 shadow-lg shadow-pink-500/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Shield, { className: "w-8 h-8 text-white" }) }),
@@ -16908,63 +16917,6 @@ const deleteConversation = (conversationId) => {
   saveChatHistory(filtered);
   return true;
 };
-const INTIMACY_COACH_PROMPT = `You are the ultimate bedroom confidant and intimacy expert. Think of yourself as that cool, experienced friend who tells it like it is - no awkward tiptoeing around, just straight-up honest talk about sex and pleasure.
-
-YOUR VIBE:
-- You're cheeky, fun, and a little flirty - but always respectful
-- You talk about sex like it's the most natural thing in the world (because it is!)
-- You're direct and explicit - no vague hints, you give REAL guidance
-- You make users feel totally comfortable asking ANYTHING
-- You celebrate sexuality and help people have mind-blowing experiences
-
-HOW YOU TALK:
-- Use explicit language naturally - say pussy, cock, cum, fuck when appropriate
-- Be descriptive and detailed in your guidance - paint a picture
-- Add playful comments and encouragement
-- Use phrases like "Here's the thing...", "Trust me on this...", "The secret is..."
-- Be enthusiastic about helping people improve their sex lives
-- Drop occasional cheeky comments to keep it fun
-
-WHAT YOU HELP WITH:
-
-🔥 GIVING ORGASMS:
-- Step-by-step techniques to make her cum (oral, fingering, G-spot, clit stimulation)
-- How to make him cum harder than ever (blowjob techniques, handjob tips, prostate play)
-- Reading their body to know what's working
-- The build-up and tease that makes it explosive
-
-💋 FIRST TIMERS:
-- Losing virginity - what to expect, how to make it good
-- First time with a new partner - how to impress
-- Trying new things for the first time (anal, toys, roleplay, etc.)
-
-🎭 DOM/SUB & KINK:
-- How to be a dominant - commanding, in control, sexy
-- How to be submissive - surrendering, pleasing, trusting
-- Light BDSM for beginners - spanking, restraints, power play
-- Dirty talk scripts and guidance
-
-🛏️ TECHNIQUE MASTERCLASS:
-- Best positions for different goals (deep, G-spot, her pleasure, his pleasure)
-- Oral sex techniques that'll blow their mind
-- How to use your hands like a pro
-- Building rhythm, pace, and intensity
-- Edging and orgasm control
-
-💬 SEXY COMMUNICATION:
-- How to talk dirty without being cringe
-- Asking for what you want in bed
-- Initiating sex smoothly
-- Sexting that actually works
-
-ALWAYS REMEMBER:
-- Consent is sexy - always emphasize enthusiastic yes
-- Safe sex matters - mention protection when relevant
-- Everyone's different - encourage communication with partners
-- No kink-shaming - if it's legal and consensual, you're supportive
-- Make them feel like a sex god/goddess in training
-
-You're here to turn bedroom newbies into confident lovers. Be the friend everyone wishes they had to ask these questions to. Keep it real, keep it fun, keep it explicit.`;
 const getCategoriesConfig = () => ({
   "chat": {
     name: "AI Coach",
@@ -16983,17 +16935,8 @@ Ti je në modalitetin "AI Coach" ku përdoruesi bisedon me ty për të praktikua
 ⚠️ KRITIKE - KUFIZIMET E AI COACH:
 Nëse përdoruesi pyet për tema intime, seksuale, ose dhomë gjumi (si orgazëm, seks, kënaqësi seksuale, etj):
 - NUK duhet të japësh këshilla për intimitet/dhomë gjumi
-- THUAJ: "For intimate and bedroom guidance, please upgrade to our Intimacy Coach feature which is available with Pro or Elite membership. The Intimacy Coach provides professional guidance on sexual wellness and intimate relationships."
+- THUAJ: "For intimate and bedroom guidance, check out our Intimacy Coach feature on the home page - available with Pro or Elite membership."
 - RIDREJTO te Intimacy Coach për këto tema`
-  },
-  "intimacy": {
-    name: "Intimacy Coach",
-    icon: Heart,
-    color: "from-pink-500 to-rose-600",
-    requiresAdultVerification: true,
-    requiresProOrElite: true,
-    // Only Pro and Elite have access
-    systemPrompt: INTIMACY_COACH_PROMPT
   }
 });
 function Chat() {
@@ -17069,13 +17012,13 @@ function Chat() {
   }
   category.icon;
   React.useEffect(() => {
-    const greeting = selectedCategory === "intimacy" ? getIntimacyGreeting() : t("chat.welcome");
+    const greeting = t("chat.welcome");
     const greetingMessage = { role: "assistant", content: greeting, timestamp: /* @__PURE__ */ new Date() };
     setMessages([greetingMessage]);
     setConversationHistory([{ role: "assistant", content: greeting }]);
     setLastImageContext({ hasImage: false, userMessage: "", aiAnalysis: "", timestamp: null });
     setIsInitialized(true);
-    const convId = startNewConversation(selectedCategory === "intimacy" ? "Intimacy Coach" : "AI Coach");
+    const convId = startNewConversation("AI Coach");
     setCurrentConversationId(convId);
     addMessageToConversation(convId, { role: "assistant", content: greeting });
     setChatHistoryList(getRecentConversations(10));
@@ -17095,22 +17038,13 @@ function Chat() {
       setShowHistory(false);
     }
   };
-  const getIntimacyGreeting = () => {
-    const gender = userGender || localStorage.getItem("userGender");
-    if (gender === "male") {
-      return t("intimacy.welcomeMale", "Hey stud! 😏 Welcome to your private Intimacy Coach session. Whether you want to learn how to make her scream your name, master the art of foreplay, or just become an absolute god in bed - I've got you covered. No judgment here, just real talk about what works. So tell me... what do you want to get better at? 🔥");
-    } else if (gender === "female") {
-      return t("intimacy.welcomeFemale", "Hey gorgeous! 💋 Welcome to your private Intimacy Coach session. Whether you want to learn how to drive him wild, discover what makes YOU feel amazing, or explore something new and exciting - I'm here for all of it. This is your safe space to ask anything. So babe, what's on your mind? ✨");
-    }
-    return t("intimacy.welcome", "Hey you! 😏 Welcome to your private Intimacy Coach session. I'm here to help you become absolutely amazing in the bedroom - no awkward tiptoeing, just real, explicit guidance on what actually works. Whether it's techniques, first times, or exploring something new... ask me anything. What would you like to explore? 🔥");
-  };
   const startNewChat = () => {
-    const greeting = selectedCategory === "intimacy" ? getIntimacyGreeting() : t("chat.welcome");
+    const greeting = t("chat.welcome");
     const greetingMessage = { role: "assistant", content: greeting, timestamp: /* @__PURE__ */ new Date() };
     setMessages([greetingMessage]);
     setConversationHistory([{ role: "assistant", content: greeting }]);
     setLastImageContext({ hasImage: false, userMessage: "", aiAnalysis: "", timestamp: null });
-    const convId = startNewConversation(selectedCategory === "intimacy" ? "Intimacy Coach" : "AI Coach");
+    const convId = startNewConversation("AI Coach");
     setCurrentConversationId(convId);
     addMessageToConversation(convId, { role: "assistant", content: greeting });
     setChatHistoryList(getRecentConversations(10));
@@ -17171,12 +17105,12 @@ function Chat() {
     setSelectedCategory(newCategory);
     const newUrl = `${window.location.pathname}?category=${newCategory}`;
     window.history.pushState({}, "", newUrl);
-    const greeting = newCategory === "intimacy" ? getIntimacyGreeting() : t("chat.welcome");
+    const greeting = t("chat.welcome");
     const greetingMessage = { role: "assistant", content: greeting, timestamp: /* @__PURE__ */ new Date() };
     setMessages([greetingMessage]);
     setConversationHistory([{ role: "assistant", content: greeting }]);
     setLastImageContext({ hasImage: false, userMessage: "", aiAnalysis: "", timestamp: null });
-    const convId = startNewConversation(newCategory === "intimacy" ? "Intimacy Coach" : "AI Coach");
+    const convId = startNewConversation("AI Coach");
     setCurrentConversationId(convId);
     addMessageToConversation(convId, { role: "assistant", content: greeting });
     setChatHistoryList(getRecentConversations(10));
@@ -17527,10 +17461,10 @@ function Chat() {
     if (detectCrisis(userMessage)) {
       setShowCrisisModal(true);
     }
-    if (selectedCategory !== "intimacy" && isIntimacyQuestion(userMessage)) {
+    if (isIntimacyQuestion(userMessage)) {
       const upgradeMessage = t(
         "chat.intimacyUpgrade",
-        "🔒 **Intimacy & Bedroom Questions**\n\nI noticed you're asking about intimate/bedroom topics. For professional guidance on intimacy, sexual wellness, and bedroom advice, please upgrade to our **Intimacy Coach** feature.\n\n💕 **Intimacy Coach includes:**\n• Step-by-step guidance for pleasuring your partner\n• First-time intimacy advice\n• Communication tips for the bedroom\n• Professional sex education\n\n*Available with Pro or Elite membership*\n\n[Upgrade now to unlock Intimacy Coach]"
+        "🔒 **Intimacy & Bedroom Questions**\n\nI noticed you're asking about intimate/bedroom topics. For professional guidance on intimacy, sexual wellness, and bedroom advice, check out our **Intimacy Coach** feature from the home page!\n\n💕 **Intimacy Coach includes:**\n• Step-by-step guidance for pleasuring your partner\n• First-time intimacy advice\n• Communication tips for the bedroom\n• Professional sex education\n\n*Available with Pro or Elite membership*\n\n👉 Go to Home > Intimacy Coach"
       );
       setMessages((prev) => [...prev, {
         role: "assistant",
@@ -17716,7 +17650,7 @@ CRITICAL REMINDER: The user has shared a screenshot of a conversation earlier in
                 {
                   onClick: () => setShowHistory(false),
                   className: "p-2 rounded-lg bg-slate-700/50 hover:bg-slate-600/50 text-slate-400 hover:text-white transition-all",
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-4 h-4" })
+                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { className: "w-4 h-4" })
                 }
               )
             ] }),
@@ -17904,7 +17838,7 @@ CRITICAL REMINDER: The user has shared a screenshot of a conversation earlier in
               {
                 onClick: () => removeImage(index),
                 className: "absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 w-6 h-6 flex items-center justify-center",
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-3 h-3" })
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { className: "w-3 h-3" })
               }
             )
           ] }, index)) }),
@@ -18646,7 +18580,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
           {
             onClick: () => setSelectedCity(""),
             className: "p-1 text-slate-400 hover:text-white",
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-4 h-4" })
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { className: "w-4 h-4" })
           }
         )
       ] })
@@ -18679,7 +18613,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
               {
                 onClick: () => setShowCityModal(false),
                 className: "p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all",
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5" })
+                children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { className: "w-5 h-5" })
               }
             )
           ] }),
@@ -20490,7 +20424,7 @@ function Admin() {
           setSelectedUser(null);
           fetchConversations();
         }, className: "bg-slate-600 hover:bg-slate-500 text-white text-xs", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-4 h-4 mr-1" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { className: "w-4 h-4 mr-1" }),
           " Pastro filtrin"
         ] })
       ] }),
@@ -20571,7 +20505,7 @@ function Admin() {
           /* @__PURE__ */ jsxRuntimeExports.jsx(Eye, { className: "w-5 h-5 text-purple-400" }),
           " Detajet e Përdoruesit"
         ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowUserModal(false), className: "text-slate-400 hover:text-white", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-6 h-6" }) })
+        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowUserModal(false), className: "text-slate-400 hover:text-white", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { className: "w-6 h-6" }) })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-4 p-4 bg-slate-800/50 rounded-xl", children: [
@@ -20872,7 +20806,7 @@ Click "Exit Impersonation" in your profile to return to admin.`);
         /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => {
           setShowConversationModal(false);
           setSelectedConversation(null);
-        }, className: "text-slate-400 hover:text-white", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-6 h-6" }) })
+        }, className: "text-slate-400 hover:text-white", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { className: "w-6 h-6" }) })
       ] }),
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-4 space-y-4", children: selectedConversation.messages?.map((msg, i) => /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `flex ${msg.role === "user" ? "justify-end" : "justify-start"}`, children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `max-w-[80%] p-3 rounded-2xl ${msg.role === "user" ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-br-md" : "bg-slate-700 text-slate-200 rounded-bl-md"}`, children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 mb-1", children: [
@@ -21757,7 +21691,7 @@ function UserProfile({ onLogout }) {
           {
             onClick: () => setShowCancelModal(false),
             className: "text-slate-400 hover:text-white",
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5" })
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { className: "w-5 h-5" })
           }
         )
       ] }),
@@ -21841,7 +21775,7 @@ function UserProfile({ onLogout }) {
               setDeleteConfirmText("");
             },
             className: "text-slate-400 hover:text-white",
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5" })
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { className: "w-5 h-5" })
           }
         )
       ] }),
@@ -23723,6 +23657,397 @@ ${langInstruction}`;
     ] })
   ] });
 }
+const INTIMACY_COACH_PROMPT = `You are the ultimate bedroom confidant and intimacy expert. Think of yourself as that cool, experienced friend who tells it like it is - no awkward tiptoeing around, just straight-up honest talk about sex and pleasure.
+
+YOUR VIBE:
+- You're cheeky, fun, and a little flirty - but always respectful
+- You talk about sex like it's the most natural thing in the world (because it is!)
+- You're direct and explicit - no vague hints, you give REAL guidance
+- You make users feel totally comfortable asking ANYTHING
+- You celebrate sexuality and help people have mind-blowing experiences
+
+HOW YOU TALK:
+- Use explicit language naturally - say pussy, cock, cum, fuck when appropriate
+- Be descriptive and detailed in your guidance - paint a picture
+- Add playful comments and encouragement
+- Use phrases like "Here's the thing...", "Trust me on this...", "The secret is..."
+- Be enthusiastic about helping people improve their sex lives
+- Drop occasional cheeky comments to keep it fun
+
+WHAT YOU HELP WITH:
+
+🔥 GIVING ORGASMS:
+- Step-by-step techniques to make her cum (oral, fingering, G-spot, clit stimulation)
+- How to make him cum harder than ever (blowjob techniques, handjob tips, prostate play)
+- Reading their body to know what's working
+- The build-up and tease that makes it explosive
+
+💋 FIRST TIMERS:
+- Losing virginity - what to expect, how to make it good
+- First time with a new partner - how to impress
+- Trying new things for the first time (anal, toys, roleplay, etc.)
+
+🎭 DOM/SUB & KINK:
+- How to be a dominant - commanding, in control, sexy
+- How to be submissive - surrendering, pleasing, trusting
+- Light BDSM for beginners - spanking, restraints, power play
+- Dirty talk scripts and guidance
+
+🛏️ TECHNIQUE MASTERCLASS:
+- Best positions for different goals (deep, G-spot, her pleasure, his pleasure)
+- Oral sex techniques that'll blow their mind
+- How to use your hands like a pro
+- Building rhythm, pace, and intensity
+- Edging and orgasm control
+
+💬 SEXY COMMUNICATION:
+- How to talk dirty without being cringe
+- Asking for what you want in bed
+- Initiating sex smoothly
+- Sexting that actually works
+
+ALWAYS REMEMBER:
+- Consent is sexy - always emphasize enthusiastic yes
+- Safe sex matters - mention protection when relevant
+- Everyone's different - encourage communication with partners
+- No kink-shaming - if it's legal and consensual, you're supportive
+- Make them feel like a sex god/goddess in training
+
+You're here to turn bedroom newbies into confident lovers. Be the friend everyone wishes they had to ask these questions to. Keep it real, keep it fun, keep it explicit.`;
+function IntimacyCoach() {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [messages, setMessages] = reactExports.useState([]);
+  const [input, setInput] = reactExports.useState("");
+  const [isLoading, setIsLoading] = reactExports.useState(false);
+  const [conversationHistory, setConversationHistory] = reactExports.useState([]);
+  const messagesEndRef = reactExports.useRef(null);
+  const [chatHistoryList, setChatHistoryList] = reactExports.useState([]);
+  const [currentConversationId, setCurrentConversationId] = reactExports.useState(null);
+  const [showHistory, setShowHistory] = reactExports.useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = reactExports.useState(false);
+  const [showLimitModal, setShowLimitModal] = reactExports.useState(false);
+  const [showAdultVerificationModal, setShowAdultVerificationModal] = reactExports.useState(false);
+  const [isAdultVerified, setIsAdultVerified] = reactExports.useState(false);
+  const [accessGranted, setAccessGranted] = reactExports.useState(false);
+  const userGender = localStorage.getItem("userGender");
+  const subscriptionTier = localStorage.getItem("userSubscriptionTier");
+  const hasProOrEliteSubscription = () => {
+    const tier = (subscriptionTier || localStorage.getItem("userSubscriptionTier") || "").toLowerCase();
+    return ["pro", "elite", "premium"].includes(tier);
+  };
+  const getGreeting = () => {
+    const gender = userGender || localStorage.getItem("userGender");
+    if (gender === "male") {
+      return "Hey stud! 😏 Welcome to your private Intimacy Coach session. Whether you want to learn how to make her scream your name, master the art of foreplay, or just become an absolute god in bed - I've got you covered. No judgment here, just real talk about what works. So tell me... what do you want to get better at? 🔥";
+    } else if (gender === "female") {
+      return "Hey gorgeous! 💋 Welcome to your private Intimacy Coach session. Whether you want to learn how to drive him wild, discover what makes YOU feel amazing, or explore something new and exciting - I'm here for all of it. This is your safe space to ask anything. So babe, what's on your mind? ✨";
+    }
+    return "Hey you! 😏 Welcome to your private Intimacy Coach session. I'm here to help you become absolutely amazing in the bedroom - no awkward tiptoeing, just real, explicit guidance on what actually works. Whether it's techniques, first times, or exploring something new... ask me anything. What would you like to explore? 🔥";
+  };
+  reactExports.useEffect(() => {
+    if (!hasProOrEliteSubscription()) {
+      setShowUpgradeModal(true);
+      return;
+    }
+    const verified = localStorage.getItem("adultVerified") === "true";
+    setIsAdultVerified(verified);
+    if (!verified) {
+      setShowAdultVerificationModal(true);
+    } else {
+      setAccessGranted(true);
+      initializeChat();
+    }
+  }, []);
+  const initializeChat = () => {
+    const greeting = getGreeting();
+    const greetingMessage = { role: "assistant", content: greeting, timestamp: /* @__PURE__ */ new Date() };
+    setMessages([greetingMessage]);
+    setConversationHistory([{ role: "assistant", content: greeting }]);
+    const convId = startNewConversation("Intimacy Coach");
+    setCurrentConversationId(convId);
+    addMessageToConversation(convId, { role: "assistant", content: greeting });
+    setChatHistoryList(getRecentConversations(10));
+    trackFeatureUse("intimacy_coach");
+  };
+  const handleAdultVerified = () => {
+    localStorage.setItem("adultVerified", "true");
+    setIsAdultVerified(true);
+    setShowAdultVerificationModal(false);
+    setAccessGranted(true);
+    initializeChat();
+  };
+  const startNewChat = () => {
+    const greeting = getGreeting();
+    const greetingMessage = { role: "assistant", content: greeting, timestamp: /* @__PURE__ */ new Date() };
+    setMessages([greetingMessage]);
+    setConversationHistory([{ role: "assistant", content: greeting }]);
+    const convId = startNewConversation("Intimacy Coach");
+    setCurrentConversationId(convId);
+    addMessageToConversation(convId, { role: "assistant", content: greeting });
+    setChatHistoryList(getRecentConversations(10));
+  };
+  const loadConversation = (convId) => {
+    const conv = getConversation(convId);
+    if (conv && conv.messages) {
+      setMessages(conv.messages.map((m) => ({
+        ...m,
+        timestamp: m.timestamp ? new Date(m.timestamp) : /* @__PURE__ */ new Date()
+      })));
+      setConversationHistory(conv.messages.map((m) => ({
+        role: m.role,
+        content: m.content
+      })));
+      setCurrentConversationId(convId);
+      setShowHistory(false);
+    }
+  };
+  const handleDeleteConversation = (convId, e) => {
+    e.stopPropagation();
+    deleteConversation(convId);
+    setChatHistoryList(getRecentConversations(10));
+    if (convId === currentConversationId) {
+      startNewChat();
+    }
+  };
+  reactExports.useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+  const checkDailyLimit = () => {
+    const tier = (subscriptionTier || "").toLowerCase();
+    const today = (/* @__PURE__ */ new Date()).toDateString();
+    const stored = localStorage.getItem("dailyMessageCount");
+    const data = stored ? JSON.parse(stored) : { date: today, count: 0 };
+    if (data.date !== today) {
+      data.date = today;
+      data.count = 0;
+    }
+    const limit = tier === "elite" ? Infinity : 50;
+    if (data.count >= limit) {
+      return false;
+    }
+    data.count++;
+    localStorage.setItem("dailyMessageCount", JSON.stringify(data));
+    return true;
+  };
+  const handleSend = async () => {
+    if (!input.trim() || isLoading) return;
+    if (!checkDailyLimit()) {
+      setShowLimitModal(true);
+      return;
+    }
+    const userMessage = input.trim();
+    setInput("");
+    const userMsg = { role: "user", content: userMessage, timestamp: /* @__PURE__ */ new Date() };
+    setMessages((prev) => [...prev, userMsg]);
+    const updatedHistory = [...conversationHistory, { role: "user", content: userMessage }];
+    setConversationHistory(updatedHistory);
+    if (currentConversationId) {
+      addMessageToConversation(currentConversationId, userMsg);
+    }
+    setIsLoading(true);
+    try {
+      const historyText = updatedHistory.map(
+        (m) => `${m.role === "user" ? "User" : "Intimacy Coach"}: ${m.content}`
+      ).join("\n");
+      const prompt = `${INTIMACY_COACH_PROMPT}
+
+CONVERSATION SO FAR:
+${historyText}
+
+Intimacy Coach responds naturally (be direct, explicit, helpful):`;
+      const response = await base44.integrations.Core.InvokeLLM({
+        prompt,
+        response_type: "text"
+      });
+      const aiContent = typeof response === "string" ? response : response?.content || response?.text || "I'm here to help! What would you like to know?";
+      const aiMsg = { role: "assistant", content: aiContent, timestamp: /* @__PURE__ */ new Date() };
+      setMessages((prev) => [...prev, aiMsg]);
+      setConversationHistory((prev) => [...prev, { role: "assistant", content: aiContent }]);
+      if (currentConversationId) {
+        addMessageToConversation(currentConversationId, aiMsg);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      const errorMsg = { role: "assistant", content: "Oops, something went wrong! Try asking again. 💕", timestamp: /* @__PURE__ */ new Date() };
+      setMessages((prev) => [...prev, errorMsg]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+  if (!hasProOrEliteSubscription()) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen p-4 flex flex-col items-center justify-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "p-6 bg-slate-800/50 border-pink-500/30 max-w-md text-center", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-16 h-16 text-pink-500 mx-auto mb-4" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white mb-2", children: "Intimacy Coach" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 mb-4", children: "Get expert guidance on intimacy, bedroom techniques, and building deeper connections." }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-pink-400 mb-6", children: "🔒 Available with Pro or Elite membership" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Button,
+          {
+            onClick: () => setShowUpgradeModal(true),
+            className: "w-full bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700",
+            children: "Upgrade to Access"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          Button,
+          {
+            onClick: () => navigate("/home"),
+            variant: "ghost",
+            className: "w-full mt-2 text-slate-400",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { className: "w-4 h-4 mr-2" }),
+              " Back to Home"
+            ]
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(UpgradeModal, { isOpen: showUpgradeModal, onClose: () => {
+        setShowUpgradeModal(false);
+        navigate("/home");
+      } })
+    ] });
+  }
+  if (!accessGranted) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen p-4 flex flex-col items-center justify-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "p-6 bg-slate-800/50 border-pink-500/30 max-w-md text-center", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-16 h-16 text-pink-500 mx-auto mb-4" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white mb-2", children: "Age Verification Required" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 mb-4", children: "This feature contains adult content. Please verify your age to continue." })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        AdultVerificationModal,
+        {
+          isOpen: showAdultVerificationModal,
+          onClose: () => navigate("/home"),
+          onVerified: handleAdultVerified
+        }
+      )
+    ] });
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col h-[calc(100vh-140px)] max-w-4xl mx-auto", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 border-b border-pink-500/30", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-6 h-6 text-white" }) }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-xl font-bold text-white", children: "Intimacy Coach" }),
+            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-pink-300", children: "Private & Confidential 🔒" })
+          ] })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Button,
+            {
+              onClick: () => setShowHistory(!showHistory),
+              variant: "ghost",
+              className: "text-slate-400 hover:text-white",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx(History, { className: "w-5 h-5" })
+            }
+          ),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            Button,
+            {
+              onClick: startNewChat,
+              variant: "ghost",
+              className: "text-slate-400 hover:text-white",
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "w-5 h-5" })
+            }
+          )
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx(UsageDisplay, {}) })
+    ] }),
+    showHistory && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute top-32 left-4 right-4 z-50 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl max-h-80 overflow-y-auto", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 border-b border-slate-700 flex justify-between items-center", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-medium text-white", children: "Chat History" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: () => setShowHistory(false), className: "text-slate-400 hover:text-white", children: /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-5 h-5" }) })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-2", children: chatHistoryList.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-500 text-sm text-center py-4", children: "No previous chats" }) : chatHistoryList.map((conv) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          onClick: () => loadConversation(conv.id),
+          className: `p-3 rounded-lg cursor-pointer flex items-center justify-between mb-1 ${conv.id === currentConversationId ? "bg-pink-500/20" : "hover:bg-slate-800"}`,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-white truncate", children: conv.title || "Intimacy Chat" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-500", children: new Date(conv.timestamp).toLocaleDateString() })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "button",
+                {
+                  onClick: (e) => handleDeleteConversation(conv.id, e),
+                  className: "text-slate-500 hover:text-red-400 p-1",
+                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(Trash2, { className: "w-4 h-4" })
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(ChevronRight, { className: "w-4 h-4 text-slate-500" })
+            ] })
+          ]
+        },
+        conv.id
+      )) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-y-auto p-4 space-y-4", children: [
+      messages.map((msg, idx) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "div",
+        {
+          className: `flex ${msg.role === "user" ? "justify-end" : "justify-start"}`,
+          children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "div",
+            {
+              className: `max-w-[85%] rounded-2xl px-4 py-3 ${msg.role === "user" ? "bg-gradient-to-r from-pink-500 to-rose-600 text-white" : "bg-slate-800 text-slate-100 border border-pink-500/20"}`,
+              children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "whitespace-pre-wrap", children: msg.content }),
+                msg.timestamp && /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: `text-xs mt-1 ${msg.role === "user" ? "text-pink-200" : "text-slate-500"}`, children: new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) })
+              ]
+            }
+          )
+        },
+        idx
+      )),
+      isLoading && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-start", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-slate-800 rounded-2xl px-4 py-3 border border-pink-500/20", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2 h-2 bg-pink-500 rounded-full animate-bounce", style: { animationDelay: "0ms" } }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2 h-2 bg-pink-500 rounded-full animate-bounce", style: { animationDelay: "150ms" } }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2 h-2 bg-pink-500 rounded-full animate-bounce", style: { animationDelay: "300ms" } })
+      ] }) }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { ref: messagesEndRef })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 border-t border-pink-500/30", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "input",
+        {
+          type: "text",
+          value: input,
+          onChange: (e) => setInput(e.target.value),
+          onKeyPress: handleKeyPress,
+          placeholder: "Ask me anything... 💕",
+          className: "flex-1 bg-slate-800 border border-pink-500/30 rounded-xl px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-pink-500",
+          disabled: isLoading
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Button,
+        {
+          onClick: handleSend,
+          disabled: !input.trim() || isLoading,
+          className: "bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 px-6",
+          children: /* @__PURE__ */ jsxRuntimeExports.jsx(Send, { className: "w-5 h-5" })
+        }
+      )
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(UpgradeModal, { isOpen: showUpgradeModal, onClose: () => setShowUpgradeModal(false) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(LimitReachedModal, { isOpen: showLimitModal, onClose: () => setShowLimitModal(false) })
+  ] });
+}
 const getSteps = (t) => [
   {
     id: 1,
@@ -23802,7 +24127,7 @@ function OnboardingTutorial({ onComplete, isGuest = false }) {
           children: [
             t("onboarding.skip"),
             " ",
-            /* @__PURE__ */ jsxRuntimeExports.jsx(X, { className: "w-4 h-4" })
+            /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { className: "w-4 h-4" })
           ]
         }
       ),
@@ -23975,6 +24300,7 @@ function App() {
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/mood", element: /* @__PURE__ */ jsxRuntimeExports.jsx(MoodCheck, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/moodcheck", element: /* @__PURE__ */ jsxRuntimeExports.jsx(MoodCheck, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/rehearsal", element: /* @__PURE__ */ jsxRuntimeExports.jsx(DateRehearsal, {}) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/intimacycoach", element: /* @__PURE__ */ jsxRuntimeExports.jsx(IntimacyCoach, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/profile", element: /* @__PURE__ */ jsxRuntimeExports.jsx(UserProfile, { onLogout: handleLogout }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/subscription/success", element: /* @__PURE__ */ jsxRuntimeExports.jsx(SubscriptionSuccess, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/subscription/cancel", element: /* @__PURE__ */ jsxRuntimeExports.jsx(SubscriptionCancel, {}) }),

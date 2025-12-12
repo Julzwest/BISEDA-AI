@@ -14,6 +14,7 @@ import UserProfile from './pages/UserProfile.jsx';
 import PrivacyPolicy from './pages/PrivacyPolicy.jsx';
 import MoodCheck from './pages/MoodCheck.jsx';
 import DateRehearsal from './pages/DateRehearsal.jsx';
+import IntimacyCoach from './pages/IntimacyCoach.jsx';
 import OnboardingTutorial from './components/OnboardingTutorial.jsx';
 import ScrollToTop from './components/ScrollToTop.jsx';
 
@@ -141,6 +142,7 @@ function App() {
           <Route path="/mood" element={<MoodCheck />} />
           <Route path="/moodcheck" element={<MoodCheck />} />
           <Route path="/rehearsal" element={<DateRehearsal />} />
+          <Route path="/intimacycoach" element={<IntimacyCoach />} />
           <Route path="/profile" element={<UserProfile onLogout={handleLogout} />} />
           
           {/* System */}

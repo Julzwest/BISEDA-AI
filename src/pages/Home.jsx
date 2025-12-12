@@ -144,6 +144,14 @@ export default function Home() {
       description: t('home.features.mood.desc', 'Check your dating readiness'),
       color: 'from-pink-500 to-rose-400', // Pink-Rose for emotions/mood
       page: 'MoodCheck'
+    },
+    {
+      icon: Heart,
+      title: 'Intimacy Coach',
+      description: 'Expert guidance on intimacy & bedroom',
+      color: 'from-pink-600 to-rose-500', // Pink-Rose for intimacy
+      page: 'IntimacyCoach',
+      requiresProOrElite: true
     }
   ];
 

@@ -21,66 +21,8 @@ import {
   deleteConversation 
 } from '@/utils/chatHistory';
 
-// Intimacy Coach System Prompt - Direct, Explicit, Comfortable
-const INTIMACY_COACH_PROMPT = `You are the ultimate bedroom confidant and intimacy expert. Think of yourself as that cool, experienced friend who tells it like it is - no awkward tiptoeing around, just straight-up honest talk about sex and pleasure.
-
-YOUR VIBE:
-- You're cheeky, fun, and a little flirty - but always respectful
-- You talk about sex like it's the most natural thing in the world (because it is!)
-- You're direct and explicit - no vague hints, you give REAL guidance
-- You make users feel totally comfortable asking ANYTHING
-- You celebrate sexuality and help people have mind-blowing experiences
-
-HOW YOU TALK:
-- Use explicit language naturally - say pussy, cock, cum, fuck when appropriate
-- Be descriptive and detailed in your guidance - paint a picture
-- Add playful comments and encouragement
-- Use phrases like "Here's the thing...", "Trust me on this...", "The secret is..."
-- Be enthusiastic about helping people improve their sex lives
-- Drop occasional cheeky comments to keep it fun
-
-WHAT YOU HELP WITH:
-
-🔥 GIVING ORGASMS:
-- Step-by-step techniques to make her cum (oral, fingering, G-spot, clit stimulation)
-- How to make him cum harder than ever (blowjob techniques, handjob tips, prostate play)
-- Reading their body to know what's working
-- The build-up and tease that makes it explosive
-
-💋 FIRST TIMERS:
-- Losing virginity - what to expect, how to make it good
-- First time with a new partner - how to impress
-- Trying new things for the first time (anal, toys, roleplay, etc.)
-
-🎭 DOM/SUB & KINK:
-- How to be a dominant - commanding, in control, sexy
-- How to be submissive - surrendering, pleasing, trusting
-- Light BDSM for beginners - spanking, restraints, power play
-- Dirty talk scripts and guidance
-
-🛏️ TECHNIQUE MASTERCLASS:
-- Best positions for different goals (deep, G-spot, her pleasure, his pleasure)
-- Oral sex techniques that'll blow their mind
-- How to use your hands like a pro
-- Building rhythm, pace, and intensity
-- Edging and orgasm control
-
-💬 SEXY COMMUNICATION:
-- How to talk dirty without being cringe
-- Asking for what you want in bed
-- Initiating sex smoothly
-- Sexting that actually works
-
-ALWAYS REMEMBER:
-- Consent is sexy - always emphasize enthusiastic yes
-- Safe sex matters - mention protection when relevant
-- Everyone's different - encourage communication with partners
-- No kink-shaming - if it's legal and consensual, you're supportive
-- Make them feel like a sex god/goddess in training
-
-You're here to turn bedroom newbies into confident lovers. Be the friend everyone wishes they had to ask these questions to. Keep it real, keep it fun, keep it explicit.`;
-
 // Categories with system prompt only - greeting is handled separately with translations
+// Note: Intimacy Coach has been moved to its own separate page (IntimacyCoach.jsx)
 const getCategoriesConfig = () => ({
   'chat': {
     name: 'AI Coach',
@@ -99,16 +41,8 @@ Ti je në modalitetin "AI Coach" ku përdoruesi bisedon me ty për të praktikua
 ⚠️ KRITIKE - KUFIZIMET E AI COACH:
 Nëse përdoruesi pyet për tema intime, seksuale, ose dhomë gjumi (si orgazëm, seks, kënaqësi seksuale, etj):
 - NUK duhet të japësh këshilla për intimitet/dhomë gjumi
-- THUAJ: "For intimate and bedroom guidance, please upgrade to our Intimacy Coach feature which is available with Pro or Elite membership. The Intimacy Coach provides professional guidance on sexual wellness and intimate relationships."
+- THUAJ: "For intimate and bedroom guidance, check out our Intimacy Coach feature on the home page - available with Pro or Elite membership."
 - RIDREJTO te Intimacy Coach për këto tema`
-  },
-  'intimacy': {
-    name: 'Intimacy Coach',
-    icon: Heart,
-    color: 'from-pink-500 to-rose-600',
-    requiresAdultVerification: true,
-    requiresProOrElite: true, // Only Pro and Elite have access
-    systemPrompt: INTIMACY_COACH_PROMPT
   }
 });
 
@@ -204,10 +138,7 @@ export default function Chat() {
 
   // Reset and initialize when category changes
   React.useEffect(() => {
-    // Use different greeting based on category
-    const greeting = selectedCategory === 'intimacy' 
-      ? getIntimacyGreeting()
-      : t('chat.welcome');
+    const greeting = t('chat.welcome');
     const greetingMessage = { role: 'assistant', content: greeting, timestamp: new Date() };
     setMessages([greetingMessage]);
     // Initialize conversation history with greeting
@@ -215,9 +146,9 @@ export default function Chat() {
     // Reset image context completely when category changes
     setLastImageContext({ hasImage: false, userMessage: '', aiAnalysis: '', timestamp: null });
     setIsInitialized(true);
-    
+
     // Start a new conversation for chat history
-    const convId = startNewConversation(selectedCategory === 'intimacy' ? 'Intimacy Coach' : 'AI Coach');
+    const convId = startNewConversation('AI Coach');
     setCurrentConversationId(convId);
     addMessageToConversation(convId, { role: 'assistant', content: greeting });
     
@@ -242,29 +173,16 @@ export default function Chat() {
     }
   };
 
-  // Get gender-specific intimacy greeting
-  const getIntimacyGreeting = () => {
-    const gender = userGender || localStorage.getItem('userGender');
-    if (gender === 'male') {
-      return t('intimacy.welcomeMale', "Hey stud! 😏 Welcome to your private Intimacy Coach session. Whether you want to learn how to make her scream your name, master the art of foreplay, or just become an absolute god in bed - I've got you covered. No judgment here, just real talk about what works. So tell me... what do you want to get better at? 🔥");
-    } else if (gender === 'female') {
-      return t('intimacy.welcomeFemale', "Hey gorgeous! 💋 Welcome to your private Intimacy Coach session. Whether you want to learn how to drive him wild, discover what makes YOU feel amazing, or explore something new and exciting - I'm here for all of it. This is your safe space to ask anything. So babe, what's on your mind? ✨");
-    }
-    return t('intimacy.welcome', "Hey you! 😏 Welcome to your private Intimacy Coach session. I'm here to help you become absolutely amazing in the bedroom - no awkward tiptoeing, just real, explicit guidance on what actually works. Whether it's techniques, first times, or exploring something new... ask me anything. What would you like to explore? 🔥");
-  };
-
   // Start a new chat
   const startNewChat = () => {
-    const greeting = selectedCategory === 'intimacy' 
-      ? getIntimacyGreeting()
-      : t('chat.welcome');
+    const greeting = t('chat.welcome');
     const greetingMessage = { role: 'assistant', content: greeting, timestamp: new Date() };
     setMessages([greetingMessage]);
     setConversationHistory([{ role: 'assistant', content: greeting }]);
     // Reset image context completely when starting new chat
     setLastImageContext({ hasImage: false, userMessage: '', aiAnalysis: '', timestamp: null });
-    
-    const convId = startNewConversation(selectedCategory === 'intimacy' ? 'Intimacy Coach' : 'AI Coach');
+
+    const convId = startNewConversation('AI Coach');
     setCurrentConversationId(convId);
     addMessageToConversation(convId, { role: 'assistant', content: greeting });
     setChatHistoryList(getRecentConversations(10));
@@ -346,17 +264,15 @@ export default function Chat() {
     setSelectedCategory(newCategory);
     const newUrl = `${window.location.pathname}?category=${newCategory}`;
     window.history.pushState({}, '', newUrl);
-    
+
     // Reset chat for new category
-    const greeting = newCategory === 'intimacy'
-      ? getIntimacyGreeting()
-      : t('chat.welcome');
+    const greeting = t('chat.welcome');
     const greetingMessage = { role: 'assistant', content: greeting, timestamp: new Date() };
     setMessages([greetingMessage]);
     setConversationHistory([{ role: 'assistant', content: greeting }]);
     setLastImageContext({ hasImage: false, userMessage: '', aiAnalysis: '', timestamp: null });
-    
-    const convId = startNewConversation(newCategory === 'intimacy' ? 'Intimacy Coach' : 'AI Coach');
+
+    const convId = startNewConversation('AI Coach');
     setCurrentConversationId(convId);
     addMessageToConversation(convId, { role: 'assistant', content: greeting });
     setChatHistoryList(getRecentConversations(10));
@@ -644,11 +560,10 @@ export default function Chat() {
     
     // ============================================================
     // INTIMACY DETECTION: Redirect to Intimacy Coach for bedroom topics
-    // Only applies when NOT in intimacy category
     // ============================================================
-    if (selectedCategory !== 'intimacy' && isIntimacyQuestion(userMessage)) {
-      const upgradeMessage = t('chat.intimacyUpgrade', 
-        "🔒 **Intimacy & Bedroom Questions**\n\nI noticed you're asking about intimate/bedroom topics. For professional guidance on intimacy, sexual wellness, and bedroom advice, please upgrade to our **Intimacy Coach** feature.\n\n💕 **Intimacy Coach includes:**\n• Step-by-step guidance for pleasuring your partner\n• First-time intimacy advice\n• Communication tips for the bedroom\n• Professional sex education\n\n*Available with Pro or Elite membership*\n\n[Upgrade now to unlock Intimacy Coach]"
+    if (isIntimacyQuestion(userMessage)) {
+      const upgradeMessage = t('chat.intimacyUpgrade',
+        "🔒 **Intimacy & Bedroom Questions**\n\nI noticed you're asking about intimate/bedroom topics. For professional guidance on intimacy, sexual wellness, and bedroom advice, check out our **Intimacy Coach** feature from the home page!\n\n💕 **Intimacy Coach includes:**\n• Step-by-step guidance for pleasuring your partner\n• First-time intimacy advice\n• Communication tips for the bedroom\n• Professional sex education\n\n*Available with Pro or Elite membership*\n\n👉 Go to Home > Intimacy Coach"
       );
       
       setMessages(prev => [...prev, { 
