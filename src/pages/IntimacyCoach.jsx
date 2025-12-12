@@ -5,7 +5,6 @@ import { Send, Heart, Plus, Trash2, History, ChevronRight, Lock, ArrowLeft } fro
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { base44 } from '@/api/base44Client';
-import UsageDisplay from '@/components/UsageDisplay';
 import UpgradeModal from '@/components/UpgradeModal';
 import LimitReachedModal from '@/components/LimitReachedModal';
 import AdultVerificationModal from '@/components/AdultVerificationModal';
@@ -365,39 +364,24 @@ Intimacy Coach responds naturally (be direct, explicit, helpful):`;
 
   return (
     <div className="flex flex-col h-[calc(100vh-140px)] max-w-4xl mx-auto">
-      {/* Header */}
-      <div className="p-4 border-b border-pink-500/30">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl flex items-center justify-center">
-              <Heart className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-white">Intimacy Coach</h1>
-              <p className="text-sm text-pink-300">Private & Confidential 🔒</p>
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <Button
-              onClick={() => setShowHistory(!showHistory)}
-              variant="ghost"
-              className="text-slate-400 hover:text-white"
-            >
-              <History className="w-5 h-5" />
-            </Button>
-            <Button
-              onClick={startNewChat}
-              variant="ghost"
-              className="text-slate-400 hover:text-white"
-            >
-              <Plus className="w-5 h-5" />
-            </Button>
-          </div>
-        </div>
-        
-        {/* Usage Display */}
-        <div className="mt-3">
-          <UsageDisplay />
+      {/* Header - Clean & Simple like AI Coach */}
+      <div className="p-4">
+        <div className="flex items-center justify-center gap-3">
+          <button
+            onClick={() => setShowHistory(!showHistory)}
+            className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all"
+          >
+            <History className="w-5 h-5" />
+          </button>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-pink-400 to-rose-300 bg-clip-text text-transparent">
+            Intimacy Coach
+          </h1>
+          <button
+            onClick={startNewChat}
+            className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all"
+          >
+            <Plus className="w-5 h-5" />
+          </button>
         </div>
       </div>
 

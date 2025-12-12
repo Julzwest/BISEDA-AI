@@ -13717,7 +13717,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-Dn3iiHHx.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-BUuuQ-6k.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -23938,38 +23938,25 @@ Intimacy Coach responds naturally (be direct, explicit, helpful):`;
     ] });
   }
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col h-[calc(100vh-140px)] max-w-4xl mx-auto", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 border-b border-pink-500/30", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Heart, { className: "w-6 h-6 text-white" }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-xl font-bold text-white", children: "Intimacy Coach" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-pink-300", children: "Private & Confidential 🔒" })
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Button,
-            {
-              onClick: () => setShowHistory(!showHistory),
-              variant: "ghost",
-              className: "text-slate-400 hover:text-white",
-              children: /* @__PURE__ */ jsxRuntimeExports.jsx(History, { className: "w-5 h-5" })
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            Button,
-            {
-              onClick: startNewChat,
-              variant: "ghost",
-              className: "text-slate-400 hover:text-white",
-              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "w-5 h-5" })
-            }
-          )
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-3", children: /* @__PURE__ */ jsxRuntimeExports.jsx(UsageDisplay, {}) })
-    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-3", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: () => setShowHistory(!showHistory),
+          className: "p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all",
+          children: /* @__PURE__ */ jsxRuntimeExports.jsx(History, { className: "w-5 h-5" })
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-3xl font-bold bg-gradient-to-r from-pink-400 to-rose-300 bg-clip-text text-transparent", children: "Intimacy Coach" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "button",
+        {
+          onClick: startNewChat,
+          className: "p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all",
+          children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "w-5 h-5" })
+        }
+      )
+    ] }) }),
     showHistory && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "absolute top-32 left-4 right-4 z-50 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl max-h-80 overflow-y-auto", children: [
       /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 border-b border-slate-700 flex justify-between items-center", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-medium text-white", children: "Chat History" }),
