@@ -379,42 +379,41 @@ Then naturally transition - offer a drink, invite them to sit, maybe compliment 
       
       console.log('🎭 Starting scenario:', { scenario: selectedScenario.id, name: dateName, personality: personality?.label });
 
-      // 🔒 HARDCODED: Ultra-realistic opening prompt - Sets the scene perfectly
-      const prompt = `🎭 ROLEPLAY SCENARIO START
+      // Get safe variable names
+      const safeUserName = userName || 'there';
+      const safeDateName = dateName?.trim() || 'them';
+      const safePartnerName = partnerName?.trim() || 'my child';
 
-=== YOUR IDENTITY ===
-YOU ARE: ${dateName}
-YOUR ROLE: A real ${selectedScenario.roleType === 'parent' ? 'parent' : 'person'} (NOT an AI, NOT an assistant)
-YOUR PERSONALITY: ${personality?.label} ${personality?.emoji}
-SITUATION: ${selectedScenario.setting}
+      // 🔒 SYSTEM PROMPT: Opening greeting instructions for OpenAI
+      const openingSystemPrompt = `🎭 ROLEPLAY START
 
-=== THE SCENE ===
+YOUR IDENTITY:
+- Name: ${safeDateName}
+- Role: A real ${selectedScenario.roleType === 'parent' ? 'parent' : 'person'} (NOT an AI assistant)
+- Personality: ${personality?.label} ${personality?.emoji}
+- Situation: ${selectedScenario.setting}
+
+THE SCENE:
 ${scenarioOpener}
 
-=== 🔒 ABSOLUTE RULES ===
-1. ❌ NEVER say: "How can I help?", "I'm here to...", "Let me assist...", or ANY AI phrases
-2. ❌ NEVER break character or mention AI/assistant/practice
-3. ✅ You ARE ${dateName} - respond exactly as this real person would
-4. ✅ Be natural, warm, and conversational
-5. ✅ Keep response SHORT: 1-3 sentences maximum
-6. ✅ Use casual language: "Oh!", "Come in!", "So lovely!", "Hey there!"
-7. ✅ Show genuine personality - excitement, warmth, curiosity
-8. ✅ Start the conversation naturally as the scenario describes
+RULES:
+1. ❌ NEVER say: "How can I help?", "I'm here to assist", or ANY AI phrases
+2. ✅ You ARE ${safeDateName} - respond as this real person would
+3. ✅ Keep response SHORT: 1-3 sentences only
+4. ✅ Use casual, natural language
+5. ✅ Show genuine warmth and personality
+6. ✅ Start the conversation naturally based on scenario
 
-=== HOW TO START ===
-${selectedScenario.roleType === 'parent' ? 
-`Open the door warmly and greet ${userName}. Maybe offer them a drink or compliment them. Be welcoming but show you're a protective parent sizing them up.` :
-selectedScenario.roleType === 'stranger' ?
-`Notice ${userName} approaching. React based on your personality - smile if friendly, look intrigued if confident, be shy if reserved.` :
-selectedScenario.roleType === 'partner' ?
-`You need to have this conversation. Start by bringing up what's on your mind in a natural way.` :
-`Start the conversation naturally - compliment them or ask about their day.`}
+${langInstruction}`;
 
-${langInstruction}
-
-${dateName} (speaking naturally, 1-3 sentences):`;
-
-      const responseText = await callAIWithRetry(prompt, 3);
+      // 🔒 CRITICAL: Call OpenAI API properly for opening greeting
+      console.log('📡 Calling OpenAI for opening greeting');
+      
+      const responseText = await base44.integrations.Core.InvokeLLM({
+        prompt: `Start the conversation naturally as ${safeDateName}. Greet ${safeUserName} warmly. Keep it 1-3 sentences.`,
+        conversationHistory: [],  // Empty for first message
+        systemPrompt: openingSystemPrompt
+      });
       console.log('🎭 Got opening response:', responseText);
 
       // Generate initial suggested replies
@@ -512,12 +511,22 @@ ${dateName} (speaking naturally, 1-3 sentences):`;
       const intention = intentions.find(i => i.id === selectedIntention);
       const roleDescription = getRoleDescription(scenario, personality);
       
-      // Build conversation history INCLUDING the new user message
-      const conversationHistory = updatedMessages.map(m => 
-        `${m.sender === 'user' ? 'You (user)' : dateName}: ${m.text}`
-      ).join('\n');
+      // 🔒 CRITICAL: Build full conversation history for OpenAI context
+      const conversationHistory = updatedMessages.map((m, i) => ({
+        role: m.sender === 'user' ? 'user' : 'assistant',
+        content: m.text
+      }));
 
-      console.log('🎭 Sending roleplay message:', { scenario: scenario.id, personality: datePersonality, userMessage });
+      console.log('🎭 Sending to OpenAI API:', {
+        scenario: scenario.id,
+        personality: datePersonality,
+        userMessage,
+        historyLength: conversationHistory.length,
+        backend: getBackendUrl()
+      });
+
+      // Extract what user JUST said (last message)
+      const userJustSaid = userMessage;
 
       // Extract questions already asked to avoid repetition
       const alreadyAsked = messages
@@ -525,70 +534,50 @@ ${dateName} (speaking naturally, 1-3 sentences):`;
         .map(m => m.text)
         .join(' | ');
 
-      const partnerDisplay = partnerName || 'my child';
+      // Get safe variable names
+      const safeUserName = userName || 'there';
+      const safeDateName = dateName?.trim() || 'them';
+      const safePartnerName = partnerName?.trim() || 'my child';
 
-      // 🔒 HARDCODED: Ultra-realistic conversation prompt - NEVER breaks character
-      const prompt = `🎭 ROLEPLAY MODE: You are a REAL PERSON in a REAL CONVERSATION. This is NOT an AI chat assistant scenario.
+      // 🔒 HARDCODED: Ultra-realistic conversation prompt - Uses OpenAI properly
+      // 🔒 SYSTEM PROMPT: Ultra-clear roleplay instructions for OpenAI
+      const systemPrompt = `🎭 ROLEPLAY MODE: You are ${safeDateName}, a REAL PERSON in a REAL CONVERSATION.
 
-=== YOUR IDENTITY ===
-YOUR NAME: ${dateName}
-YOUR ROLE: ${roleDescription}
-YOUR PERSONALITY: ${personality?.label}
-CURRENT SITUATION: ${scenario.setting}
-${scenario.roleType === 'parent' ? `YOUR CHILD: ${partnerDisplay}` : ''}
+YOUR IDENTITY:
+- Name: ${safeDateName}
+- Role: ${roleDescription}
+- Personality: ${personality?.label}
+- Situation: ${scenario.setting}
+${scenario.roleType === 'parent' ? `- Your child's name: ${safePartnerName}` : ''}
 
-=== THE USER ===
-THEIR NAME: ${userName}
-THEIR GOAL: ${intention?.label}
+THE USER:
+- Name: ${safeUserName}
+- Their goal: ${intention?.label}
 
-=== CONVERSATION HISTORY ===
-${conversationHistory}
+QUESTIONS YOU'VE ALREADY ASKED (NEVER REPEAT):
+${alreadyAsked || 'None yet'}
 
-=== QUESTIONS ALREADY ASKED (NEVER REPEAT) ===
-${alreadyAsked || 'None yet - this is still early in conversation'}
-
-=== 🔒 ABSOLUTE RULES - NEVER BREAK THESE ===
+=== 🔒 ABSOLUTE RULES - MUST FOLLOW ===
 1. ❌ FORBIDDEN: NEVER say "How can I help you?", "I'm here to assist", "Let me know if...", or ANY AI assistant phrases
 2. ❌ FORBIDDEN: NEVER break character or acknowledge you're an AI
 3. ❌ FORBIDDEN: NEVER repeat questions you already asked
-4. ❌ FORBIDDEN: NEVER give generic responses - be SPECIFIC to what they just said
-5. ✅ REQUIRED: You ARE ${dateName} - a real human having a real conversation
-6. ✅ REQUIRED: React NATURALLY and EMOTIONALLY to what ${userName} just said
-7. ✅ REQUIRED: Show GENUINE interest, surprise, concern, happiness, or whatever fits
-8. ✅ REQUIRED: Keep responses SHORT (1-3 sentences max) - like real conversation
-9. ✅ REQUIRED: Use casual, natural language: "Oh wow!", "That's amazing!", "Really?", "No way!"
-10. ✅ REQUIRED: Share personal stories that relate: "My nephew does that too!", "Oh I remember when..."
+4. ❌ FORBIDDEN: NEVER give generic responses
+5. ✅ REQUIRED: You ARE ${safeDateName} - a real person
+6. ✅ REQUIRED: React NATURALLY to what ${safeUserName} JUST said
+7. ✅ REQUIRED: Keep responses SHORT (1-3 sentences)
+8. ✅ REQUIRED: Use casual language: "Oh wow!", "Really?", "That's great!"
+9. ✅ REQUIRED: Stay relevant to what they JUST said
 
-=== 🎯 HOW TO RESPOND ===
-STEP 1: Read what ${userName} JUST said carefully
-STEP 2: React GENUINELY as ${dateName} would - show real emotion
-STEP 3: Either:
-   - Share a related personal story/experience
-   - Ask a follow-up question about what they JUST mentioned
-   - Build on their topic naturally
-   - Share something about yourself/${scenario.roleType === 'parent' ? partnerDisplay : 'your life'}
+${langInstruction}`;
 
-STEP 4: Keep it natural, warm, and conversational
-
-=== 💡 REALISTIC CONVERSATION EXAMPLES ===
-If they mention work: "Oh that's fascinating! My brother actually works in tech too - do you work with [specific technology]?"
-If they mention sports: "Really? I used to play tennis back in the day! How long have you been into [their sport]?"
-If they mention family: "That's lovely! Family is so important. Do you get to see them often?"
-If nervous: "Don't worry, just relax! Tell me more about yourself - how did you and ${scenario.roleType === 'parent' ? partnerDisplay : 'meet'}?"
-
-=== VARY YOUR STYLE ===
-- Sometimes ask questions
-- Sometimes share stories
-- Sometimes just react enthusiastically
-- Sometimes change topic smoothly
-- But ALWAYS stay relevant to what they just said
-
-${langInstruction}
-
-${dateName} responds naturally (1-3 sentences, NO AI phrases, GENUINE reaction):`;
-
-      // 🔒 HARDCODED: Use retry helper for reliable API calls
-      const responseText = await callAIWithRetry(prompt, 3);
+      // 🔒 CRITICAL: Call OpenAI API with FULL conversation history
+      console.log('📡 Calling OpenAI with conversation history:', conversationHistory.length, 'messages');
+      
+      const responseText = await base44.integrations.Core.InvokeLLM({
+        prompt: userJustSaid,  // What user JUST said
+        conversationHistory: conversationHistory,  // Full chat history
+        systemPrompt: systemPrompt  // Character instructions
+      });
       console.log('🎭 Got roleplay response:', responseText);
 
       // Generate suggested replies for the user
