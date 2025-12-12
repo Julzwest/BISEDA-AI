@@ -204,7 +204,10 @@ export default function Chat() {
 
   // Reset and initialize when category changes
   React.useEffect(() => {
-    const greeting = t('chat.welcome');
+    // Use different greeting based on category
+    const greeting = selectedCategory === 'intimacy' 
+      ? getIntimacyGreeting()
+      : t('chat.welcome');
     const greetingMessage = { role: 'assistant', content: greeting, timestamp: new Date() };
     setMessages([greetingMessage]);
     // Initialize conversation history with greeting
@@ -214,7 +217,7 @@ export default function Chat() {
     setIsInitialized(true);
     
     // Start a new conversation for chat history
-    const convId = startNewConversation('AI Coach');
+    const convId = startNewConversation(selectedCategory === 'intimacy' ? 'Intimacy Coach' : 'AI Coach');
     setCurrentConversationId(convId);
     addMessageToConversation(convId, { role: 'assistant', content: greeting });
     

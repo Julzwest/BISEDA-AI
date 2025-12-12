@@ -13727,7 +13727,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-pFElEajv.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-0UzauES_.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -17067,13 +17067,13 @@ function Chat() {
   }
   category.icon;
   React.useEffect(() => {
-    const greeting = t("chat.welcome");
+    const greeting = selectedCategory === "intimacy" ? getIntimacyGreeting() : t("chat.welcome");
     const greetingMessage = { role: "assistant", content: greeting, timestamp: /* @__PURE__ */ new Date() };
     setMessages([greetingMessage]);
     setConversationHistory([{ role: "assistant", content: greeting }]);
     setLastImageContext({ hasImage: false, userMessage: "", aiAnalysis: "", timestamp: null });
     setIsInitialized(true);
-    const convId = startNewConversation("AI Coach");
+    const convId = startNewConversation(selectedCategory === "intimacy" ? "Intimacy Coach" : "AI Coach");
     setCurrentConversationId(convId);
     addMessageToConversation(convId, { role: "assistant", content: greeting });
     setChatHistoryList(getRecentConversations(10));
