@@ -1225,19 +1225,26 @@ ${langInstruction}`;
     return (
       <>
         <UpgradeModal />
-        <div className="px-4 pt-6 pb-32 w-full max-w-full overflow-x-hidden">
-          <div className="mb-6 text-center">
-            <div className="inline-block mb-3">
+        <div className="px-5 pt-8 pb-32 w-full max-w-full overflow-x-hidden relative">
+          {/* Animated Background */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-20 -left-20 w-60 h-60 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute top-60 -right-20 w-72 h-72 bg-pink-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+          </div>
+          
+          <div className="relative z-10 mb-6 text-center">
+            <div className="inline-block mb-4">
               <div className="relative">
-                <div className="w-20 h-20 bg-gradient-to-br from-slate-600 to-slate-700 rounded-3xl flex items-center justify-center shadow-2xl opacity-50">
-                  <MessageCircle className="w-10 h-10 text-white" />
+                <div className="absolute inset-0 bg-gradient-to-br from-slate-500 to-slate-600 rounded-3xl blur-xl opacity-30"></div>
+                <div className="relative w-24 h-24 bg-gradient-to-br from-slate-600 to-slate-700 rounded-3xl flex items-center justify-center shadow-2xl opacity-60">
+                  <span className="text-4xl">🎭</span>
                 </div>
-                <div className="absolute -top-1 -right-1 w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center">
-                  <Lock className="w-3 h-3 text-white" />
+                <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
+                  <Lock className="w-4 h-4 text-white" />
                 </div>
               </div>
             </div>
-            <h1 className="text-2xl font-bold text-white mb-1">{t('rehearsal.title', 'Date Rehearsal')}</h1>
+            <h1 className="text-3xl font-black text-white mb-2">{t('rehearsal.title', 'Date Rehearsal')}</h1>
             <p className="text-slate-400 text-sm">{t('upgrade.requiresProElite', 'Requires Pro or Elite membership')}</p>
           </div>
         </div>
@@ -1248,31 +1255,48 @@ ${langInstruction}`;
   // Scenario Selection Screen
   if (!scenario) {
     return (
-      <div className="px-4 pt-6 pb-32 w-full max-w-full overflow-x-hidden">
-        {/* Back Button */}
-        <button 
-          onClick={() => navigate('/')} 
-          className="flex items-center gap-2 text-slate-400 hover:text-white mb-4 transition-colors"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          <span>{t('common.goBack', 'Back to Home')}</span>
-        </button>
+      <div className="px-5 pt-6 pb-32 w-full max-w-full overflow-x-hidden relative">
+        {/* Animated Background */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-10 -right-20 w-60 h-60 bg-violet-500/15 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute top-60 -left-20 w-72 h-72 bg-fuchsia-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute bottom-40 right-10 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        </div>
 
-        {/* Header */}
-        <div className="mb-6 text-center">
-          <div className="inline-block mb-3">
-            <div className="relative">
-              <div className="w-20 h-20 bg-gradient-to-br from-violet-500 via-purple-500 to-fuchsia-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/50">
-                <MessageCircle className="w-10 h-10 text-white" />
-              </div>
-              <div className="absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center">
-                <Trophy className="w-3 h-3 text-slate-900" />
+        {/* Floating Emojis */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <span className="absolute top-20 right-6 text-2xl animate-bounce opacity-50" style={{ animationDuration: '3s' }}>🎭</span>
+          <span className="absolute top-44 left-4 text-xl animate-bounce opacity-40" style={{ animationDuration: '2.5s', animationDelay: '0.5s' }}>💬</span>
+          <span className="absolute bottom-60 right-4 text-lg animate-bounce opacity-40" style={{ animationDuration: '4s', animationDelay: '1s' }}>✨</span>
+        </div>
+
+        <div className="relative z-10">
+          {/* Back Button */}
+          <button 
+            onClick={() => navigate('/')} 
+            className="flex items-center gap-2 text-slate-400 hover:text-white mb-4 transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span>{t('common.goBack', 'Back to Home')}</span>
+          </button>
+
+          {/* Header */}
+          <div className="mb-8 text-center">
+            <div className="inline-block mb-4">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-3xl blur-xl opacity-50 animate-pulse"></div>
+                <div className="relative w-24 h-24 bg-gradient-to-br from-violet-500 via-purple-500 to-fuchsia-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/50 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
+                  <span className="text-5xl relative z-10">🎭</span>
+                </div>
+                <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-yellow-400 to-amber-500 rounded-full flex items-center justify-center shadow-lg">
+                  <Trophy className="w-4 h-4 text-slate-900" />
+                </div>
               </div>
             </div>
+            <h1 className="text-3xl font-black text-white mb-2">{t('rehearsal.title', 'Date Rehearsal')}</h1>
+            <p className="text-slate-400 text-sm">{t('rehearsal.subtitle', 'Practice conversations with AI roleplay')}</p>
           </div>
-          <h1 className="text-2xl font-bold text-white mb-1">{t('rehearsal.title', 'Date Rehearsal')}</h1>
-          <p className="text-slate-400 text-sm">{t('rehearsal.subtitle', 'Practice conversations with AI roleplay')}</p>
-        </div>
 
         {/* Progress Steps */}
         <div className="flex justify-center gap-2 mb-6">
@@ -1599,13 +1623,14 @@ ${langInstruction}`;
                     const selectedScenario = scenarios.find(s => s.id === selectedScenarioId);
                     if (selectedScenario) startScenario(selectedScenario);
                   }}
-                  className="w-full mt-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-3"
+                  className="w-full mt-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-3 shadow-lg shadow-purple-500/30"
                 >
                   🎭 {t('rehearsal.startRoleplay', 'Start Roleplay')}
                 </Button>
               )}
             </Card>
           )}
+        </div>
         </div>
       </div>
     );

@@ -1,27 +1,24 @@
 import React from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { 
   Wrench,
   MapPin,
   Gift,
   MessageSquare,
   Smile,
-  Sparkles,
   Crown,
-  Lock
+  Lock,
+  ArrowRight,
+  Sparkles
 } from 'lucide-react';
-import { Card } from '@/components/ui/card';
 
 export default function Tools() {
-  const navigate = useNavigate();
-
   // Check if user has Pro or Elite subscription
   const hasProOrElite = () => {
     const tier = (localStorage.getItem('userSubscriptionTier') || '').toLowerCase();
     return ['pro', 'elite', 'premium'].includes(tier);
   };
 
-  // Focused list of 4 tools only
   const tools = [
     {
       id: 'explore',
@@ -30,7 +27,8 @@ export default function Tools() {
       description: 'Find perfect spots for your dates',
       color: 'from-emerald-500 to-teal-500',
       route: '/explore',
-      requiresPro: false
+      requiresPro: false,
+      emoji: '📍'
     },
     {
       id: 'gifts',
@@ -39,7 +37,8 @@ export default function Tools() {
       description: 'Find the perfect gift for any occasion',
       color: 'from-rose-500 to-red-600',
       route: '/gifts',
-      requiresPro: true
+      requiresPro: true,
+      emoji: '🎁'
     },
     {
       id: 'confidence',
@@ -48,7 +47,8 @@ export default function Tools() {
       description: 'Assess your dating readiness',
       color: 'from-amber-500 to-orange-500',
       route: '/mood',
-      requiresPro: false
+      requiresPro: false,
+      emoji: '💪'
     },
     {
       id: 'chat',
@@ -57,85 +57,128 @@ export default function Tools() {
       description: 'Get quick dating advice anytime',
       color: 'from-purple-500 to-pink-500',
       route: '/chat',
-      requiresPro: false
+      requiresPro: false,
+      emoji: '💬'
     }
   ];
 
   return (
-    <div className="w-full min-h-screen pb-24">
-      {/* Header */}
-      <div className="px-5 pt-8 pb-6">
-        <div className="flex items-center gap-3 mb-1">
-          <div className="w-11 h-11 bg-gradient-to-br from-slate-600 to-slate-700 rounded-xl flex items-center justify-center">
-            <Wrench className="w-5 h-5 text-slate-300" />
-          </div>
-          <div>
-            <h1 className="text-xl font-bold text-white">Tools</h1>
-            <p className="text-slate-500 text-sm">Supporting resources</p>
-          </div>
-        </div>
+    <div className="w-full min-h-screen pb-24 relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 -left-20 w-60 h-60 bg-slate-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute top-60 -right-20 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute bottom-40 left-10 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
       </div>
 
-      {/* Tools List */}
-      <div className="px-5">
-        <div className="space-y-3">
-          {tools.map((tool) => {
-            const Icon = tool.icon;
-            const isLocked = tool.requiresPro && !hasProOrElite();
-            
-            return (
-              <Link 
-                key={tool.id} 
-                to={tool.route}
-                className="block group"
-              >
-                <Card className="bg-slate-800/60 border-slate-700/40 hover:border-purple-500/40 hover:bg-slate-800/80 transition-all">
-                  <div className="p-4">
+      {/* Floating Emojis */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <span className="absolute top-24 right-6 text-2xl animate-bounce opacity-40" style={{ animationDuration: '3s' }}>🛠️</span>
+        <span className="absolute top-48 left-4 text-xl animate-bounce opacity-30" style={{ animationDuration: '2.5s', animationDelay: '0.5s' }}>✨</span>
+        <span className="absolute bottom-72 right-8 text-lg animate-bounce opacity-40" style={{ animationDuration: '4s', animationDelay: '1s' }}>🎯</span>
+      </div>
+
+      <div className="relative z-10">
+        {/* Header */}
+        <div className="px-5 pt-8 pb-6">
+          <div className="flex items-center gap-4 mb-2">
+            {/* Icon with glow */}
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-slate-500 to-slate-600 rounded-2xl blur-lg opacity-30"></div>
+              <div className="relative w-14 h-14 bg-gradient-to-br from-slate-600 to-slate-700 rounded-2xl flex items-center justify-center shadow-xl">
+                <Wrench className="w-7 h-7 text-slate-200" />
+              </div>
+            </div>
+            <div>
+              <h1 className="text-2xl font-black text-white flex items-center gap-2">
+                Tools
+                <span className="text-xl">🧰</span>
+              </h1>
+              <p className="text-slate-400 text-sm">Extra dating resources</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Tools List */}
+        <div className="px-5">
+          <div className="space-y-4">
+            {tools.map((tool, index) => {
+              const Icon = tool.icon;
+              const isLocked = tool.requiresPro && !hasProOrElite();
+              
+              return (
+                <Link 
+                  key={tool.id} 
+                  to={tool.route}
+                  className="block group"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className={`relative bg-slate-800/60 border-2 border-slate-700/50 hover:border-purple-500/40 rounded-2xl p-5 transition-all duration-300 hover:bg-slate-800/80 active:scale-[0.98] ${isLocked ? 'opacity-80' : ''}`}>
                     <div className="flex items-center gap-4">
-                      <div className={`w-11 h-11 bg-gradient-to-br ${tool.color} rounded-xl flex items-center justify-center shadow-lg shrink-0 group-hover:scale-105 transition-transform relative ${isLocked ? 'opacity-70' : ''}`}>
-                        <Icon className="w-5 h-5 text-white" />
+                      {/* Icon */}
+                      <div className={`relative w-14 h-14 bg-gradient-to-br ${tool.color} rounded-2xl flex items-center justify-center shadow-lg shrink-0 group-hover:scale-110 transition-transform duration-300 ${isLocked ? 'opacity-70' : ''}`}>
+                        <span className="text-2xl">{tool.emoji}</span>
                         {tool.requiresPro && (
-                          <div className="absolute -top-1 -right-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
+                          <div className="absolute -top-1.5 -right-1.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full flex items-center gap-0.5 shadow-lg">
                             <Crown className="w-2.5 h-2.5" />
                             PRO
                           </div>
                         )}
                       </div>
+                      
+                      {/* Content */}
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-white mb-0.5 group-hover:text-purple-300 transition-colors">{tool.title}</h3>
-                        <p className="text-slate-500 text-sm">{tool.description}</p>
+                        <h3 className="font-bold text-white text-lg mb-0.5 group-hover:text-purple-300 transition-colors">{tool.title}</h3>
+                        <p className="text-slate-400 text-sm">{tool.description}</p>
                       </div>
+                      
+                      {/* Arrow */}
                       <div className="text-slate-600 group-hover:text-purple-400 transition-colors">
                         {isLocked ? (
                           <Lock className="w-5 h-5 text-amber-500/70" />
                         ) : (
-                          <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
+                          <div className="w-10 h-10 bg-slate-700/50 group-hover:bg-purple-500/20 rounded-xl flex items-center justify-center transition-all">
+                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                          </div>
                         )}
                       </div>
                     </div>
                   </div>
-                </Card>
-              </Link>
-            );
-          })}
-        </div>
-
-        {/* Pro Upgrade - Minimal */}
-        {!hasProOrElite() && (
-          <div className="mt-8 pt-6 border-t border-slate-800">
-            <Link to="/profile" className="block">
-              <div className="flex items-center justify-between p-4 bg-slate-800/40 rounded-xl border border-slate-700/30 hover:border-purple-500/30 transition-all">
-                <div className="flex items-center gap-3">
-                  <Crown className="w-5 h-5 text-purple-400" />
-                  <span className="text-slate-400 text-sm">Unlock all tools with Pro</span>
-                </div>
-                <span className="text-purple-400 text-sm font-medium">Upgrade →</span>
-              </div>
-            </Link>
+                </Link>
+              );
+            })}
           </div>
-        )}
+
+          {/* Pro Upgrade Card */}
+          {!hasProOrElite() && (
+            <div className="mt-8">
+              <Link to="/profile" className="block">
+                <div className="bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-purple-500/10 border-2 border-purple-500/30 rounded-2xl p-5 hover:border-purple-500/50 transition-all">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/30">
+                      <Crown className="w-7 h-7 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-white text-lg mb-0.5 flex items-center gap-2">
+                        Unlock All Tools
+                        <Sparkles className="w-4 h-4 text-purple-400" />
+                      </h3>
+                      <p className="text-slate-400 text-sm">Upgrade to Pro for full access</p>
+                    </div>
+                    <ArrowRight className="w-5 h-5 text-purple-400" />
+                  </div>
+                </div>
+              </Link>
+            </div>
+          )}
+
+          {/* Bottom Quote */}
+          <div className="mt-10 text-center">
+            <p className="text-slate-500 text-sm italic">
+              "The right tools make all the difference" ✨
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
