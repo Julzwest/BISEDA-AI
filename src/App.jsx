@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './Layout.jsx';
 import Home from './pages/Home.jsx';
+import HomeCoPilot from './pages/HomeCoPilot.jsx';
 import Tips from './pages/Tips.jsx';
 import Chat from './pages/Chat.jsx';
 import Explore from './pages/Explore.jsx';
@@ -16,7 +17,12 @@ import MoodCheck from './pages/MoodCheck.jsx';
 import DateRehearsal from './pages/DateRehearsal.jsx';
 import IntimacyCoach from './pages/IntimacyCoach.jsx';
 import LiveWingman from './pages/LiveWingman.jsx';
+import LiveWingmanCoach from './pages/LiveWingmanCoach.jsx';
 import BreakupCoach from './pages/BreakupCoach.jsx';
+import Tools from './pages/Tools.jsx';
+import ChatUpload from './pages/ChatUpload.jsx';
+import ChatAnalysis from './pages/ChatAnalysis.jsx';
+import ReplyResults from './pages/ReplyResults.jsx';
 import OnboardingTutorial from './components/OnboardingTutorial.jsx';
 import ScrollToTop from './components/ScrollToTop.jsx';
 
@@ -128,8 +134,14 @@ function App() {
       
       <Layout onLogout={handleLogout}>
         <Routes>
-          <Route path="/" element={<Navigate to="/home" replace />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Navigate to="/copilot" replace />} />
+          <Route path="/copilot" element={<HomeCoPilot />} />
+          <Route path="/copilot/upload" element={<ChatUpload />} />
+          <Route path="/copilot/analysis" element={<ChatAnalysis />} />
+          <Route path="/copilot/results" element={<ReplyResults />} />
+          <Route path="/home" element={<Navigate to="/copilot" replace />} />
+          <Route path="/wingman" element={<LiveWingmanCoach />} />
+          <Route path="/tools" element={<Tools />} />
           <Route path="/tips" element={<Tips />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/dates" element={<Navigate to="/explore" replace />} />

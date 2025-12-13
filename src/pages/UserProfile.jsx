@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   TrendingUp, Award, Target, Zap, Calendar, MessageSquare, Heart, Star, Trophy, Flame,
   User, Crown, Shield, LogOut, Bookmark, Settings, MapPin, Globe, Check, CreditCard, Trash2,
-  AlertTriangle, Download, Mail, HelpCircle, FileText, XCircle, X
+  AlertTriangle, Download, Mail, HelpCircle, FileText, XCircle, X, Sparkles
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,7 @@ import { getLocalizedCountryName, getCountryByCode, countries } from '@/config/c
 import { getBackendUrl } from '@/utils/getBackendUrl';
 import { getFavorites, removeVenueFavorite, removeDateIdeaFavorite, removeTipFavorite, removeGiftFavorite } from '@/utils/favorites';
 import UpgradeModal from '@/components/UpgradeModal';
+import { getProfile, saveProfile, defaultProfile } from '@/utils/profileMemory';
 
 export default function UserProfile({ onLogout }) {
   const [stats, setStats] = useState({
@@ -41,6 +42,10 @@ export default function UserProfile({ onLogout }) {
   const [cancelSubmitted, setCancelSubmitted] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState('');
+  
+  // Co-Pilot Profile state
+  const [copilotProfile, setCopilotProfile] = useState(defaultProfile());
+  const [profileSaved, setProfileSaved] = useState(false);
 
   const backendUrl = getBackendUrl();
   const userId = localStorage.getItem('userId');
@@ -50,6 +55,10 @@ export default function UserProfile({ onLogout }) {
   useEffect(() => {
     fetchData();
     trackUserActivity(); // Track that user visited profile
+    
+    // Load Co-Pilot profile
+    const storedProfile = getProfile();
+    setCopilotProfile(storedProfile);
     
     // Listen for favorites changes
     const handleFavoritesChanged = () => {
@@ -761,6 +770,97 @@ export default function UserProfile({ onLogout }) {
                 </div>
               </div>
             )}
+          </Card>
+
+          {/* Co-Pilot Preferences */}
+          <Card className="bg-slate-800/50 border-slate-700 p-5">
+            <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-purple-400" />
+              Co-Pilot Preferences
+            </h3>
+            <p className="text-slate-400 text-sm mb-4">
+              Personalize how the AI gives you advice. These settings affect all Co-Pilot features.
+            </p>
+            
+            <div className="space-y-4">
+              {/* Communication Style */}
+              <div>
+                <label className="text-sm text-slate-300 mb-2 block font-medium">Communication Style</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {['Direct', 'Playful', 'Calm', 'Romantic'].map((style) => (
+                    <button
+                      key={style}
+                      onClick={() => setCopilotProfile(prev => ({ ...prev, communicationStyle: style }))}
+                      className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                        copilotProfile.communicationStyle === style
+                          ? 'bg-purple-500 text-white'
+                          : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                      }`}
+                    >
+                      {style === 'Direct' && '🎯 '}
+                      {style === 'Playful' && '😄 '}
+                      {style === 'Calm' && '🧘 '}
+                      {style === 'Romantic' && '💕 '}
+                      {style}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Dating Goal */}
+              <div>
+                <label className="text-sm text-slate-300 mb-2 block font-medium">Dating Goal</label>
+                <div className="grid grid-cols-3 gap-2">
+                  {['Casual', 'Serious', 'Unsure'].map((goal) => (
+                    <button
+                      key={goal}
+                      onClick={() => setCopilotProfile(prev => ({ ...prev, datingGoal: goal }))}
+                      className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                        copilotProfile.datingGoal === goal
+                          ? 'bg-pink-500 text-white'
+                          : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                      }`}
+                    >
+                      {goal === 'Casual' && '🎉 '}
+                      {goal === 'Serious' && '💍 '}
+                      {goal === 'Unsure' && '🤔 '}
+                      {goal}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Boundaries */}
+              <div>
+                <label className="text-sm text-slate-300 mb-2 block font-medium">Boundaries (Optional)</label>
+                <textarea
+                  value={copilotProfile.boundaries}
+                  onChange={(e) => setCopilotProfile(prev => ({ ...prev, boundaries: e.target.value }))}
+                  placeholder="E.g., 'No physical escalation on first date', 'Take things slow', 'No late-night texts'"
+                  className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 text-sm resize-none h-20"
+                />
+                <p className="text-slate-500 text-xs mt-1">The AI will respect these when giving advice</p>
+              </div>
+
+              {/* Save Button */}
+              <Button
+                onClick={() => {
+                  saveProfile(copilotProfile);
+                  setProfileSaved(true);
+                  setTimeout(() => setProfileSaved(false), 2000);
+                }}
+                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-2.5 rounded-xl font-semibold"
+              >
+                {profileSaved ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <Check className="w-4 h-4" />
+                    Saved!
+                  </span>
+                ) : (
+                  'Save Preferences'
+                )}
+              </Button>
+            </div>
           </Card>
 
           {/* Subscription Management */}

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { createPageUrl } from './utils';
-import { Lightbulb, Home, Calendar, Bot, Flag, User, PartyPopper, Sparkles, MessageCircle, Heart, MapPin } from 'lucide-react';
+import { Lightbulb, Home, Calendar, Bot, Flag, User, PartyPopper, Sparkles, MessageCircle, Heart, MapPin, Zap, Users, Wrench } from 'lucide-react';
 import RegionSwitcher from '@/components/RegionSwitcher';
 import GuestBanner from '@/components/GuestBanner';
 import { clearGuestSession } from '@/pages/AuthComponent';
@@ -41,13 +41,13 @@ export default function Layout({ children, onLogout }) {
     trackPageView(currentPageName);
   }, [currentPageName]);
 
-  // Modern nav items with updated icons - using translations
-  // Bottom nav: Home, AI Coach, Intimacy Coach, Tips (4 items only)
+  // 5-tab navigation: Co-Pilot, Wingman, Rehearsal, Tools, Profile
   const navItems = [
-    { name: t('nav.home'), icon: Home, page: 'Home' },
-    { name: t('nav.aiCoach'), icon: Sparkles, page: 'Chat' },
-    { name: 'Intimacy', icon: Heart, page: 'IntimacyCoach' },
-    { name: t('nav.tips'), icon: Lightbulb, page: 'Tips' }
+    { name: 'Co-Pilot', icon: Home, page: 'Copilot' },
+    { name: 'Wingman', icon: Zap, page: 'Wingman' },
+    { name: 'Rehearsal', icon: Users, page: 'Rehearsal' },
+    { name: 'Tools', icon: Wrench, page: 'Tools' },
+    { name: 'Profile', icon: User, page: 'Profile' }
   ];
 
   return (
@@ -129,7 +129,7 @@ export default function Layout({ children, onLogout }) {
         <div className="h-14 px-4 flex items-center justify-between max-w-screen-xl mx-auto">
           {/* Left side - Logo/Brand */}
           <div className="flex items-center">
-            <Link to="/home" className="flex items-center gap-2">
+            <Link to="/copilot" className="flex items-center gap-2">
               <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
@@ -151,14 +151,9 @@ export default function Layout({ children, onLogout }) {
             />
           )}
           
-          {/* Right side - Combined Region Switcher & Profile */}
+          {/* Right side - Region Switcher only (Profile is now in nav) */}
           <div className="flex items-center gap-2">
             <RegionSwitcher />
-            <Link to="/profile">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center shadow-lg hover:scale-105 hover:shadow-purple-500/30 transition-all duration-200">
-                <User className="w-5 h-5 text-white" />
-              </div>
-            </Link>
           </div>
         </div>
       </header>
