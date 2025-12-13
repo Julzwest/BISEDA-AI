@@ -11124,6 +11124,10 @@ const Coffee = createLucideIcon("Coffee", [
   ["line", { x1: "10", x2: "10", y1: "2", y2: "4", key: "170wym" }],
   ["line", { x1: "14", x2: "14", y1: "2", y2: "4", key: "1c5f70" }]
 ]);
+const Copy$1 = createLucideIcon("Copy", [
+  ["rect", { width: "14", height: "14", x: "8", y: "8", rx: "2", ry: "2", key: "17jyea" }],
+  ["path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2", key: "zix9uf" }]
+]);
 const CreditCard = createLucideIcon("CreditCard", [
   ["rect", { width: "20", height: "14", x: "2", y: "5", rx: "2", key: "ynyp8z" }],
   ["line", { x1: "2", x2: "22", y1: "10", y2: "10", key: "1b3vmo" }]
@@ -11224,6 +11228,16 @@ const Globe = createLucideIcon("Globe", [
   ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
   ["path", { d: "M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20", key: "13o1zl" }],
   ["path", { d: "M2 12h20", key: "9i4pu4" }]
+]);
+const HeartCrack = createLucideIcon("HeartCrack", [
+  [
+    "path",
+    {
+      d: "M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z",
+      key: "c3ymky"
+    }
+  ],
+  ["path", { d: "m12 13-1-1 2-2-3-3 2-2", key: "xjdxli" }]
 ]);
 const Heart = createLucideIcon("Heart", [
   [
@@ -13717,7 +13731,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-_pEAiq9T.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-ClofTgO0.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -15117,6 +15131,24 @@ function Home() {
       color: "from-pink-500 to-rose-400",
       // Pink-Rose for emotions/mood
       page: "MoodCheck"
+    },
+    {
+      icon: Zap,
+      title: "Live Date Wingman",
+      description: "Real-time help during your dates",
+      color: "from-amber-500 to-orange-600",
+      // Amber-Orange for live/urgent
+      page: "LiveWingman",
+      requiresProOrElite: true
+    },
+    {
+      icon: HeartCrack,
+      title: "Breakup Recovery",
+      description: "Heal from heartbreak with support",
+      color: "from-purple-600 to-indigo-600",
+      // Purple-Indigo for healing
+      page: "BreakupCoach",
+      requiresProOrElite: true
     }
   ];
   const stats = [
@@ -24032,6 +24064,664 @@ Intimacy Coach responds naturally (be direct, explicit, helpful):`;
     /* @__PURE__ */ jsxRuntimeExports.jsx(LimitReachedModal, { isOpen: showLimitModal, onClose: () => setShowLimitModal(false) })
   ] });
 }
+const WINGMAN_PROMPT = `You are a LIVE DATE WINGMAN - helping someone reply in real-time during an actual conversation.
+
+YOUR ROLE:
+- You're like a friend texting them advice in real-time
+- Quick, actionable suggestions they can copy and send
+- Read the vibe and match the energy
+- Help them seem natural, confident, and interesting
+
+ANALYZE EACH MESSAGE FOR:
+1. Interest Level (1-10) - based on message length, questions, emojis, response time
+2. Mood - playful, flirty, casual, serious, distant
+3. What they should do next
+
+ALWAYS PROVIDE:
+- 3 different reply options (casual, interested, flirty)
+- What NOT to say
+- Optimal reply timing
+- A tip for this specific situation
+
+FORMAT YOUR RESPONSE LIKE THIS:
+📊 **Analysis**
+Interest Level: X/10
+Mood: [mood]
+Vibe: [quick assessment]
+
+💡 **Reply Options**
+
+1️⃣ **Keep it casual:**
+"[reply text]"
+
+2️⃣ **Show interest:**
+"[reply text]"
+
+3️⃣ **Be flirty:**
+"[reply text]"
+
+⚠️ **Don't say:** [what to avoid]
+
+⏰ **Reply in:** X-X minutes
+
+💎 **Pro tip:** [specific advice for this situation]
+
+RULES:
+- Keep replies SHORT (1-2 sentences max for texts)
+- Match their energy level
+- Use emojis sparingly but naturally
+- If they seem less interested, suggest pulling back
+- If they're interested, suggest escalating (asking out)
+- Be direct and actionable - they're in the moment!`;
+function LiveWingman() {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [theirMessage, setTheirMessage] = reactExports.useState("");
+  const [theirName, setTheirName] = reactExports.useState("");
+  const [platform, setPlatform] = reactExports.useState("");
+  const [analysis, setAnalysis] = reactExports.useState(null);
+  const [isLoading, setIsLoading] = reactExports.useState(false);
+  const [conversationContext, setConversationContext] = reactExports.useState([]);
+  const [copiedIndex, setCopiedIndex] = reactExports.useState(null);
+  const [sessionActive, setSessionActive] = reactExports.useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = reactExports.useState(false);
+  const subscriptionTier = localStorage.getItem("userSubscriptionTier");
+  const hasProOrEliteSubscription = () => {
+    const tier = (subscriptionTier || localStorage.getItem("userSubscriptionTier") || "").toLowerCase();
+    return ["pro", "elite", "premium"].includes(tier);
+  };
+  const platforms = [
+    { id: "whatsapp", label: "WhatsApp", emoji: "💬" },
+    { id: "tinder", label: "Tinder", emoji: "🔥" },
+    { id: "bumble", label: "Bumble", emoji: "🐝" },
+    { id: "instagram", label: "Instagram", emoji: "📸" },
+    { id: "imessage", label: "iMessage", emoji: "💭" },
+    { id: "other", label: "Other", emoji: "💬" }
+  ];
+  const startSession = () => {
+    if (!theirName.trim()) {
+      alert("Please enter their name first!");
+      return;
+    }
+    setSessionActive(true);
+  };
+  const copyToClipboard = async (text, index) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedIndex(index);
+      setTimeout(() => setCopiedIndex(null), 2e3);
+    } catch (err) {
+      console.error("Failed to copy:", err);
+    }
+  };
+  const analyzeMessage = async () => {
+    if (!theirMessage.trim() || isLoading) return;
+    setIsLoading(true);
+    const updatedContext = [...conversationContext, {
+      sender: "them",
+      text: theirMessage,
+      time: /* @__PURE__ */ new Date()
+    }];
+    setConversationContext(updatedContext);
+    try {
+      const contextString = updatedContext.length > 1 ? `Previous messages:
+${updatedContext.slice(-5).map((m) => `${m.sender === "them" ? theirName : "You"}: ${m.text}`).join("\n")}
+
+Latest message from ${theirName}:` : `First message from ${theirName}:`;
+      const prompt = `${WINGMAN_PROMPT}
+
+SITUATION:
+- Chatting with: ${theirName}
+- Platform: ${platform || "dating app"}
+- ${contextString}
+"${theirMessage}"
+
+Analyze and provide reply options:`;
+      const response = await base44.integrations.Core.InvokeLLM({
+        prompt,
+        response_type: "text"
+      });
+      const aiContent = typeof response === "string" ? response : response?.content || response?.text || "";
+      setAnalysis(aiContent);
+      setTheirMessage("");
+    } catch (error) {
+      console.error("Error:", error);
+      setAnalysis("Couldn't analyze right now. Try again!");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const recordYourReply = (replyText) => {
+    setConversationContext((prev) => [...prev, {
+      sender: "you",
+      text: replyText,
+      time: /* @__PURE__ */ new Date()
+    }]);
+  };
+  const extractReplies = (text) => {
+    if (!text) return [];
+    const replies = [];
+    const patterns = [
+      /1️⃣[^"]*"([^"]+)"/,
+      /2️⃣[^"]*"([^"]+)"/,
+      /3️⃣[^"]*"([^"]+)"/
+    ];
+    patterns.forEach((pattern) => {
+      const match = text.match(pattern);
+      if (match) replies.push(match[1]);
+    });
+    return replies;
+  };
+  if (!hasProOrEliteSubscription()) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen p-4 flex flex-col items-center justify-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "p-6 bg-slate-800/50 border-amber-500/30 max-w-md text-center", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-16 h-16 text-amber-500 mx-auto mb-4" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white mb-2", children: "Live Date Wingman" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 mb-4", children: "Get real-time help during your actual dates. Paste their messages and get instant reply suggestions!" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-amber-400 mb-6", children: "🔒 Available with Pro or Elite membership" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Button,
+          {
+            onClick: () => setShowUpgradeModal(true),
+            className: "w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700",
+            children: "Upgrade to Access"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Button,
+          {
+            onClick: () => navigate("/home"),
+            variant: "ghost",
+            className: "w-full mt-2 text-slate-400",
+            children: "Back to Home"
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(UpgradeModal, { isOpen: showUpgradeModal, onClose: () => {
+        setShowUpgradeModal(false);
+        navigate("/home");
+      } })
+    ] });
+  }
+  if (!sessionActive) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "min-h-screen p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-md mx-auto", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-center mb-6", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-20 h-20 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-10 h-10 text-white" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold text-white mb-2", children: "Live Date Wingman" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-400", children: "Real-time help during your date 🔥" })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Card, { className: "p-6 bg-slate-800/50 border-amber-500/30", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: "Who are you talking to?" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "input",
+            {
+              type: "text",
+              value: theirName,
+              onChange: (e) => setTheirName(e.target.value),
+              placeholder: "Their name...",
+              className: "w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+            }
+          )
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: "Where are you chatting?" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-3 gap-2", children: platforms.map((p) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+            "button",
+            {
+              onClick: () => setPlatform(p.label),
+              className: `p-3 rounded-xl text-sm font-medium transition-all ${platform === p.label ? "bg-amber-500 text-white" : "bg-slate-700 text-slate-300 hover:bg-slate-600"}`,
+              children: [
+                p.emoji,
+                " ",
+                p.label
+              ]
+            },
+            p.id
+          )) })
+        ] }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          Button,
+          {
+            onClick: startSession,
+            disabled: !theirName.trim(),
+            className: "w-full py-4 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-lg font-bold",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-5 h-5 mr-2" }),
+              "Start Live Coaching"
+            ]
+          }
+        )
+      ] }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-6 p-4 bg-slate-800/30 rounded-xl", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-white font-medium mb-3", children: "How it works:" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2 text-sm text-slate-400", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "1️⃣ Paste their message when they text you" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "2️⃣ Get instant analysis + 3 reply options" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "3️⃣ Copy your favorite and send it!" }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { children: "4️⃣ Repeat for the whole conversation" })
+        ] })
+      ] })
+    ] }) });
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "min-h-screen p-4", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-2xl mx-auto", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { className: "w-5 h-5 text-white" }) }),
+        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("h1", { className: "text-lg font-bold text-white", children: [
+            "Live with ",
+            theirName
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-amber-400 flex items-center gap-1", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2 h-2 bg-green-500 rounded-full animate-pulse" }),
+            "Session Active"
+          ] })
+        ] })
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Button,
+        {
+          onClick: () => setSessionActive(false),
+          variant: "ghost",
+          className: "text-slate-400 text-sm",
+          children: "End Session"
+        }
+      )
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "p-4 bg-slate-800/50 border-amber-500/30 mb-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "block text-sm font-medium text-slate-300 mb-2", children: [
+        "📥 Paste ",
+        theirName,
+        "'s latest message:"
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "textarea",
+        {
+          value: theirMessage,
+          onChange: (e) => setTheirMessage(e.target.value),
+          placeholder: `What did ${theirName} say?`,
+          rows: 3,
+          className: "w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 resize-none"
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Button,
+        {
+          onClick: analyzeMessage,
+          disabled: !theirMessage.trim() || isLoading,
+          className: "w-full mt-3 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700",
+          children: isLoading ? /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" }),
+            "Analyzing..."
+          ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-2", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles$1, { className: "w-4 h-4" }),
+            "Get Reply Suggestions"
+          ] })
+        }
+      )
+    ] }),
+    analysis && /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "p-4 bg-slate-800/50 border-green-500/30 mb-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "prose prose-invert max-w-none", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-slate-200 whitespace-pre-wrap text-sm", children: analysis }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-4 pt-4 border-t border-slate-700", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-slate-400 mb-2", children: "Quick copy:" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-2", children: extractReplies(analysis).map((reply, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => {
+              copyToClipboard(reply, idx);
+              recordYourReply(reply);
+            },
+            className: "w-full p-3 bg-slate-700 hover:bg-slate-600 rounded-xl text-left text-white text-sm flex items-center justify-between transition-all",
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "flex-1", children: reply }),
+              copiedIndex === idx ? /* @__PURE__ */ jsxRuntimeExports.jsx(Check$1, { className: "w-4 h-4 text-green-400 ml-2" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Copy$1, { className: "w-4 h-4 text-slate-400 ml-2" })
+            ]
+          },
+          idx
+        )) })
+      ] })
+    ] }),
+    conversationContext.length > 0 && /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "p-4 bg-slate-800/30 border-slate-700", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-medium text-slate-400 mb-3", children: "Conversation so far:" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-2 max-h-40 overflow-y-auto", children: conversationContext.slice(-6).map((msg, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs(
+        "div",
+        {
+          className: `text-sm p-2 rounded-lg ${msg.sender === "them" ? "bg-slate-700 text-slate-300" : "bg-amber-500/20 text-amber-300"}`,
+          children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-medium", children: [
+              msg.sender === "them" ? theirName : "You",
+              ":"
+            ] }),
+            " ",
+            msg.text
+          ]
+        },
+        idx
+      )) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-4 p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-xs text-amber-300 flex items-center gap-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(AlertCircle, { className: "w-4 h-4" }),
+      "Tip: Don't reply too fast! Wait 2-5 minutes for best results."
+    ] }) })
+  ] }) });
+}
+const BREAKUP_COACH_PROMPT = `You are a compassionate Breakup Recovery Coach. You help people heal from breakups with empathy, wisdom, and practical advice.
+
+YOUR PERSONALITY:
+- Warm, understanding, and non-judgmental
+- Like a supportive best friend who's been through it
+- Honest but gentle - you tell them what they need to hear
+- Encouraging and hopeful about their future
+
+WHAT YOU HELP WITH:
+
+💔 EMOTIONAL SUPPORT:
+- Processing feelings of sadness, anger, confusion
+- Dealing with the urge to contact their ex
+- Building self-worth after rejection
+- Managing loneliness and grief
+
+📱 THE "SHOULD I TEXT MY EX?" ANALYZER:
+When they want to text their ex, ask:
+1. What do you want to say?
+2. What outcome are you hoping for?
+3. How long has it been since the breakup?
+Then give honest advice - usually "don't do it" but explain WHY gently.
+
+✉️ CLOSURE MESSAGES:
+If they NEED to send a final message, help them craft something:
+- Dignified and mature
+- Says what they need to say
+- Doesn't leave the door open (unless that's truly what they want)
+- They won't regret sending
+
+🌟 DAILY AFFIRMATIONS:
+Provide uplifting affirmations like:
+- "You are worthy of love that doesn't leave"
+- "This pain is temporary, your growth is permanent"
+- "The right person won't make you feel like you're too much"
+
+📅 HEALING TIMELINE:
+- Remind them healing isn't linear
+- Suggest healthy coping activities
+- Encourage no-contact when appropriate
+- Celebrate small wins in their recovery
+
+RULES:
+- Never encourage unhealthy behaviors (stalking, revenge, etc.)
+- Validate their feelings but guide them toward healing
+- Be honest if contacting their ex is a bad idea
+- Encourage professional help if they seem in crisis
+- Always end on a hopeful note
+
+Remember: Your job is to help them heal and become stronger, not to help them get their ex back (unless reconciliation is genuinely healthy).`;
+const AFFIRMATIONS = [
+  "You are worthy of love that stays. 💕",
+  "This ending is making room for a better beginning. ✨",
+  "Your heart is healing, even when it doesn't feel like it. 🌱",
+  "The right person won't make you question your worth. 💪",
+  "You survived 100% of your worst days. Keep going. 🌟",
+  "Someone out there is looking for exactly what you offer. 💫",
+  "Letting go doesn't mean giving up, it means growing up. 🦋",
+  "Your peace is worth more than their presence. 🕊️",
+  "You're not losing them, you're finding yourself. 🔮",
+  "Healing isn't linear, and that's okay. Every step counts. 💜"
+];
+function BreakupCoach() {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [messages, setMessages] = reactExports.useState([]);
+  const [input, setInput] = reactExports.useState("");
+  const [isLoading, setIsLoading] = reactExports.useState(false);
+  const [conversationHistory, setConversationHistory] = reactExports.useState([]);
+  const messagesEndRef = reactExports.useRef(null);
+  const [dailyAffirmation, setDailyAffirmation] = reactExports.useState("");
+  const [showQuickActions, setShowQuickActions] = reactExports.useState(true);
+  const [showUpgradeModal, setShowUpgradeModal] = reactExports.useState(false);
+  const subscriptionTier = localStorage.getItem("userSubscriptionTier");
+  const hasProOrEliteSubscription = () => {
+    const tier = (subscriptionTier || localStorage.getItem("userSubscriptionTier") || "").toLowerCase();
+    return ["pro", "elite", "premium"].includes(tier);
+  };
+  reactExports.useEffect(() => {
+    const dayOfYear = Math.floor((Date.now() - new Date((/* @__PURE__ */ new Date()).getFullYear(), 0, 0)) / 864e5);
+    setDailyAffirmation(AFFIRMATIONS[dayOfYear % AFFIRMATIONS.length]);
+  }, []);
+  reactExports.useEffect(() => {
+    if (!hasProOrEliteSubscription()) {
+      setShowUpgradeModal(true);
+      return;
+    }
+    const greeting = `Hey, I'm here for you. 💜
+
+I know breakups are incredibly hard. Whether it just happened or you're still healing months later, I'm here to listen and help.
+
+**Today's affirmation for you:**
+✨ "${dailyAffirmation || AFFIRMATIONS[0]}"
+
+What's on your mind today? You can:
+• Vent about how you're feeling
+• Ask if you should text your ex
+• Get help writing a closure message
+• Just talk it through
+
+No judgment here. 💕`;
+    const greetingMessage = { role: "assistant", content: greeting, timestamp: /* @__PURE__ */ new Date() };
+    setMessages([greetingMessage]);
+    setConversationHistory([{ role: "assistant", content: greeting }]);
+  }, [dailyAffirmation]);
+  const quickActions = [
+    {
+      icon: MessageCircle,
+      label: "Should I text my ex?",
+      color: "from-red-500 to-orange-500",
+      prompt: "I really want to text my ex right now. Should I do it?"
+    },
+    {
+      icon: HeartCrack,
+      label: "I'm feeling sad",
+      color: "from-purple-500 to-pink-500",
+      prompt: "I'm feeling really sad about my breakup today. I just need someone to talk to."
+    },
+    {
+      icon: Send,
+      label: "Write closure message",
+      color: "from-blue-500 to-cyan-500",
+      prompt: "I want to write a final closure message to my ex. Can you help me?"
+    },
+    {
+      icon: Sparkles$1,
+      label: "Daily affirmation",
+      color: "from-amber-500 to-yellow-500",
+      prompt: "I need some encouragement today. Can you give me some affirmations?"
+    }
+  ];
+  const handleQuickAction = (prompt) => {
+    setInput(prompt);
+    setShowQuickActions(false);
+    setTimeout(() => handleSend(prompt), 100);
+  };
+  const startNewChat = () => {
+    const greeting = `Fresh start! 💜
+
+How are you feeling today? Remember, healing takes time and every day is different.
+
+What would you like to talk about?`;
+    const greetingMessage = { role: "assistant", content: greeting, timestamp: /* @__PURE__ */ new Date() };
+    setMessages([greetingMessage]);
+    setConversationHistory([{ role: "assistant", content: greeting }]);
+    setShowQuickActions(true);
+  };
+  reactExports.useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+  const handleSend = async (overrideMessage = null) => {
+    const userMessage = overrideMessage || input.trim();
+    if (!userMessage || isLoading) return;
+    setInput("");
+    setShowQuickActions(false);
+    const userMsg = { role: "user", content: userMessage, timestamp: /* @__PURE__ */ new Date() };
+    setMessages((prev) => [...prev, userMsg]);
+    const updatedHistory = [...conversationHistory, { role: "user", content: userMessage }];
+    setConversationHistory(updatedHistory);
+    setIsLoading(true);
+    try {
+      const historyText = updatedHistory.map(
+        (m) => `${m.role === "user" ? "User" : "Breakup Coach"}: ${m.content}`
+      ).join("\n");
+      const prompt = `${BREAKUP_COACH_PROMPT}
+
+CONVERSATION SO FAR:
+${historyText}
+
+Breakup Coach responds with empathy and helpful guidance:`;
+      const response = await base44.integrations.Core.InvokeLLM({
+        prompt,
+        response_type: "text"
+      });
+      const aiContent = typeof response === "string" ? response : response?.content || response?.text || "I'm here for you. Tell me more about what you're going through. 💜";
+      const aiMsg = { role: "assistant", content: aiContent, timestamp: /* @__PURE__ */ new Date() };
+      setMessages((prev) => [...prev, aiMsg]);
+      setConversationHistory((prev) => [...prev, { role: "assistant", content: aiContent }]);
+    } catch (error) {
+      console.error("Error:", error);
+      const errorMsg = { role: "assistant", content: "I'm still here for you. Let's try that again. 💜", timestamp: /* @__PURE__ */ new Date() };
+      setMessages((prev) => [...prev, errorMsg]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+  if (!hasProOrEliteSubscription()) {
+    return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-h-screen p-4 flex flex-col items-center justify-center", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs(Card, { className: "p-6 bg-slate-800/50 border-purple-500/30 max-w-md text-center", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(HeartCrack, { className: "w-16 h-16 text-purple-500 mx-auto mb-4" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl font-bold text-white mb-2", children: "Breakup Recovery Coach" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-slate-300 mb-4", children: "Heal from heartbreak with compassionate AI support, daily affirmations, and guidance on moving forward." }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-purple-400 mb-6", children: "🔒 Available with Pro or Elite membership" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Button,
+          {
+            onClick: () => setShowUpgradeModal(true),
+            className: "w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700",
+            children: "Upgrade to Access"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          Button,
+          {
+            onClick: () => navigate("/home"),
+            variant: "ghost",
+            className: "w-full mt-2 text-slate-400",
+            children: "Back to Home"
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(UpgradeModal, { isOpen: showUpgradeModal, onClose: () => {
+        setShowUpgradeModal(false);
+        navigate("/home");
+      } })
+    ] });
+  }
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col h-[calc(100vh-140px)] max-w-4xl mx-auto", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-center gap-3", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: () => {
+            },
+            className: "p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(History, { className: "w-5 h-5" })
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-300 bg-clip-text text-transparent", children: "💔 Breakup Recovery" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx(
+          "button",
+          {
+            onClick: startNewChat,
+            className: "p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all",
+            children: /* @__PURE__ */ jsxRuntimeExports.jsx(Plus, { className: "w-5 h-5" })
+          }
+        )
+      ] }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-3 p-3 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl border border-purple-500/30 text-center", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-purple-300", children: "✨ Today's Affirmation" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-white font-medium", children: dailyAffirmation })
+      ] })
+    ] }),
+    showQuickActions && messages.length <= 1 && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-4 pb-4", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-sm text-slate-400 mb-3 text-center", children: "Quick actions:" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 gap-2", children: quickActions.map((action, idx) => {
+        const Icon = action.icon;
+        return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          "button",
+          {
+            onClick: () => handleQuickAction(action.prompt),
+            className: `p-3 rounded-xl bg-gradient-to-r ${action.color} text-white text-sm font-medium flex items-center gap-2 hover:opacity-90 transition-all`,
+            children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(Icon, { className: "w-4 h-4" }),
+              action.label
+            ]
+          },
+          idx
+        );
+      }) })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 overflow-y-auto p-4 space-y-4", children: [
+      messages.map((msg, idx) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "div",
+        {
+          className: `flex ${msg.role === "user" ? "justify-end" : "justify-start"}`,
+          children: /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "div",
+            {
+              className: `max-w-[85%] rounded-2xl px-4 py-3 ${msg.role === "user" ? "bg-gradient-to-r from-purple-500 to-pink-600 text-white" : "bg-slate-800 text-slate-100 border border-purple-500/20"}`,
+              children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "whitespace-pre-wrap", children: msg.content })
+            }
+          )
+        },
+        idx
+      )),
+      isLoading && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex justify-start", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "bg-slate-800 rounded-2xl px-4 py-3 border border-purple-500/20", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-1", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2 h-2 bg-purple-500 rounded-full animate-bounce", style: { animationDelay: "0ms" } }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2 h-2 bg-purple-500 rounded-full animate-bounce", style: { animationDelay: "150ms" } }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2 h-2 bg-purple-500 rounded-full animate-bounce", style: { animationDelay: "300ms" } })
+      ] }) }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx("div", { ref: messagesEndRef })
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 border-t border-purple-500/30", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        "input",
+        {
+          type: "text",
+          value: input,
+          onChange: (e) => setInput(e.target.value),
+          onKeyPress: handleKeyPress,
+          placeholder: "Share what's on your mind... 💜",
+          className: "flex-1 bg-slate-800 border border-purple-500/30 rounded-xl px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-purple-500",
+          disabled: isLoading
+        }
+      ),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Button,
+        {
+          onClick: () => handleSend(),
+          disabled: !input.trim() || isLoading,
+          className: "bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 px-6",
+          children: /* @__PURE__ */ jsxRuntimeExports.jsx(Send, { className: "w-5 h-5" })
+        }
+      )
+    ] }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(UpgradeModal, { isOpen: showUpgradeModal, onClose: () => setShowUpgradeModal(false) })
+  ] });
+}
 const getSteps = (t) => [
   {
     id: 1,
@@ -24285,6 +24975,8 @@ function App() {
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/moodcheck", element: /* @__PURE__ */ jsxRuntimeExports.jsx(MoodCheck, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/rehearsal", element: /* @__PURE__ */ jsxRuntimeExports.jsx(DateRehearsal, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/intimacycoach", element: /* @__PURE__ */ jsxRuntimeExports.jsx(IntimacyCoach, {}) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/livewingman", element: /* @__PURE__ */ jsxRuntimeExports.jsx(LiveWingman, {}) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/breakupcoach", element: /* @__PURE__ */ jsxRuntimeExports.jsx(BreakupCoach, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/profile", element: /* @__PURE__ */ jsxRuntimeExports.jsx(UserProfile, { onLogout: handleLogout }) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/subscription/success", element: /* @__PURE__ */ jsxRuntimeExports.jsx(SubscriptionSuccess, {}) }),
       /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/subscription/cancel", element: /* @__PURE__ */ jsxRuntimeExports.jsx(SubscriptionCancel, {}) }),

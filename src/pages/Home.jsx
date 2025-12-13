@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { createPageUrl } from '../utils';
-import { Lightbulb, TrendingUp, Zap, Star, Sparkles, Heart, MessageSquare, Calendar, Bot, Gift, PartyPopper, Smile, Camera, BookOpen, Users, User, MapPin, Lock, Crown } from 'lucide-react';
+import { Lightbulb, TrendingUp, Zap, Star, Sparkles, Heart, HeartCrack, MessageSquare, Calendar, Bot, Gift, PartyPopper, Smile, Camera, BookOpen, Users, User, MapPin, Lock, Crown } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import UsageDisplay from '@/components/UsageDisplay';
@@ -152,6 +152,22 @@ export default function Home() {
       description: t('home.features.mood.desc', 'Check your dating readiness'),
       color: 'from-pink-500 to-rose-400', // Pink-Rose for emotions/mood
       page: 'MoodCheck'
+    },
+    {
+      icon: Zap,
+      title: 'Live Date Wingman',
+      description: 'Real-time help during your dates',
+      color: 'from-amber-500 to-orange-600', // Amber-Orange for live/urgent
+      page: 'LiveWingman',
+      requiresProOrElite: true
+    },
+    {
+      icon: HeartCrack,
+      title: 'Breakup Recovery',
+      description: 'Heal from heartbreak with support',
+      color: 'from-purple-600 to-indigo-600', // Purple-Indigo for healing
+      page: 'BreakupCoach',
+      requiresProOrElite: true
     }
   ];
 

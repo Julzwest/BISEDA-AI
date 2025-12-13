@@ -15,6 +15,8 @@ import PrivacyPolicy from './pages/PrivacyPolicy.jsx';
 import MoodCheck from './pages/MoodCheck.jsx';
 import DateRehearsal from './pages/DateRehearsal.jsx';
 import IntimacyCoach from './pages/IntimacyCoach.jsx';
+import LiveWingman from './pages/LiveWingman.jsx';
+import BreakupCoach from './pages/BreakupCoach.jsx';
 import OnboardingTutorial from './components/OnboardingTutorial.jsx';
 import ScrollToTop from './components/ScrollToTop.jsx';
 
@@ -143,6 +145,8 @@ function App() {
           <Route path="/moodcheck" element={<MoodCheck />} />
           <Route path="/rehearsal" element={<DateRehearsal />} />
           <Route path="/intimacycoach" element={<IntimacyCoach />} />
+          <Route path="/livewingman" element={<LiveWingman />} />
+          <Route path="/breakupcoach" element={<BreakupCoach />} />
           <Route path="/profile" element={<UserProfile onLogout={handleLogout} />} />
           
           {/* System */}
