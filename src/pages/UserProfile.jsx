@@ -950,11 +950,58 @@ export default function UserProfile({ onLogout }) {
             </div>
           </Card>
 
-          {/* Support & Help */}
+          {/* Support Resources */}
+          <Card className="bg-slate-800/50 border-slate-700 p-5">
+            <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+              <Heart className="w-5 h-5 text-rose-400" />
+              Support Resources
+            </h3>
+            <p className="text-slate-500 text-sm mb-4">
+              Additional guidance for sensitive topics
+            </p>
+            <div className="space-y-2">
+              <Link to="/intimacycoach">
+                <button className="w-full p-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-left transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 bg-gradient-to-br from-pink-500 to-rose-500 rounded-lg flex items-center justify-center">
+                      <MessageSquare className="w-4 h-4 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="text-sm font-semibold">Communication Coach</div>
+                      <div className="text-xs text-slate-400">Guidance on healthy communication</div>
+                    </div>
+                    <div className="flex items-center gap-1 px-2 py-0.5 bg-purple-500/20 rounded-full">
+                      <Crown className="w-3 h-3 text-purple-400" />
+                      <span className="text-[10px] text-purple-400 font-semibold">PRO</span>
+                    </div>
+                  </div>
+                </button>
+              </Link>
+              <Link to="/breakupcoach">
+                <button className="w-full p-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-left transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center">
+                      <Heart className="w-4 h-4 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="text-sm font-semibold">Breakup Recovery</div>
+                      <div className="text-xs text-slate-400">Support for moving forward</div>
+                    </div>
+                    <div className="flex items-center gap-1 px-2 py-0.5 bg-purple-500/20 rounded-full">
+                      <Crown className="w-3 h-3 text-purple-400" />
+                      <span className="text-[10px] text-purple-400 font-semibold">PRO</span>
+                    </div>
+                  </div>
+                </button>
+              </Link>
+            </div>
+          </Card>
+
+          {/* Help & Contact */}
           <Card className="bg-slate-800/50 border-slate-700 p-5">
             <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
               <HelpCircle className="w-5 h-5 text-green-400" />
-              Support & Help
+              Help & Contact
             </h3>
             <div className="space-y-2">
               <a
