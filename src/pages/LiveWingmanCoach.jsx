@@ -4,7 +4,6 @@ import {
   ArrowLeft,
   Zap,
   Heart,
-  HandHeart,
   Smile,
   MessageCircle,
   Calendar,
@@ -76,7 +75,7 @@ export default function LiveWingmanCoach() {
 
   const quickActions = [
     { id: 'kiss', label: 'Kiss', icon: Heart, color: 'from-pink-500 to-rose-600' },
-    { id: 'holdHands', label: 'Hold Hands', icon: HandHeart, color: 'from-purple-500 to-indigo-600' },
+    { id: 'holdHands', label: 'Hold Hands', icon: Hand, color: 'from-purple-500 to-indigo-600' },
     { id: 'flirt', label: 'Flirt', icon: Sparkles, color: 'from-amber-500 to-orange-600' },
     { id: 'silence', label: 'Silence Fix', icon: MessageCircle, color: 'from-blue-500 to-cyan-600' },
     { id: 'compliment', label: 'Compliment', icon: Smile, color: 'from-green-500 to-emerald-600' },

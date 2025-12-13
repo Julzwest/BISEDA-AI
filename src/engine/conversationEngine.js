@@ -410,8 +410,7 @@ function getBaseResponses(goal, analysis) {
   const isPositive = interestLevel !== 'Low' && momentum !== 'Cooling';
   
   const responses = {
-    'flow':
-    'Keep it flowing': {
+    'flow': {
       main: isPositive
         ? "That's really interesting! What got you into that?"
         : "I'd love to hear more about that when you have time.",
@@ -419,8 +418,7 @@ function getBaseResponses(goal, analysis) {
       confident: "I like that about you. Tell me more.",
       direct: "That's cool. What else should I know about you?"
     },
-    'flirt':
-    'Flirt / build attraction': {
+    'flirt': {
       main: isPositive
         ? "You're making it really hard to focus on anything else right now 😏"
         : "I have to admit, I was hoping you'd say that.",
@@ -428,8 +426,7 @@ function getBaseResponses(goal, analysis) {
       confident: "Talking to you is quickly becoming the best part of my day.",
       direct: "I'm really enjoying this. You've definitely got my attention."
     },
-    'date':
-    'Ask for the date': {
+    'date': {
       main: isPositive
         ? "We should grab coffee this week. How does Thursday look?"
         : "I'd love to continue this in person sometime.",
@@ -437,15 +434,13 @@ function getBaseResponses(goal, analysis) {
       confident: "Let's make this happen. When are you free?",
       direct: "I want to meet you. Are you free this weekend?"
     },
-    'recover':
-    'Recover from a mistake': {
+    'recover': {
       main: "Hey, I think that came out wrong. Let me try again - how's your day going?",
       playful: "Okay, pretend I didn't say that 😅 Anyway, what are you up to?",
       confident: "I'll own that one - not my smoothest moment. But I'm glad we're talking.",
       direct: "Sorry if that was awkward. Can we start fresh?"
     },
-    'boundaries':
-    'Set boundaries / slow it down': {
+    'boundaries': {
       main: "I'm enjoying getting to know you, but I like to take things a bit slower.",
       playful: "Easy there tiger 😄 Let's save some mystery for later.",
       confident: "I appreciate the energy, but I prefer to build up to that.",

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { 
   Camera, 
@@ -10,16 +10,13 @@ import {
   Zap,
   Heart,
   TrendingUp,
-  Star
+  Star,
+  Shield
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import UsageDisplay from '@/components/UsageDisplay';
-import UpgradeModal from '@/components/UpgradeModal';
 
 export default function HomeCoPilot() {
-  const { t, i18n } = useTranslation();
-  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const { i18n } = useTranslation();
   const [userName, setUserName] = useState(null);
   const navigate = useNavigate();
   
@@ -85,195 +82,184 @@ export default function HomeCoPilot() {
 
   return (
     <div className="w-full overflow-x-hidden" key={i18n.language}>
-      {/* Hero Section */}
-      <div className="px-4 pt-8 pb-6 w-full max-w-full">
-        <div className="text-center mb-8">
-          {/* Logo */}
+      {/* ═══════════════════════════════════════════════════════════
+          HERO SECTION - Clean, calm, action-first
+          ═══════════════════════════════════════════════════════════ */}
+      <div className="px-5 pt-10 pb-8 w-full max-w-full">
+        
+        {/* Logo + Branding */}
+        <div className="text-center mb-10">
           <div 
-            className="inline-block mb-6 relative cursor-pointer select-none"
+            className="inline-block mb-5 relative cursor-pointer select-none"
             onClick={handleLogoTap}
           >
             <div className="relative">
-              {/* Main icon */}
-              <div className="w-28 h-28 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/50 relative overflow-hidden">
+              <div className="w-20 h-20 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-xl shadow-purple-500/30 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
-                <MessageSquare className="w-14 h-14 text-white relative z-10" fill="currentColor" strokeWidth={1.5} />
-                <Sparkles className="w-5 h-5 text-yellow-300 absolute top-3 right-3 animate-pulse" />
-              </div>
-              {/* Co-pilot badge */}
-              <div className="absolute -bottom-2 -right-2 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-xl px-3 py-1 shadow-lg border-2 border-slate-900">
-                <span className="text-white text-xs font-bold">Co-Pilot</span>
+                <MessageSquare className="w-10 h-10 text-white relative z-10" fill="currentColor" strokeWidth={1.5} />
+                <Sparkles className="w-4 h-4 text-yellow-300 absolute top-2 right-2 animate-pulse" />
               </div>
             </div>
           </div>
           
           {/* App Name */}
-          <h1 className="text-5xl font-extrabold mb-3">
+          <h1 className="text-4xl font-extrabold mb-2">
             <span className="bg-gradient-to-r from-white via-indigo-100 to-purple-100 bg-clip-text text-transparent">
               Biseda
             </span>
-            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent text-4xl">
+            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent text-3xl">
               .ai
             </span>
           </h1>
           
-          {/* Tagline - The new positioning */}
-          <p className="text-xl font-semibold bg-gradient-to-r from-purple-300 via-pink-300 to-indigo-300 bg-clip-text text-transparent mb-3">
+          {/* Tagline */}
+          <p className="text-lg font-medium text-purple-300/90">
             The AI Co-Pilot for Dating Apps
           </p>
           
           {/* Personalized Greeting */}
           {userName && (
-            <p className="text-lg text-purple-300 mb-4">
-              👋 Hey {userName}!
+            <p className="text-base text-slate-400 mt-2">
+              Hey {userName} 👋
             </p>
           )}
         </div>
 
-        {/* Main CTA Section */}
-        <div className="space-y-4 mb-8">
-          {/* Primary CTA - Upload Screenshot */}
+        {/* ═══════════════════════════════════════════════════════════
+            PRIMARY CTA - Maximum prominence
+            ═══════════════════════════════════════════════════════════ */}
+        <div className="mb-6">
           <button
             onClick={handleUploadScreenshot}
             className="w-full group relative overflow-hidden"
           >
-            <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 rounded-2xl p-[2px] shadow-2xl shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300">
-              <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl px-6 py-5 flex items-center justify-between group-hover:from-slate-800 group-hover:to-slate-700 transition-all duration-300">
+            <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 rounded-2xl p-[2px] shadow-2xl shadow-purple-500/40 hover:shadow-purple-500/60 transition-all duration-300">
+              <div className="bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl px-6 py-6 flex items-center justify-between group-hover:from-slate-800 group-hover:to-slate-700 transition-all duration-300">
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    <Camera className="w-7 h-7 text-white" />
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
+                    <Camera className="w-8 h-8 text-white" />
                   </div>
                   <div className="text-left">
                     <h3 className="text-xl font-bold text-white group-hover:text-purple-200 transition-colors">
                       Upload chat screenshot
                     </h3>
-                    <p className="text-slate-400 text-sm">Get instant reply suggestions</p>
+                    <p className="text-slate-400 text-sm mt-0.5">Get the perfect reply instantly</p>
                   </div>
                 </div>
                 <ArrowRight className="w-6 h-6 text-purple-400 group-hover:text-white group-hover:translate-x-1 transition-all duration-300" />
               </div>
             </div>
           </button>
+        </div>
 
-          {/* Subtitle / Value Proposition */}
-          <div className="text-center py-4">
-            <p className="text-slate-300 text-base leading-relaxed max-w-sm mx-auto">
-              Upload a chat screenshot. Get the perfect next message.
-            </p>
-            <p className="text-purple-400 text-sm font-medium mt-1">
-              (v1 Co-Pilot)
-            </p>
-          </div>
+        {/* Trust Line */}
+        <div className="flex items-center justify-center gap-2 mb-8 px-4">
+          <Shield className="w-4 h-4 text-green-400/70" />
+          <p className="text-slate-500 text-sm text-center">
+            Private, consent-first advice. Nothing is sent without you.
+          </p>
+        </div>
 
-          {/* Secondary CTA - Paste Text */}
-          <button
-            onClick={handlePasteText}
-            className="w-full group"
-          >
-            <Card className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 border-slate-700/50 backdrop-blur-sm hover:border-purple-500/50 hover:from-slate-700/90 hover:to-slate-800/90 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
-              <div className="p-5 flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    <ClipboardPaste className="w-6 h-6 text-white" />
-                  </div>
-                  <div className="text-left">
-                    <h3 className="text-lg font-bold text-white group-hover:text-purple-200 transition-colors">
-                      Paste chat text
-                    </h3>
-                    <p className="text-slate-400 text-sm">Copy & paste your conversation</p>
-                  </div>
+        {/* ═══════════════════════════════════════════════════════════
+            SECONDARY CTA - Clearly secondary
+            ═══════════════════════════════════════════════════════════ */}
+        <button
+          onClick={handlePasteText}
+          className="w-full group mb-12"
+        >
+          <Card className="bg-slate-800/60 border-slate-700/40 hover:border-purple-500/40 hover:bg-slate-800/80 transition-all duration-300">
+            <div className="p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 bg-gradient-to-br from-slate-600 to-slate-700 rounded-xl flex items-center justify-center group-hover:from-indigo-500 group-hover:to-cyan-500 transition-all duration-300">
+                  <ClipboardPaste className="w-5 h-5 text-slate-300 group-hover:text-white transition-colors" />
                 </div>
-                <ArrowRight className="w-5 h-5 text-slate-500 group-hover:text-purple-400 group-hover:translate-x-1 transition-all duration-300" />
+                <div className="text-left">
+                  <h3 className="text-base font-semibold text-slate-200 group-hover:text-white transition-colors">
+                    Or paste chat text
+                  </h3>
+                  <p className="text-slate-500 text-xs">Copy & paste your conversation</p>
+                </div>
               </div>
-            </Card>
-          </button>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-3 gap-2 mb-6">
-          <Card className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-slate-700/50 backdrop-blur-sm p-3 text-center hover:border-purple-500/50 transition-all">
-            <TrendingUp className="w-5 h-5 mx-auto mb-1 text-purple-400" />
-            <div className="text-lg font-bold text-white">10x</div>
-            <div className="text-[10px] text-slate-400 leading-tight">Better replies</div>
+              <ArrowRight className="w-5 h-5 text-slate-600 group-hover:text-purple-400 group-hover:translate-x-1 transition-all duration-300" />
+            </div>
           </Card>
-          <Card className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-slate-700/50 backdrop-blur-sm p-3 text-center hover:border-purple-500/50 transition-all">
-            <Heart className="w-5 h-5 mx-auto mb-1 text-pink-400" />
-            <div className="text-lg font-bold text-white">99%</div>
-            <div className="text-[10px] text-slate-400 leading-tight">More dates</div>
-          </Card>
-          <Card className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-slate-700/50 backdrop-blur-sm p-3 text-center hover:border-purple-500/50 transition-all">
-            <Zap className="w-5 h-5 mx-auto mb-1 text-amber-400" />
-            <div className="text-lg font-bold text-white">3s</div>
-            <div className="text-[10px] text-slate-400 leading-tight">Instant AI</div>
-          </Card>
-        </div>
+        </button>
 
-        {/* Usage Display */}
-        <div className="mb-8">
-          <UsageDisplay onUpgrade={() => setShowUpgradeModal(true)} />
-        </div>
-      </div>
-
-      {/* How It Works Section */}
-      <div className="px-6 pb-24">
-        <h2 className="text-xl font-bold mb-4 text-white flex items-center gap-2">
-          <Star className="w-5 h-5 text-purple-400" />
-          How it works
-        </h2>
+        {/* ═══════════════════════════════════════════════════════════
+            BELOW THE FOLD - De-emphasised content
+            ═══════════════════════════════════════════════════════════ */}
         
-        <div className="space-y-3">
-          <div className="flex items-start gap-4">
-            <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center shrink-0">
-              <span className="text-purple-400 font-bold text-sm">1</span>
+        {/* Divider */}
+        <div className="flex items-center gap-4 mb-8">
+          <div className="flex-1 h-px bg-slate-800"></div>
+          <span className="text-slate-600 text-xs uppercase tracking-wider">Why it works</span>
+          <div className="flex-1 h-px bg-slate-800"></div>
+        </div>
+
+        {/* Quick Stats - Smaller, de-emphasised */}
+        <div className="grid grid-cols-3 gap-3 mb-8">
+          <div className="text-center p-3">
+            <TrendingUp className="w-5 h-5 mx-auto mb-1.5 text-purple-400/70" />
+            <div className="text-lg font-bold text-slate-300">10x</div>
+            <div className="text-[10px] text-slate-500">Better replies</div>
+          </div>
+          <div className="text-center p-3">
+            <Heart className="w-5 h-5 mx-auto mb-1.5 text-pink-400/70" />
+            <div className="text-lg font-bold text-slate-300">99%</div>
+            <div className="text-[10px] text-slate-500">More dates</div>
+          </div>
+          <div className="text-center p-3">
+            <Zap className="w-5 h-5 mx-auto mb-1.5 text-amber-400/70" />
+            <div className="text-lg font-bold text-slate-300">3s</div>
+            <div className="text-[10px] text-slate-500">Instant AI</div>
+          </div>
+        </div>
+
+        {/* How It Works - Compact */}
+        <div className="space-y-4 mb-8">
+          <div className="flex items-start gap-3">
+            <div className="w-7 h-7 rounded-full bg-purple-500/15 flex items-center justify-center shrink-0 mt-0.5">
+              <span className="text-purple-400/80 font-semibold text-xs">1</span>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-0.5">Screenshot or paste</h4>
-              <p className="text-slate-400 text-sm">Take a screenshot of your Tinder, Bumble, Hinge, or any dating app chat</p>
+              <h4 className="text-slate-300 font-medium text-sm">Screenshot or paste</h4>
+              <p className="text-slate-500 text-xs">From Tinder, Bumble, Hinge, or any app</p>
             </div>
           </div>
           
-          <div className="flex items-start gap-4">
-            <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center shrink-0">
-              <span className="text-purple-400 font-bold text-sm">2</span>
+          <div className="flex items-start gap-3">
+            <div className="w-7 h-7 rounded-full bg-purple-500/15 flex items-center justify-center shrink-0 mt-0.5">
+              <span className="text-purple-400/80 font-semibold text-xs">2</span>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-0.5">AI analyzes the conversation</h4>
-              <p className="text-slate-400 text-sm">Our AI understands context, tone, and what they really mean</p>
+              <h4 className="text-slate-300 font-medium text-sm">AI analyzes the vibe</h4>
+              <p className="text-slate-500 text-xs">Understands context, tone & intent</p>
             </div>
           </div>
           
-          <div className="flex items-start gap-4">
-            <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center shrink-0">
-              <span className="text-purple-400 font-bold text-sm">3</span>
+          <div className="flex items-start gap-3">
+            <div className="w-7 h-7 rounded-full bg-purple-500/15 flex items-center justify-center shrink-0 mt-0.5">
+              <span className="text-purple-400/80 font-semibold text-xs">3</span>
             </div>
             <div>
-              <h4 className="text-white font-semibold mb-0.5">Get the perfect reply</h4>
-              <p className="text-slate-400 text-sm">Copy the suggested message and send it. Watch the magic happen ✨</p>
+              <h4 className="text-slate-300 font-medium text-sm">Get the perfect reply</h4>
+              <p className="text-slate-500 text-xs">Copy, send, and watch the magic ✨</p>
             </div>
           </div>
         </div>
 
-        {/* Works With Section */}
-        <div className="mt-8">
-          <p className="text-slate-500 text-xs text-center mb-3">WORKS WITH</p>
-          <div className="flex justify-center gap-4 flex-wrap">
+        {/* Works With Section - Minimal */}
+        <div className="pb-24">
+          <p className="text-slate-600 text-[10px] text-center mb-2 uppercase tracking-wider">Works with</p>
+          <div className="flex justify-center gap-2 flex-wrap">
             {['Tinder', 'Bumble', 'Hinge', 'WhatsApp', 'Instagram'].map((app) => (
-              <span key={app} className="text-slate-400 text-sm bg-slate-800/50 px-3 py-1.5 rounded-full border border-slate-700/50">
+              <span key={app} className="text-slate-500 text-xs bg-slate-800/30 px-2.5 py-1 rounded-full border border-slate-800/50">
                 {app}
               </span>
             ))}
           </div>
         </div>
       </div>
-
-      {/* Upgrade Modal */}
-      <UpgradeModal 
-        isOpen={showUpgradeModal} 
-        onClose={() => setShowUpgradeModal(false)}
-        onSelectPlan={(plan) => {
-          setShowUpgradeModal(false);
-        }}
-      />
     </div>
   );
 }
