@@ -11961,10 +11961,10 @@ class Browser {
     return detected.length > 0 ? detected[0] : null;
   }
   cacheUserLanguage(lng) {
-    let caches = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : this.options.caches;
-    if (!caches) return;
+    let caches2 = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : this.options.caches;
+    if (!caches2) return;
     if (this.options.excludeCacheFor && this.options.excludeCacheFor.indexOf(lng) > -1) return;
-    caches.forEach((cacheName) => {
+    caches2.forEach((cacheName) => {
       if (this.detectors[cacheName]) this.detectors[cacheName].cacheUserLanguage(lng, this.options);
     });
   }
@@ -13731,7 +13731,7 @@ function Auth({ onAuthSuccess }) {
     if (isNativeIOS) {
       try {
         const { SignInWithApple } = await __vitePreload(async () => {
-          const { SignInWithApple: SignInWithApple2 } = await import("./index-ClofTgO0.js");
+          const { SignInWithApple: SignInWithApple2 } = await import("./index-CPIhGNy3.js");
           return { SignInWithApple: SignInWithApple2 };
         }, true ? [] : void 0);
         const result = await SignInWithApple.authorize({
@@ -25022,6 +25022,32 @@ function ThemeProvider({ children }) {
     themeConfig: darkTheme,
     isDark: true
   }, children });
+}
+const APP_VERSION = "3.0.20251213";
+const storedVersion = localStorage.getItem("biseda_app_version");
+if (storedVersion !== APP_VERSION) {
+  console.log("🔄 New version detected! Clearing cache...", { old: storedVersion, new: APP_VERSION });
+  if ("caches" in window) {
+    caches.keys().then((names) => {
+      names.forEach((name) => {
+        caches.delete(name);
+        console.log("🗑️ Cleared cache:", name);
+      });
+    });
+  }
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach((registration) => {
+        registration.unregister();
+        console.log("🗑️ Unregistered service worker");
+      });
+    });
+  }
+  localStorage.setItem("biseda_app_version", APP_VERSION);
+  if (storedVersion) {
+    console.log("🔄 Reloading with fresh version...");
+    window.location.reload(true);
+  }
 }
 trackSessionStart();
 window.addEventListener("beforeunload", trackSessionEnd);
