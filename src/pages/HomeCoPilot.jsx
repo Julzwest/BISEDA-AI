@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { 
   Camera, 
-  ClipboardPaste, 
   Sparkles, 
   MessageSquare, 
   ArrowRight,
@@ -71,10 +70,6 @@ export default function HomeCoPilot() {
 
   const handleUploadScreenshot = () => {
     navigate('/copilot/upload?mode=screenshot');
-  };
-
-  const handlePasteText = () => {
-    navigate('/copilot/upload?mode=paste');
   };
 
   return (
@@ -182,25 +177,6 @@ export default function HomeCoPilot() {
             </div>
           </button>
         </div>
-
-        {/* SECONDARY CTA - Paste Text */}
-        <button
-          onClick={handlePasteText}
-          className="w-full group mb-6 active:scale-[0.98] transition-transform"
-        >
-          <div className="bg-slate-800/80 border-2 border-slate-700/50 hover:border-purple-500/50 rounded-2xl p-4 flex items-center gap-4 transition-all duration-300 hover:bg-slate-800">
-            <div className="w-12 h-12 bg-gradient-to-br from-slate-600 to-slate-700 rounded-xl flex items-center justify-center group-hover:from-cyan-500 group-hover:to-blue-500 transition-all duration-300">
-              <ClipboardPaste className="w-6 h-6 text-slate-300 group-hover:text-white transition-colors" />
-            </div>
-            <div className="text-left flex-1">
-              <h3 className="text-base font-semibold text-slate-200 group-hover:text-white transition-colors">
-                Or paste chat text
-              </h3>
-              <p className="text-slate-500 text-xs">Copy & paste from any app</p>
-            </div>
-            <ArrowRight className="w-5 h-5 text-slate-500 group-hover:text-purple-400 group-hover:translate-x-1 transition-all duration-300" />
-          </div>
-        </button>
 
         {/* Trust Badge */}
         <div className="flex items-center justify-center gap-2 mb-10 px-4">
