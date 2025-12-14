@@ -608,9 +608,11 @@ const textToSpeech = async (text) => {
 export const base44 = {
   integrations: {
     Core: {
-      InvokeLLM: async ({ prompt, file_urls, response_json_schema, conversationHistory, systemPrompt }) => {
+      InvokeLLM: async ({ prompt, file_urls, response_json_schema, conversationHistory, systemPrompt, system_prompt, response_type }) => {
         // Try OpenAI first, fallback to mock if no API key or error
-        const response = await callOpenAI(prompt, conversationHistory || [], systemPrompt, file_urls || []);
+        // Support both systemPrompt and system_prompt parameter names
+        const actualSystemPrompt = systemPrompt || system_prompt;
+        const response = await callOpenAI(prompt, conversationHistory || [], actualSystemPrompt, file_urls || []);
         
         // If JSON schema is requested, try to parse or return structured data
         if (response_json_schema) {
