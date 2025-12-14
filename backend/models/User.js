@@ -307,86 +307,16 @@ class User {
     return this.screenshotAnalyses.lifetimeUsed;
   }
 
-  // Get subscription limits (NEW PRICING - €6.99/€12.99/€19.99)
+  // Get subscription limits - 🎉 EVERYTHING IS FREE NOW!
   getLimits() {
-    // Check if trial has expired
-    if (this.subscriptionTier === 'free_trial' && !this.isTrialValid()) {
-      this.expireTrial();
-    }
-    
-    switch (this.subscriptionTier) {
-      case 'free_trial':
-        // 3-day free trial: 10 messages/day, no adult content
-        return {
-          messagesPerDay: 10,
-          imageAnalysesPerDay: 0,
-          screenshotsPerMonth: SCREENSHOT_LIMITS.FREE_LIFETIME_LIMIT,
-          adultContent: false,
-          isTrial: true,
-          trialDaysRemaining: this.getTrialDaysRemaining()
-        };
-      case 'free':
-        // After trial expires: very limited (encourages upgrade)
-        return {
-          messagesPerDay: 3, // Very limited to encourage upgrade
-          imageAnalysesPerDay: 0,
-          screenshotsPerMonth: SCREENSHOT_LIMITS.FREE_LIFETIME_LIMIT,
-          adultContent: false,
-          isTrial: false
-        };
-      case 'starter':
-        // €6.99/month - Entry tier
-        return {
-          messagesPerDay: 75,
-          imageAnalysesPerDay: 0,
-          screenshotsPerMonth: SCREENSHOT_LIMITS.PAID_MONTHLY_LIMIT,
-          adultContent: true,
-          isTrial: false
-        };
-      case 'pro':
-        // €12.99/month - Most Popular
-        return {
-          messagesPerDay: 200,
-          imageAnalysesPerDay: 30,
-          screenshotsPerMonth: SCREENSHOT_LIMITS.PAID_MONTHLY_LIMIT,
-          adultContent: true,
-          isTrial: false
-        };
-      case 'elite':
-        // €19.99/month - Premium tier
-        return {
-          messagesPerDay: 500,
-          imageAnalysesPerDay: 100,
-          screenshotsPerMonth: SCREENSHOT_LIMITS.PAID_MONTHLY_LIMIT,
-          adultContent: true,
-          isTrial: false
-        };
-      // Legacy tiers (for existing users)
-      case 'basic':
-        return {
-          messagesPerDay: 75, // Map to starter limits
-          imageAnalysesPerDay: 0,
-          screenshotsPerMonth: SCREENSHOT_LIMITS.PAID_MONTHLY_LIMIT,
-          adultContent: true,
-          isTrial: false
-        };
-      case 'premium':
-        return {
-          messagesPerDay: 500, // Map to elite limits
-          imageAnalysesPerDay: 100,
-          screenshotsPerMonth: SCREENSHOT_LIMITS.PAID_MONTHLY_LIMIT,
-          adultContent: true,
-          isTrial: false
-        };
-      default:
-        return {
-          messagesPerDay: 3,
-          imageAnalysesPerDay: 0,
-          screenshotsPerMonth: SCREENSHOT_LIMITS.FREE_LIFETIME_LIMIT,
-          adultContent: false,
-          isTrial: false
-        };
-    }
+    // ALL USERS GET UNLIMITED ACCESS
+    return {
+      messagesPerDay: 999999,
+      imageAnalysesPerDay: 999999,
+      screenshotsPerMonth: 999999,
+      adultContent: true,
+      isTrial: false
+    };
   }
 
   // Record message usage
