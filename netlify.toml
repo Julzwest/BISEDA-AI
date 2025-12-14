@@ -1,6 +1,11 @@
 [build]
   command = "npm run build"
-  publish = "docs"
+  publish = "dist"
 
 [build.environment]
   NETLIFY_SKIP_SUBMODULES = "true"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
