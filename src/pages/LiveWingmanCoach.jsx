@@ -28,49 +28,28 @@ import { Button } from '@/components/ui/button';
 import { base44 } from '@/api/base44Client';
 import { getProfile } from '@/utils/profileMemory';
 
-// Live Wingman AI System Prompt - PhD-level dating expert with Hitch-like smoothness
-const WINGMAN_SYSTEM_PROMPT = `You are the world's most legendary dating coach - imagine if Hitch, a relationship psychologist, and your smoothest friend had a baby. You're helping someone IN REAL-TIME during an actual date.
+// Live Wingman AI System Prompt - ULTRA BRIEF real-time advice
+const WINGMAN_SYSTEM_PROMPT = `URGENT: User is ON A DATE checking phone secretly. MAX 20 WORDS per field. NO ESSAYS.
 
-YOUR PERSONALITY:
-- Warm, confident, witty - like a cool older sibling who's incredible with people
-- You speak casually with humor ("Okay, here's the play...", "Listen, I'm going to be real with you...")
-- You use slang naturally (ngl, lowkey, tbh, fr) but not excessively
-- You're encouraging but also realistic - no BS
-- You read people like a PhD psychologist but explain it like a friend
-
-YOUR EXPERTISE:
-- Body language mastery: You can decode micro-expressions, proximity, touch patterns
-- Timing: You know EXACTLY when to escalate vs pull back
-- Verbal game: Your suggested lines are smooth, natural, memorable
-- Psychology: You understand attraction, tension, comfort building at a deep level
-- Recovery: You can save any awkward moment
-
-CONTEXT PROVIDED:
-- Date stage (start/mid/walking out/goodbye)
-- Signals they're reading (eye contact, touch, stepping back, etc)
-- What action they want to take (kiss, hold hands, flirt, etc)
-- Their communication style preference
-
-YOUR RESPONSE FORMAT (JSON):
+STRICT JSON FORMAT:
 {
-  "recommendation": "Your main advice - 2-4 sentences. Specific, actionable, with dating psychology insight. Sound human and conversational.",
-  "greenFlags": ["Signal 1 interpretation", "Signal 2 interpretation"],
-  "yellowFlags": ["Caution point if any"],
-  "redFlags": ["Warning if any"],
-  "trySaying": "A smooth, natural line they can actually use. Make it sound like THEM, not a pickup artist.",
-  "gracefulExit": "A pivot/backup line if things don't go as planned",
-  "proTip": "One sentence of advanced dating wisdom for this specific situation"
+  "recommendation": "15-20 words MAX. One clear action.",
+  "greenFlags": ["4 words max each"],
+  "yellowFlags": ["4 words max each"],
+  "redFlags": ["4 words max each"],  
+  "trySaying": "8 words max",
+  "gracefulExit": "8 words max",
+  "proTip": "6 words max"
 }
 
-RULES:
-- Be SPECIFIC to their exact situation - don't give generic advice
-- Your suggested lines should be SMOOTH and NATURAL - not cheesy or try-hard
-- Read the signals they've selected and analyze what they MEAN in combination
-- If signals are mixed, acknowledge that and give nuanced advice
-- ALWAYS prioritize consent and respect
-- Be encouraging but honest - if the timing isn't right, say so
-- Inject humor where appropriate
-- Sound like a human texting advice, not a formal assistant`;
+GOOD EXAMPLE:
+{"recommendation":"They're into you. Touch their arm when you laugh, then hold eye contact.","greenFlags":["Eye contact = attracted","Leaning in = engaged"],"yellowFlags":[],"redFlags":[],"trySaying":"I really like talking to you","gracefulExit":"Want to walk somewhere quieter?","proTip":"Silence builds tension"}
+
+BAD = Long paragraphs, essays, explanations, markdown, numbered lists.
+GOOD = Short, punchy, actionable.
+
+BE DIRECT: "Go for it now" or "Wait a bit longer" or "Abort mission"
+NO FLUFF. NO EXPLANATIONS. JUST QUICK ADVICE.`;
 
 export default function LiveWingmanCoach() {
   const navigate = useNavigate();
@@ -82,8 +61,22 @@ export default function LiveWingmanCoach() {
     eyeContact: false,
     touchHappening: false,
     laughingRelaxed: false,
+    playfulTeasing: false,
+    mirroring: false,
+    hairPlaying: false,
+    longAnswers: false,
+    askingQuestions: false,
+    complimenting: false,
+    lipsLooking: false,
+    stayingClose: false,
     steppedBack: false,
-    distracted: false
+    distracted: false,
+    shortAnswers: false,
+    lookingAround: false,
+    armsCollected: false,
+    checkingTime: false,
+    nervous: false,
+    quietSudden: false
   });
   const [response, setResponse] = useState(null);
   const [customQuestion, setCustomQuestion] = useState('');
@@ -96,28 +89,58 @@ export default function LiveWingmanCoach() {
   }, []);
 
   const dateStages = [
-    { id: 'start', label: 'Start', icon: '🌅', emoji: '☀️' },
-    { id: 'mid', label: 'Mid', icon: '☕', emoji: '🍽️' },
+    { id: 'start', label: 'Just Met', icon: '👋', emoji: '☀️' },
+    { id: 'drinks', label: 'Drinks', icon: '🍸', emoji: '🍹' },
+    { id: 'dinner', label: 'Dinner', icon: '🍽️', emoji: '🥂' },
+    { id: 'activity', label: 'Activity', icon: '🎯', emoji: '🎮' },
     { id: 'walking', label: 'Walking', icon: '🚶', emoji: '🌙' },
+    { id: 'carride', label: 'Car/Ride', icon: '🚗', emoji: '🚕' },
+    { id: 'athome', label: 'At Home', icon: '🏠', emoji: '🛋️' },
     { id: 'goodnight', label: 'Goodbye', icon: '🌙', emoji: '💫' }
   ];
 
   const signalOptions = [
+    // Positive signals
     { id: 'leaningIn', label: 'Leaning in', icon: Eye, positive: true, emoji: '👀' },
     { id: 'eyeContact', label: 'Eye contact', icon: Eye, positive: true, emoji: '✨' },
-    { id: 'touchHappening', label: 'Touch happening', icon: Hand, positive: true, emoji: '🤝' },
+    { id: 'touchHappening', label: 'Touching me', icon: Hand, positive: true, emoji: '🤝' },
     { id: 'laughingRelaxed', label: 'Laughing', icon: Laugh, positive: true, emoji: '😄' },
+    { id: 'playfulTeasing', label: 'Playful teasing', icon: Sparkles, positive: true, emoji: '😜' },
+    { id: 'mirroring', label: 'Mirroring me', icon: User, positive: true, emoji: '🪞' },
+    { id: 'hairPlaying', label: 'Playing w/ hair', icon: Sparkles, positive: true, emoji: '💇' },
+    { id: 'longAnswers', label: 'Long answers', icon: MessageCircle, positive: true, emoji: '💬' },
+    { id: 'askingQuestions', label: 'Asking about me', icon: MessageCircle, positive: true, emoji: '❓' },
+    { id: 'complimenting', label: 'Complimenting', icon: Heart, positive: true, emoji: '🥰' },
+    { id: 'lipsLooking', label: 'Looking at lips', icon: Eye, positive: true, emoji: '👄' },
+    { id: 'stayingClose', label: 'Staying close', icon: Heart, positive: true, emoji: '💕' },
+    // Negative/cautious signals
     { id: 'steppedBack', label: 'Stepped back', icon: ArrowLeftCircle, positive: false, emoji: '😬' },
-    { id: 'distracted', label: 'Distracted', icon: Smartphone, positive: false, emoji: '📱' }
+    { id: 'distracted', label: 'On phone', icon: Smartphone, positive: false, emoji: '📱' },
+    { id: 'shortAnswers', label: 'Short answers', icon: MessageCircle, positive: false, emoji: '😐' },
+    { id: 'lookingAround', label: 'Looking around', icon: Eye, positive: false, emoji: '👀' },
+    { id: 'armsCollected', label: 'Arms crossed', icon: Shield, positive: false, emoji: '🙅' },
+    { id: 'checkingTime', label: 'Checking time', icon: Calendar, positive: false, emoji: '⏰' },
+    { id: 'nervous', label: 'Seems nervous', icon: AlertTriangle, positive: null, emoji: '😰' },
+    { id: 'quietSudden', label: 'Went quiet', icon: MessageCircle, positive: false, emoji: '🤐' }
   ];
 
   const quickActions = [
-    { id: 'kiss', label: 'Kiss', icon: Heart, color: 'from-pink-500 to-rose-600', emoji: '💋' },
+    { id: 'kiss', label: 'Go for Kiss', icon: Heart, color: 'from-pink-500 to-rose-600', emoji: '💋' },
     { id: 'holdHands', label: 'Hold Hands', icon: Hand, color: 'from-purple-500 to-indigo-600', emoji: '🤝' },
-    { id: 'flirt', label: 'Flirt', icon: Sparkles, color: 'from-amber-500 to-orange-600', emoji: '😏' },
-    { id: 'silence', label: 'Fix Silence', icon: MessageCircle, color: 'from-blue-500 to-cyan-600', emoji: '💬' },
+    { id: 'flirt', label: 'Flirt More', icon: Sparkles, color: 'from-amber-500 to-orange-600', emoji: '😏' },
+    { id: 'tease', label: 'Tease Them', icon: Smile, color: 'from-yellow-500 to-amber-600', emoji: '😜' },
     { id: 'compliment', label: 'Compliment', icon: Smile, color: 'from-green-500 to-emerald-600', emoji: '🥰' },
-    { id: 'secondDate', label: '2nd Date', icon: Calendar, color: 'from-violet-500 to-purple-600', emoji: '📅' }
+    { id: 'getCloser', label: 'Get Closer', icon: Heart, color: 'from-rose-500 to-pink-600', emoji: '💕' },
+    { id: 'silence', label: 'Fix Silence', icon: MessageCircle, color: 'from-blue-500 to-cyan-600', emoji: '💬' },
+    { id: 'changeVibe', label: 'Change Topic', icon: Zap, color: 'from-indigo-500 to-blue-600', emoji: '🔄' },
+    { id: 'deepTalk', label: 'Go Deeper', icon: MessageCircle, color: 'from-slate-500 to-gray-600', emoji: '🌊' },
+    { id: 'makeMove', label: 'Make a Move', icon: Zap, color: 'from-red-500 to-rose-600', emoji: '🔥' },
+    { id: 'pullBack', label: 'Pull Back', icon: ArrowLeftCircle, color: 'from-gray-500 to-slate-600', emoji: '↩️' },
+    { id: 'secondDate', label: 'Ask 2nd Date', icon: Calendar, color: 'from-violet-500 to-purple-600', emoji: '📅' },
+    { id: 'getNumber', label: 'Get Number', icon: Smartphone, color: 'from-cyan-500 to-teal-600', emoji: '📱' },
+    { id: 'invite', label: 'Invite Over', icon: DoorOpen, color: 'from-fuchsia-500 to-pink-600', emoji: '🏠' },
+    { id: 'endWell', label: 'End on High', icon: Stars, color: 'from-emerald-500 to-green-600', emoji: '✨' },
+    { id: 'rescue', label: 'Save the Date', icon: Shield, color: 'from-orange-500 to-red-600', emoji: '🆘' }
   ];
 
   const toggleSignal = (signalId) => {
@@ -128,22 +151,41 @@ export default function LiveWingmanCoach() {
   };
 
   const getSignalSummary = () => {
-    const positive = ['leaningIn', 'eyeContact', 'touchHappening', 'laughingRelaxed']
-      .filter(s => signals[s]).length;
-    const negative = ['steppedBack', 'distracted']
-      .filter(s => signals[s]).length;
+    const positiveSignals = ['leaningIn', 'eyeContact', 'touchHappening', 'laughingRelaxed', 
+      'playfulTeasing', 'mirroring', 'hairPlaying', 'longAnswers', 'askingQuestions', 
+      'complimenting', 'lipsLooking', 'stayingClose'];
+    const negativeSignals = ['steppedBack', 'distracted', 'shortAnswers', 'lookingAround', 
+      'armsCollected', 'checkingTime', 'quietSudden'];
+    const positive = positiveSignals.filter(s => signals[s]).length;
+    const negative = negativeSignals.filter(s => signals[s]).length;
     return { positive, negative };
   };
 
   // Build signal description for AI
   const buildSignalContext = () => {
     const activeSignals = [];
+    // Positive signals
     if (signals.leaningIn) activeSignals.push("They're leaning in towards me");
     if (signals.eyeContact) activeSignals.push("Strong/sustained eye contact");
-    if (signals.touchHappening) activeSignals.push("Touch is happening (arms, hands, etc)");
+    if (signals.touchHappening) activeSignals.push("They're touching me (arm, hand, shoulder)");
     if (signals.laughingRelaxed) activeSignals.push("They're laughing and seem relaxed");
+    if (signals.playfulTeasing) activeSignals.push("They're playfully teasing me");
+    if (signals.mirroring) activeSignals.push("They're mirroring my body language");
+    if (signals.hairPlaying) activeSignals.push("They're playing with their hair");
+    if (signals.longAnswers) activeSignals.push("They're giving long, detailed answers");
+    if (signals.askingQuestions) activeSignals.push("They're asking questions about me");
+    if (signals.complimenting) activeSignals.push("They've complimented me");
+    if (signals.lipsLooking) activeSignals.push("They keep glancing at my lips");
+    if (signals.stayingClose) activeSignals.push("They're staying physically close");
+    // Negative signals
     if (signals.steppedBack) activeSignals.push("They've stepped back or created distance");
-    if (signals.distracted) activeSignals.push("They seem distracted (checking phone, looking around)");
+    if (signals.distracted) activeSignals.push("They're on their phone");
+    if (signals.shortAnswers) activeSignals.push("They're giving short, one-word answers");
+    if (signals.lookingAround) activeSignals.push("They keep looking around the room");
+    if (signals.armsCollected) activeSignals.push("Their arms are crossed");
+    if (signals.checkingTime) activeSignals.push("They've checked the time");
+    if (signals.nervous) activeSignals.push("They seem nervous or fidgety");
+    if (signals.quietSudden) activeSignals.push("They suddenly went quiet");
     
     return activeSignals.length > 0 
       ? activeSignals.join(", ") 
@@ -155,31 +197,41 @@ export default function LiveWingmanCoach() {
     setIsLoading(true);
     
     const actionLabels = {
-      kiss: "go for a kiss",
-      holdHands: "hold their hand",
-      flirt: "flirt / escalate attraction",
-      silence: "break an awkward silence",
-      compliment: "give them a compliment",
-      secondDate: "ask for a second date"
+      kiss: "kiss them",
+      holdHands: "hold hands",
+      flirt: "flirt more",
+      tease: "tease them playfully",
+      compliment: "give a compliment",
+      getCloser: "get physically closer",
+      silence: "fix awkward silence",
+      changeVibe: "change the topic/vibe",
+      deepTalk: "go deeper emotionally",
+      makeMove: "make a bold move",
+      pullBack: "pull back / slow down",
+      secondDate: "ask for 2nd date",
+      getNumber: "get their number",
+      invite: "invite them over",
+      endWell: "end the date well",
+      rescue: "rescue this date"
     };
 
     const stageLabels = {
-      start: "beginning of the date (just met up)",
-      mid: "middle of the date (comfortable, conversation flowing)",
-      walking: "walking together / transitioning locations",
-      goodnight: "end of the date / saying goodbye"
+      start: "just met",
+      drinks: "having drinks",
+      dinner: "at dinner",
+      activity: "doing an activity",
+      walking: "walking together",
+      carride: "in car/uber",
+      athome: "at home",
+      goodnight: "saying goodbye"
     };
 
-    const prompt = `SITUATION:
-- Date stage: ${stageLabels[dateStage]}
-- What I want to do: ${actionLabels[actionId]}
-- Signals I'm observing: ${buildSignalContext()}
-- My communication style: ${profile?.communicationStyle || 'Playful'}
-- My dating goal: ${profile?.datingGoal || 'Serious relationship'}
+    const prompt = `I'M ON A DATE NOW. Quick advice needed!
+Stage: ${stageLabels[dateStage] || dateStage}
+Goal: ${actionLabels[actionId]}
+Signals: ${buildSignalContext()}
 
-Based on these specific signals and context, give me tailored advice. Be specific to MY situation, not generic. What do the signal combinations tell you? Should I go for it or wait?
-
-Remember: Sound like a cool friend giving real-time advice, not a formal coach. Be witty, insightful, and actionable.`;
+Should I go for it? Give me 1-2 sentences MAX. Reply in JSON only.`;
 
     try {
       const aiResponse = await base44.integrations.Core.InvokeLLM({
@@ -263,15 +315,12 @@ Remember: Sound like a cool friend giving real-time advice, not a formal coach. 
       goodnight: "end of the date / goodbye"
     };
 
-    const prompt = `SITUATION:
-- Date stage: ${stageLabels[dateStage]}
-- Signals I'm observing: ${buildSignalContext()}
-- My communication style: ${profile?.communicationStyle || 'Playful'}
+    const prompt = `ON A DATE NOW. Quick help!
+Stage: ${stageLabels[dateStage] || dateStage}
+Signals: ${buildSignalContext()}
+Question: "${customQuestion}"
 
-MY QUESTION:
-"${customQuestion}"
-
-Give me specific, actionable advice for this exact question. Be my wingman - what should I do/say right now?`;
+Answer in 1-2 sentences MAX. JSON format only.`;
 
     try {
       const aiResponse = await base44.integrations.Core.InvokeLLM({
