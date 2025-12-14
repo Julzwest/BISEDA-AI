@@ -1,27 +1,317 @@
 <!DOCTYPE html>
-<html lang="sq">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content" />
-    <title>Biseda.ai</title>
-    <script>
-      // GitHub Pages SPA redirect
-      // Redirects 404s to index.html so React Router can handle routing
-      var pathSegmentsToKeep = 0;
-      var l = window.location;
-      l.replace(
-        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-        l.hash
-      );
-    </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biseda.ai - Your AI Dating Coach</title>
+  <meta name="description" content="Get personalized dating advice, craft perfect replies, and boost your confidence with AI-powered coaching. Download now on the App Store.">
+  <meta name="theme-color" content="#0f172a">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Biseda.ai - Your AI Dating Coach">
+  <meta property="og:description" content="Get personalized dating advice, craft perfect replies, and boost your confidence.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://bisedaai.com">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+      min-height: 100vh;
+      color: white;
+      overflow-x: hidden;
+    }
+    
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 40px 24px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    
+    .logo-container {
+      margin-bottom: 32px;
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .logo {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+      border-radius: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 20px 60px rgba(168, 85, 247, 0.4);
+    }
+    
+    .logo svg {
+      width: 60px;
+      height: 60px;
+      fill: white;
+    }
+    
+    h1 {
+      font-size: 42px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #fff 0%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .tagline {
+      font-size: 20px;
+      color: #a78bfa;
+      margin-bottom: 32px;
+      font-weight: 500;
+    }
+    
+    .description {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #cbd5e1;
+      margin-bottom: 40px;
+      max-width: 360px;
+    }
+    
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 48px;
+    }
+    
+    .feature-tag {
+      background: rgba(168, 85, 247, 0.2);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      color: #c4b5fd;
+    }
+    
+    .app-store-btn {
+      display: inline-block;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .app-store-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+    }
+    
+    .app-store-btn img {
+      height: 60px;
+      width: auto;
+    }
+    
+    .benefits {
+      margin-top: 48px;
+      text-align: left;
+      width: 100%;
+      max-width: 360px;
+    }
+    
+    .benefit {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    
+    .benefit-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 24px;
+    }
+    
+    .benefit-text h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    
+    .benefit-text p {
+      font-size: 14px;
+      color: #94a3b8;
+      line-height: 1.4;
+    }
+    
+    .footer {
+      margin-top: 64px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(148, 163, 184, 0.2);
+      color: #64748b;
+      font-size: 14px;
+    }
+    
+    .footer a {
+      color: #a78bfa;
+      text-decoration: none;
+    }
+    
+    .footer a:hover {
+      text-decoration: underline;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+    
+    /* Floating hearts animation */
+    .floating-hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    
+    .heart {
+      position: absolute;
+      font-size: 24px;
+      opacity: 0.1;
+      animation: rise 15s infinite;
+    }
+    
+    @keyframes rise {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.1;
+      }
+      90% {
+        opacity: 0.1;
+      }
+      100% {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    .content {
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating hearts background -->
+  <div class="floating-hearts">
+    <div class="heart" style="left: 10%; animation-delay: 0s;">💜</div>
+    <div class="heart" style="left: 20%; animation-delay: 2s;">💕</div>
+    <div class="heart" style="left: 30%; animation-delay: 4s;">✨</div>
+    <div class="heart" style="left: 40%; animation-delay: 1s;">💜</div>
+    <div class="heart" style="left: 50%; animation-delay: 3s;">💕</div>
+    <div class="heart" style="left: 60%; animation-delay: 5s;">✨</div>
+    <div class="heart" style="left: 70%; animation-delay: 2.5s;">💜</div>
+    <div class="heart" style="left: 80%; animation-delay: 4.5s;">💕</div>
+    <div class="heart" style="left: 90%; animation-delay: 1.5s;">✨</div>
+  </div>
 
+  <div class="container content">
+    <div class="logo-container">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+      </div>
+    </div>
+    
+    <h1>Biseda.ai</h1>
+    <p class="tagline">Your AI Dating Coach</p>
+    
+    <p class="description">
+      Get personalized dating advice, craft perfect replies, and boost your confidence with AI-powered coaching.
+    </p>
+    
+    <div class="features">
+      <span class="feature-tag">💬 Smart Replies</span>
+      <span class="feature-tag">📸 Chat Analysis</span>
+      <span class="feature-tag">❤️ Dating Coach</span>
+      <span class="feature-tag">🎯 Wingman Mode</span>
+      <span class="feature-tag">🎭 Date Rehearsal</span>
+      <span class="feature-tag">🎁 Gift Ideas</span>
+    </div>
+    
+    <!-- App Store Button -->
+    <a href="https://apps.apple.com/app/biseda-ai" class="app-store-btn">
+      <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on the App Store">
+    </a>
+    
+    <div class="benefits">
+      <div class="benefit">
+        <div class="benefit-icon">🤖</div>
+        <div class="benefit-text">
+          <h3>AI-Powered Advice</h3>
+          <p>Get instant, personalized dating tips from our smart AI coach</p>
+        </div>
+      </div>
+      
+      <div class="benefit">
+        <div class="benefit-icon">📱</div>
+        <div class="benefit-text">
+          <h3>Screenshot Analysis</h3>
+          <p>Upload chat screenshots and get tailored reply suggestions</p>
+        </div>
+      </div>
+      
+      <div class="benefit">
+        <div class="benefit-icon">🎯</div>
+        <div class="benefit-text">
+          <h3>Real-Time Wingman</h3>
+          <p>Get live coaching during your dates with signal reading</p>
+        </div>
+      </div>
+      
+      <div class="benefit">
+        <div class="benefit-icon">🔒</div>
+        <div class="benefit-text">
+          <h3>100% Private</h3>
+          <p>Your conversations stay on your device. We never store your chats.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <p>&copy; 2025 Biseda.ai. All rights reserved.</p>
+      <div class="social-links">
+        <a href="mailto:support@bisedaai.com">Contact</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
