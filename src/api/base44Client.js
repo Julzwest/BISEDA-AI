@@ -73,14 +73,20 @@ const callOpenAI = async (prompt, conversationHistory = [], customSystemPrompt =
     }
   } catch (error) {
     console.error('❌ Backend API unavailable:', error);
-    if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError') || error.message.includes('Load failed')) {
-      const errorMsg = `Cannot connect to backend at ${backendUrl}. `;
-      const simulatorHint = window.Capacitor ? 
-        'Make sure backend is running on your Mac and accessible from the simulator.' :
-        'Make sure the backend server is running.';
-      throw new Error(errorMsg + simulatorHint);
+    console.error('❌ Error name:', error.name);
+    console.error('❌ Error message:', error.message);
+    console.error('❌ Error stack:', error.stack);
+    
+    // Check for network errors
+    const errorMessage = error.message || error.toString() || 'Unknown network error';
+    if (errorMessage.includes('Failed to fetch') || 
+        errorMessage.includes('NetworkError') || 
+        errorMessage.includes('Load failed') ||
+        errorMessage.includes('Network request failed') ||
+        error.name === 'TypeError') {
+      throw new Error(`Network error connecting to ${backendUrl}. Please check your internet connection.`);
     }
-    throw error;
+    throw new Error(errorMessage);
   }
 };
 

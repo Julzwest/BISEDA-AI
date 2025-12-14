@@ -284,11 +284,12 @@ Should I go for it? Give me 1-2 sentences MAX. Reply in JSON only.`;
 
     } catch (error) {
       console.error('AI Error:', error);
-      // Fallback response if AI fails
+      console.error('AI Error message:', error.message);
+      // Show actual error for debugging
       setResponse({
         action: quickActions.find(a => a.id === actionId)?.label,
         emoji: quickActions.find(a => a.id === actionId)?.emoji,
-        recommendation: "Go for it! Trust your gut - if the vibe feels right, make your move.",
+        recommendation: `Error: ${error.message || 'Unknown error - check console'}`,
         flags: {
           green: signals.eyeContact ? ["Eye contact is good"] : [],
           yellow: ["AI temporarily unavailable"],
