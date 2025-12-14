@@ -24,8 +24,14 @@ const getRuntimeOverride = (runtimeWindow) => {
   );
 };
 
-const isLocalHost = (hostname) =>
-  LOCAL_HOSTNAMES.includes(hostname) || hostname.endsWith('.local');
+const isLocalHost = (hostname) => {
+  // iOS Capacitor apps run on "localhost" but should use production backend
+  // Check if we're in Capacitor/native app context
+  if (typeof window !== 'undefined' && window.Capacitor) {
+    return false; // Always use production for native apps
+  }
+  return LOCAL_HOSTNAMES.includes(hostname) || hostname.endsWith('.local');
+};
 
 /**
  * Resolve the backend URL with multiple fallbacks so production builds
