@@ -284,11 +284,13 @@ Should I go for it? Give me 1-2 sentences MAX. Reply in JSON only.`;
 
     } catch (error) {
       console.error('AI Error:', error);
-      // Fallback response if AI fails
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+      // Fallback response if AI fails - show actual error for debugging
       setResponse({
         action: quickActions.find(a => a.id === actionId)?.label,
         emoji: quickActions.find(a => a.id === actionId)?.emoji,
-        recommendation: "Couldn't get AI advice right now. Trust your instincts - if the vibe feels right and they seem comfortable, go for it. If you're unsure, there's no rush!",
+        recommendation: `AI Error: ${error.message || 'Unknown error'}. Check console for details.`,
         flags: {
           green: signals.eyeContact ? ["Eye contact is good"] : [],
           yellow: ["AI temporarily unavailable"],
