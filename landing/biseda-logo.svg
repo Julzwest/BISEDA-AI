@@ -1,0 +1,106 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Main gradient - more vibrant -->
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#a855f7;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#ec4899;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f43f5e;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Animated shimmer gradient -->
+    <linearGradient id="shimmerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.3" />
+      <stop offset="50%" style="stop-color:#ffffff;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:0.3" />
+    </linearGradient>
+    
+    <!-- Sparkle gradient - more vibrant -->
+    <linearGradient id="sparkleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fde047;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#fbbf24;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Glow effect -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Shadow filter -->
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+      <feOffset dx="0" dy="6" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.4"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- 3D depth effect -->
+    <linearGradient id="depthGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.4" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0.2" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background with pattern -->
+  <rect x="0" y="0" width="120" height="120" rx="28" fill="url(#mainGradient)"/>
+  
+  <!-- Shimmer overlay for depth -->
+  <rect x="0" y="0" width="120" height="120" rx="28" fill="url(#shimmerGradient)" opacity="0.4"/>
+  
+  <!-- Main speech bubble with 3D effect -->
+  <g filter="url(#shadow)">
+    <!-- Bubble shadow/base -->
+    <rect x="18" y="18" width="84" height="84" rx="22" fill="url(#mainGradient)" opacity="0.8"/>
+    
+    <!-- Main bubble -->
+    <rect x="20" y="20" width="80" height="80" rx="20" fill="white" opacity="0.95"/>
+    
+    <!-- 3D depth overlay -->
+    <rect x="20" y="20" width="80" height="80" rx="20" fill="url(#depthGradient)"/>
+    
+    <!-- Speech bubble tail pointing down-left -->
+    <path d="M 30 100 L 50 100 L 40 110 Z" fill="white" opacity="0.95"/>
+    
+    <!-- Inner message lines for detail -->
+    <line x1="35" y1="45" x2="75" y2="45" stroke="#8b5cf6" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+    <line x1="35" y1="55" x2="65" y2="55" stroke="#ec4899" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+    <line x1="35" y1="65" x2="70" y2="65" stroke="#8b5cf6" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+    
+    <!-- Small dots for modern look -->
+    <circle cx="50" cy="75" r="3" fill="#ec4899" opacity="0.8"/>
+    <circle cx="60" cy="75" r="3" fill="#8b5cf6" opacity="0.8"/>
+    <circle cx="70" cy="75" r="3" fill="#ec4899" opacity="0.8"/>
+  </g>
+  
+  <!-- Multiple sparkles for more energy -->
+  <g filter="url(#glow)">
+    <!-- Large sparkle top-right -->
+    <circle cx="98" cy="22" r="9" fill="url(#sparkleGradient)"/>
+    <path d="M 98 10 L 98 18 M 98 26 L 98 34 M 86 22 L 94 22 M 102 22 L 110 22 M 88 14 L 92 18 M 104 18 L 108 14 M 88 30 L 92 26 M 104 26 L 108 30" stroke="#1e293b" stroke-width="2" stroke-linecap="round"/>
+    
+    <!-- Medium sparkle top-left -->
+    <circle cx="22" cy="22" r="6" fill="url(#sparkleGradient)" opacity="0.8"/>
+    <path d="M 22 14 L 22 18 M 22 26 L 22 30 M 14 22 L 18 22 M 26 22 L 30 22 M 16 16 L 18 18 M 26 18 L 28 16 M 16 28 L 18 26 M 26 26 L 28 28" stroke="#1e293b" stroke-width="1.5" stroke-linecap="round"/>
+    
+    <!-- Small sparkle bottom-left -->
+    <circle cx="25" cy="95" r="5" fill="url(#sparkleGradient)" opacity="0.7"/>
+    <path d="M 25 88 L 25 92 M 25 98 L 25 102 M 18 95 L 22 95 M 28 95 L 32 95 M 20 90 L 22 92 M 28 92 L 30 90 M 20 100 L 22 98 M 28 98 L 30 100" stroke="#1e293b" stroke-width="1.2" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Modern accent shapes -->
+  <circle cx="95" cy="90" r="12" fill="#ec4899" opacity="0.3" filter="url(#glow)"/>
+  <circle cx="25" cy="30" r="8" fill="#8b5cf6" opacity="0.3" filter="url(#glow)"/>
+  
+  <!-- Geometric accent -->
+  <polygon points="105,40 115,35 110,45" fill="#fde047" opacity="0.6" filter="url(#glow)"/>
+</svg>
