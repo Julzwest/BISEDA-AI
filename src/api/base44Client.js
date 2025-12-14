@@ -19,7 +19,9 @@ const callOpenAI = async (prompt, conversationHistory = [], customSystemPrompt =
       headers: {
         'Content-Type': 'application/json',
         'x-session-id': sessionId,
-        'x-user-id': localStorage.getItem('odId') || localStorage.getItem('guestId') || ''
+        'x-user-id': localStorage.getItem('odId') || localStorage.getItem('guestId') || '',
+        'x-subscription-tier': localStorage.getItem('userSubscriptionTier') || 'free',
+        'x-user-email': localStorage.getItem('userEmail') || ''
       },
       body: JSON.stringify({
         prompt,
