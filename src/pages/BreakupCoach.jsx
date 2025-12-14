@@ -97,9 +97,9 @@ export default function BreakupCoach() {
   const subscriptionTier = localStorage.getItem('userSubscriptionTier');
 
   // Check subscription
+  // 🎉 EVERYTHING IS FREE NOW!
   const hasProOrEliteSubscription = () => {
-    const tier = (subscriptionTier || localStorage.getItem('userSubscriptionTier') || '').toLowerCase();
-    return ['pro', 'elite', 'premium'].includes(tier);
+    return true; // All features are free!
   };
 
   // Get daily affirmation

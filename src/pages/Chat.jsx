@@ -195,16 +195,15 @@ export default function Chat() {
   };
 
   // Check if user has paid subscription (any paid tier)
+  // 🎉 EVERYTHING IS FREE NOW!
   const hasPaidSubscription = () => {
-    const tier = (subscriptionTier || localStorage.getItem('userSubscriptionTier') || '').toLowerCase();
-    return ['pro', 'elite', 'premium'].includes(tier); // Only Pro, Elite, and Premium (legacy) have paid features
+    return true; // All features are free!
   };
 
   // Check if user has Pro or Elite subscription (for premium features like Intimacy Coach)
+  // 🎉 EVERYTHING IS FREE NOW!
   const hasProOrEliteSubscription = () => {
-    const tier = (subscriptionTier || localStorage.getItem('userSubscriptionTier') || '').toLowerCase();
-    console.log('🔐 Checking Pro/Elite access - tier:', tier, '| subscriptionTier state:', subscriptionTier);
-    return ['pro', 'elite', 'premium'].includes(tier);
+    return true; // All features are free!
   };
 
   // Handle category switch with verification

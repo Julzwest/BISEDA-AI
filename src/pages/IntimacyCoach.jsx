@@ -107,9 +107,9 @@ export default function IntimacyCoach() {
   const subscriptionTier = localStorage.getItem('userSubscriptionTier');
 
   // Check if user has Pro or Elite subscription
+  // 🎉 EVERYTHING IS FREE NOW!
   const hasProOrEliteSubscription = () => {
-    const tier = (subscriptionTier || localStorage.getItem('userSubscriptionTier') || '').toLowerCase();
-    return ['pro', 'elite', 'premium'].includes(tier);
+    return true; // All features are free!
   };
 
   // Get gender-specific greeting

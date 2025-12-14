@@ -16,10 +16,9 @@ export default function GiftSuggestions() {
   const [hasAccess, setHasAccess] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   
+  // 🎉 EVERYTHING IS FREE NOW!
   const checkAccess = () => {
-    const tier = (localStorage.getItem('userSubscriptionTier') || '').toLowerCase();
-    console.log('🔐 Gift Suggestions - Checking access for tier:', tier);
-    return ['pro', 'elite', 'premium'].includes(tier);
+    return true; // All features are free!
   };
   
   useEffect(() => {

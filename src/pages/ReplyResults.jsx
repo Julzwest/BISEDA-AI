@@ -47,9 +47,9 @@ function saveFeedback(feedbackData) {
 // ============================================================
 // PRO STATUS CHECK (Prompt 10)
 // ============================================================
+// 🎉 EVERYTHING IS FREE NOW!
 function checkProStatus() {
-  const tier = (localStorage.getItem('userSubscriptionTier') || '').toLowerCase();
-  return ['pro', 'elite', 'premium'].includes(tier);
+  return true; // All features are free!
 }
 
 export default function ReplyResults() {

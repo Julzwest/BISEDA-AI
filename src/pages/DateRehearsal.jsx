@@ -84,9 +84,9 @@ export default function DateRehearsal() {
   const messagesEndRef = useRef(null);
 
   // Check if user has Pro or Elite subscription
+  // 🎉 EVERYTHING IS FREE NOW!
   const checkAccess = () => {
-    const tier = (localStorage.getItem('userSubscriptionTier') || '').toLowerCase();
-    return ['pro', 'elite', 'premium'].includes(tier);
+    return true; // All features are free!
   };
 
   useEffect(() => {

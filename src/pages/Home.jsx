@@ -41,9 +41,9 @@ export default function Home() {
   };
 
   // Check if user has Pro or Elite subscription
+  // 🎉 EVERYTHING IS FREE NOW!
   const hasProOrElite = () => {
-    const tier = (localStorage.getItem('userSubscriptionTier') || '').toLowerCase();
-    return ['pro', 'elite', 'premium'].includes(tier);
+    return true; // All features are free!
   };
 
   useEffect(() => {
@@ -277,9 +277,8 @@ export default function Home() {
                           </div>
                         )}
                         {feature.requiresProOrElite && (
-                          <div className="absolute -top-1 -right-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
-                            <Crown className="w-2.5 h-2.5" />
-                            PRO
+                          <div className="absolute -top-1 -right-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
+                            🎉 FREE
                           </div>
                         )}
                       </div>
