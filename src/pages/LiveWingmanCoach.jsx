@@ -20,12 +20,57 @@ import {
   Sparkles,
   Copy,
   User,
-  Stars
+  Stars,
+  Loader2
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { getWingmanAdvice } from '@/engine/conversationEngine';
+import { base44 } from '@/api/base44Client';
 import { getProfile } from '@/utils/profileMemory';
+
+// Live Wingman AI System Prompt - PhD-level dating expert with Hitch-like smoothness
+const WINGMAN_SYSTEM_PROMPT = `You are the world's most legendary dating coach - imagine if Hitch, a relationship psychologist, and your smoothest friend had a baby. You're helping someone IN REAL-TIME during an actual date.
+
+YOUR PERSONALITY:
+- Warm, confident, witty - like a cool older sibling who's incredible with people
+- You speak casually with humor ("Okay, here's the play...", "Listen, I'm going to be real with you...")
+- You use slang naturally (ngl, lowkey, tbh, fr) but not excessively
+- You're encouraging but also realistic - no BS
+- You read people like a PhD psychologist but explain it like a friend
+
+YOUR EXPERTISE:
+- Body language mastery: You can decode micro-expressions, proximity, touch patterns
+- Timing: You know EXACTLY when to escalate vs pull back
+- Verbal game: Your suggested lines are smooth, natural, memorable
+- Psychology: You understand attraction, tension, comfort building at a deep level
+- Recovery: You can save any awkward moment
+
+CONTEXT PROVIDED:
+- Date stage (start/mid/walking out/goodbye)
+- Signals they're reading (eye contact, touch, stepping back, etc)
+- What action they want to take (kiss, hold hands, flirt, etc)
+- Their communication style preference
+
+YOUR RESPONSE FORMAT (JSON):
+{
+  "recommendation": "Your main advice - 2-4 sentences. Specific, actionable, with dating psychology insight. Sound human and conversational.",
+  "greenFlags": ["Signal 1 interpretation", "Signal 2 interpretation"],
+  "yellowFlags": ["Caution point if any"],
+  "redFlags": ["Warning if any"],
+  "trySaying": "A smooth, natural line they can actually use. Make it sound like THEM, not a pickup artist.",
+  "gracefulExit": "A pivot/backup line if things don't go as planned",
+  "proTip": "One sentence of advanced dating wisdom for this specific situation"
+}
+
+RULES:
+- Be SPECIFIC to their exact situation - don't give generic advice
+- Your suggested lines should be SMOOTH and NATURAL - not cheesy or try-hard
+- Read the signals they've selected and analyze what they MEAN in combination
+- If signals are mixed, acknowledge that and give nuanced advice
+- ALWAYS prioritize consent and respect
+- Be encouraging but honest - if the timing isn't right, say so
+- Inject humor where appropriate
+- Sound like a human texting advice, not a formal assistant`;
 
 export default function LiveWingmanCoach() {
   const navigate = useNavigate();
@@ -43,6 +88,7 @@ export default function LiveWingmanCoach() {
   const [response, setResponse] = useState(null);
   const [customQuestion, setCustomQuestion] = useState('');
   const [copied, setCopied] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const userProfile = getProfile();
@@ -89,153 +135,209 @@ export default function LiveWingmanCoach() {
     return { positive, negative };
   };
 
-  const generateResponse = (actionId) => {
-    const { positive, negative } = getSignalSummary();
-    const hasPositiveSignals = positive >= 2;
-    const hasNegativeSignals = negative > 0;
+  // Build signal description for AI
+  const buildSignalContext = () => {
+    const activeSignals = [];
+    if (signals.leaningIn) activeSignals.push("They're leaning in towards me");
+    if (signals.eyeContact) activeSignals.push("Strong/sustained eye contact");
+    if (signals.touchHappening) activeSignals.push("Touch is happening (arms, hands, etc)");
+    if (signals.laughingRelaxed) activeSignals.push("They're laughing and seem relaxed");
+    if (signals.steppedBack) activeSignals.push("They've stepped back or created distance");
+    if (signals.distracted) activeSignals.push("They seem distracted (checking phone, looking around)");
     
-    const engineAdvice = getWingmanAdvice(actionId, signals, profile);
-    
-    const greenFlags = [];
-    const yellowFlags = [];
-    const redFlags = [];
-    
-    if (signals.eyeContact) greenFlags.push("Strong eye contact");
-    if (signals.leaningIn) greenFlags.push("Physical proximity");
-    if (signals.laughingRelaxed) greenFlags.push("Relaxed body language");
-    if (signals.touchHappening) greenFlags.push("Touch is happening");
-    
-    if (!hasPositiveSignals && !hasNegativeSignals) yellowFlags.push("Not enough signals yet");
-    if (hasPositiveSignals && hasNegativeSignals) yellowFlags.push("Mixed signals present");
-    
-    if (signals.steppedBack) redFlags.push("They've pulled back");
-    if (signals.distracted) redFlags.push("Seems distracted");
-    
-    const responses = {
-      kiss: {
-        positive: {
-          recommendation: engineAdvice.recommendation,
-          flags: { green: greenFlags.length > 0 ? greenFlags : ["Good connection"], yellow: yellowFlags, red: redFlags },
-          consentLine: engineAdvice.consentLine,
-          fallback: engineAdvice.fallback
-        },
-        negative: {
-          recommendation: engineAdvice.recommendation,
-          flags: { green: [], yellow: yellowFlags.length > 0 ? yellowFlags : ["Mixed signals"], red: redFlags.length > 0 ? redFlags : ["Not ready"] },
-          consentLine: engineAdvice.consentLine,
-          fallback: engineAdvice.fallback
-        }
-      },
-      holdHands: {
-        positive: {
-          recommendation: engineAdvice.recommendation,
-          flags: { green: greenFlags.length > 0 ? greenFlags : ["Comfortable"], yellow: yellowFlags, red: redFlags },
-          consentLine: engineAdvice.consentLine,
-          fallback: engineAdvice.fallback
-        },
-        negative: {
-          recommendation: engineAdvice.recommendation,
-          flags: { green: [], yellow: ["Not showing interest yet"], red: redFlags },
-          consentLine: engineAdvice.consentLine,
-          fallback: engineAdvice.fallback
-        }
-      },
-      flirt: {
-        positive: {
-          recommendation: engineAdvice.recommendation,
-          flags: { green: greenFlags.length > 0 ? greenFlags : ["Engaged"], yellow: yellowFlags, red: redFlags },
-          consentLine: engineAdvice.consentLine,
-          fallback: engineAdvice.fallback
-        },
-        negative: {
-          recommendation: engineAdvice.recommendation,
-          flags: { green: [], yellow: ["Might need more time"], red: redFlags },
-          consentLine: engineAdvice.consentLine,
-          fallback: engineAdvice.fallback
-        }
-      },
-      silence: {
-        positive: {
-          recommendation: engineAdvice.recommendation,
-          flags: { green: ["Comfortable silence"], yellow: yellowFlags, red: redFlags },
-          consentLine: engineAdvice.consentLine,
-          fallback: engineAdvice.fallback
-        },
-        negative: {
-          recommendation: engineAdvice.recommendation,
-          flags: { green: [], yellow: ["Energy dropped"], red: redFlags },
-          consentLine: engineAdvice.consentLine,
-          fallback: engineAdvice.fallback
-        }
-      },
-      compliment: {
-        positive: {
-          recommendation: engineAdvice.recommendation,
-          flags: { green: greenFlags.length > 0 ? greenFlags : ["Good mood"], yellow: yellowFlags, red: redFlags },
-          consentLine: engineAdvice.consentLine,
-          fallback: engineAdvice.fallback
-        },
-        negative: {
-          recommendation: engineAdvice.recommendation,
-          flags: { green: [], yellow: ["Keep it subtle"], red: redFlags },
-          consentLine: engineAdvice.consentLine,
-          fallback: engineAdvice.fallback
-        }
-      },
-      secondDate: {
-        positive: {
-          recommendation: engineAdvice.recommendation,
-          flags: { green: greenFlags.length > 0 ? greenFlags : ["Great chemistry"], yellow: yellowFlags, red: redFlags },
-          consentLine: engineAdvice.consentLine,
-          fallback: engineAdvice.fallback
-        },
-        negative: {
-          recommendation: engineAdvice.recommendation,
-          flags: { green: [], yellow: ["Gauge interest first"], red: redFlags },
-          consentLine: engineAdvice.consentLine,
-          fallback: engineAdvice.fallback
-        }
-      }
-    };
-
-    const actionResponse = responses[actionId];
-    if (!actionResponse) return;
-
-    const result = hasPositiveSignals && !hasNegativeSignals 
-      ? actionResponse.positive 
-      : actionResponse.negative;
-
-    setResponse({
-      action: quickActions.find(a => a.id === actionId)?.label,
-      emoji: quickActions.find(a => a.id === actionId)?.emoji,
-      ...result,
-      stage: dateStages.find(s => s.id === dateStage)?.label
-    });
+    return activeSignals.length > 0 
+      ? activeSignals.join(", ") 
+      : "No specific signals selected yet";
   };
 
-  const handleCustomQuestion = () => {
-    if (!customQuestion.trim()) return;
+  // Call real AI for advice
+  const generateResponse = async (actionId) => {
+    setIsLoading(true);
     
-    const { positive, negative } = getSignalSummary();
+    const actionLabels = {
+      kiss: "go for a kiss",
+      holdHands: "hold their hand",
+      flirt: "flirt / escalate attraction",
+      silence: "break an awkward silence",
+      compliment: "give them a compliment",
+      secondDate: "ask for a second date"
+    };
+
+    const stageLabels = {
+      start: "beginning of the date (just met up)",
+      mid: "middle of the date (comfortable, conversation flowing)",
+      walking: "walking together / transitioning locations",
+      goodnight: "end of the date / saying goodbye"
+    };
+
+    const prompt = `SITUATION:
+- Date stage: ${stageLabels[dateStage]}
+- What I want to do: ${actionLabels[actionId]}
+- Signals I'm observing: ${buildSignalContext()}
+- My communication style: ${profile?.communicationStyle || 'Playful'}
+- My dating goal: ${profile?.datingGoal || 'Serious relationship'}
+
+Based on these specific signals and context, give me tailored advice. Be specific to MY situation, not generic. What do the signal combinations tell you? Should I go for it or wait?
+
+Remember: Sound like a cool friend giving real-time advice, not a formal coach. Be witty, insightful, and actionable.`;
+
+    try {
+      const aiResponse = await base44.integrations.Core.InvokeLLM({
+        prompt,
+        system_prompt: WINGMAN_SYSTEM_PROMPT,
+        response_type: 'json'
+      });
+
+      // Parse the AI response
+      let parsedResponse;
+      if (typeof aiResponse === 'string') {
+        try {
+          // Try to extract JSON from the response
+          const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            parsedResponse = JSON.parse(jsonMatch[0]);
+          } else {
+            throw new Error('No JSON found');
+          }
+        } catch {
+          // Fallback if JSON parsing fails
+          parsedResponse = {
+            recommendation: aiResponse,
+            greenFlags: [],
+            yellowFlags: [],
+            redFlags: [],
+            trySaying: "Be genuine and follow your instincts.",
+            gracefulExit: "So, tell me more about that thing you mentioned earlier...",
+            proTip: "Read their body language and trust your gut."
+          };
+        }
+      } else {
+        parsedResponse = aiResponse;
+      }
+
+      setResponse({
+        action: quickActions.find(a => a.id === actionId)?.label,
+        emoji: quickActions.find(a => a.id === actionId)?.emoji,
+        recommendation: parsedResponse.recommendation || "Trust the moment and be yourself.",
+        flags: {
+          green: parsedResponse.greenFlags || [],
+          yellow: parsedResponse.yellowFlags || [],
+          red: parsedResponse.redFlags || []
+        },
+        consentLine: parsedResponse.trySaying || "I'm really enjoying this...",
+        fallback: parsedResponse.gracefulExit || "So what else have you been up to?",
+        proTip: parsedResponse.proTip,
+        stage: dateStages.find(s => s.id === dateStage)?.label
+      });
+
+    } catch (error) {
+      console.error('AI Error:', error);
+      // Fallback response if AI fails
+      setResponse({
+        action: quickActions.find(a => a.id === actionId)?.label,
+        emoji: quickActions.find(a => a.id === actionId)?.emoji,
+        recommendation: "Couldn't get AI advice right now. Trust your instincts - if the vibe feels right and they seem comfortable, go for it. If you're unsure, there's no rush!",
+        flags: {
+          green: signals.eyeContact ? ["Eye contact is good"] : [],
+          yellow: ["AI temporarily unavailable"],
+          red: signals.distracted ? ["They seem distracted"] : []
+        },
+        consentLine: "I'm having such a great time with you...",
+        fallback: "So tell me something I don't know about you!",
+        stage: dateStages.find(s => s.id === dateStage)?.label
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCustomQuestion = async () => {
+    if (!customQuestion.trim() || isLoading) return;
     
-    setResponse({
-      action: 'Custom Question',
-      emoji: '❓',
-      recommendation: positive >= 2 && negative === 0
-        ? "Based on positive signals, you're in a good position. Trust your instincts!"
-        : negative > 0
-        ? "The signals suggest being cautious. Take it slow and read their reactions."
-        : "Not enough data. Pay attention to body language and responses.",
-      flags: {
-        green: positive >= 2 ? ["Good connection"] : [],
-        yellow: positive === 1 ? ["Some interest"] : [],
-        red: negative > 0 ? ["Some hesitation"] : []
-      },
-      consentLine: "Just be genuine and authentic in how you express yourself.",
-      fallback: "If it doesn't feel right, change the topic naturally.",
-      stage: dateStages.find(s => s.id === dateStage)?.label
-    });
-    setCustomQuestion('');
+    setIsLoading(true);
+
+    const stageLabels = {
+      start: "beginning of the date",
+      mid: "middle of the date",
+      walking: "walking together",
+      goodnight: "end of the date / goodbye"
+    };
+
+    const prompt = `SITUATION:
+- Date stage: ${stageLabels[dateStage]}
+- Signals I'm observing: ${buildSignalContext()}
+- My communication style: ${profile?.communicationStyle || 'Playful'}
+
+MY QUESTION:
+"${customQuestion}"
+
+Give me specific, actionable advice for this exact question. Be my wingman - what should I do/say right now?`;
+
+    try {
+      const aiResponse = await base44.integrations.Core.InvokeLLM({
+        prompt,
+        system_prompt: WINGMAN_SYSTEM_PROMPT,
+        response_type: 'json'
+      });
+
+      let parsedResponse;
+      if (typeof aiResponse === 'string') {
+        try {
+          const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            parsedResponse = JSON.parse(jsonMatch[0]);
+          } else {
+            throw new Error('No JSON found');
+          }
+        } catch {
+          parsedResponse = {
+            recommendation: aiResponse,
+            greenFlags: [],
+            yellowFlags: [],
+            redFlags: [],
+            trySaying: "Trust your instincts here.",
+            gracefulExit: "Anyway, tell me more about you...",
+            proTip: "Stay present and genuine."
+          };
+        }
+      } else {
+        parsedResponse = aiResponse;
+      }
+
+      setResponse({
+        action: 'Your Question',
+        emoji: '💭',
+        recommendation: parsedResponse.recommendation,
+        flags: {
+          green: parsedResponse.greenFlags || [],
+          yellow: parsedResponse.yellowFlags || [],
+          red: parsedResponse.redFlags || []
+        },
+        consentLine: parsedResponse.trySaying,
+        fallback: parsedResponse.gracefulExit,
+        proTip: parsedResponse.proTip,
+        stage: dateStages.find(s => s.id === dateStage)?.label
+      });
+
+    } catch (error) {
+      console.error('AI Error:', error);
+      setResponse({
+        action: 'Your Question',
+        emoji: '💭',
+        recommendation: "Couldn't process that right now, but here's my quick take: trust your gut, stay present, and remember - confidence is attractive. If something feels right, lean into it.",
+        flags: {
+          green: signals.eyeContact || signals.laughingRelaxed ? ["Positive vibes detected"] : [],
+          yellow: ["AI temporarily unavailable"],
+          red: []
+        },
+        consentLine: "You're really easy to talk to, you know that?",
+        fallback: "So what's the most interesting thing that happened to you this week?",
+        stage: dateStages.find(s => s.id === dateStage)?.label
+      });
+    } finally {
+      setIsLoading(false);
+      setCustomQuestion('');
+    }
   };
 
   const copyToClipboard = async (text) => {
@@ -368,7 +470,8 @@ export default function LiveWingmanCoach() {
                 <button
                   key={action.id}
                   onClick={() => generateResponse(action.id)}
-                  className="group active:scale-95 transition-transform"
+                  disabled={isLoading}
+                  className="group active:scale-95 transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <div className="bg-slate-800/60 border border-slate-700/50 hover:border-amber-500/50 rounded-2xl p-4 text-center transition-all hover:bg-slate-800/80">
                     <div className={`w-12 h-12 mx-auto mb-2 bg-gradient-to-br ${action.color} rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform`}>
@@ -400,17 +503,39 @@ export default function LiveWingmanCoach() {
               />
               <Button
                 onClick={handleCustomQuestion}
-                disabled={!customQuestion.trim()}
-                className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 px-4 rounded-xl"
+                disabled={!customQuestion.trim() || isLoading}
+                className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 px-4 rounded-xl disabled:opacity-50"
               >
-                <Send className="w-5 h-5" />
+                {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
               </Button>
             </div>
           </div>
         </div>
 
+        {/* Loading State */}
+        {isLoading && (
+          <div className="px-5 mb-5">
+            <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 border-2 border-amber-500/30 rounded-2xl p-8 shadow-xl shadow-amber-500/10">
+              <div className="flex flex-col items-center justify-center gap-4">
+                <div className="relative">
+                  <div className="w-16 h-16 bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl flex items-center justify-center animate-pulse">
+                    <Sparkles className="w-8 h-8 text-white" />
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-slate-800 rounded-full flex items-center justify-center">
+                    <Loader2 className="w-4 h-4 text-amber-400 animate-spin" />
+                  </div>
+                </div>
+                <div className="text-center">
+                  <p className="text-white font-semibold mb-1">AI Wingman thinking...</p>
+                  <p className="text-slate-400 text-sm">Reading the situation like a pro 🎯</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Response Panel */}
-        {response && (
+        {response && !isLoading && (
           <div className="px-5 mb-5">
             <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 border-2 border-amber-500/30 rounded-2xl p-5 shadow-xl shadow-amber-500/10">
               <div className="flex items-center gap-3 mb-4">
@@ -484,6 +609,16 @@ export default function LiveWingmanCoach() {
                   </button>
                 </div>
               </div>
+
+              {/* Pro Tip */}
+              {response.proTip && (
+                <div className="mt-4 p-3 bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 rounded-xl">
+                  <p className="text-amber-300 text-sm flex items-start gap-2">
+                    <span className="text-lg">💎</span>
+                    <span><strong>Pro tip:</strong> {response.proTip}</span>
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         )}
