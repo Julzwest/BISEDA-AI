@@ -3,7 +3,9 @@ const config = {
   appName: 'Biseda.ai',
   webDir: 'dist',
   server: {
-    androidScheme: 'https'
+    androidScheme: 'https',
+    iosScheme: 'https',
+    hostname: 'localhost'
   },
   ios: {
     contentInset: 'automatic',
