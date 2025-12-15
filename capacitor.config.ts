@@ -3,7 +3,9 @@ const config = {
   appName: 'Biseda.ai',
   webDir: 'dist',
   server: {
-    androidScheme: 'https'
+    androidScheme: 'https',
+    iosScheme: 'https',
+    allowNavigation: ['biseda-ai.onrender.com', '*.onrender.com']
   },
   ios: {
     contentInset: 'automatic',

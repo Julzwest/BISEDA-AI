@@ -1,4 +1,6 @@
 import { getBackendUrl } from '@/utils/getBackendUrl';
+import { Capacitor } from '@capacitor/core';
+import { CapacitorHttp } from '@capacitor/core';
 
 // API client with OpenAI integration
 
@@ -8,14 +10,58 @@ const callOpenAI = async (prompt, conversationHistory = [], customSystemPrompt =
   
   // Call backend API (uses OpenAI)
   try {
-    console.log('🚀 Calling backend API...', { backendUrl, promptLength: prompt?.length });
+    console.log('🚀 Calling backend API...', { backendUrl, promptLength: prompt?.length, isNative: Capacitor.isNativePlatform() });
     
     // Generate or get session ID for conversation tracking
     const sessionId = window.chatSessionId || `session_${Date.now()}`;
     if (!window.chatSessionId) window.chatSessionId = sessionId;
     
-    const response = await fetch(`${backendUrl}/api/chat`, {
+    const headers = {
+      'Content-Type': 'application/json',
+      'x-session-id': sessionId,
+      'x-user-id': localStorage.getItem('odId') || localStorage.getItem('guestId') || '',
+      'x-subscription-tier': localStorage.getItem('userSubscriptionTier') || 'free',
+      'x-user-email': localStorage.getItem('userEmail') || ''
+    };
+    
+    const bodyData = {
+      prompt,
+      conversationHistory,
+      systemPrompt: customSystemPrompt,
+      fileUrls
+    };
+    
+    let response;
+    
+    // Use native HTTP for iOS/Android to bypass CORS/WKWebView issues
+    if (Capacitor.isNativePlatform()) {
+      console.log('📱 Using native HTTP for Capacitor...');
+      const nativeResponse = await CapacitorHttp.post({
+        url: `${backendUrl}/api/chat`,
+        headers: headers,
+        data: bodyData
+      });
+      
+      console.log('📡 Native response status:', nativeResponse.status);
+      
+      if (nativeResponse.status >= 200 && nativeResponse.status < 300) {
+        const data = nativeResponse.data;
+        console.log('✅ Native API response received');
+        
+        if (!data.response) {
+          throw new Error('Backend returned empty response');
+        }
+        return data.response;
+      } else {
+        const errorData = nativeResponse.data || {};
+        throw new Error(errorData.error || `Backend error: ${nativeResponse.status}`);
+      }
+    }
+    
+    // Web: use regular fetch
+    response = await fetch(`${backendUrl}/api/chat`, {
       method: 'POST',
+<<<<<<< Updated upstream
       headers: {
         'Content-Type': 'application/json',
         'x-session-id': sessionId,
@@ -27,6 +73,10 @@ const callOpenAI = async (prompt, conversationHistory = [], customSystemPrompt =
         systemPrompt: customSystemPrompt,
         fileUrls
       })
+=======
+      headers: headers,
+      body: JSON.stringify(bodyData)
+>>>>>>> Stashed changes
     });
     
     console.log('📡 Backend response status:', response.status, response.statusText);
