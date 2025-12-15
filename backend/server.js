@@ -72,29 +72,12 @@ conversationSchema.index({ odId: 1, lastMessageAt: -1 });
 const ConversationModel = mongoose.model('Conversation', conversationSchema);
 
 // Middleware
+// Allow ALL origins for Capacitor iOS app compatibility
 app.use(cors({
-  origin: [
-    process.env.FRONTEND_URL || 'http://localhost:5173',
-    'http://localhost:5173',
-    'http://localhost:5174',
-    'http://localhost:5175',
-    'https://bisedaai.com',
-    'http://bisedaai.com',
-    'https://www.bisedaai.com',
-    'http://www.bisedaai.com',
-    'https://julzwest.github.io',
-    'capacitor://localhost',
-    'ionic://localhost',
-    'http://localhost',
-    'http://localhost:3000',
-    'http://localhost:8080',
-    'http://127.0.0.1:5173',
-    'http://127.0.0.1:3000',
-    'http://127.0.0.1:8080'
-  ],
+  origin: true, // Allow all origins
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'x-user-id', 'x-session-id']
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-user-id', 'x-session-id', 'x-subscription-tier', 'x-user-email']
 }));
 app.use(express.json({ limit: '10mb' }));
 
