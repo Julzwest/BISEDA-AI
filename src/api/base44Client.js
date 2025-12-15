@@ -1,4 +1,5 @@
 import { getBackendUrl } from '@/utils/getBackendUrl';
+import { Capacitor, CapacitorHttp } from '@capacitor/core';
 
 // API client with OpenAI integration
 
@@ -13,22 +14,77 @@ const callOpenAI = async (prompt, conversationHistory = [], customSystemPrompt =
     // Generate or get session ID for conversation tracking
     const sessionId = window.chatSessionId || `session_${Date.now()}`;
     if (!window.chatSessionId) window.chatSessionId = sessionId;
-    
-    const response = await fetch(`${backendUrl}/api/chat`, {
+
+    const url = `${backendUrl}/api/chat`;
+    const headers = {
+      'Content-Type': 'application/json',
+      'x-session-id': sessionId,
+      'x-user-id': localStorage.getItem('odId') || localStorage.getItem('guestId') || '',
+      'x-subscription-tier': localStorage.getItem('userSubscriptionTier') || 'free',
+      'x-user-email': localStorage.getItem('userEmail') || ''
+    };
+
+    const bodyData = {
+      prompt,
+      conversationHistory,
+      systemPrompt: customSystemPrompt,
+      fileUrls
+    };
+
+    // ✅ iOS/Android: use native HTTP (bypasses WKWebView "Load failed" fetch issues)
+    if (Capacitor?.isNativePlatform?.()) {
+      console.log('📱 Native platform detected. Using CapacitorHttp...', { url });
+
+      const nativeResponse = await CapacitorHttp.post({
+        url,
+        headers,
+        data: bodyData
+      });
+
+      const status = nativeResponse?.status ?? nativeResponse?.statusCode ?? 0;
+      console.log('📡 Native response status:', status);
+
+      let data = nativeResponse?.data;
+      if (typeof data === 'string') {
+        try {
+          data = JSON.parse(data);
+        } catch {
+          // leave as-is
+        }
+      }
+
+      if (status >= 200 && status < 300) {
+        if (!data?.response) {
+          console.error('❌ Backend returned empty response:', data);
+          throw new Error('Backend returned empty response');
+        }
+        console.log('✅ Backend API response received (native)');
+        return data.response;
+      }
+
+      const errorData = data || {};
+      console.error('⚠️ Backend API error (native):', status, errorData);
+
+      if (errorData.code === 'LIMIT_EXCEEDED' ||
+          errorData.code === 'SUBSCRIPTION_EXPIRED' ||
+          errorData.code === 'ADULT_CONTENT_BLOCKED' ||
+          errorData.code === 'FEATURE_NOT_AVAILABLE' ||
+          errorData.code === 'SCREENSHOT_LIMIT_REACHED') {
+        const error = new Error(errorData.error || 'Subscription error');
+        error.code = errorData.code;
+        error.upgradeRequired = errorData.upgradeRequired;
+        error.screenshotAnalyses = errorData.screenshotAnalyses;
+        throw error;
+      }
+
+      throw new Error(errorData.error || `Backend API error: ${status}`);
+    }
+
+    // Web: use regular fetch
+    const response = await fetch(url, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-session-id': sessionId,
-        'x-user-id': localStorage.getItem('odId') || localStorage.getItem('guestId') || '',
-        'x-subscription-tier': localStorage.getItem('userSubscriptionTier') || 'free',
-        'x-user-email': localStorage.getItem('userEmail') || ''
-      },
-      body: JSON.stringify({
-        prompt,
-        conversationHistory,
-        systemPrompt: customSystemPrompt,
-        fileUrls
-      })
+      headers,
+      body: JSON.stringify(bodyData)
     });
     
     console.log('📡 Backend response status:', response.status, response.statusText);
