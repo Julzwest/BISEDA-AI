@@ -61,22 +61,8 @@ const callOpenAI = async (prompt, conversationHistory = [], customSystemPrompt =
     // Web: use regular fetch
     response = await fetch(`${backendUrl}/api/chat`, {
       method: 'POST',
-<<<<<<< Updated upstream
-      headers: {
-        'Content-Type': 'application/json',
-        'x-session-id': sessionId,
-        'x-user-id': localStorage.getItem('odId') || localStorage.getItem('guestId') || ''
-      },
-      body: JSON.stringify({
-        prompt,
-        conversationHistory,
-        systemPrompt: customSystemPrompt,
-        fileUrls
-      })
-=======
       headers: headers,
       body: JSON.stringify(bodyData)
->>>>>>> Stashed changes
     });
     
     console.log('📡 Backend response status:', response.status, response.statusText);
