@@ -105,6 +105,105 @@ const BodyLanguageGuide = () => {
         meaning: 'They care about how they look to you. Straightening clothes, fixing hair, or checking their reflection near you is attraction.',
         whatToDo: 'They\'re investing effort. Return the energy by being present and attentive.',
         intensity: 'medium'
+      },
+      {
+        id: 'dilated_pupils',
+        emoji: '🔮',
+        title: 'Dilated Pupils',
+        shortDesc: 'Bigger, darker eyes when looking at you',
+        meaning: 'Pupils naturally dilate when we see something we like. This is completely involuntary and a genuine sign of attraction.',
+        whatToDo: 'Hard to notice in dim lighting, but in good light it\'s a reliable indicator. Maintain gentle eye contact.',
+        intensity: 'high'
+      },
+      {
+        id: 'raised_eyebrows',
+        emoji: '😮',
+        title: 'Eyebrow Flash',
+        shortDesc: 'Quick eyebrow raise when seeing you',
+        meaning: 'A quick raise of the eyebrows (1/5 of a second) when first seeing you is a universal sign of recognition and interest.',
+        whatToDo: 'Return the eyebrow flash with a warm smile. It\'s an invitation to approach or engage.',
+        intensity: 'medium'
+      },
+      {
+        id: 'head_tilt',
+        emoji: '🤔',
+        title: 'Head Tilting',
+        shortDesc: 'Tilts head while listening to you',
+        meaning: 'Exposing the neck is a vulnerability signal showing trust and interest. They\'re fully engaged with what you\'re saying.',
+        whatToDo: 'Keep talking - they\'re genuinely interested. Share something personal to deepen the connection.',
+        intensity: 'medium'
+      },
+      {
+        id: 'wrist_exposure',
+        emoji: '🤲',
+        title: 'Showing Wrists/Palms',
+        shortDesc: 'Open palms, exposed wrists',
+        meaning: 'Exposing vulnerable areas (wrists, palms, neck) signals trust and openness. It\'s a subconscious invitation.',
+        whatToDo: 'Mirror this openness. Use open hand gestures when speaking.',
+        intensity: 'medium'
+      },
+      {
+        id: 'lingering',
+        emoji: '⏰',
+        title: 'Finding Excuses to Stay',
+        shortDesc: 'Prolongs conversation unnecessarily',
+        meaning: 'When someone keeps finding reasons to continue talking or hang around, they don\'t want the interaction to end.',
+        whatToDo: 'Escalate - suggest moving somewhere together or exchange numbers. They\'re waiting for you to make a move.',
+        intensity: 'high'
+      },
+      {
+        id: 'remembering',
+        emoji: '🧠',
+        title: 'Remembers Small Details',
+        shortDesc: 'Recalls things you mentioned before',
+        meaning: 'When someone remembers minor details from past conversations, they\'ve been thinking about you. Major interest signal.',
+        whatToDo: 'Acknowledge it: "You remembered that?" with a smile. It shows you noticed their investment.',
+        intensity: 'high'
+      },
+      {
+        id: 'initiating',
+        emoji: '📲',
+        title: 'Initiates Contact',
+        shortDesc: 'Texts/calls first, starts conversations',
+        meaning: 'Consistent initiation shows they\'re thinking about you and want your attention. Actions speak louder than words.',
+        whatToDo: 'Reciprocate but don\'t overdo it. Let them chase a bit while staying engaged.',
+        intensity: 'high'
+      },
+      {
+        id: 'nervous_laugh',
+        emoji: '😅',
+        title: 'Nervous Laughter',
+        shortDesc: 'Giggly, laughs at nothing',
+        meaning: 'Nervous laughter often means they\'re attracted but anxious. They want to impress you but feel flustered.',
+        whatToDo: 'Be warm and reassuring. Slow down your energy to help them relax.',
+        intensity: 'medium'
+      },
+      {
+        id: 'proximity',
+        emoji: '📍',
+        title: 'Staying in Your Orbit',
+        shortDesc: 'Always ends up near you',
+        meaning: 'Even in a group, they position themselves close to you. This is territorial behavior showing preference.',
+        whatToDo: 'Acknowledge their presence. Start a side conversation or include them directly.',
+        intensity: 'high'
+      },
+      {
+        id: 'blushing',
+        emoji: '😊',
+        title: 'Blushing',
+        shortDesc: 'Face/neck turns red around you',
+        meaning: 'Blushing is an involuntary physical response to attraction or excitement. They can\'t hide this one.',
+        whatToDo: 'Don\'t point it out - it\'ll embarrass them. Just enjoy knowing you have an effect on them.',
+        intensity: 'high'
+      },
+      {
+        id: 'object_play',
+        emoji: '🍷',
+        title: 'Playing with Objects',
+        shortDesc: 'Stroking glass, playing with jewelry',
+        meaning: 'Tactile stimulation is often a subconscious outlet for attraction energy. Stroking a wine glass stem is classic.',
+        whatToDo: 'Match their energy. This is a sign they\'re in a sensual headspace.',
+        intensity: 'medium'
       }
     ],
     neutral: [
@@ -152,6 +251,69 @@ const BodyLanguageGuide = () => {
         meaning: 'Modern habit, not always a red flag. If they quickly put it away, they\'re choosing you over distractions.',
         whatToDo: 'Don\'t call it out. If it becomes constant, re-engage with something interesting or give them an out.',
         intensity: 'low'
+      },
+      {
+        id: 'group_attention',
+        emoji: '👥',
+        title: 'Focused on the Group',
+        shortDesc: 'Talks to everyone equally',
+        meaning: 'They\'re being social but not showing you special attention yet. You need to differentiate yourself.',
+        whatToDo: 'Create a moment of private connection - a side comment, inside joke, or one-on-one conversation.',
+        intensity: 'low'
+      },
+      {
+        id: 'testing_you',
+        emoji: '🧪',
+        title: 'Testing You',
+        shortDesc: 'Playful challenges or light teasing',
+        meaning: 'They\'re testing your confidence and how you handle pressure. This is often a sign of interest, not rejection.',
+        whatToDo: 'Pass the test by staying cool and playful. Don\'t get defensive. Tease back with a smile.',
+        intensity: 'medium'
+      },
+      {
+        id: 'mentioning_others',
+        emoji: '💭',
+        title: 'Mentioning Other People',
+        shortDesc: 'Brings up friends, exes, or others',
+        meaning: 'Could be gauging your reaction (jealousy test) or genuinely just being conversational. Context matters.',
+        whatToDo: 'Stay unbothered. If it\'s a test, showing jealousy fails it. Be curious but not threatened.',
+        intensity: 'medium'
+      },
+      {
+        id: 'delayed_response',
+        emoji: '⏳',
+        title: 'Slow to Respond',
+        shortDesc: 'Takes time to reply to messages',
+        meaning: 'Could mean busy, playing it cool, or low interest. Look at the quality of response, not just timing.',
+        whatToDo: 'Match their energy. Don\'t double text. If responses are engaged when they come, you\'re fine.',
+        intensity: 'low'
+      },
+      {
+        id: 'formal_distance',
+        emoji: '🤝',
+        title: 'Polite but Distant',
+        shortDesc: 'Friendly but keeps professional distance',
+        meaning: 'They might be interested but cautious, or genuinely just being polite. Need more signals to know.',
+        whatToDo: 'Try to get past the surface. Ask deeper questions and share something personal first.',
+        intensity: 'medium'
+      },
+      {
+        id: 'fidgeting',
+        emoji: '🔄',
+        title: 'Constant Fidgeting',
+        shortDesc: 'Can\'t sit still, touches face/hair',
+        meaning: 'High energy that could be excitement OR anxiety. If they\'re staying engaged, it\'s usually attraction.',
+        whatToDo: 'Ground them with calm, confident energy. Your stillness will help them relax.',
+        intensity: 'medium'
+      },
+      {
+        id: 'breaking_eye',
+        emoji: '👁️‍🗨️',
+        title: 'Breaking Eye Contact Down',
+        shortDesc: 'Looks away downward',
+        meaning: 'Looking down when breaking eye contact is submissive/flirty. Looking to the side is more neutral.',
+        whatToDo: 'If they look down, it\'s often a positive sign of attraction. They\'re feeling the tension too.',
+        intensity: 'medium'
       }
     ],
     negative: [
@@ -225,6 +387,105 @@ const BodyLanguageGuide = () => {
         shortDesc: 'Pulling away from touches',
         meaning: 'Clear boundary. They don\'t want physical escalation with you.',
         whatToDo: 'Respect it immediately. Don\'t try again. Either reset to friendly conversation or exit.',
+        intensity: 'high'
+      },
+      {
+        id: 'barrier_objects',
+        emoji: '🛡️',
+        title: 'Creating Barriers',
+        shortDesc: 'Holding bag/drink between you',
+        meaning: 'Placing objects between you creates a physical barrier. It\'s a subconscious protection mechanism.',
+        whatToDo: 'Don\'t push through barriers. Step back and rebuild comfort before trying to close distance.',
+        intensity: 'medium'
+      },
+      {
+        id: 'yawning',
+        emoji: '🥱',
+        title: 'Yawning',
+        shortDesc: 'Repeated yawning during conversation',
+        meaning: 'Either genuinely tired or bored. If combined with other negative signals, they\'re not engaged.',
+        whatToDo: 'Change the energy. Suggest moving, switch topics drastically, or give them an out.',
+        intensity: 'medium'
+      },
+      {
+        id: 'friend_rescue',
+        emoji: '🆘',
+        title: 'Friend Rescue',
+        shortDesc: 'Friend pulls them away',
+        meaning: 'Either pre-arranged escape signal or their friend read the situation. They wanted out.',
+        whatToDo: 'Let them go gracefully. Never try to pull them back or interrupt the friend.',
+        intensity: 'high'
+      },
+      {
+        id: 'tight_lips',
+        emoji: '😶',
+        title: 'Tight-Lipped Smile',
+        shortDesc: 'Smile with lips pressed together',
+        meaning: 'A closed-mouth smile is often forced politeness, not genuine warmth. It doesn\'t reach the eyes.',
+        whatToDo: 'Work on getting a genuine reaction. If you can\'t, they may not be feeling it.',
+        intensity: 'medium'
+      },
+      {
+        id: 'hands_pockets',
+        emoji: '🧥',
+        title: 'Hands in Pockets',
+        shortDesc: 'Both hands hidden in pockets',
+        meaning: 'Hiding hands is a low-confidence or closed-off signal. They\'re not fully open to the interaction.',
+        whatToDo: 'Try to get them engaged with a question or activity that requires using their hands.',
+        intensity: 'low'
+      },
+      {
+        id: 'mono_answers',
+        emoji: '💤',
+        title: 'No Follow-Up Questions',
+        shortDesc: 'Answers but never asks about you',
+        meaning: 'One-sided conversation means low investment. Interested people want to know more about you.',
+        whatToDo: 'Stop carrying the conversation. If they don\'t pick up the slack, move on.',
+        intensity: 'high'
+      },
+      {
+        id: 'stiff_posture',
+        emoji: '🗿',
+        title: 'Stiff Body Language',
+        shortDesc: 'Rigid, tense posture',
+        meaning: 'Tension in the body often means discomfort. They\'re not relaxed around you.',
+        whatToDo: 'Try to lighten the mood. If they stay tense, they may not feel comfortable.',
+        intensity: 'medium'
+      },
+      {
+        id: 'blank_stare',
+        emoji: '😑',
+        title: 'Glazed Eyes',
+        shortDesc: 'Looking at you but not really seeing',
+        meaning: 'They\'ve mentally checked out. Their mind is elsewhere even if they\'re facing you.',
+        whatToDo: 'Ask "where did you just go?" to re-engage, or accept you\'ve lost them.',
+        intensity: 'high'
+      },
+      {
+        id: 'excessive_politeness',
+        emoji: '🎭',
+        title: 'Overly Formal',
+        shortDesc: '"That\'s nice" "How interesting"',
+        meaning: 'Rehearsed politeness without genuine engagement. They\'re being nice to end the interaction.',
+        whatToDo: 'Read the room. Genuine interest feels warm, not scripted. Exit with dignity.',
+        intensity: 'medium'
+      },
+      {
+        id: 'backing_up',
+        emoji: '🚶',
+        title: 'Walking Backward',
+        shortDesc: 'Slowly backing away while talking',
+        meaning: 'Their body is literally moving toward the exit. They\'re done with the conversation.',
+        whatToDo: 'Don\'t follow them. Say something like "I\'ll let you go" and end on your terms.',
+        intensity: 'high'
+      },
+      {
+        id: 'sighing',
+        emoji: '😤',
+        title: 'Heavy Sighing',
+        shortDesc: 'Audible sighs during conversation',
+        meaning: 'Frustration, boredom, or impatience. They\'re not enjoying the interaction.',
+        whatToDo: 'Wrap it up. You can\'t force chemistry. Exit and preserve your value.',
         intensity: 'high'
       }
     ]
