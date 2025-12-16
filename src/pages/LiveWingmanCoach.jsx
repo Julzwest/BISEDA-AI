@@ -167,10 +167,33 @@ export default function LiveWingmanCoach() {
   const [customQuestion, setCustomQuestion] = useState('');
   const [copied, setCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  
+  // New: Style and Gender selection
+  const [selectedStyle, setSelectedStyle] = useState('Playful');
+  const [targetGender, setTargetGender] = useState('woman');
+  const [showStylePicker, setShowStylePicker] = useState(false);
+  const [showGenderPicker, setShowGenderPicker] = useState(false);
+
+  const styleOptions = [
+    { id: 'Playful', label: 'Playful', emoji: '😏', desc: 'Teasing & fun' },
+    { id: 'Direct', label: 'Direct', emoji: '🎯', desc: 'Confident & clear' },
+    { id: 'Smooth', label: 'Smooth', emoji: '🍷', desc: 'Suave & charming' },
+    { id: 'Romantic', label: 'Romantic', emoji: '💕', desc: 'Sweet & sincere' }
+  ];
+
+  const genderOptions = [
+    { id: 'woman', label: 'Woman', emoji: '👩' },
+    { id: 'man', label: 'Man', emoji: '👨' },
+    { id: 'person', label: 'Person', emoji: '🧑' }
+  ];
 
   useEffect(() => {
     const userProfile = getProfile();
     setProfile(userProfile);
+    // Set initial style from profile if available
+    if (userProfile?.communicationStyle) {
+      setSelectedStyle(userProfile.communicationStyle);
+    }
   }, []);
 
   const dateStages = [
@@ -315,12 +338,16 @@ export default function LiveWingmanCoach() {
       goodnight: "saying goodbye"
     };
 
-    const prompt = `I'M ON A DATE NOW. Quick advice needed!
+    const genderContext = targetGender === 'woman' ? 'her' : targetGender === 'man' ? 'him' : 'them';
+    const genderLabel = targetGender === 'woman' ? 'She' : targetGender === 'man' ? 'He' : 'They';
+
+    const prompt = `I'M ON A DATE NOW with a ${targetGender}. Quick advice needed!
 Stage: ${stageLabels[dateStage] || dateStage}
 Goal: ${actionLabels[actionId]}
-Signals: ${buildSignalContext()}
+My Style: ${selectedStyle} (match this energy in your suggestions)
+Signals from ${genderContext}: ${buildSignalContext()}
 
-Should I go for it? Give me 1-2 sentences MAX. Reply in JSON only.`;
+Should I go for it? Give me 1-2 sentences MAX. Use ${genderContext}/${genderLabel} pronouns. Reply in JSON only.`;
 
     try {
       const aiResponse = await base44.integrations.Core.InvokeLLM({
@@ -493,12 +520,16 @@ Should I go for it? Give me 1-2 sentences MAX. Reply in JSON only.`;
       goodnight: "end of the date / goodbye"
     };
 
-    const prompt = `ON A DATE NOW. Quick help!
+    const genderContext = targetGender === 'woman' ? 'her' : targetGender === 'man' ? 'him' : 'them';
+    const genderLabel = targetGender === 'woman' ? 'She' : targetGender === 'man' ? 'He' : 'They';
+
+    const prompt = `ON A DATE NOW with a ${targetGender}. Quick help!
 Stage: ${stageLabels[dateStage] || dateStage}
-Signals: ${buildSignalContext()}
+My Style: ${selectedStyle}
+Signals from ${genderContext}: ${buildSignalContext()}
 Question: "${customQuestion}"
 
-Answer in 1-2 sentences MAX. JSON format only.`;
+Use ${genderContext}/${genderLabel} pronouns. Answer in 1-2 sentences MAX. JSON format only.`;
 
     try {
       const aiResponse = await base44.integrations.Core.InvokeLLM({
@@ -618,15 +649,85 @@ Answer in 1-2 sentences MAX. JSON format only.`;
             </div>
           </div>
 
-          {/* Personalization Badge */}
-          {profile && (
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 rounded-full">
-              <User className="w-3.5 h-3.5 text-amber-400" />
-              <span className="text-xs text-amber-300">
-                Style: <span className="font-semibold">{profile.communicationStyle}</span>
-              </span>
+          {/* Style & Gender Selection */}
+          <div className="flex flex-wrap gap-2">
+            {/* Style Selector */}
+            <div className="relative">
+              <button
+                onClick={() => { setShowStylePicker(!showStylePicker); setShowGenderPicker(false); }}
+                className="inline-flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 rounded-xl hover:border-amber-500/50 transition-all"
+              >
+                <span className="text-base">{styleOptions.find(s => s.id === selectedStyle)?.emoji}</span>
+                <span className="text-xs text-amber-300">
+                  Style: <span className="font-semibold text-white">{selectedStyle}</span>
+                </span>
+                <svg className={`w-3 h-3 text-amber-400 transition-transform ${showStylePicker ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              
+              {/* Style Dropdown */}
+              {showStylePicker && (
+                <div className="absolute top-full left-0 mt-2 w-48 bg-slate-800 border border-slate-700 rounded-xl shadow-xl z-50 overflow-hidden">
+                  {styleOptions.map((style) => (
+                    <button
+                      key={style.id}
+                      onClick={() => { setSelectedStyle(style.id); setShowStylePicker(false); }}
+                      className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
+                        selectedStyle === style.id 
+                          ? 'bg-amber-500/20 text-amber-300' 
+                          : 'text-slate-300 hover:bg-slate-700'
+                      }`}
+                    >
+                      <span className="text-xl">{style.emoji}</span>
+                      <div>
+                        <p className="font-medium text-sm">{style.label}</p>
+                        <p className="text-xs text-slate-500">{style.desc}</p>
+                      </div>
+                      {selectedStyle === style.id && <Check className="w-4 h-4 ml-auto text-amber-400" />}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
-          )}
+
+            {/* Gender Selector */}
+            <div className="relative">
+              <button
+                onClick={() => { setShowGenderPicker(!showGenderPicker); setShowStylePicker(false); }}
+                className="inline-flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-pink-500/20 to-purple-500/20 border border-pink-500/30 rounded-xl hover:border-pink-500/50 transition-all"
+              >
+                <span className="text-base">{genderOptions.find(g => g.id === targetGender)?.emoji}</span>
+                <span className="text-xs text-pink-300">
+                  Dating a: <span className="font-semibold text-white">{genderOptions.find(g => g.id === targetGender)?.label}</span>
+                </span>
+                <svg className={`w-3 h-3 text-pink-400 transition-transform ${showGenderPicker ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              
+              {/* Gender Dropdown */}
+              {showGenderPicker && (
+                <div className="absolute top-full left-0 mt-2 w-44 bg-slate-800 border border-slate-700 rounded-xl shadow-xl z-50 overflow-hidden">
+                  {genderOptions.map((gender) => (
+                    <button
+                      key={gender.id}
+                      onClick={() => { setTargetGender(gender.id); setShowGenderPicker(false); }}
+                      className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
+                        targetGender === gender.id 
+                          ? 'bg-pink-500/20 text-pink-300' 
+                          : 'text-slate-300 hover:bg-slate-700'
+                      }`}
+                    >
+                      <span className="text-xl">{gender.emoji}</span>
+                      <span className="font-medium text-sm">{gender.label}</span>
+                      {targetGender === gender.id && <Check className="w-4 h-4 ml-auto text-pink-400" />}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Date Stage - Enhanced Timeline Design */}
