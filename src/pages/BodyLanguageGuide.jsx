@@ -12,6 +12,7 @@ const BodyLanguageGuide = () => {
     { id: 'positive', label: 'Attraction', icon: '💚', color: 'emerald' },
     { id: 'neutral', label: 'Uncertain', icon: '💛', color: 'amber' },
     { id: 'negative', label: 'Disinterest', icon: '❤️‍🩹', color: 'red' },
+    { id: 'deception', label: 'Lie Detector', icon: '🔍', color: 'cyan' },
   ];
 
   const bodyLanguageSignals = {
@@ -488,6 +489,170 @@ const BodyLanguageGuide = () => {
         whatToDo: 'Wrap it up. You can\'t force chemistry. Exit and preserve your value.',
         intensity: 'high'
       }
+    ],
+    deception: [
+      {
+        id: 'touching_face',
+        emoji: '🤔',
+        title: 'Touching Face/Nose',
+        shortDesc: 'Frequent face touching while talking',
+        meaning: 'Anxiety causes blood to rush to the face. Touching the nose, mouth, or ears while speaking can indicate deception.',
+        whatToDo: 'Ask follow-up questions. Liars often struggle with details. "Tell me more about that..."',
+        intensity: 'high'
+      },
+      {
+        id: 'eye_direction',
+        emoji: '👁️',
+        title: 'Eyes Moving Up-Right',
+        shortDesc: 'Looking up and to their right',
+        meaning: 'For most right-handed people, looking up-right indicates constructing/imagining (potential lie) vs up-left (remembering truth).',
+        whatToDo: 'Note: This varies by person. Establish their baseline first by asking truthful questions.',
+        intensity: 'medium'
+      },
+      {
+        id: 'over_detail',
+        emoji: '📖',
+        title: 'Too Much Detail',
+        shortDesc: 'Overly elaborate explanations',
+        meaning: 'Liars often over-explain to seem credible. Truth-tellers give simpler, direct answers.',
+        whatToDo: 'Interrupt and ask them to summarize. Liars struggle to condense their fabricated stories.',
+        intensity: 'high'
+      },
+      {
+        id: 'covering_mouth',
+        emoji: '🤐',
+        title: 'Covering Mouth',
+        shortDesc: 'Hand over mouth while speaking',
+        meaning: 'Subconscious attempt to "block" the lie from coming out. A classic deception tell.',
+        whatToDo: 'Watch for this combined with other signals. One sign isn\'t proof - look for clusters.',
+        intensity: 'high'
+      },
+      {
+        id: 'story_changes',
+        emoji: '🔀',
+        title: 'Story Inconsistencies',
+        shortDesc: 'Details change when retold',
+        meaning: 'Truth is easy to repeat consistently. Lies require mental effort and often have shifting details.',
+        whatToDo: 'Ask them to tell the story backward. Liars struggle with reverse chronology.',
+        intensity: 'high'
+      },
+      {
+        id: 'throat_clearing',
+        emoji: '😮‍💨',
+        title: 'Throat Clearing/Swallowing',
+        shortDesc: 'Frequent swallowing or clearing throat',
+        meaning: 'Stress causes dry mouth. Excessive swallowing or throat clearing can indicate anxiety from lying.',
+        whatToDo: 'Stay calm and keep asking questions. The more they talk, the more tells they show.',
+        intensity: 'medium'
+      },
+      {
+        id: 'speech_pause',
+        emoji: '⏸️',
+        title: 'Unusual Pauses',
+        shortDesc: 'Long pauses before answering',
+        meaning: 'Truth flows naturally. Fabricating requires thinking time. Watch for unnatural delays on simple questions.',
+        whatToDo: 'Ask unexpected questions. Liars prepare for anticipated questions but stumble on surprises.',
+        intensity: 'medium'
+      },
+      {
+        id: 'defensive',
+        emoji: '🛡️',
+        title: 'Getting Defensive',
+        shortDesc: 'Angry or hostile when questioned',
+        meaning: 'Innocent people clarify. Guilty people deflect with anger. "Why would you even ask that?" is a red flag.',
+        whatToDo: 'Stay calm and curious. Don\'t accuse - just ask open questions and observe.',
+        intensity: 'high'
+      },
+      {
+        id: 'fidget_increase',
+        emoji: '🔄',
+        title: 'Increased Fidgeting',
+        shortDesc: 'Restlessness when certain topics come up',
+        meaning: 'Watch for sudden changes in fidgeting level when specific subjects are mentioned.',
+        whatToDo: 'Note which topics trigger anxiety. Circle back to those topics later.',
+        intensity: 'medium'
+      },
+      {
+        id: 'fake_smile',
+        emoji: '😬',
+        title: 'Forced Smile',
+        shortDesc: 'Smile doesn\'t reach the eyes',
+        meaning: 'Real smiles (Duchenne) crinkle the eyes. Fake smiles only use the mouth. They\'re masking their true feelings.',
+        whatToDo: 'Look for eye crinkles. No crinkles = the smile is performative, not genuine.',
+        intensity: 'medium'
+      },
+      {
+        id: 'distancing_language',
+        emoji: '📏',
+        title: 'Distancing Language',
+        shortDesc: '"That woman" instead of names',
+        meaning: 'Liars subconsciously distance themselves from the lie by avoiding personal pronouns and names.',
+        whatToDo: 'Notice if they suddenly become formal or vague about people/places they should know well.',
+        intensity: 'high'
+      },
+      {
+        id: 'no_contractions',
+        emoji: '📝',
+        title: 'Formal Speech',
+        shortDesc: '"I did not" vs "I didn\'t"',
+        meaning: 'When lying, people often avoid contractions and speak more formally. "I did NOT do that" vs casual "I didn\'t."',
+        whatToDo: 'Compare to their normal speech pattern. Sudden formality on specific topics is suspicious.',
+        intensity: 'medium'
+      },
+      {
+        id: 'anchor_point',
+        emoji: '⚓',
+        title: 'Physical Anchoring',
+        shortDesc: 'Gripping chair, table, or objects',
+        meaning: 'Holding onto objects provides a sense of security when feeling anxious about deception.',
+        whatToDo: 'White knuckles or tight grips during certain topics reveal stress points.',
+        intensity: 'medium'
+      },
+      {
+        id: 'blink_rate',
+        emoji: '👁️‍🗨️',
+        title: 'Changed Blink Rate',
+        shortDesc: 'Blinking more or less than usual',
+        meaning: 'Stress affects blink rate. Watch for changes from their baseline - either rapid blinking or forced staring.',
+        whatToDo: 'Establish normal blink rate first with casual conversation, then compare.',
+        intensity: 'low'
+      },
+      {
+        id: 'grooming_gesture',
+        emoji: '👔',
+        title: 'Self-Soothing Gestures',
+        shortDesc: 'Adjusting collar, rubbing neck',
+        meaning: 'Neck touching, collar pulling, or rubbing the back of the neck indicates discomfort and potential deception.',
+        whatToDo: 'The neck is vulnerable - touching it reveals they feel exposed or threatened.',
+        intensity: 'high'
+      },
+      {
+        id: 'pitch_change',
+        emoji: '🎵',
+        title: 'Voice Pitch Changes',
+        shortDesc: 'Voice gets higher or strained',
+        meaning: 'Stress tightens vocal cords, raising pitch. Listen for voice changes on sensitive topics.',
+        whatToDo: 'Compare their voice on neutral topics vs suspicious ones. The difference is telling.',
+        intensity: 'medium'
+      },
+      {
+        id: 'micro_expressions',
+        emoji: '⚡',
+        title: 'Micro-Expressions',
+        shortDesc: 'Brief flashes of true emotion',
+        meaning: 'Real emotions flash across the face for 1/25th of a second before being masked. Fear, disgust, or contempt.',
+        whatToDo: 'Hard to catch in real-time. Trust your gut if something "felt off" - you may have caught one.',
+        intensity: 'high'
+      },
+      {
+        id: 'direction_changes',
+        emoji: '↔️',
+        title: 'Shifting Position',
+        shortDesc: 'Constant repositioning in seat',
+        meaning: 'Discomfort from lying manifests physically. Constant shifting is the body trying to "escape."',
+        whatToDo: 'Note when the shifting increases. Those are likely the topics they\'re being dishonest about.',
+        intensity: 'medium'
+      }
     ]
   };
 
@@ -554,13 +719,15 @@ const BodyLanguageGuide = () => {
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-medium transition-all flex items-center justify-center gap-1.5 ${
+              className={`flex-1 py-2 px-2 rounded-xl text-[10px] font-medium transition-all flex items-center justify-center gap-1 ${
                 selectedCategory === cat.id
                   ? cat.id === 'positive' 
                     ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
                     : cat.id === 'neutral'
                       ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                      : 'bg-red-500/20 text-red-300 border border-red-500/30'
+                      : cat.id === 'deception'
+                        ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
+                        : 'bg-red-500/20 text-red-300 border border-red-500/30'
                   : 'bg-slate-800/50 text-slate-400 border border-slate-700/30 hover:bg-slate-700/50'
               }`}
             >
@@ -582,7 +749,9 @@ const BodyLanguageGuide = () => {
                 ? 'bg-slate-800/40 border-emerald-500/20 hover:border-emerald-500/40'
                 : selectedCategory === 'neutral'
                   ? 'bg-slate-800/40 border-amber-500/20 hover:border-amber-500/40'
-                  : 'bg-slate-800/40 border-red-500/20 hover:border-red-500/40'
+                  : selectedCategory === 'deception'
+                    ? 'bg-slate-800/40 border-cyan-500/20 hover:border-cyan-500/40'
+                    : 'bg-slate-800/40 border-red-500/20 hover:border-red-500/40'
             }`}
           >
             <div className="flex items-start gap-3">
@@ -591,7 +760,9 @@ const BodyLanguageGuide = () => {
                   ? 'bg-emerald-500/20'
                   : selectedCategory === 'neutral'
                     ? 'bg-amber-500/20'
-                    : 'bg-red-500/20'
+                    : selectedCategory === 'deception'
+                      ? 'bg-cyan-500/20'
+                      : 'bg-red-500/20'
               }`}>
                 {signal.emoji}
               </div>
@@ -622,7 +793,9 @@ const BodyLanguageGuide = () => {
               ? 'border-emerald-500/30'
               : selectedCategory === 'neutral'
                 ? 'border-amber-500/30'
-                : 'border-red-500/30'
+                : selectedCategory === 'deception'
+                  ? 'border-cyan-500/30'
+                  : 'border-red-500/30'
           } p-6 pb-10 max-h-[80vh] overflow-y-auto`}>
             {/* Close button */}
             <button
@@ -639,7 +812,9 @@ const BodyLanguageGuide = () => {
                   ? 'bg-emerald-500/20'
                   : selectedCategory === 'neutral'
                     ? 'bg-amber-500/20'
-                    : 'bg-red-500/20'
+                    : selectedCategory === 'deception'
+                      ? 'bg-cyan-500/20'
+                      : 'bg-red-500/20'
               }`}>
                 {selectedSignal.emoji}
               </div>
@@ -656,7 +831,9 @@ const BodyLanguageGuide = () => {
                   ? 'text-emerald-400'
                   : selectedCategory === 'neutral'
                     ? 'text-amber-400'
-                    : 'text-red-400'
+                    : selectedCategory === 'deception'
+                      ? 'text-cyan-400'
+                      : 'text-red-400'
               }`}>
                 <Heart className="w-3.5 h-3.5" />
                 What it means
