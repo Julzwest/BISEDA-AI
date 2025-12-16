@@ -211,28 +211,28 @@ export default function LiveWingmanCoach() {
   const progressPercent = ((currentStageIndex + 1) / dateStages.length) * 100;
 
   const signalOptions = [
-    // Positive signals
-    { id: 'leaningIn', label: 'Leaning in', icon: Eye, positive: true, emoji: '👀' },
-    { id: 'eyeContact', label: 'Eye contact', icon: Eye, positive: true, emoji: '✨' },
-    { id: 'touchHappening', label: 'Touching me', icon: Hand, positive: true, emoji: '🤝' },
-    { id: 'laughingRelaxed', label: 'Laughing', icon: Laugh, positive: true, emoji: '😄' },
-    { id: 'playfulTeasing', label: 'Playful teasing', icon: Sparkles, positive: true, emoji: '😜' },
-    { id: 'mirroring', label: 'Mirroring me', icon: User, positive: true, emoji: '🪞' },
-    { id: 'hairPlaying', label: 'Playing w/ hair', icon: Sparkles, positive: true, emoji: '💇' },
-    { id: 'longAnswers', label: 'Long answers', icon: MessageCircle, positive: true, emoji: '💬' },
-    { id: 'askingQuestions', label: 'Asking about me', icon: MessageCircle, positive: true, emoji: '❓' },
-    { id: 'complimenting', label: 'Complimenting', icon: Heart, positive: true, emoji: '🥰' },
-    { id: 'lipsLooking', label: 'Looking at lips', icon: Eye, positive: true, emoji: '👄' },
-    { id: 'stayingClose', label: 'Staying close', icon: Heart, positive: true, emoji: '💕' },
-    // Negative/cautious signals
-    { id: 'steppedBack', label: 'Stepped back', icon: ArrowLeftCircle, positive: false, emoji: '😬' },
-    { id: 'distracted', label: 'On phone', icon: Smartphone, positive: false, emoji: '📱' },
-    { id: 'shortAnswers', label: 'Short answers', icon: MessageCircle, positive: false, emoji: '😐' },
-    { id: 'lookingAround', label: 'Looking around', icon: Eye, positive: false, emoji: '👀' },
-    { id: 'armsCollected', label: 'Arms crossed', icon: Shield, positive: false, emoji: '🙅' },
-    { id: 'checkingTime', label: 'Checking time', icon: Calendar, positive: false, emoji: '⏰' },
-    { id: 'nervous', label: 'Seems nervous', icon: AlertTriangle, positive: null, emoji: '😰' },
-    { id: 'quietSudden', label: 'Went quiet', icon: MessageCircle, positive: false, emoji: '🤐' }
+    // Positive signals - Clean, minimal icons
+    { id: 'leaningIn', label: 'Leaning in', icon: Eye, positive: true, emoji: '↗️' },
+    { id: 'eyeContact', label: 'Eye contact', icon: Eye, positive: true, emoji: '👁️' },
+    { id: 'touchHappening', label: 'Touching', icon: Hand, positive: true, emoji: '✋' },
+    { id: 'laughingRelaxed', label: 'Laughing', icon: Laugh, positive: true, emoji: '😊' },
+    { id: 'playfulTeasing', label: 'Teasing', icon: Sparkles, positive: true, emoji: '⚡' },
+    { id: 'mirroring', label: 'Mirroring', icon: User, positive: true, emoji: '🔄' },
+    { id: 'hairPlaying', label: 'Hair touch', icon: Sparkles, positive: true, emoji: '💫' },
+    { id: 'longAnswers', label: 'Engaged', icon: MessageCircle, positive: true, emoji: '💭' },
+    { id: 'askingQuestions', label: 'Curious', icon: MessageCircle, positive: true, emoji: '❔' },
+    { id: 'complimenting', label: 'Flirting', icon: Heart, positive: true, emoji: '♥️' },
+    { id: 'lipsLooking', label: 'Lip glances', icon: Eye, positive: true, emoji: '👀' },
+    { id: 'stayingClose', label: 'Close proximity', icon: Heart, positive: true, emoji: '🧲' },
+    // Negative/cautious signals - Clean, warning style
+    { id: 'steppedBack', label: 'Distant', icon: ArrowLeftCircle, positive: false, emoji: '↙️' },
+    { id: 'distracted', label: 'On phone', icon: Smartphone, positive: false, emoji: '📵' },
+    { id: 'shortAnswers', label: 'Short replies', icon: MessageCircle, positive: false, emoji: '💬' },
+    { id: 'lookingAround', label: 'Distracted', icon: Eye, positive: false, emoji: '👁️‍🗨️' },
+    { id: 'armsCollected', label: 'Closed off', icon: Shield, positive: false, emoji: '🛡️' },
+    { id: 'checkingTime', label: 'Clock watching', icon: Calendar, positive: false, emoji: '⏱️' },
+    { id: 'nervous', label: 'Nervous', icon: AlertTriangle, positive: null, emoji: '😶' },
+    { id: 'quietSudden', label: 'Gone quiet', icon: MessageCircle, positive: false, emoji: '🔇' }
   ];
 
   const quickActions = [
@@ -855,26 +855,31 @@ Use ${genderContext}/${genderLabel} pronouns. Answer in 1-2 sentences MAX. JSON 
 
           {/* Green Flags Section */}
           <div className="mb-4">
-            <p className="text-xs text-emerald-400 font-medium mb-2 flex items-center gap-1.5">
-              <span>✅</span> Green Flags <span className="text-slate-500">• They're interested</span>
+            <p className="text-xs font-semibold mb-2.5 flex items-center gap-2">
+              <span className="w-5 h-5 rounded-md bg-emerald-500/20 flex items-center justify-center">
+                <span className="text-[10px]">✓</span>
+              </span>
+              <span className="text-emerald-400">GREEN FLAGS</span>
+              <span className="text-slate-600 font-normal">•</span>
+              <span className="text-slate-500 font-normal">Interest signals</span>
             </p>
             <div className="overflow-x-auto pb-2 -mx-5 px-5" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              <div className="flex gap-2 min-w-max">
+              <div className="flex gap-2.5 min-w-max">
                 {signalOptions.filter(s => s.positive === true).map((signal) => {
                   const isActive = signals[signal.id];
                   return (
                     <button
                       key={signal.id}
                       onClick={() => toggleSignal(signal.id)}
-                      className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                      className={`group flex items-center gap-2.5 px-4 py-2.5 rounded-2xl text-sm font-medium transition-all duration-300 ${
                         isActive
-                          ? 'bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg shadow-emerald-500/30 scale-105'
-                          : 'bg-slate-800/60 border border-slate-700/50 text-slate-400 hover:border-emerald-500/50 hover:text-emerald-300'
+                          ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/40'
+                          : 'bg-slate-800/80 backdrop-blur-sm border border-slate-700/60 text-slate-300 hover:border-emerald-500/40 hover:bg-slate-700/80'
                       }`}
                     >
-                      <span className="text-base">{signal.emoji}</span>
-                      <span className="whitespace-nowrap">{signal.label}</span>
-                      {isActive && <Check className="w-3.5 h-3.5" />}
+                      <span className={`text-sm transition-transform duration-200 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`}>{signal.emoji}</span>
+                      <span className="whitespace-nowrap text-[13px]">{signal.label}</span>
+                      {isActive && <Check className="w-3.5 h-3.5 ml-0.5" />}
                     </button>
                   );
                 })}
@@ -884,26 +889,31 @@ Use ${genderContext}/${genderLabel} pronouns. Answer in 1-2 sentences MAX. JSON 
 
           {/* Red Flags Section */}
           <div className="mb-4">
-            <p className="text-xs text-red-400 font-medium mb-2 flex items-center gap-1.5">
-              <span>🚫</span> Red Flags <span className="text-slate-500">• Caution signs</span>
+            <p className="text-xs font-semibold mb-2.5 flex items-center gap-2">
+              <span className="w-5 h-5 rounded-md bg-red-500/20 flex items-center justify-center">
+                <span className="text-[10px]">!</span>
+              </span>
+              <span className="text-red-400">RED FLAGS</span>
+              <span className="text-slate-600 font-normal">•</span>
+              <span className="text-slate-500 font-normal">Caution signals</span>
             </p>
             <div className="overflow-x-auto pb-2 -mx-5 px-5" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              <div className="flex gap-2 min-w-max">
+              <div className="flex gap-2.5 min-w-max">
                 {signalOptions.filter(s => s.positive === false || s.positive === null).map((signal) => {
                   const isActive = signals[signal.id];
                   return (
                     <button
                       key={signal.id}
                       onClick={() => toggleSignal(signal.id)}
-                      className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                      className={`group flex items-center gap-2.5 px-4 py-2.5 rounded-2xl text-sm font-medium transition-all duration-300 ${
                         isActive
-                          ? 'bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-lg shadow-red-500/30 scale-105'
-                          : 'bg-slate-800/60 border border-slate-700/50 text-slate-400 hover:border-red-500/50 hover:text-red-300'
+                          ? 'bg-red-500 text-white shadow-lg shadow-red-500/40'
+                          : 'bg-slate-800/80 backdrop-blur-sm border border-slate-700/60 text-slate-300 hover:border-red-500/40 hover:bg-slate-700/80'
                       }`}
                     >
-                      <span className="text-base">{signal.emoji}</span>
-                      <span className="whitespace-nowrap">{signal.label}</span>
-                      {isActive && <Check className="w-3.5 h-3.5" />}
+                      <span className={`text-sm transition-transform duration-200 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`}>{signal.emoji}</span>
+                      <span className="whitespace-nowrap text-[13px]">{signal.label}</span>
+                      {isActive && <Check className="w-3.5 h-3.5 ml-0.5" />}
                     </button>
                   );
                 })}
