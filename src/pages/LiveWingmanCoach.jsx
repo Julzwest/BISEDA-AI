@@ -747,8 +747,22 @@ Use ${genderContext}/${genderLabel} pronouns. Answer in 1-2 sentences MAX. JSON 
             </div>
           </div>
 
+          {/* Swipe Hint */}
+          <div className="flex items-center justify-end gap-1.5 mb-2 pr-1">
+            <span className="text-[10px] text-slate-500 uppercase tracking-wide">Swipe</span>
+            <div className="flex items-center gap-0.5 animate-pulse">
+              <svg className="w-3 h-3 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </div>
+          </div>
+
           {/* Horizontal Scrollable Timeline */}
-          <div className="overflow-x-auto pb-2 -mx-5 px-5" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}>
+          <div className="relative">
+            {/* Fade gradient on right edge */}
+            <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-slate-900 to-transparent z-10 pointer-events-none" />
+            
+            <div className="overflow-x-auto pb-2 -mx-5 px-5" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}>
             <div className="flex gap-3 min-w-max">
               {dateStages.map((stage, index) => {
                 const isSelected = dateStage === stage.id;
@@ -804,6 +818,7 @@ Use ${genderContext}/${genderLabel} pronouns. Answer in 1-2 sentences MAX. JSON 
                 );
               })}
             </div>
+          </div>
           </div>
 
           {/* Current Stage Card */}
