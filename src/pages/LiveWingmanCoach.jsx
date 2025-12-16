@@ -1084,36 +1084,6 @@ Use ${genderContext}/${genderLabel} pronouns. Answer in 1-2 sentences MAX. JSON 
                 <p className="text-white text-sm leading-relaxed">{response.recommendation}</p>
               </div>
 
-              {/* Flags */}
-              <div className="space-y-2 mb-4">
-                {response.flags.green?.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {response.flags.green.map((flag, i) => (
-                      <span key={i} className="text-xs bg-emerald-500/20 text-emerald-300 px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-emerald-500/30">
-                        ✅ {flag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-                {response.flags.yellow?.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {response.flags.yellow.map((flag, i) => (
-                      <span key={i} className="text-xs bg-amber-500/20 text-amber-300 px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-amber-500/30">
-                        ⚠️ {flag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-                {response.flags.red?.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {response.flags.red.map((flag, i) => (
-                      <span key={i} className="text-xs bg-red-500/20 text-red-300 px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-red-500/30">
-                        🚫 {flag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
 
               {/* Consent Line */}
               <div className="mb-3">
