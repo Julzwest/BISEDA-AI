@@ -19,6 +19,7 @@ import IntimacyCoach from './pages/IntimacyCoach.jsx';
 import LiveWingman from './pages/LiveWingman.jsx';
 import LiveWingmanCoach from './pages/LiveWingmanCoach.jsx';
 import BreakupCoach from './pages/BreakupCoach.jsx';
+import BodyLanguageGuide from './pages/BodyLanguageGuide.jsx';
 import Tools from './pages/Tools.jsx';
 import ChatUpload from './pages/ChatUpload.jsx';
 import ChatAnalysis from './pages/ChatAnalysis.jsx';
@@ -159,6 +160,7 @@ function App() {
           <Route path="/intimacycoach" element={<IntimacyCoach />} />
           <Route path="/livewingman" element={<LiveWingman />} />
           <Route path="/breakupcoach" element={<BreakupCoach />} />
+          <Route path="/bodylanguage" element={<BodyLanguageGuide />} />
           <Route path="/profile" element={<UserProfile onLogout={handleLogout} />} />
           
           {/* System */}

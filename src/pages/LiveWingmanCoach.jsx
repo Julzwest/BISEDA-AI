@@ -846,10 +846,18 @@ Use ${genderContext}/${genderLabel} pronouns. Answer in 1-2 sentences MAX. JSON 
         <div className="px-5 mb-6">
           {/* Header with Signal Count */}
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-              <Eye className="w-4 h-4 text-purple-400" />
-              What signals do you see?
-            </h3>
+            <div className="flex items-center gap-3">
+              <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+                <Eye className="w-4 h-4 text-purple-400" />
+                What signals do you see?
+              </h3>
+              <button
+                onClick={() => navigate('/bodylanguage')}
+                className="text-[10px] text-violet-400 hover:text-violet-300 flex items-center gap-1 transition-colors"
+              >
+                Learn meanings →
+              </button>
+            </div>
             <div className="flex items-center gap-3">
               {/* Green signals count */}
               <div className="flex items-center gap-1.5 px-2 py-1 bg-emerald-500/20 border border-emerald-500/30 rounded-lg">

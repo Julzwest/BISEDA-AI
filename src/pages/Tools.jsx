@@ -9,7 +9,8 @@ import {
   Crown,
   Lock,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  Eye
 } from 'lucide-react';
 
 export default function Tools() {
@@ -59,6 +60,16 @@ export default function Tools() {
       route: '/chat',
       requiresPro: false,
       emoji: '💬'
+    },
+    {
+      id: 'bodylanguage',
+      icon: Eye,
+      title: 'Body Language Guide',
+      description: 'Learn to read attraction signals',
+      color: 'from-violet-500 to-purple-600',
+      route: '/bodylanguage',
+      requiresPro: false,
+      emoji: '👀'
     }
   ];
 
