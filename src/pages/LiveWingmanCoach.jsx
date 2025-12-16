@@ -827,35 +827,145 @@ Use ${genderContext}/${genderLabel} pronouns. Answer in 1-2 sentences MAX. JSON 
           </div>
         </div>
 
-        {/* Signals */}
-        <div className="px-5 mb-5">
-          <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-            <Eye className="w-4 h-4 text-purple-400" />
-            What signals do you see?
-          </h3>
-          <div className="flex flex-wrap gap-2">
-            {signalOptions.map((signal) => {
-              const isActive = signals[signal.id];
-              
-              return (
-                <button
-                  key={signal.id}
-                  onClick={() => toggleSignal(signal.id)}
-                  className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium transition-all border ${
-                    isActive
-                      ? signal.positive
-                        ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300 shadow-lg shadow-emerald-500/10'
-                        : 'bg-red-500/20 border-red-500/50 text-red-300 shadow-lg shadow-red-500/10'
-                      : 'bg-slate-800/50 border-slate-700/50 text-slate-400 hover:border-slate-600'
-                  }`}
-                >
-                  <span>{signal.emoji}</span>
-                  {signal.label}
-                  {isActive && <Check className="w-3.5 h-3.5" />}
-                </button>
-              );
-            })}
+        {/* Signals - Enhanced Design */}
+        <div className="px-5 mb-6">
+          {/* Header with Signal Count */}
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+              <Eye className="w-4 h-4 text-purple-400" />
+              What signals do you see?
+            </h3>
+            <div className="flex items-center gap-3">
+              {/* Green signals count */}
+              <div className="flex items-center gap-1.5 px-2 py-1 bg-emerald-500/20 border border-emerald-500/30 rounded-lg">
+                <span className="text-xs">✅</span>
+                <span className="text-xs font-bold text-emerald-400">
+                  {signalOptions.filter(s => s.positive === true && signals[s.id]).length}
+                </span>
+              </div>
+              {/* Red signals count */}
+              <div className="flex items-center gap-1.5 px-2 py-1 bg-red-500/20 border border-red-500/30 rounded-lg">
+                <span className="text-xs">🚫</span>
+                <span className="text-xs font-bold text-red-400">
+                  {signalOptions.filter(s => s.positive === false && signals[s.id]).length}
+                </span>
+              </div>
+            </div>
           </div>
+
+          {/* Green Flags Section */}
+          <div className="mb-4">
+            <p className="text-xs text-emerald-400 font-medium mb-2 flex items-center gap-1.5">
+              <span>✅</span> Green Flags <span className="text-slate-500">• They're interested</span>
+            </p>
+            <div className="overflow-x-auto pb-2 -mx-5 px-5" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+              <div className="flex gap-2 min-w-max">
+                {signalOptions.filter(s => s.positive === true).map((signal) => {
+                  const isActive = signals[signal.id];
+                  return (
+                    <button
+                      key={signal.id}
+                      onClick={() => toggleSignal(signal.id)}
+                      className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                        isActive
+                          ? 'bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg shadow-emerald-500/30 scale-105'
+                          : 'bg-slate-800/60 border border-slate-700/50 text-slate-400 hover:border-emerald-500/50 hover:text-emerald-300'
+                      }`}
+                    >
+                      <span className="text-base">{signal.emoji}</span>
+                      <span className="whitespace-nowrap">{signal.label}</span>
+                      {isActive && <Check className="w-3.5 h-3.5" />}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Red Flags Section */}
+          <div className="mb-4">
+            <p className="text-xs text-red-400 font-medium mb-2 flex items-center gap-1.5">
+              <span>🚫</span> Red Flags <span className="text-slate-500">• Caution signs</span>
+            </p>
+            <div className="overflow-x-auto pb-2 -mx-5 px-5" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+              <div className="flex gap-2 min-w-max">
+                {signalOptions.filter(s => s.positive === false || s.positive === null).map((signal) => {
+                  const isActive = signals[signal.id];
+                  return (
+                    <button
+                      key={signal.id}
+                      onClick={() => toggleSignal(signal.id)}
+                      className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                        isActive
+                          ? 'bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-lg shadow-red-500/30 scale-105'
+                          : 'bg-slate-800/60 border border-slate-700/50 text-slate-400 hover:border-red-500/50 hover:text-red-300'
+                      }`}
+                    >
+                      <span className="text-base">{signal.emoji}</span>
+                      <span className="whitespace-nowrap">{signal.label}</span>
+                      {isActive && <Check className="w-3.5 h-3.5" />}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Vibe Check Summary Card */}
+          {(signalOptions.filter(s => s.positive === true && signals[s.id]).length > 0 || 
+            signalOptions.filter(s => s.positive === false && signals[s.id]).length > 0) && (
+            <div className={`p-3 rounded-xl border ${
+              signalOptions.filter(s => s.positive === true && signals[s.id]).length > 
+              signalOptions.filter(s => s.positive === false && signals[s.id]).length
+                ? 'bg-gradient-to-r from-emerald-500/10 to-green-500/10 border-emerald-500/30'
+                : signalOptions.filter(s => s.positive === false && signals[s.id]).length > 0
+                  ? 'bg-gradient-to-r from-red-500/10 to-rose-500/10 border-red-500/30'
+                  : 'bg-gradient-to-r from-amber-500/10 to-orange-500/10 border-amber-500/30'
+            }`}>
+              <div className="flex items-center gap-3">
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                  signalOptions.filter(s => s.positive === true && signals[s.id]).length > 
+                  signalOptions.filter(s => s.positive === false && signals[s.id]).length
+                    ? 'bg-emerald-500/20'
+                    : signalOptions.filter(s => s.positive === false && signals[s.id]).length > 0
+                      ? 'bg-red-500/20'
+                      : 'bg-amber-500/20'
+                }`}>
+                  <span className="text-xl">
+                    {signalOptions.filter(s => s.positive === true && signals[s.id]).length > 
+                     signalOptions.filter(s => s.positive === false && signals[s.id]).length
+                      ? '🔥' 
+                      : signalOptions.filter(s => s.positive === false && signals[s.id]).length > 
+                        signalOptions.filter(s => s.positive === true && signals[s.id]).length
+                        ? '⚠️'
+                        : '🤔'}
+                  </span>
+                </div>
+                <div className="flex-1">
+                  <p className={`font-medium text-sm ${
+                    signalOptions.filter(s => s.positive === true && signals[s.id]).length > 
+                    signalOptions.filter(s => s.positive === false && signals[s.id]).length
+                      ? 'text-emerald-300'
+                      : signalOptions.filter(s => s.positive === false && signals[s.id]).length > 
+                        signalOptions.filter(s => s.positive === true && signals[s.id]).length
+                        ? 'text-red-300'
+                        : 'text-amber-300'
+                  }`}>
+                    {signalOptions.filter(s => s.positive === true && signals[s.id]).length > 
+                     signalOptions.filter(s => s.positive === false && signals[s.id]).length
+                      ? "Looking good! They're into you 💪" 
+                      : signalOptions.filter(s => s.positive === false && signals[s.id]).length > 
+                        signalOptions.filter(s => s.positive === true && signals[s.id]).length
+                        ? "Slow down, read the room 🎯"
+                        : "Mixed signals, play it cool 😎"}
+                  </p>
+                  <p className="text-xs text-slate-500">
+                    {signalOptions.filter(s => s.positive === true && signals[s.id]).length} green • {signalOptions.filter(s => s.positive === false && signals[s.id]).length} red flags detected
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Quick Actions */}
