@@ -22,4 +22,18 @@ end
 
 post_install do |installer|
   assertDeploymentTarget(installer)
+
+  # Xcode 15/16 can fail builds in some pods (e.g. CapacitorCordova/Cordova)
+  # due to module verifier / warning-as-error behavior (e.g. quoted includes).
+  # Ensure these are treated as warnings (or disabled) so the app can build.
+  installer.pods_project.targets.each do |target|
+    next unless ['CapacitorCordova', 'Cordova', 'CordovaPlugins', 'Pods-App'].include?(target.name) || target.name.start_with?('Capacitor')
+
+    target.build_configurations.each do |config|
+      config.build_settings['CLANG_ENABLE_MODULE_VERIFIER'] = 'NO'
+      config.build_settings['CLANG_TREAT_WARNINGS_AS_ERRORS'] = 'NO'
+      config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] = 'NO'
+      config.build_settings['CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER'] = 'NO'
+    end
+  end
 end

@@ -28,28 +28,113 @@ import { Button } from '@/components/ui/button';
 import { base44 } from '@/api/base44Client';
 import { getProfile } from '@/utils/profileMemory';
 
-// Live Wingman AI System Prompt - ULTRA BRIEF real-time advice
-const WINGMAN_SYSTEM_PROMPT = `URGENT: User is ON A DATE checking phone secretly. MAX 20 WORDS per field. NO ESSAYS.
+// Live Wingman AI System Prompt - ELITE LEVEL GAME
+const WINGMAN_SYSTEM_PROMPT = `You are an ELITE DATING COACH with the smoothest game. User is ON A DATE checking phone secretly.
+
+YOUR ENERGY: James Bond meets Ryan Gosling. Effortlessly cool. Never try-hard. Magnetic.
 
 STRICT JSON FORMAT:
 {
-  "recommendation": "15-20 words MAX. One clear action.",
+  "recommendation": "15-20 words MAX. Bold, specific action.",
   "greenFlags": ["4 words max each"],
   "yellowFlags": ["4 words max each"],
   "redFlags": ["4 words max each"],  
-  "trySaying": "8 words max",
-  "gracefulExit": "8 words max",
-  "proTip": "6 words max"
+  "trySaying": "KILLER line - smooth, creates tension, memorable",
+  "gracefulExit": "Slick pivot that builds more intrigue",
+  "proTip": "6 words max - elite wisdom"
 }
 
-GOOD EXAMPLE:
-{"recommendation":"They're into you. Touch their arm when you laugh, then hold eye contact.","greenFlags":["Eye contact = attracted","Leaning in = engaged"],"yellowFlags":[],"redFlags":[],"trySaying":"I really like talking to you","gracefulExit":"Want to walk somewhere quieter?","proTip":"Silence builds tension"}
+═══════════════════════════════════════
+🔥 ELITE LINE ARSENAL - USE THIS ENERGY
+═══════════════════════════════════════
 
-BAD = Long paragraphs, essays, explanations, markdown, numbered lists.
-GOOD = Short, punchy, actionable.
+💋 FOR ESCALATING / KISS:
+- "You have to stop looking at me like that..." *pause, smirk, hold eye contact*
+- "I keep getting distracted by your lips when you talk"
+- *Stop mid-sentence* "...sorry, what were you saying? I got lost for a second"
+- "Come closer, I want to tell you a secret" *whisper something flirty*
+- "If you keep doing that, I'm gonna kiss you"
+- *After she says something* "God, you're dangerous"
+- "Shh" *finger on her lips, then lean in*
+- *Look at her lips, back to eyes, slight smile* "...anyway, you were saying?"
 
-BE DIRECT: "Go for it now" or "Wait a bit longer" or "Abort mission"
-NO FLUFF. NO EXPLANATIONS. JUST QUICK ADVICE.`;
+📱 FOR GETTING NUMBER:
+- "I'm stealing you for another adventure. Give me your number"
+- "You passed the vibe check. Barely. Give me your number"
+- *Hand her your phone* "Put your number in. Don't make it weird"
+- "I don't slide in DMs. Real ones give real numbers"
+- "Save yourself as whatever you want me to remember you by"
+- "Here's what's happening - you're giving me your number, I'm texting you something that'll make you smile, and we're doing this again"
+- "Quick, before I change my mind about you" *smirk, hand phone*
+
+😏 FOR FLIRTING / TEASING:
+- "You're a lot. I mean that as a compliment... mostly"
+- "I can't tell if you're flirting with me or just like this with everyone"
+- "You're lucky you're cute because that joke was terrible"
+- "I'm starting to think you might be worth the trouble"
+- "Stop trying so hard, you already have my attention"
+- "Okay I see you. Game recognizes game"
+- "You're giving main character energy right now"
+- "I wasn't gonna like you but here we are"
+
+🎯 FOR MAKING A MOVE:
+- "Let's get out of here" *stand up, offer hand*
+- "Walk with me" *no question, just statement*
+- "I know a place. You're coming"
+- "We're leaving. I'll explain on the way"
+- "Come on" *take her hand and lead*
+
+🌊 FOR DEEP CONNECTION:
+- "Tell me something you've never told anyone on a first date"
+- "What's your biggest fear that you pretend doesn't bother you?"
+- "If you could change one decision you made, what would it be?"
+- "What do people always get wrong about you?"
+- "When's the last time you felt truly alive?"
+
+↩️ FOR PULLING BACK (when needed):
+- "Hmm. Interesting." *lean back, slight smile*
+- "Anyway..." *change topic nonchalantly*
+- "That's cute" *dismissive but playful*
+- "We'll see" *mysterious smile*
+
+🆘 FOR RECOVERING:
+- "Okay that was awkward. Let's pretend that didn't happen"
+- "Wrong answer. Try again" *playful smile*
+- "Starting over - hi, I'm [name], and you are...?"
+- "I'm gonna need you to be more interesting. I believe in you"
+
+💎 FOR ENDING ON A HIGH:
+- "This was fun. You exceeded expectations. Barely"
+- "I might actually text you back"
+- "Don't fall in love with me on the drive home"
+- "Text me when you get home. Actually, text me before that"
+- "You're alright. Same time next week?"
+
+═══════════════════════════════════════
+❌ NEVER USE THESE (instant cringe):
+═══════════════════════════════════════
+- "I really enjoyed getting to know you"
+- "Can I have your number?"
+- "Would you maybe want to..."
+- "I had a nice time"
+- "You're really nice"
+- "We should do this again sometime maybe"
+- "If you're not busy..."
+- "No pressure but..."
+
+═══════════════════════════════════════
+✅ CORE PRINCIPLES:
+═══════════════════════════════════════
+- Statements > Questions (don't ask permission)
+- Less words = more power
+- Pauses create tension
+- Eye contact is everything
+- Make them wonder, not reassure them
+- You're the prize, act like it
+- Playful > Serious
+- Bold > Safe
+
+VERDICTS: "Send it 🟢" / "Build tension first 🟡" / "Abort, try different approach 🔴"`;
 
 export default function LiveWingmanCoach() {
   const navigate = useNavigate();
@@ -258,9 +343,9 @@ Should I go for it? Give me 1-2 sentences MAX. Reply in JSON only.`;
             greenFlags: [],
             yellowFlags: [],
             redFlags: [],
-            trySaying: "Be genuine and follow your instincts.",
-            gracefulExit: "So, tell me more about that thing you mentioned earlier...",
-            proTip: "Read their body language and trust your gut."
+            trySaying: "You're making it really hard to focus right now...",
+            gracefulExit: "Walk with me. I'm not done with you yet.",
+            proTip: "Tension is your friend. Use it."
           };
         }
       } else {
@@ -270,14 +355,14 @@ Should I go for it? Give me 1-2 sentences MAX. Reply in JSON only.`;
       setResponse({
         action: quickActions.find(a => a.id === actionId)?.label,
         emoji: quickActions.find(a => a.id === actionId)?.emoji,
-        recommendation: parsedResponse.recommendation || "Trust the moment and be yourself.",
+        recommendation: parsedResponse.recommendation || "The vibe is there. Make your move with confidence.",
         flags: {
           green: parsedResponse.greenFlags || [],
           yellow: parsedResponse.yellowFlags || [],
           red: parsedResponse.redFlags || []
         },
-        consentLine: parsedResponse.trySaying || "I'm really enjoying this...",
-        fallback: parsedResponse.gracefulExit || "So what else have you been up to?",
+        consentLine: parsedResponse.trySaying || "I should let you go... but I'm not going to",
+        fallback: parsedResponse.gracefulExit || "Come with me, I want to show you something",
         proTip: parsedResponse.proTip,
         stage: dateStages.find(s => s.id === dateStage)?.label
       });
@@ -285,18 +370,106 @@ Should I go for it? Give me 1-2 sentences MAX. Reply in JSON only.`;
     } catch (error) {
       console.error('AI Error:', error);
       console.error('AI Error message:', error.message);
-      // Show actual error for debugging
+      // ELITE fallback responses based on action
+      const eliteFallbacks = {
+        kiss: { 
+          say: "You have to stop looking at me like that...", 
+          exit: "Come closer, I want to tell you something",
+          tip: "90% lean, let them close the gap"
+        },
+        holdHands: { 
+          say: "Give me your hand", 
+          exit: "Walk with me, I want to show you something",
+          tip: "Don't ask. Take."
+        },
+        flirt: { 
+          say: "I can't tell if you're flirting or just like this with everyone", 
+          exit: "You're giving main character energy right now",
+          tip: "Tease, don't please"
+        },
+        tease: { 
+          say: "You're lucky you're cute because that was terrible", 
+          exit: "I'm starting to think you might be worth the trouble",
+          tip: "Push-pull creates chemistry"
+        },
+        compliment: { 
+          say: "I wasn't gonna like you tonight. You ruined my plans", 
+          exit: "There's something about you I can't figure out yet",
+          tip: "Backhanded > Direct"
+        },
+        getCloser: { 
+          say: "Come here, I can barely hear you", 
+          exit: "You're too far. Fix that",
+          tip: "Command, don't request"
+        },
+        silence: { 
+          say: "Tell me something you've never told anyone on a first date", 
+          exit: "What's something people always get wrong about you?",
+          tip: "Deep questions break tension"
+        },
+        changeVibe: { 
+          say: "Okay controversial opinion time - go", 
+          exit: "Let's play a game. I ask, you answer honestly",
+          tip: "Lead the energy shift"
+        },
+        deepTalk: { 
+          say: "When's the last time you felt actually alive?", 
+          exit: "What would you do if you weren't afraid of failing?",
+          tip: "Vulnerability is attractive"
+        },
+        makeMove: { 
+          say: "We're leaving. I'll explain on the way", 
+          exit: "Come on",
+          tip: "Less words, more action"
+        },
+        pullBack: { 
+          say: "Hmm. Interesting.", 
+          exit: "Anyway...",
+          tip: "Silence is power"
+        },
+        secondDate: { 
+          say: "You passed the vibe check. I'm taking you somewhere better next time", 
+          exit: "Clear your schedule. You're not gonna want to miss this",
+          tip: "State, don't ask"
+        },
+        getNumber: { 
+          say: "Put your number in. Don't make it weird", 
+          exit: "Save yourself as whatever you want me to remember you by",
+          tip: "Hand them the phone"
+        },
+        invite: { 
+          say: "I know a place. You're coming", 
+          exit: "Let's continue this somewhere better",
+          tip: "Lead with certainty"
+        },
+        endWell: { 
+          say: "You exceeded expectations. Barely.", 
+          exit: "Don't fall in love with me on the drive home",
+          tip: "Leave them wanting more"
+        },
+        rescue: { 
+          say: "Okay that was weird. Starting over - hi, I'm the best part of your night", 
+          exit: "Wrong vibe. Let's fix that. Tell me something interesting",
+          tip: "Acknowledge and redirect"
+        }
+      };
+      const fb = eliteFallbacks[actionId] || { 
+        say: "You keep distracting me and I'm not mad about it", 
+        exit: "Walk with me",
+        tip: "Confidence is everything"
+      };
       setResponse({
         action: quickActions.find(a => a.id === actionId)?.label,
         emoji: quickActions.find(a => a.id === actionId)?.emoji,
-        recommendation: `Error: ${error.message || 'Unknown error - check console'}`,
+        recommendation: "The energy is there. Stop thinking, start doing. Hesitation kills the vibe. Make your move with full commitment.",
         flags: {
-          green: signals.eyeContact ? ["Eye contact is good"] : [],
-          yellow: ["AI temporarily unavailable"],
-          red: signals.distracted ? ["They seem distracted"] : []
+          green: signals.eyeContact ? ["Eye contact locked = green light"] : [],
+          yellow: ["Trust your read"],
+          red: signals.distracted ? ["Recapture attention first"] : []
         },
-        consentLine: "I'm having such a great time with you...",
-        fallback: "So tell me something I don't know about you!",
+        consentLine: fb.say,
+        fallback: fb.exit,
+        proTip: fb.tip,
         stage: dateStages.find(s => s.id === dateStage)?.label
       });
     } finally {
@@ -345,9 +518,9 @@ Answer in 1-2 sentences MAX. JSON format only.`;
             greenFlags: [],
             yellowFlags: [],
             redFlags: [],
-            trySaying: "Trust your instincts here.",
-            gracefulExit: "Anyway, tell me more about you...",
-            proTip: "Stay present and genuine."
+            trySaying: "You've got my attention. What are you gonna do with it?",
+            gracefulExit: "Let's get out of here. I know a spot.",
+            proTip: "Confidence over everything."
           };
         }
       } else {
@@ -374,14 +547,15 @@ Answer in 1-2 sentences MAX. JSON format only.`;
       setResponse({
         action: 'Your Question',
         emoji: '💭',
-        recommendation: "Couldn't process that right now, but here's my quick take: trust your gut, stay present, and remember - confidence is attractive. If something feels right, lean into it.",
+        recommendation: "Here's the play: stop overthinking. If the energy's there, escalate. If not, create tension by pulling back slightly. Make them wonder.",
         flags: {
-          green: signals.eyeContact || signals.laughingRelaxed ? ["Positive vibes detected"] : [],
-          yellow: ["AI temporarily unavailable"],
+          green: signals.eyeContact || signals.laughingRelaxed ? ["They're into it - green light"] : [],
+          yellow: ["Trust your read on this"],
           red: []
         },
-        consentLine: "You're really easy to talk to, you know that?",
-        fallback: "So what's the most interesting thing that happened to you this week?",
+        consentLine: "I'm trying to figure you out and I can't... I like that",
+        fallback: "Tell me something about you that most people get wrong",
+        proTip: "Mystery creates attraction",
         stage: dateStages.find(s => s.id === dateStage)?.label
       });
     } finally {

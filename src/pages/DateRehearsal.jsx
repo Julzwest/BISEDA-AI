@@ -967,49 +967,49 @@ ${safeDateName} responds naturally (1-3 sentences, NO AI phrases, GENUINE reacti
       // They ask your name
       if (lowerMsg.includes('name') || lowerMsg.includes('who are') || lowerMsg.includes('you are')) {
         return [
-          `I'm ${userName}. And you are?`,
-          `${userName}! Nice to meet you. What brings you here tonight?`,
-          `Call me ${userName}. Can I buy you a drink?`,
-          `I'm ${userName}. I like your style by the way`
+          `${userName}. And you are...?`,
+          `I'm ${userName}. I had to come say hi`,
+          `${userName}. You look like someone I should know`,
+          `Call me ${userName}. What's your story?`
         ];
       }
       
       // Drink offers
       if (lowerMsg.includes('drink') || lowerMsg.includes('bar') || lowerMsg.includes('get you')) {
         return [
-          `Sure, I'll have whatever you're having`,
-          `I'd love that, thanks! What do you recommend?`,
-          `That's sweet of you - surprise me!`,
-          `Only if you let me get the next round`
+          `Only if you can keep up with me 😏`,
+          `Surprise me. I trust your judgment... for now`,
+          `I'll take whatever you're having. I like to live dangerously`,
+          `Only if you promise not to fall in love with me after`
         ];
       }
       
       // They're interested/flirty
       if (lowerMsg.includes('interesting') || lowerMsg.includes('charming') || lowerMsg.includes('like') || lowerMsg.includes('impressed')) {
         return [
-          `*smiles* Well you haven't seen anything yet`,
-          `I could say the same about you`,
-          `Thanks! You're pretty intriguing yourself`,
-          `I'm glad I came over then`
+          `*holds eye contact* You haven't seen anything yet`,
+          `Careful, I might actually start to like you too`,
+          `I was gonna play it cool but you're making it difficult`,
+          `I have that effect on people. It's a curse really`
         ];
       }
       
       // They're shy/hesitant
       if (lowerMsg.includes('nervous') || lowerMsg.includes('shy') || lowerMsg.includes('usually')) {
         return [
-          `No pressure at all, I just wanted to say hello`,
-          `I get it, I was nervous too! You seem really cool though`,
-          `Take your time, there's no rush. I'm just enjoying the conversation`,
-          `Honestly, I find that kind of cute`
+          `I find that attractive actually. The confident ones are overrated`,
+          `You're doing great. And honestly? A little nervousness is cute`,
+          `Same, but I'm glad I came over anyway`,
+          `Take your time. I'm not going anywhere`
         ];
       }
       
       // Default stranger suggestions
       return [
-        `So what brings you out tonight?`,
-        `I'm glad I came over, you seem really interesting`,
-        `What do you do when you're not being approached by strangers?`,
-        `Want to grab a drink somewhere quieter?`
+        `I saw you from across the room and had to come say hi`,
+        `You look like trouble. I'm into it`,
+        `What's someone like you doing in a place like this?`,
+        `I'm gonna be honest - I came over because you caught my eye`
       ];
     }
     
@@ -1065,39 +1065,39 @@ ${safeDateName} responds naturally (1-3 sentences, NO AI phrases, GENUINE reacti
       // Initial surprise
       if (lowerMsg.includes('surprised') || lowerMsg.includes('didn\'t expect') || lowerMsg.includes('wow') || lowerMsg.includes('long time')) {
         return [
-          `Yeah, small world right? How have you been?`,
-          `I know! It's been so long. You look great by the way`,
-          `I'm just as surprised! What are you doing here?`,
-          `Crazy running into you here. Life treating you well?`
+          `*smiles* Yeah, universe has a funny sense of humor. You look good though`,
+          `Of all the places... you look great by the way`,
+          `I'd say I'm surprised but honestly, I had a feeling I'd run into you eventually`,
+          `Wow. You look... different. Good different`
         ];
       }
       
       // How are you questions
       if (lowerMsg.includes('how are') || lowerMsg.includes('how have') || lowerMsg.includes('been up to')) {
         return [
-          `I've been good, keeping busy. What about you?`,
-          `Things are going well actually. A lot has changed`,
-          `I'm doing really well. How about yourself?`,
-          `I've been on quite a journey. How are you doing?`
+          `Honestly? I've been working on myself. A lot has changed`,
+          `Better than ever actually. You?`,
+          `I'm good. Really good. Life's been interesting`,
+          `I've done a lot of growing since we last talked`
         ];
       }
       
       // Awkward/uncomfortable
       if (lowerMsg.includes('awkward') || lowerMsg.includes('weird') || lowerMsg.includes('strange')) {
         return [
-          `It doesn't have to be weird. We can be adults about this`,
-          `I know, it's a bit surreal isn't it? But it's good to see you`,
-          `Let's not make it awkward. How about we catch up properly?`,
-          `Yeah... but honestly, I'm glad we ran into each other`
+          `Only if we make it weird. And I don't plan to`,
+          `*laughs* Yeah a little. But also... kind of nice?`,
+          `Nah, we're adults. We can handle this`,
+          `Weird? Maybe. But I'm glad it happened`
         ];
       }
       
       // Default ex suggestions
       return [
-        `It's really good to see you`,
-        `I've thought about how you were doing from time to time`,
-        `A lot has changed since we last talked`,
-        `Maybe we could grab coffee sometime and catch up properly`
+        `I'd be lying if I said I never thought about you`,
+        `You always did have good timing`,
+        `I've grown a lot since then. Maybe we should talk properly sometime`,
+        `For what it's worth... I'm glad I ran into you`
       ];
     }
     
@@ -1105,10 +1105,10 @@ ${safeDateName} responds naturally (1-3 sentences, NO AI phrases, GENUINE reacti
     // DEFAULT FALLBACK (should rarely be used)
     // ============================================================
     return [
-      `That's really interesting, tell me more`,
-      `I appreciate you sharing that with me`,
-      `I completely understand what you mean`,
-      `That's a great point`
+      `Okay but you can't just say that and not elaborate`,
+      `I like where this is going. Keep talking`,
+      `That's interesting. Tell me more`,
+      `You've got my attention now`
     ];
   };
 

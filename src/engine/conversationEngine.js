@@ -412,39 +412,39 @@ function getBaseResponses(goal, analysis) {
   const responses = {
     'flow': {
       main: isPositive
-        ? "That's really interesting! What got you into that?"
-        : "I'd love to hear more about that when you have time.",
-      playful: "Okay wait, you can't just drop that without the full story 👀",
-      confident: "I like that about you. Tell me more.",
-      direct: "That's cool. What else should I know about you?"
+        ? "Okay but you can't just say that and not elaborate. I need details 👀"
+        : "I feel like there's a story there. Spill.",
+      playful: "Wait hold up - that's actually interesting. Keep talking, I'm invested now",
+      confident: "I like that about you. Tell me more, I'm curious",
+      direct: "That's intriguing. What else should I know about you?"
     },
     'flirt': {
       main: isPositive
-        ? "You're making it really hard to focus on anything else right now 😏"
-        : "I have to admit, I was hoping you'd say that.",
-      playful: "Careful, you're making me like you even more 😉",
-      confident: "Talking to you is quickly becoming the best part of my day.",
-      direct: "I'm really enjoying this. You've definitely got my attention."
+        ? "You're dangerously charming and I'm not sure how I feel about it 😏"
+        : "I'm trying to play it cool but you're making it difficult",
+      playful: "Stop being so likeable, it's really inconvenient for me rn 😉",
+      confident: "You've got my attention. That's not easy to do btw",
+      direct: "I'm not gonna lie, I'm pretty into this conversation"
     },
     'date': {
       main: isPositive
-        ? "We should grab coffee this week. How does Thursday look?"
-        : "I'd love to continue this in person sometime.",
-      playful: "Alright, I've decided - we're getting drinks. You can thank me later 😄",
-      confident: "Let's make this happen. When are you free?",
-      direct: "I want to meet you. Are you free this weekend?"
+        ? "I'm taking you out. When are you free?"
+        : "We should continue this somewhere with actual drinks",
+      playful: "Okay I've decided we're getting drinks. You're welcome 😄",
+      confident: "Let's make this happen. I know a place",
+      direct: "I want to see you. What does your weekend look like?"
     },
     'recover': {
-      main: "Hey, I think that came out wrong. Let me try again - how's your day going?",
-      playful: "Okay, pretend I didn't say that 😅 Anyway, what are you up to?",
-      confident: "I'll own that one - not my smoothest moment. But I'm glad we're talking.",
-      direct: "Sorry if that was awkward. Can we start fresh?"
+      main: "Okay that came out weird. Starting over - hi, I'm actually charming I swear",
+      playful: "Let's pretend that didn't happen 😅 Anyway, tell me something interesting",
+      confident: "Not my smoothest moment. I'm usually way cooler than that",
+      direct: "That was awkward. Let me try again"
     },
     'boundaries': {
-      main: "I'm enjoying getting to know you, but I like to take things a bit slower.",
-      playful: "Easy there tiger 😄 Let's save some mystery for later.",
-      confident: "I appreciate the energy, but I prefer to build up to that.",
-      direct: "I'm not quite there yet. Let's keep getting to know each other."
+      main: "I'm vibing with this, but I like to take my time with people I actually like",
+      playful: "Easy there, we've got time 😄 I'm not going anywhere",
+      confident: "I appreciate the energy, but good things are worth waiting for",
+      direct: "Let's keep building this. No rush"
     }
   };
 
@@ -656,13 +656,22 @@ function generateAvoid(goal, analysis) {
     avoidList.push("Don't keep apologizing - acknowledge once and move on");
   }
 
-  // Ensure at least 2 items
-  if (avoidList.length < 2) {
-    avoidList.push("Avoid generic responses that could apply to anyone");
-    avoidList.push("Don't match their energy if it's low - set the tone");
+  // Goal-specific advanced warnings
+  if (goal?.includes('flirt')) {
+    avoidList.push("Don't use 'haha' or 'lol' as standalone responses");
+  }
+  
+  if (goal?.includes('flow')) {
+    avoidList.push("Never respond with just 'nice' or 'cool'");
   }
 
-  return avoidList.slice(0, 2);
+  // Ensure at least 2 items with elite advice
+  if (avoidList.length < 2) {
+    avoidList.push("Never say 'that's so funny 😂' - show wit, don't announce it");
+    avoidList.push("Avoid 'I really like talking to you' - it's needy. Show, don't tell");
+  }
+
+  return avoidList.slice(0, 3);
 }
 
 // ============================================================
