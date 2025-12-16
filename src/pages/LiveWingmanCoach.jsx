@@ -174,15 +174,19 @@ export default function LiveWingmanCoach() {
   }, []);
 
   const dateStages = [
-    { id: 'start', label: 'Just Met', icon: '👋', emoji: '☀️' },
-    { id: 'drinks', label: 'Drinks', icon: '🍸', emoji: '🍹' },
-    { id: 'dinner', label: 'Dinner', icon: '🍽️', emoji: '🥂' },
-    { id: 'activity', label: 'Activity', icon: '🎯', emoji: '🎮' },
-    { id: 'walking', label: 'Walking', icon: '🚶', emoji: '🌙' },
-    { id: 'carride', label: 'Car/Ride', icon: '🚗', emoji: '🚕' },
-    { id: 'athome', label: 'At Home', icon: '🏠', emoji: '🛋️' },
-    { id: 'goodnight', label: 'Goodbye', icon: '🌙', emoji: '💫' }
+    { id: 'start', label: 'Just Met', icon: '👋', hint: 'First impressions', color: 'from-blue-500 to-cyan-500' },
+    { id: 'drinks', label: 'Drinks', icon: '🍸', hint: 'Building rapport', color: 'from-purple-500 to-pink-500' },
+    { id: 'dinner', label: 'Dinner', icon: '🍽️', hint: 'Deep conversation', color: 'from-amber-500 to-orange-500' },
+    { id: 'activity', label: 'Activity', icon: '🎯', hint: 'Having fun together', color: 'from-green-500 to-emerald-500' },
+    { id: 'walking', label: 'Walking', icon: '🌙', hint: 'Intimate moments', color: 'from-indigo-500 to-purple-500' },
+    { id: 'carride', label: 'Car/Ride', icon: '🚗', hint: 'Private time', color: 'from-rose-500 to-pink-500' },
+    { id: 'athome', label: 'At Home', icon: '🏠', hint: 'Comfort zone', color: 'from-red-500 to-rose-500' },
+    { id: 'goodnight', label: 'Goodbye', icon: '💫', hint: 'Lasting impression', color: 'from-violet-500 to-purple-500' }
   ];
+
+  // Get current stage index for progress indicator
+  const currentStageIndex = dateStages.findIndex(s => s.id === dateStage);
+  const progressPercent = ((currentStageIndex + 1) / dateStages.length) * 100;
 
   const signalOptions = [
     // Positive signals
@@ -625,27 +629,101 @@ Answer in 1-2 sentences MAX. JSON format only.`;
           )}
         </div>
 
-        {/* Date Stage */}
-        <div className="px-5 mb-5">
-          <h3 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-            <Stars className="w-4 h-4 text-amber-400" />
-            Where are you in the date?
-          </h3>
-          <div className="grid grid-cols-4 gap-2">
-            {dateStages.map((stage) => (
-              <button
-                key={stage.id}
-                onClick={() => setDateStage(stage.id)}
-                className={`py-3 px-2 rounded-xl text-center transition-all ${
-                  dateStage === stage.id
-                    ? 'bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-lg shadow-amber-500/30 scale-105'
-                    : 'bg-slate-800/60 text-slate-400 hover:bg-slate-700/60'
-                }`}
-              >
-                <span className="text-xl block mb-1">{stage.icon}</span>
-                <span className="text-xs font-medium">{stage.label}</span>
-              </button>
-            ))}
+        {/* Date Stage - Enhanced Timeline Design */}
+        <div className="px-5 mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-sm font-semibold text-white flex items-center gap-2">
+              <Stars className="w-4 h-4 text-amber-400" />
+              Where are you in the date?
+            </h3>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-slate-500">Progress</span>
+              <div className="w-16 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full transition-all duration-500"
+                  style={{ width: `${progressPercent}%` }}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Horizontal Scrollable Timeline */}
+          <div className="overflow-x-auto pb-2 -mx-5 px-5" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}>
+            <div className="flex gap-3 min-w-max">
+              {dateStages.map((stage, index) => {
+                const isSelected = dateStage === stage.id;
+                const isPast = index < currentStageIndex;
+                
+                return (
+                  <button
+                    key={stage.id}
+                    onClick={() => setDateStage(stage.id)}
+                    className={`relative flex flex-col items-center transition-all duration-300 ${
+                      isSelected ? 'scale-105' : 'hover:scale-102'
+                    }`}
+                  >
+                    {/* Connection Line */}
+                    {index < dateStages.length - 1 && (
+                      <div className={`absolute top-6 left-[calc(50%+20px)] w-8 h-0.5 ${
+                        isPast ? 'bg-amber-500' : 'bg-slate-700'
+                      }`} />
+                    )}
+                    
+                    {/* Stage Circle */}
+                    <div className={`relative w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 ${
+                      isSelected 
+                        ? `bg-gradient-to-br ${stage.color} shadow-lg shadow-amber-500/30 ring-2 ring-white/20` 
+                        : isPast
+                          ? 'bg-slate-700 ring-2 ring-amber-500/50'
+                          : 'bg-slate-800/80 hover:bg-slate-700/80'
+                    }`}>
+                      <span className={`text-2xl ${isSelected ? 'animate-pulse' : ''}`}>{stage.icon}</span>
+                      
+                      {/* Checkmark for past stages */}
+                      {isPast && !isSelected && (
+                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-amber-500 rounded-full flex items-center justify-center">
+                          <Check className="w-2.5 h-2.5 text-white" />
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Label */}
+                    <span className={`mt-2 text-xs font-medium transition-colors ${
+                      isSelected ? 'text-white' : isPast ? 'text-amber-400' : 'text-slate-500'
+                    }`}>
+                      {stage.label}
+                    </span>
+                    
+                    {/* Hint (only for selected) */}
+                    {isSelected && (
+                      <span className="mt-0.5 text-[10px] text-amber-400/80 font-medium">
+                        {stage.hint}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Current Stage Card */}
+          <div className="mt-4 p-3 bg-gradient-to-r from-slate-800/80 to-slate-900/80 border border-slate-700/50 rounded-xl">
+            <div className="flex items-center gap-3">
+              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${dateStages[currentStageIndex]?.color || 'from-amber-500 to-orange-500'} flex items-center justify-center`}>
+                <span className="text-lg">{dateStages[currentStageIndex]?.icon}</span>
+              </div>
+              <div className="flex-1">
+                <p className="text-white font-medium text-sm">
+                  Stage {currentStageIndex + 1} of {dateStages.length}: {dateStages[currentStageIndex]?.label}
+                </p>
+                <p className="text-slate-400 text-xs">
+                  {dateStages[currentStageIndex]?.hint} • Tap to change stage
+                </p>
+              </div>
+              <div className="text-right">
+                <span className="text-2xl">{dateStages[currentStageIndex]?.icon}</span>
+              </div>
+            </div>
           </div>
         </div>
 
