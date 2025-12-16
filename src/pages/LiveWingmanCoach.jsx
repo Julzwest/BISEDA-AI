@@ -183,8 +183,7 @@ export default function LiveWingmanCoach() {
 
   const genderOptions = [
     { id: 'woman', label: 'Woman', emoji: '👩' },
-    { id: 'man', label: 'Man', emoji: '👨' },
-    { id: 'person', label: 'Person', emoji: '🧑' }
+    { id: 'man', label: 'Man', emoji: '👨' }
   ];
 
   useEffect(() => {
@@ -338,8 +337,8 @@ export default function LiveWingmanCoach() {
       goodnight: "saying goodbye"
     };
 
-    const genderContext = targetGender === 'woman' ? 'her' : targetGender === 'man' ? 'him' : 'them';
-    const genderLabel = targetGender === 'woman' ? 'She' : targetGender === 'man' ? 'He' : 'They';
+    const genderContext = targetGender === 'woman' ? 'her' : 'him';
+    const genderLabel = targetGender === 'woman' ? 'She' : 'He';
 
     const prompt = `I'M ON A DATE NOW with a ${targetGender}. Quick advice needed!
 Stage: ${stageLabels[dateStage] || dateStage}
@@ -520,8 +519,8 @@ Should I go for it? Give me 1-2 sentences MAX. Use ${genderContext}/${genderLabe
       goodnight: "end of the date / goodbye"
     };
 
-    const genderContext = targetGender === 'woman' ? 'her' : targetGender === 'man' ? 'him' : 'them';
-    const genderLabel = targetGender === 'woman' ? 'She' : targetGender === 'man' ? 'He' : 'They';
+    const genderContext = targetGender === 'woman' ? 'her' : 'him';
+    const genderLabel = targetGender === 'woman' ? 'She' : 'He';
 
     const prompt = `ON A DATE NOW with a ${targetGender}. Quick help!
 Stage: ${stageLabels[dateStage] || dateStage}
