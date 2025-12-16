@@ -863,27 +863,25 @@ Use ${genderContext}/${genderLabel} pronouns. Answer in 1-2 sentences MAX. JSON 
               <span className="text-slate-600 font-normal">•</span>
               <span className="text-slate-500 font-normal">Interest signals</span>
             </p>
-            <div className="overflow-x-auto pb-2 -mx-5 px-5" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              <div className="flex gap-2.5 min-w-max">
-                {signalOptions.filter(s => s.positive === true).map((signal) => {
-                  const isActive = signals[signal.id];
-                  return (
-                    <button
-                      key={signal.id}
-                      onClick={() => toggleSignal(signal.id)}
-                      className={`group flex items-center gap-2.5 px-4 py-2.5 rounded-2xl text-sm font-medium transition-all duration-300 ${
-                        isActive
-                          ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-500/40'
-                          : 'bg-slate-800/80 backdrop-blur-sm border border-slate-700/60 text-slate-300 hover:border-emerald-500/40 hover:bg-slate-700/80'
-                      }`}
-                    >
-                      <span className={`text-sm transition-transform duration-200 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`}>{signal.emoji}</span>
-                      <span className="whitespace-nowrap text-[13px]">{signal.label}</span>
-                      {isActive && <Check className="w-3.5 h-3.5 ml-0.5" />}
-                    </button>
-                  );
-                })}
-              </div>
+            <div className="flex flex-wrap gap-2">
+              {signalOptions.filter(s => s.positive === true).map((signal) => {
+                const isActive = signals[signal.id];
+                return (
+                  <button
+                    key={signal.id}
+                    onClick={() => toggleSignal(signal.id)}
+                    className={`group flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                      isActive
+                        ? 'bg-emerald-500 text-white shadow-md shadow-emerald-500/30'
+                        : 'bg-slate-800/80 border border-slate-700/60 text-slate-300 hover:border-emerald-500/40'
+                    }`}
+                  >
+                    <span className="text-sm">{signal.emoji}</span>
+                    <span className="text-[13px]">{signal.label}</span>
+                    {isActive && <Check className="w-3 h-3" />}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -897,27 +895,25 @@ Use ${genderContext}/${genderLabel} pronouns. Answer in 1-2 sentences MAX. JSON 
               <span className="text-slate-600 font-normal">•</span>
               <span className="text-slate-500 font-normal">Caution signals</span>
             </p>
-            <div className="overflow-x-auto pb-2 -mx-5 px-5" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              <div className="flex gap-2.5 min-w-max">
-                {signalOptions.filter(s => s.positive === false || s.positive === null).map((signal) => {
-                  const isActive = signals[signal.id];
-                  return (
-                    <button
-                      key={signal.id}
-                      onClick={() => toggleSignal(signal.id)}
-                      className={`group flex items-center gap-2.5 px-4 py-2.5 rounded-2xl text-sm font-medium transition-all duration-300 ${
-                        isActive
-                          ? 'bg-red-500 text-white shadow-lg shadow-red-500/40'
-                          : 'bg-slate-800/80 backdrop-blur-sm border border-slate-700/60 text-slate-300 hover:border-red-500/40 hover:bg-slate-700/80'
-                      }`}
-                    >
-                      <span className={`text-sm transition-transform duration-200 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`}>{signal.emoji}</span>
-                      <span className="whitespace-nowrap text-[13px]">{signal.label}</span>
-                      {isActive && <Check className="w-3.5 h-3.5 ml-0.5" />}
-                    </button>
-                  );
-                })}
-              </div>
+            <div className="flex flex-wrap gap-2">
+              {signalOptions.filter(s => s.positive === false || s.positive === null).map((signal) => {
+                const isActive = signals[signal.id];
+                return (
+                  <button
+                    key={signal.id}
+                    onClick={() => toggleSignal(signal.id)}
+                    className={`group flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                      isActive
+                        ? 'bg-red-500 text-white shadow-md shadow-red-500/30'
+                        : 'bg-slate-800/80 border border-slate-700/60 text-slate-300 hover:border-red-500/40'
+                    }`}
+                  >
+                    <span className="text-sm">{signal.emoji}</span>
+                    <span className="text-[13px]">{signal.label}</span>
+                    {isActive && <Check className="w-3 h-3" />}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
