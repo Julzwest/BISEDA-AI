@@ -111,8 +111,8 @@ export default function Home() {
   const features = [
     {
       icon: Bot,
-      title: 'Dating Bestie 💬',
-      description: 'Your BFF for dating advice',
+      title: 'Dating Buddy 💬',
+      description: 'Your friend for dating advice',
       color: 'from-purple-500 to-pink-500',
       page: 'Chat'
     },

@@ -25,13 +25,13 @@ import {
 // Note: Intimacy Coach has been moved to its own separate page (IntimacyCoach.jsx)
 const getCategoriesConfig = () => ({
   'chat': {
-    name: 'Dating Bestie 💬',
+    name: 'Dating Buddy 💬',
     icon: MessageSquare,
     color: 'from-purple-500 to-pink-600',
     systemPrompt: UNIFIED_AI_SYSTEM_PROMPT + `
 
-MODO I FUNKSIONIMIT - DATING BESTIE:
-Ti je "Dating Bestie" - shoku/shoqja më e mirë për dating! Bisedo me përdoruesin si shok i ngushtë që jep këshilla për dating. Në këtë modalitet:
+MODO I FUNKSIONIMIT - DATING BUDDY:
+Ti je "Dating Buddy" - shoku/shoqja më e mirë për dating! Bisedo me përdoruesin si shok i ngushtë që jep këshilla për dating. Në këtë modalitet:
 - Ti je shoku/shoqja që gjithmonë di çfarë të thuash
 - Fol natyrshëm, me humor dhe energji pozitive
 - Jep këshilla praktike dhe të thjeshta për tu zbatuar
@@ -149,7 +149,7 @@ export default function Chat() {
     setIsInitialized(true);
 
     // Start a new conversation for chat history
-    const convId = startNewConversation('Dating Bestie');
+    const convId = startNewConversation('Dating Buddy');
     setCurrentConversationId(convId);
     addMessageToConversation(convId, { role: 'assistant', content: greeting });
     
@@ -183,7 +183,7 @@ export default function Chat() {
     // Reset image context completely when starting new chat
     setLastImageContext({ hasImage: false, userMessage: '', aiAnalysis: '', timestamp: null });
 
-    const convId = startNewConversation('Dating Bestie');
+    const convId = startNewConversation('Dating Buddy');
     setCurrentConversationId(convId);
     addMessageToConversation(convId, { role: 'assistant', content: greeting });
     setChatHistoryList(getRecentConversations(10));
@@ -272,7 +272,7 @@ export default function Chat() {
     setConversationHistory([{ role: 'assistant', content: greeting }]);
     setLastImageContext({ hasImage: false, userMessage: '', aiAnalysis: '', timestamp: null });
 
-    const convId = startNewConversation('Dating Bestie');
+    const convId = startNewConversation('Dating Buddy');
     setCurrentConversationId(convId);
     addMessageToConversation(convId, { role: 'assistant', content: greeting });
     setChatHistoryList(getRecentConversations(10));

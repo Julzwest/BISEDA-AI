@@ -13,7 +13,7 @@
     "steps": {
       "welcome": {
         "title": "Welcome to Biseda.ai! 👋",
-        "description": "Your Dating Bestie - the friend who always knows what to say! Let us show you how it works!",
+        "description": "Your Dating Buddy - the friend who always knows what to say! Let us show you how it works!",
         "features": [
           "Copy conversations and get advice",
           "Practice with AI Coach",
@@ -195,7 +195,7 @@
     "typing": "Typing...",
     "history": "Chat history",
     "newChat": "New chat",
-    "welcome": "Heyyy! 👋 I'm your Dating Bestie - think of me as that friend who always knows what to say!\n\nSo what's going on? Spill the tea! ☕✨",
+    "welcome": "Heyyy! 👋 I'm your Dating Buddy - think of me as that friend who always knows what to say!\n\nSo what's going on? Spill the tea! ☕✨",
     "upgradeForScreenshot": "Upgrade for screenshot analysis",
     "imageAnalysisNotAvailable": "📸 Image analysis is not available on your current plan. Upgrade to unlock this feature!",
     "screenshotLimitReached": "📸 You've used your screenshot analyses! Upgrade for more analyses. ☕💕",
