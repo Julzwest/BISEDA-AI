@@ -14,12 +14,22 @@ import {
   ChevronUp,
   ChevronLeft,
   ChevronRight,
-  RefreshCw
+  RefreshCw,
+  Plus,
+  Trash2,
+  History
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { base44 } from '@/api/base44Client';
 import { getProfile } from '@/utils/profileMemory';
 import { bodyLanguageDatabase, getRandomTip, getTipsForStage, getTipsForVenue } from '@/data/bodyLanguageDatabase';
+import { 
+  startNewConversation, 
+  addMessageToConversation, 
+  getRecentConversations, 
+  getConversation,
+  deleteConversation 
+} from '@/utils/chatHistory';
 
 // Live Wingman AI System Prompt
 const WINGMAN_SYSTEM_PROMPT = `You are a MASTER OF SEDUCTION and BODY LANGUAGE expert. User is ON A DATE checking phone secretly.
@@ -204,6 +214,81 @@ NEVER: Cross arms, check phone, lean away, avoid eye contact, fidget
 
 ⚠️ IMPORTANT: All physical suggestions assume mutual interest and consent. Always read their body language - if they pull back, respect it.`;
 
+// APP STORE SAFE - Intimacy Coach System Prompt (Educational, Suggestive, NOT Explicit)
+const INTIMACY_COACH_PROMPT = `You are an expert Relationship & Intimacy Coach - warm, knowledgeable, and sex-positive. You help adults improve their romantic relationships, build deeper connections, and enhance intimacy.
+
+YOUR APPROACH:
+- You're that wise, open-minded friend who gives great relationship advice
+- You talk about intimacy naturally and comfortably - no awkwardness
+- You're educational and helpful, never crude or explicit
+- You celebrate healthy relationships and help people connect better
+- You make users feel comfortable asking ANYTHING about relationships
+
+TONE & STYLE:
+- Warm, supportive, and encouraging
+- Use suggestive but tasteful language
+- Be direct but not explicit - paint the picture without graphic details
+- Phrases like "building anticipation", "creating connection", "enhancing pleasure"
+- Playful and fun, but always respectful
+
+WHAT YOU HELP WITH:
+
+💕 BUILDING CONNECTION:
+- How to create emotional intimacy with your partner
+- Communication skills for relationships
+- Understanding your partner's needs and desires
+- Expressing what you want without awkwardness
+- Deepening trust and vulnerability
+
+🔥 ENHANCING ROMANCE:
+- Setting the mood and building anticipation
+- Foreplay techniques and how to take your time
+- Understanding arousal and desire
+- Making your partner feel desired and special
+- Keeping the spark alive in long-term relationships
+
+💬 COMMUNICATION:
+- How to talk about desires with your partner
+- Expressing boundaries comfortably
+- Asking for what you want in a relationship
+- Having the "what do you like" conversation
+- Navigating different desire levels
+
+🌟 CONFIDENCE:
+- Building sexual confidence and self-esteem
+- Overcoming nervousness or anxiety
+- First-time experiences - what to expect
+- Body positivity and self-acceptance
+- Being present and in the moment
+
+🎯 PRACTICAL GUIDANCE:
+- Date night ideas to rekindle romance
+- Ways to show affection and appreciation
+- Understanding body language and signals
+- Timing and pacing in intimate moments
+- Creating a comfortable atmosphere
+
+GUIDELINES:
+✅ Be educational and helpful
+✅ Use tasteful, suggestive language
+✅ Focus on connection, communication, and confidence
+✅ Encourage consent and communication
+✅ Be inclusive of all orientations and relationship styles
+
+❌ No explicit/graphic sexual descriptions
+❌ No crude language or vulgar terms
+❌ No content involving minors or non-consent
+❌ No medical advice - refer to professionals
+
+ALWAYS EMPHASIZE:
+- Consent is essential - enthusiastic yes from both partners
+- Communication is key - talk to your partner
+- Everyone is different - encourage exploration together
+- Respect boundaries - yours and theirs
+- Safety and comfort matter
+
+You're here to help people have healthier, happier, more connected relationships. Be the supportive coach everyone deserves!`;
+
 export default function LiveWingmanCoach() {
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
@@ -211,6 +296,18 @@ export default function LiveWingmanCoach() {
   const [copied, setCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showMoreOptions, setShowMoreOptions] = useState(false);
+  
+  // ===== TAB MODE: 'live' for quick tips, 'chat' for intimacy coach =====
+  const [activeMode, setActiveMode] = useState('live');
+  
+  // ===== CHAT MODE STATE (Intimacy Coach) =====
+  const [chatMessages, setChatMessages] = useState([]);
+  const [chatInput, setChatInput] = useState('');
+  const [chatLoading, setChatLoading] = useState(false);
+  const [currentConversationId, setCurrentConversationId] = useState(null);
+  const [chatHistoryList, setChatHistoryList] = useState([]);
+  const [showChatHistory, setShowChatHistory] = useState(false);
+  const messagesEndRef = useRef(null);
   
   // Simplified state
   const [dateStage, setDateStage] = useState('starting');
@@ -630,6 +727,164 @@ Return JSON ONLY:
     generateResponse(action.label);
   };
 
+  // ===== CHAT MODE FUNCTIONS (Intimacy Coach) =====
+  
+  // Initialize chat with greeting
+  const initializeChat = () => {
+    const userGender = myGender;
+    let greeting;
+    
+    if (userGender === 'man') {
+      greeting = "Hey! 👋 Welcome to your private coaching session. Whether you want to improve communication with your partner, build deeper connection, or learn how to set the mood - I'm here to help. No awkward judgment, just real talk about relationships and intimacy. What's on your mind? 💕";
+    } else if (userGender === 'woman') {
+      greeting = "Hey gorgeous! 💕 Welcome to your private coaching session. Whether you want to feel more confident, understand what you want, or learn how to communicate better with your partner - I'm here for all of it. This is your safe space to ask anything about relationships and intimacy. What would you like to explore? ✨";
+    } else {
+      greeting = "Hey! 💜 Welcome to your private coaching session. I'm here to help you build amazing connections, communicate better, and feel confident in your relationships. No judgment, just supportive guidance. What's on your mind? ✨";
+    }
+    
+    const greetingMessage = { role: 'assistant', content: greeting, timestamp: new Date() };
+    setChatMessages([greetingMessage]);
+    
+    try {
+      const convId = startNewConversation('Intimacy Coach');
+      setCurrentConversationId(convId);
+      addMessageToConversation(convId, { role: 'assistant', content: greeting });
+      setChatHistoryList(getRecentConversations(10));
+    } catch (e) {
+      console.log('Chat history not available:', e);
+    }
+  };
+  
+  // Start new chat
+  const startNewChat = () => {
+    initializeChat();
+  };
+  
+  // Load conversation from history
+  const loadConversation = (convId) => {
+    try {
+      const conv = getConversation(convId);
+      if (conv && conv.messages) {
+        setChatMessages(conv.messages.map(m => ({
+          ...m,
+          timestamp: m.timestamp ? new Date(m.timestamp) : new Date()
+        })));
+        setCurrentConversationId(convId);
+        setShowChatHistory(false);
+      }
+    } catch (e) {
+      console.log('Could not load conversation:', e);
+    }
+  };
+  
+  // Delete conversation
+  const handleDeleteConversation = (convId, e) => {
+    e.stopPropagation();
+    try {
+      deleteConversation(convId);
+      setChatHistoryList(getRecentConversations(10));
+      if (convId === currentConversationId) {
+        startNewChat();
+      }
+    } catch (e) {
+      console.log('Could not delete conversation:', e);
+    }
+  };
+  
+  // Scroll to bottom of chat
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatMessages]);
+  
+  // Initialize chat when switching to chat mode
+  useEffect(() => {
+    if (activeMode === 'chat' && chatMessages.length === 0) {
+      initializeChat();
+    }
+  }, [activeMode]);
+  
+  // Send chat message
+  const handleChatSend = async () => {
+    if (!chatInput.trim() || chatLoading) return;
+    
+    const userMessage = chatInput.trim();
+    setChatInput('');
+    
+    // Add user message to chat
+    const userMsg = { role: 'user', content: userMessage, timestamp: new Date() };
+    setChatMessages(prev => [...prev, userMsg]);
+    
+    if (currentConversationId) {
+      try {
+        addMessageToConversation(currentConversationId, userMsg);
+      } catch (e) {}
+    }
+    
+    setChatLoading(true);
+    
+    try {
+      // Build conversation history for context
+      const historyText = chatMessages.map(m => 
+        `${m.role === 'user' ? 'User' : 'Coach'}: ${m.content}`
+      ).join('\n');
+      
+      const orientationContext = getOrientation();
+      
+      const prompt = `CONVERSATION SO FAR:
+${historyText}
+User: ${userMessage}
+
+USER CONTEXT:
+- User is: ${genderOptions.find(g => g.id === myGender)?.label || 'person'}
+- Their partner/interest is: ${genderOptions.find(g => g.id === datingGender)?.label || 'person'}
+- Orientation: ${orientationContext.label} (${orientationContext.context})
+
+Respond naturally as the Intimacy Coach. Be warm, helpful, and educational. Keep response focused and practical.`;
+      
+      const response = await base44.integrations.Core.InvokeLLM({
+        prompt,
+        system_prompt: INTIMACY_COACH_PROMPT,
+        response_type: 'text'
+      });
+      
+      const aiContent = typeof response === 'string' ? response : response?.content || response?.text || "I'm here to help! What would you like to know about building connection and intimacy? 💕";
+      
+      const aiMsg = { role: 'assistant', content: aiContent, timestamp: new Date() };
+      setChatMessages(prev => [...prev, aiMsg]);
+      
+      if (currentConversationId) {
+        try {
+          addMessageToConversation(currentConversationId, aiMsg);
+        } catch (e) {}
+      }
+      
+    } catch (error) {
+      console.error('Chat error:', error);
+      const errorMsg = { role: 'assistant', content: "Hmm, I had a little hiccup! Try asking again. 💕", timestamp: new Date() };
+      setChatMessages(prev => [...prev, errorMsg]);
+    } finally {
+      setChatLoading(false);
+    }
+  };
+  
+  // Handle key press for chat
+  const handleChatKeyPress = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleChatSend();
+    }
+  };
+  
+  // Quick topic suggestions for chat
+  const chatTopics = [
+    { emoji: '💬', label: 'Communication tips' },
+    { emoji: '🔥', label: 'Setting the mood' },
+    { emoji: '💕', label: 'Building connection' },
+    { emoji: '😰', label: 'Feeling nervous' },
+    { emoji: '✨', label: 'First time together' },
+    { emoji: '🎯', label: 'Understanding signals' },
+  ];
+
   const handleSituationSelect = (sit) => {
     setSituation(sit.id);
     generateResponse(sit.label);
@@ -713,26 +968,63 @@ Return JSON ONLY:
 
       <div className="relative z-10">
         
-        {/* ===== NEW HEADER DESIGN ===== */}
+        {/* ===== HEADER WITH MODE TABS ===== */}
         <div className="px-5 pt-6 pb-4">
-          {/* Top row: Logo + Title + Shooting star */}
-          <div className="flex items-center justify-between mb-5">
+          {/* Top row: Logo + Title */}
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              {/* Orange lightning icon */}
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center shadow-lg shadow-orange-500/40">
-                <Zap className="w-7 h-7 text-white" />
+              {/* Dynamic icon based on mode */}
+              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg ${
+                activeMode === 'live' 
+                  ? 'bg-gradient-to-br from-orange-500 to-amber-500 shadow-orange-500/40' 
+                  : 'bg-gradient-to-br from-pink-500 to-rose-500 shadow-pink-500/40'
+              }`}>
+                {activeMode === 'live' ? <Zap className="w-7 h-7 text-white" /> : <Heart className="w-7 h-7 text-white" />}
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-                  Live Wingman <span className="text-xl">⚡</span>
+                  {activeMode === 'live' ? 'Date Coach' : 'Intimacy Coach'} 
+                  <span className="text-xl">{activeMode === 'live' ? '⚡' : '💕'}</span>
                 </h1>
-                <p className="text-sm text-slate-400">Real-time date coaching</p>
+                <p className="text-sm text-slate-400">
+                  {activeMode === 'live' ? 'Real-time dating tips' : 'Relationship & intimacy advice'}
+                </p>
               </div>
             </div>
-            {/* Shooting star icon */}
-            <div className="text-3xl animate-pulse">💫</div>
+            <div className="text-3xl animate-pulse">{activeMode === 'live' ? '💫' : '✨'}</div>
           </div>
+          
+          {/* ===== MODE TABS ===== */}
+          <div className="flex gap-2 mb-5 p-1 bg-slate-800/50 rounded-2xl">
+            <button
+              onClick={() => setActiveMode('live')}
+              className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium transition-all ${
+                activeMode === 'live'
+                  ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-500/30'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
+              }`}
+            >
+              <Zap className="w-4 h-4" />
+              <span>On a Date</span>
+            </button>
+            <button
+              onClick={() => setActiveMode('chat')}
+              className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium transition-all ${
+                activeMode === 'chat'
+                  ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg shadow-pink-500/30'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
+              }`}
+            >
+              <Heart className="w-4 h-4" />
+              <span>Ask Coach</span>
+            </button>
+          </div>
+        </div>
 
+        {/* ===== LIVE MODE CONTENT ===== */}
+        {activeMode === 'live' && (
+          <>
+          <div className="px-5 pb-4">
           {/* Style Dropdown - Full width */}
           <div className="mb-4">
             <div className="relative dropdown-container">
@@ -964,7 +1256,7 @@ Return JSON ONLY:
               </button>
             </div>
           </div>
-        </div>
+          </div>
 
         {/* Current Status Card */}
         <div className="px-5 mb-4">
@@ -1250,6 +1542,156 @@ Return JSON ONLY:
             </div>
           </div>
         </div>
+        </>
+        )}
+        
+        {/* ===== CHAT MODE CONTENT (Intimacy Coach) ===== */}
+        {activeMode === 'chat' && (
+          <div className="flex flex-col h-[calc(100vh-220px)]">
+            {/* Chat Header with History & New Chat */}
+            <div className="px-5 mb-3 flex items-center justify-between">
+              <button
+                onClick={() => setShowChatHistory(!showChatHistory)}
+                className="flex items-center gap-2 px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-xl transition-all"
+              >
+                <History className="w-4 h-4" />
+                <span className="text-sm">History</span>
+              </button>
+              <button
+                onClick={startNewChat}
+                className="flex items-center gap-2 px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-xl transition-all"
+              >
+                <Plus className="w-4 h-4" />
+                <span className="text-sm">New Chat</span>
+              </button>
+            </div>
+            
+            {/* Chat History Panel */}
+            {showChatHistory && (
+              <div className="mx-5 mb-3 bg-slate-800/80 border border-slate-700 rounded-2xl shadow-xl max-h-60 overflow-y-auto">
+                <div className="p-3 border-b border-slate-700 flex justify-between items-center">
+                  <h3 className="font-medium text-white text-sm">Chat History</h3>
+                  <button onClick={() => setShowChatHistory(false)} className="text-slate-400 hover:text-white text-xl">×</button>
+                </div>
+                <div className="p-2">
+                  {chatHistoryList.length === 0 ? (
+                    <p className="text-slate-500 text-sm text-center py-4">No previous chats</p>
+                  ) : (
+                    chatHistoryList.map(conv => (
+                      <div
+                        key={conv.id}
+                        onClick={() => loadConversation(conv.id)}
+                        className={`p-3 rounded-xl cursor-pointer flex items-center justify-between mb-1 ${
+                          conv.id === currentConversationId ? 'bg-pink-500/20' : 'hover:bg-slate-700/50'
+                        }`}
+                      >
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm text-white truncate">{conv.title || 'Intimacy Chat'}</p>
+                          <p className="text-xs text-slate-500">
+                            {new Date(conv.timestamp).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <button
+                          onClick={(e) => handleDeleteConversation(conv.id, e)}
+                          className="text-slate-500 hover:text-red-400 p-1 ml-2"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
+            
+            {/* Quick Topics (show when no messages or few messages) */}
+            {chatMessages.length <= 1 && (
+              <div className="px-5 mb-4">
+                <p className="text-slate-400 text-xs mb-2 text-center">Quick topics:</p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {chatTopics.map((topic, i) => (
+                    <button
+                      key={i}
+                      onClick={() => {
+                        setChatInput(topic.label);
+                      }}
+                      className="px-3 py-2 bg-slate-800/60 hover:bg-pink-500/20 border border-slate-700/50 hover:border-pink-500/50 rounded-xl text-sm text-slate-300 hover:text-white transition-all flex items-center gap-1"
+                    >
+                      <span>{topic.emoji}</span>
+                      <span>{topic.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto px-5 space-y-3">
+              {chatMessages.map((msg, idx) => (
+                <div
+                  key={idx}
+                  className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div
+                    className={`max-w-[85%] rounded-2xl px-4 py-3 ${
+                      msg.role === 'user'
+                        ? 'bg-gradient-to-r from-pink-500 to-rose-600 text-white'
+                        : 'bg-slate-800/80 text-slate-100 border border-pink-500/20'
+                    }`}
+                  >
+                    <p className="whitespace-pre-wrap text-sm leading-relaxed">{msg.content}</p>
+                    {msg.timestamp && (
+                      <p className={`text-[10px] mt-1 ${msg.role === 'user' ? 'text-pink-200' : 'text-slate-500'}`}>
+                        {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+              
+              {chatLoading && (
+                <div className="flex justify-start">
+                  <div className="bg-slate-800/80 rounded-2xl px-4 py-3 border border-pink-500/20">
+                    <div className="flex gap-1">
+                      <span className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                      <span className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                      <span className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              <div ref={messagesEndRef} />
+            </div>
+            
+            {/* Chat Input */}
+            <div className="p-4 border-t border-pink-500/20 bg-slate-900/50">
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  onKeyPress={handleChatKeyPress}
+                  placeholder="Ask me anything about relationships & intimacy..."
+                  className="flex-1 bg-slate-800/80 border border-pink-500/30 rounded-xl px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-pink-500 text-sm"
+                  disabled={chatLoading}
+                />
+                <Button
+                  onClick={handleChatSend}
+                  disabled={!chatInput.trim() || chatLoading}
+                  className="bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 px-5 rounded-xl disabled:opacity-50"
+                >
+                  {chatLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
+                </Button>
+              </div>
+              
+              {/* Disclaimer */}
+              <p className="text-center text-slate-500 text-[10px] mt-3">
+                💕 Educational advice for healthy relationships. Always communicate with your partner.
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
