@@ -183,7 +183,8 @@ export default function LiveWingmanCoach() {
 
   const genderOptions = [
     { id: 'woman', label: 'Woman', emoji: '👩' },
-    { id: 'man', label: 'Man', emoji: '👨' }
+    { id: 'man', label: 'Man', emoji: '👨' },
+    { id: 'nonbinary', label: 'Non-binary', emoji: '🧑' }
   ];
 
   useEffect(() => {
@@ -337,10 +338,11 @@ export default function LiveWingmanCoach() {
       goodnight: "saying goodbye"
     };
 
-    const genderContext = targetGender === 'woman' ? 'her' : 'him';
-    const genderLabel = targetGender === 'woman' ? 'She' : 'He';
+    const genderContext = targetGender === 'woman' ? 'her' : targetGender === 'man' ? 'him' : 'them';
+    const genderLabel = targetGender === 'woman' ? 'She' : targetGender === 'man' ? 'He' : 'They';
+    const genderDisplay = targetGender === 'nonbinary' ? 'non-binary person' : targetGender;
 
-    const prompt = `I'M ON A DATE NOW with a ${targetGender}. Quick advice needed!
+    const prompt = `I'M ON A DATE NOW with a ${genderDisplay}. Quick advice needed!
 Stage: ${stageLabels[dateStage] || dateStage}
 Goal: ${actionLabels[actionId]}
 My Style: ${selectedStyle} (match this energy in your suggestions)
@@ -519,10 +521,11 @@ Should I go for it? Give me 1-2 sentences MAX. Use ${genderContext}/${genderLabe
       goodnight: "end of the date / goodbye"
     };
 
-    const genderContext = targetGender === 'woman' ? 'her' : 'him';
-    const genderLabel = targetGender === 'woman' ? 'She' : 'He';
+    const genderContext = targetGender === 'woman' ? 'her' : targetGender === 'man' ? 'him' : 'them';
+    const genderLabel = targetGender === 'woman' ? 'She' : targetGender === 'man' ? 'He' : 'They';
+    const genderDisplay = targetGender === 'nonbinary' ? 'non-binary person' : targetGender;
 
-    const prompt = `ON A DATE NOW with a ${targetGender}. Quick help!
+    const prompt = `ON A DATE NOW with a ${genderDisplay}. Quick help!
 Stage: ${stageLabels[dateStage] || dateStage}
 My Style: ${selectedStyle}
 Signals from ${genderContext}: ${buildSignalContext()}
