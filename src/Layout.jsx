@@ -45,7 +45,7 @@ export default function Layout({ children, onLogout }) {
   const navItems = [
     { name: 'Hub', icon: Home, page: 'Copilot' },
     { name: 'Wingman', icon: Zap, page: 'Wingman' },
-    { name: 'Practice', icon: Users, page: 'Rehearsal' },
+    { name: 'Rehearse', icon: Users, page: 'Rehearsal' },
     { name: 'Tools', icon: Wrench, page: 'Tools' },
     { name: 'Profile', icon: User, page: 'Profile' }
   ];
