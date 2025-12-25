@@ -1204,7 +1204,6 @@ Give specific advice with body language. Return JSON:
                     <p className="text-xs text-slate-400 mb-2 uppercase tracking-wide">🎭 Body Language:</p>
                     <div className="p-4 bg-gradient-to-r from-rose-500/10 to-pink-500/10 border border-rose-500/30 rounded-2xl">
                       <p className="text-rose-200 text-sm leading-relaxed">{response.bodyLanguage}</p>
-                      <p className="text-rose-300/60 text-xs mt-2 italic">✨ Always with mutual consent</p>
                     </div>
                   </div>
                 )}
