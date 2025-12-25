@@ -172,6 +172,16 @@ export default function DateRehearsal() {
       emoji: '💔',
       setting: 'confronting your partner about suspected or confirmed cheating',
       roleType: 'partner' // AI plays as partner
+    },
+    {
+      id: 'friendzone_escape',
+      icon: Heart,
+      title: t('rehearsal.friendzone', 'Escaping the Friend Zone'),
+      description: t('rehearsal.friendzoneDesc', 'Practice expressing romantic interest to a friend'),
+      color: 'from-emerald-500 to-teal-600',
+      emoji: '💚',
+      setting: 'having a conversation with a close friend to express your romantic feelings',
+      roleType: 'friend' // AI plays as friend
     }
   ];
 
@@ -224,6 +234,8 @@ export default function DateRehearsal() {
         return t('rehearsal.exGender', "Their gender");
       case 'stranger':
         return t('rehearsal.strangerGender', "Their gender");
+      case 'friend':
+        return t('rehearsal.friendGender', "Friend's gender");
       default:
         return t('rehearsal.dateGender', "Date's gender");
     }
@@ -243,6 +255,8 @@ export default function DateRehearsal() {
         return t('rehearsal.exName', "Their name");
       case 'stranger':
         return t('rehearsal.strangerName', "Their name");
+      case 'friend':
+        return t('rehearsal.friendName', "Friend's name");
       default:
         return t('rehearsal.dateName', "Date's name");
     }
@@ -331,6 +345,16 @@ Mixed emotions - surprise, maybe some old feelings, possibly awkwardness. React 
         return `You are ${safeDateName}, a ${personality?.label} ${genderLabel} (${genderPronoun}) who is a close friend or family member of ${safeUserName}. ${safeUserName} wants to have an important conversation with you.
 
 Be realistic and natural. Show genuine care but also realistic reactions based on your personality.`;
+      case 'friend':
+        return `You are ${safeDateName}, a ${personality?.label} ${genderLabel} (${genderPronoun}) who has been close friends with ${safeUserName} for a while. You genuinely enjoy their company and value the friendship, but you've never thought of them romantically before.
+
+IMPORTANT: You are NOT expecting this conversation to turn romantic. React naturally - with surprise, confusion, or curiosity when they start expressing feelings. Your personality will determine how you respond:
+- If friendly: be warm but surprised
+- If shy: be flustered and unsure how to react  
+- If confident: be direct about your feelings
+- If challenging: make them work for it a bit
+
+Don't make it too easy. Real friend zone escapes are awkward and require vulnerability. React authentically.`;
       default:
         return `You are ${safeDateName}, a ${personality?.label} ${genderLabel} (${genderPronoun}) on a first date with ${safeUserName} at a coffee shop. Be natural, curious, and engaging! Speak naturally as a ${genderLabel} would.`;
     }
@@ -356,6 +380,8 @@ Then naturally transition - offer a drink, invite them to sit, maybe compliment 
         return `You've just spotted ${safeUserName} unexpectedly. Make eye contact and react - surprise, awkwardness, or whatever fits.`;
       case 'family':
         return `${safeUserName} has asked to talk to you privately. You can sense this is important. Greet them warmly and ask what's on their mind.`;
+      case 'friend':
+        return `You and ${safeUserName} are hanging out like normal - maybe at your place, a coffee shop, or somewhere you usually hang out. Start with casual conversation like you always do. You have NO idea they're about to express romantic feelings.`;
       default:
         return `You've just sat down at the coffee shop for a first date with ${safeUserName}. Start the conversation naturally - maybe compliment them or ask about their day.`;
     }
@@ -482,6 +508,13 @@ ${safeDateName} (speaking naturally, 1-3 sentences):`;
           `Wait... ${userName}? Is that really you? It's been so long!`,
           `${userName}! *surprised* I... wow. Hi. How are you?`,
           `Oh my god, ${userName}?! What are the chances? How've you been?`
+        ]);
+      case 'friend':
+        return pick([
+          `Hey ${userName}! What's up? You look like you've got something on your mind.`,
+          `${userName}! Finally! I've been waiting for you. So what's new?`,
+          `Hey! Good to see you. You sounded kinda serious on the phone earlier, everything okay?`,
+          `${userName}! Come in, sit down. Want a drink? You seem... different today.`
         ]);
       default:
         return pick([
@@ -1102,6 +1135,70 @@ ${safeDateName} responds naturally (1-3 sentences, NO AI phrases, GENUINE reacti
     }
     
     // ============================================================
+    // ESCAPING THE FRIEND ZONE
+    // ============================================================
+    if (currentScenario?.roleType === 'friend') {
+      
+      // Casual opening - they don't know what's coming
+      if (lowerMsg.includes('hey') || lowerMsg.includes('hi') || lowerMsg.includes('what\'s up') || lowerMsg.includes('how are')) {
+        return [
+          `Hey! Actually, there's something I've been wanting to talk to you about...`,
+          `I'm good! So... can I be honest with you about something?`,
+          `Hey! I need to tell you something and I'm nervous about it`,
+          `Good to see you. Listen, I've been thinking about us lately...`
+        ];
+      }
+      
+      // They ask what's on your mind
+      if (lowerMsg.includes('what') || lowerMsg.includes('something') || lowerMsg.includes('tell me') || lowerMsg.includes('going on')) {
+        return [
+          `Look, I value our friendship so much, but... I've started to see you differently`,
+          `I don't want to make things weird, but I've developed feelings for you`,
+          `This is hard to say, but... I think I like you as more than a friend`,
+          `I've been holding this in for a while, but I think about you a lot. Like, a LOT`
+        ];
+      }
+      
+      // They're surprised/confused
+      if (lowerMsg.includes('wait') || lowerMsg.includes('what?') || lowerMsg.includes('really') || lowerMsg.includes('serious')) {
+        return [
+          `I know it's a lot. I've been feeling this way for a while now`,
+          `Yeah, I'm serious. I had to be honest with you`,
+          `I know, I was scared to say anything. But I couldn't keep pretending`,
+          `Dead serious. You deserve to know how I really feel`
+        ];
+      }
+      
+      // They mention the friendship
+      if (lowerMsg.includes('friend') || lowerMsg.includes('ruin') || lowerMsg.includes('lose') || lowerMsg.includes('risk')) {
+        return [
+          `I'd rather risk this than spend years wondering "what if"`,
+          `Our friendship means everything to me too. But I can't hide this anymore`,
+          `I know it's scary. But isn't it scarier to never know what could have been?`,
+          `I don't want to lose you either. But staying just friends when I feel this way... it's hurting me`
+        ];
+      }
+      
+      // They're processing / need time
+      if (lowerMsg.includes('think') || lowerMsg.includes('process') || lowerMsg.includes('a lot') || lowerMsg.includes('time')) {
+        return [
+          `Take all the time you need. I'm not going anywhere`,
+          `I understand. I just needed you to know. Whatever you decide, I respect it`,
+          `Of course. I've had months to think about this, you deserve time too`,
+          `No pressure. I just had to be honest with you finally`
+        ];
+      }
+      
+      // Default friend zone suggestions
+      return [
+        `I've been wanting to tell you something for a while...`,
+        `Can I be totally honest with you about how I feel?`,
+        `I value our friendship, but I need to tell you something`,
+        `There's something I've been holding back, and I can't anymore`
+      ];
+    }
+    
+    // ============================================================
     // DEFAULT FALLBACK (should rarely be used)
     // ============================================================
     return [
@@ -1643,6 +1740,7 @@ ${langInstruction}`;
       case 'stranger': return t('rehearsal.roleStranger', 'Stranger');
       case 'partner': return t('rehearsal.rolePartner', 'Partner');
       case 'ex': return t('rehearsal.roleEx', 'Ex');
+      case 'friend': return t('rehearsal.roleFriend', 'Friend');
       default: return t('rehearsal.roleDate', 'Date');
     }
   };
