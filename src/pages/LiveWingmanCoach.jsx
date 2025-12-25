@@ -25,6 +25,38 @@ const WINGMAN_SYSTEM_PROMPT = `You are a MASTER OF SEDUCTION and BODY LANGUAGE e
 
 YOUR ENERGY: James Bond's confidence + psychology expert + natural seducer. Effortlessly magnetic.
 
+🏳️‍🌈 LGBTQ+ AWARENESS - ADAPT YOUR ADVICE:
+
+FOR GAY MEN (man dating man):
+- Understand gay dating dynamics - often more direct, less games
+- Gay humor is appreciated - witty, camp when appropriate, self-aware
+- References to gay culture can be charming (but don't force it)
+- Physical escalation often moves faster - read the room
+- "Top/bottom energy" jokes can work if playful
+- Grindr humor is relatable, app culture references work
+- Gay bars have different energy than straight bars - lean into it
+
+FOR LESBIAN WOMEN (woman dating woman):
+- U-haul jokes are classic lesbian humor (moving in fast)
+- Sapphic energy - often more emotional connection focused
+- "Is this a date or are we just friends?" is relatable
+- Flannel and cottagecore references can be cute
+- Lesbian processing (talking about feelings) is normal
+- Cat mom jokes, hiking date references
+- Consent and communication are especially valued
+
+FOR STRAIGHT DATING:
+- Traditional flirtation dynamics work well
+- Masculine/feminine energy interplay
+- Classic romance tropes are appreciated
+
+FOR ALL ORIENTATIONS:
+- Adapt your tone to match their identity
+- Be inclusive, never assume
+- Queer people often appreciate directness
+- Shared identity can be a bonding point
+- LGBTQ+ spaces have their own vibe - reference appropriately
+
 STRICT JSON FORMAT:
 {
   "recommendation": "Strategic advice combining body language + words",
@@ -97,14 +129,28 @@ export default function LiveWingmanCoach() {
   const [dateVenue, setDateVenue] = useState('');
   const [situation, setSituation] = useState('');
   const [customQuestion, setCustomQuestion] = useState('');
-  const [gender, setGender] = useState('woman');
+  const [myGender, setMyGender] = useState('man');
+  const [datingGender, setDatingGender] = useState('woman');
+  const [showMyGenderPicker, setShowMyGenderPicker] = useState(false);
+  const [showDatingGenderPicker, setShowDatingGenderPicker] = useState(false);
   
-  // Gender options for dating
+  // Gender options
   const genderOptions = [
     { id: 'woman', label: 'Woman', emoji: '👩' },
     { id: 'man', label: 'Man', emoji: '👨' },
     { id: 'nonbinary', label: 'Non-binary', emoji: '🧑' },
   ];
+  
+  // Get orientation label for display and AI context
+  const getOrientation = () => {
+    if (myGender === 'man' && datingGender === 'woman') return { label: 'Straight', emoji: '💑', context: 'straight man dating a woman' };
+    if (myGender === 'man' && datingGender === 'man') return { label: 'Gay', emoji: '👨‍❤️‍👨', context: 'gay man dating a man' };
+    if (myGender === 'woman' && datingGender === 'man') return { label: 'Straight', emoji: '💑', context: 'straight woman dating a man' };
+    if (myGender === 'woman' && datingGender === 'woman') return { label: 'Lesbian', emoji: '👩‍❤️‍👩', context: 'lesbian woman dating a woman' };
+    if (myGender === 'nonbinary') return { label: 'Queer', emoji: '🏳️‍🌈', context: `non-binary person dating a ${datingGender}` };
+    if (datingGender === 'nonbinary') return { label: 'Queer', emoji: '🏳️‍🌈', context: `${myGender} dating a non-binary person` };
+    return { label: 'Dating', emoji: '💕', context: `${myGender} dating a ${datingGender}` };
+  };
   
   // Ref for venue scroll container
   const venueScrollRef = useRef(null);
@@ -289,21 +335,26 @@ export default function LiveWingmanCoach() {
     const toneOptions = ['flirty', 'confident', 'playful', 'mysterious', 'bold', 'charming', 'witty', 'smooth'];
     const randomTone = toneOptions[Math.floor(Math.random() * toneOptions.length)];
     
-    // Get style and gender context
+    // Get style and orientation context
     const styleContext = styleOptions.find(s => s.id === selectedStyle);
-    const genderContext = genderOptions.find(g => g.id === gender);
-    const currentProgress = dateProgressStages[currentProgressIndex];
+    const orientationContext = getOrientation();
     
     const prompt = `I'M ON A DATE RIGHT NOW. Quick real-time help needed!
 
 DATE CONTEXT:
-- I'm dating a: ${genderContext?.label || 'person'}
+- I am a: ${genderOptions.find(g => g.id === myGender)?.label || 'person'}
+- Dating a: ${genderOptions.find(g => g.id === datingGender)?.label || 'person'}
+- Orientation: ${orientationContext.label} (${orientationContext.context})
 - My communication style: ${styleContext?.label} (${styleContext?.description})
-- Current stage: ${currentProgress?.label || stageContext}
-${venueContext ? `- Location: ${venueContext.label} (${venueContext.hint})` : currentProgress?.venue ? `- Location: ${currentProgress.label}` : ''}
+- Current stage: ${stageContext}
+${venueContext ? `- Location: ${venueContext.label} (${venueContext.hint})` : ''}
 ${situationContext ? `- Current situation: ${situationContext}` : ''}
 ${context ? `- My question: ${context}` : ''}
 - What I want to do: ${actionType}
+
+IMPORTANT: I am ${orientationContext.context}. Tailor your advice for this specific dynamic.
+${orientationContext.label === 'Gay' ? 'Include gay humor if appropriate - be witty, playful, and culturally aware.' : ''}
+${orientationContext.label === 'Lesbian' ? 'Include sapphic energy - emotionally intelligent, direct, and culturally aware.' : ''}
 
 Generate a UNIQUE response (seed: ${randomSeed}) with tone: ${randomTone}
 Use a ${styleContext?.label?.toLowerCase() || 'confident'} approach - ${styleContext?.description || 'be bold and direct'}.
@@ -691,18 +742,18 @@ Give specific advice with body language. Return JSON:
   // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (showStylePicker || showGenderPicker) {
-        // Check if click is outside the dropdown areas
+      if (showStylePicker || showMyGenderPicker || showDatingGenderPicker) {
         if (!e.target.closest('.dropdown-container')) {
           setShowStylePicker(false);
-          setShowGenderPicker(false);
+          setShowMyGenderPicker(false);
+          setShowDatingGenderPicker(false);
         }
       }
     };
     
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
-  }, [showStylePicker, showGenderPicker]);
+  }, [showStylePicker, showMyGenderPicker, showDatingGenderPicker]);
   
   // Combined date progression stages
   const dateProgressStages = [
@@ -759,14 +810,14 @@ Give specific advice with body language. Return JSON:
             <div className="text-3xl animate-pulse">💫</div>
           </div>
 
-          {/* Style & Gender dropdowns row */}
-          <div className="flex gap-3 mb-6">
-            {/* Style Dropdown */}
-            <div className="flex-1 relative dropdown-container">
+          {/* Style Dropdown - Full width */}
+          <div className="mb-4">
+            <div className="relative dropdown-container">
               <button 
                 onClick={() => {
                   setShowStylePicker(!showStylePicker);
-                  setShowGenderPicker(false);
+                  setShowMyGenderPicker(false);
+                  setShowDatingGenderPicker(false);
                 }}
                 className="w-full flex items-center justify-between px-4 py-3 bg-slate-800/80 border border-slate-700 rounded-2xl hover:border-purple-500/50 transition-colors"
               >
@@ -777,7 +828,6 @@ Give specific advice with body language. Return JSON:
                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${showStylePicker ? 'rotate-180' : ''}`} />
               </button>
               
-              {/* Style Picker Dropdown */}
               {showStylePicker && (
                 <div className="absolute top-full left-0 right-0 mt-2 bg-slate-800 border border-slate-600 rounded-2xl overflow-hidden z-50 shadow-xl shadow-black/50">
                   {styleOptions.map((style) => (
@@ -802,44 +852,94 @@ Give specific advice with body language. Return JSON:
                 </div>
               )}
             </div>
-            
-            {/* Dating Gender Dropdown */}
+          </div>
+
+          {/* I am & Dating row */}
+          <div className="flex gap-3 mb-6">
+            {/* I am Dropdown */}
             <div className="flex-1 relative dropdown-container">
               <button 
                 onClick={() => {
-                  setShowGenderPicker(!showGenderPicker);
+                  setShowMyGenderPicker(!showMyGenderPicker);
+                  setShowDatingGenderPicker(false);
                   setShowStylePicker(false);
                 }}
-                className="w-full flex items-center justify-between px-4 py-3 bg-slate-800/80 border border-slate-700 rounded-2xl hover:border-pink-500/50 transition-colors"
+                className="w-full flex items-center justify-between px-4 py-3 bg-slate-800/80 border border-slate-700 rounded-2xl hover:border-blue-500/50 transition-colors"
               >
                 <div className="flex items-center gap-2">
-                  <span className="text-xl">{genderOptions.find(g => g.id === gender)?.emoji}</span>
-                  <span className="text-white text-sm">Dating: <span className="font-semibold">{genderOptions.find(g => g.id === gender)?.label}</span></span>
+                  <span className="text-xl">{genderOptions.find(g => g.id === myGender)?.emoji}</span>
+                  <span className="text-white text-sm">I am: <span className="font-semibold">{genderOptions.find(g => g.id === myGender)?.label}</span></span>
                 </div>
-                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${showGenderPicker ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${showMyGenderPicker ? 'rotate-180' : ''}`} />
               </button>
               
-              {/* Gender Picker Dropdown */}
-              {showGenderPicker && (
+              {showMyGenderPicker && (
                 <div className="absolute top-full left-0 right-0 mt-2 bg-slate-800 border border-slate-600 rounded-2xl overflow-hidden z-50 shadow-xl shadow-black/50">
                   {genderOptions.map((g) => (
                     <button
                       key={g.id}
                       onClick={() => {
-                        setGender(g.id);
-                        setShowGenderPicker(false);
+                        setMyGender(g.id);
+                        setShowMyGenderPicker(false);
                       }}
                       className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-700/80 transition-colors ${
-                        gender === g.id ? 'bg-pink-500/20 border-l-2 border-pink-500' : ''
+                        myGender === g.id ? 'bg-blue-500/20 border-l-2 border-blue-500' : ''
                       }`}
                     >
                       <span className="text-xl">{g.emoji}</span>
                       <p className="text-white text-sm font-medium">{g.label}</p>
-                      {gender === g.id && <span className="ml-auto text-pink-400">✓</span>}
+                      {myGender === g.id && <span className="ml-auto text-blue-400">✓</span>}
                     </button>
                   ))}
                 </div>
               )}
+            </div>
+            
+            {/* Dating Dropdown */}
+            <div className="flex-1 relative dropdown-container">
+              <button 
+                onClick={() => {
+                  setShowDatingGenderPicker(!showDatingGenderPicker);
+                  setShowMyGenderPicker(false);
+                  setShowStylePicker(false);
+                }}
+                className="w-full flex items-center justify-between px-4 py-3 bg-slate-800/80 border border-slate-700 rounded-2xl hover:border-pink-500/50 transition-colors"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">{genderOptions.find(g => g.id === datingGender)?.emoji}</span>
+                  <span className="text-white text-sm">Dating: <span className="font-semibold">{genderOptions.find(g => g.id === datingGender)?.label}</span></span>
+                </div>
+                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${showDatingGenderPicker ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {showDatingGenderPicker && (
+                <div className="absolute top-full left-0 right-0 mt-2 bg-slate-800 border border-slate-600 rounded-2xl overflow-hidden z-50 shadow-xl shadow-black/50">
+                  {genderOptions.map((g) => (
+                    <button
+                      key={g.id}
+                      onClick={() => {
+                        setDatingGender(g.id);
+                        setShowDatingGenderPicker(false);
+                      }}
+                      className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-700/80 transition-colors ${
+                        datingGender === g.id ? 'bg-pink-500/20 border-l-2 border-pink-500' : ''
+                      }`}
+                    >
+                      <span className="text-xl">{g.emoji}</span>
+                      <p className="text-white text-sm font-medium">{g.label}</p>
+                      {datingGender === g.id && <span className="ml-auto text-pink-400">✓</span>}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+          
+          {/* Orientation badge */}
+          <div className="flex justify-center mb-4">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-full">
+              <span className="text-lg">{getOrientation().emoji}</span>
+              <span className="text-sm text-purple-300 font-medium">{getOrientation().label}</span>
             </div>
           </div>
 
@@ -975,9 +1075,13 @@ Give specific advice with body language. Return JSON:
                 </p>
               </div>
             </div>
-            <div className="flex flex-col items-center">
-              <span className="text-2xl">{genderOptions.find(g => g.id === gender)?.emoji || '👩'}</span>
-              <span className="text-[10px] text-slate-500 mt-1">{styleOptions.find(s => s.id === selectedStyle)?.label}</span>
+            <div className="flex flex-col items-center gap-1">
+              <div className="flex items-center gap-1">
+                <span className="text-lg">{genderOptions.find(g => g.id === myGender)?.emoji}</span>
+                <span className="text-slate-500">→</span>
+                <span className="text-lg">{genderOptions.find(g => g.id === datingGender)?.emoji}</span>
+              </div>
+              <span className="text-[10px] text-slate-500">{styleOptions.find(s => s.id === selectedStyle)?.label}</span>
             </div>
           </div>
         </div>
