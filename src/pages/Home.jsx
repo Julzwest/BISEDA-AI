@@ -245,6 +245,32 @@ export default function Home() {
         <div className="mb-6">
           <UsageDisplay onUpgrade={() => setShowUpgradeModal(true)} />
         </div>
+
+        {/* Live Wingman Quick Access Button */}
+        <Link to="/wingman" className="block mb-6">
+          <div className="relative overflow-hidden bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 rounded-2xl p-4 shadow-xl shadow-orange-500/30 hover:shadow-orange-500/50 transition-all hover:scale-[1.02] active:scale-[0.98]">
+            {/* Animated background pulse */}
+            <div className="absolute inset-0 bg-gradient-to-r from-yellow-400/20 via-transparent to-red-400/20 animate-pulse"></div>
+            
+            <div className="relative flex items-center gap-4">
+              <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                <Zap className="w-8 h-8 text-white" fill="currentColor" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-xl font-bold text-white">Live Wingman</h3>
+                  <span className="bg-white/20 text-white text-xs font-bold px-2 py-0.5 rounded-full">LIVE</span>
+                </div>
+                <p className="text-white/80 text-sm">Real-time coaching while you text 🔥</p>
+              </div>
+              <div className="text-white/80">
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </Link>
       </div>
 
       {/* Features */}
