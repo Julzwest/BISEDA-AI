@@ -1,132 +1,188 @@
 /**
  * Screenshot Intelligence Layer™ - OCR Service
  * 
- * Abstraction layer for extracting text from chat screenshots.
- * This service isolates OCR logic so it can be upgraded independently.
- * 
- * Current: Mock implementation (placeholder)
- * Future: Apple Vision / Google ML Kit / Tesseract.js / Cloud OCR
+ * Uses OpenAI Vision API to extract real text from chat screenshots.
+ * This service properly reads and analyzes the actual image content.
  */
 
+import { getBackendUrl } from '@/utils/getBackendUrl';
+
 /**
- * Extracts text from a chat screenshot image
+ * Extracts text from a chat screenshot image using AI Vision
  * 
  * @param {File|Blob} imageFile - The image file to process
  * @param {Object} options - Optional configuration
  * @param {string} options.platform - Detected platform (tinder, bumble, hinge, etc.)
  * @param {string} options.language - Language hint for OCR
  * @returns {Promise<ExtractedConversation>} Extracted conversation data
- * 
- * @typedef {Object} ExtractedConversation
- * @property {boolean} success - Whether extraction was successful
- * @property {string} rawText - Raw extracted text
- * @property {Array<ExtractedMessage>} messages - Parsed messages
- * @property {Object} metadata - Extraction metadata
- * 
- * @typedef {Object} ExtractedMessage
- * @property {string} text - Message content
- * @property {string} sender - "user" | "them" | "unknown"
- * @property {number} confidence - Confidence score 0-1
  */
 export async function extractTextFromImage(imageFile, options = {}) {
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // MOCK IMPLEMENTATION
-  // Replace with real OCR (Apple Vision / Google ML Kit / Tesseract) later
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  const backendUrl = getBackendUrl();
   
-  // Simulate processing delay (real OCR takes 1-3 seconds)
-  await simulateProcessingDelay(800, 1500);
+  try {
+    // Convert image file to base64 data URL
+    const imageDataUrl = await fileToDataUrl(imageFile);
+    
+    // Call backend API with image for AI Vision processing
+    const response = await fetch(`${backendUrl}/api/chat`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-session-id': window.chatSessionId || `ocr_${Date.now()}`,
+        'x-user-id': localStorage.getItem('odId') || localStorage.getItem('guestId') || ''
+      },
+      body: JSON.stringify({
+        prompt: 'Extract the conversation from this screenshot',
+        conversationHistory: [],
+        systemPrompt: getOCRPrompt(),
+        fileUrls: [imageDataUrl]
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('OCR API error:', errorData);
+      throw new Error(errorData.error || 'Failed to extract text from image');
+    }
+
+    const data = await response.json();
+    const aiResponse = data.response;
+    
+    // Parse the AI response to extract structured messages
+    const parsedResult = parseAIResponse(aiResponse);
+    
+    return {
+      success: true,
+      rawText: parsedResult.rawText,
+      messages: parsedResult.messages,
+      metadata: {
+        extractedAt: new Date().toISOString(),
+        processingTimeMs: 0,
+        confidence: parsedResult.confidence,
+        detectedPlatform: detectPlatformFromFilename(imageFile?.name),
+        ocrEngine: 'openai_vision',
+        imageSize: imageFile?.size || 0
+      }
+    };
+    
+  } catch (error) {
+    console.error('OCR extraction error:', error);
+    
+    // Return error result
+    return {
+      success: false,
+      rawText: '',
+      messages: [],
+      metadata: {
+        extractedAt: new Date().toISOString(),
+        error: error.message,
+        ocrEngine: 'openai_vision'
+      }
+    };
+  }
+}
+
+/**
+ * Converts a File to a data URL
+ */
+function fileToDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+/**
+ * Gets the OCR extraction prompt for OpenAI Vision
+ */
+function getOCRPrompt() {
+  return `You are an expert at reading chat screenshots and extracting the exact text.
+
+YOUR TASK: Read this screenshot and extract EVERY message you can see.
+
+⚠️ CRITICAL INSTRUCTIONS:
+1. READ THE ACTUAL TEXT from the image - do NOT make up or imagine text
+2. Identify which messages are from "me" (usually on the right, often in colored bubbles)
+3. Identify which messages are from "them" (usually on the left, often in gray/white bubbles)
+4. Extract messages in chronological order (oldest first, newest last)
+5. Include ALL visible messages, even partial ones
+
+RETURN THIS EXACT JSON FORMAT:
+{
+  "messages": [
+    {"sender": "them", "text": "EXACT text from the screenshot"},
+    {"sender": "me", "text": "EXACT text from the screenshot"},
+    ...more messages...
+  ],
+  "confidence": 0.0-1.0,
+  "platform": "detected platform or unknown"
+}
+
+CONFIDENCE SCORING:
+- 1.0 = All text clearly readable
+- 0.8-0.9 = Most text readable, some unclear
+- 0.5-0.7 = Partial text readable
+- Below 0.5 = Very unclear/difficult to read
+
+⚠️ IMPORTANT:
+- Extract the REAL text from the image
+- If you cannot read something, indicate "unclear" in that message
+- Do NOT use placeholder or example text
+- Return ONLY valid JSON, no other text`;
+}
+
+/**
+ * Parses the AI response to extract structured messages
+ */
+function parseAIResponse(response) {
+  try {
+    // Try to extract JSON from response
+    const jsonMatch = response.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      const parsed = JSON.parse(jsonMatch[0]);
+      
+      // Format messages
+      const messages = (parsed.messages || []).map(msg => ({
+        text: msg.text || '',
+        sender: msg.sender === 'me' ? 'user' : msg.sender === 'them' ? 'them' : 'unknown',
+        confidence: parsed.confidence || 0.8
+      }));
+      
+      // Generate raw text
+      const rawText = messages.map(m => {
+        const prefix = m.sender === 'user' ? 'Me:' : 'Them:';
+        return `${prefix} ${m.text}`;
+      }).join('\n');
+      
+      return {
+        messages,
+        rawText,
+        confidence: parsed.confidence || 0.8
+      };
+    }
+  } catch (e) {
+    console.error('Parse error:', e);
+  }
   
-  // Return mock conversation data
-  // In production, this would be real OCR output
-  const mockConversation = generateMockConversation(options);
+  // Fallback: try to parse as plain text
+  const lines = response.split('\n').filter(l => l.trim());
+  const messages = lines.map((line, i) => ({
+    text: line.trim(),
+    sender: i % 2 === 0 ? 'them' : 'user',
+    confidence: 0.5
+  }));
   
   return {
-    success: true,
-    rawText: mockConversation.rawText,
-    messages: mockConversation.messages,
-    metadata: {
-      extractedAt: new Date().toISOString(),
-      processingTimeMs: Math.floor(Math.random() * 500) + 800,
-      confidence: 0.85, // Overall confidence score
-      detectedPlatform: detectPlatformFromFilename(imageFile?.name),
-      ocrEngine: 'mock_v1', // Track which engine was used
-      imageSize: imageFile?.size || 0
-    }
+    messages,
+    rawText: response,
+    confidence: 0.5
   };
 }
 
 /**
- * Simulates processing delay for realistic UX
- */
-function simulateProcessingDelay(minMs, maxMs) {
-  const delay = Math.floor(Math.random() * (maxMs - minMs)) + minMs;
-  return new Promise(resolve => setTimeout(resolve, delay));
-}
-
-/**
- * Generates mock conversation data
- * Uses variety to make testing more realistic
- */
-function generateMockConversation(options = {}) {
-  // Multiple conversation templates for variety
-  const conversationTemplates = [
-    {
-      rawText: "Hey, how was your day?\nGood! You?\nBusy but good 🙂\nSame here. What are you up to tonight?",
-      messages: [
-        { text: "Hey, how was your day?", sender: "them", confidence: 0.9 },
-        { text: "Good! You?", sender: "user", confidence: 0.88 },
-        { text: "Busy but good 🙂", sender: "them", confidence: 0.92 },
-        { text: "Same here. What are you up to tonight?", sender: "user", confidence: 0.85 }
-      ]
-    },
-    {
-      rawText: "I love that show too!\nWhich season is your favorite?\nDefinitely season 2. The plot twists were insane\nRight?! I couldn't stop watching",
-      messages: [
-        { text: "I love that show too!", sender: "them", confidence: 0.91 },
-        { text: "Which season is your favorite?", sender: "user", confidence: 0.87 },
-        { text: "Definitely season 2. The plot twists were insane", sender: "them", confidence: 0.89 },
-        { text: "Right?! I couldn't stop watching", sender: "user", confidence: 0.86 }
-      ]
-    },
-    {
-      rawText: "That hiking trail sounds amazing\nIt is! I go every weekend\nWe should go together sometime 😊\nI'd like that",
-      messages: [
-        { text: "That hiking trail sounds amazing", sender: "user", confidence: 0.88 },
-        { text: "It is! I go every weekend", sender: "them", confidence: 0.92 },
-        { text: "We should go together sometime 😊", sender: "user", confidence: 0.9 },
-        { text: "I'd like that", sender: "them", confidence: 0.94 }
-      ]
-    },
-    {
-      rawText: "Haha you're funny\nI try my best 😄\nSo what do you do for work?\nI'm a designer. You?",
-      messages: [
-        { text: "Haha you're funny", sender: "them", confidence: 0.93 },
-        { text: "I try my best 😄", sender: "user", confidence: 0.89 },
-        { text: "So what do you do for work?", sender: "them", confidence: 0.91 },
-        { text: "I'm a designer. You?", sender: "user", confidence: 0.87 }
-      ]
-    },
-    {
-      rawText: "Just got back from the gym\nNice! I should start working out more\nIt's addicting once you start\nMaybe you could show me some exercises?",
-      messages: [
-        { text: "Just got back from the gym", sender: "them", confidence: 0.9 },
-        { text: "Nice! I should start working out more", sender: "user", confidence: 0.86 },
-        { text: "It's addicting once you start", sender: "them", confidence: 0.91 },
-        { text: "Maybe you could show me some exercises?", sender: "user", confidence: 0.88 }
-      ]
-    }
-  ];
-  
-  // Select random template for variety
-  const template = conversationTemplates[Math.floor(Math.random() * conversationTemplates.length)];
-  
-  return template;
-}
-
-/**
  * Attempts to detect dating platform from filename
- * Real implementation would use image analysis
  */
 function detectPlatformFromFilename(filename) {
   if (!filename) return 'unknown';

@@ -20,12 +20,14 @@ import {
   TrendingDown,
   Minus,
   Lock,
-  Crown
+  Crown,
+  Loader2
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { generateReply } from '@/engine/conversationEngine';
 import { getProfile } from '@/utils/profileMemory';
+import { getBackendUrl } from '@/utils/getBackendUrl';
 
 // ============================================================
 // FEEDBACK STORAGE UTILS (Prompt 8)
@@ -82,10 +84,124 @@ export default function ReplyResults() {
     const userProfile = getProfile();
     setProfile(userProfile);
 
-    // Generate results using the Conversation Strategy Engine™
-    const engineResults = generateReply(goal, analysis, userProfile);
+    // Generate AI-powered replies based on actual conversation
+    generateAIReplies(goal, analysis, inputData, userProfile);
+  }, [goal, analysis, inputData, navigate]);
+
+  // AI-powered reply generation
+  const generateAIReplies = async (selectedGoal, analysisData, conversationData, userProfile) => {
+    const backendUrl = getBackendUrl();
     
-    // Map engine output to expected format
+    // Get the actual conversation content
+    const conversationContent = conversationData?.content || '';
+    const extractedMessages = conversationData?.rawExtraction?.messages || [];
+    
+    // Format extracted messages for the AI
+    const formattedConversation = extractedMessages.length > 0
+      ? extractedMessages.map(m => `${m.sender === 'user' ? 'Me' : 'Them'}: "${m.text}"`).join('\n')
+      : conversationContent;
+    
+    // Goal descriptions
+    const goalDescriptions = {
+      'flow': 'Keep the conversation flowing naturally',
+      'flirt': 'Add flirtation and build attraction/chemistry',
+      'date': 'Ask them out on a date confidently',
+      'recover': 'Recover from an awkward moment or mistake',
+      'boundaries': 'Set healthy boundaries or slow things down'
+    };
+    
+    const goalDescription = goalDescriptions[selectedGoal] || 'Continue the conversation naturally';
+    
+    const prompt = `You are an expert dating coach. Generate personalized reply suggestions based on this ACTUAL conversation.
+
+CONVERSATION (REAL EXTRACTED TEXT):
+${formattedConversation || 'No conversation provided'}
+
+ANALYSIS:
+- Interest Level: ${analysisData?.interestLevel || 'Unknown'}
+- Momentum: ${analysisData?.momentum || 'Unknown'}
+- Power Balance: ${analysisData?.powerBalance || 'Unknown'}
+
+USER'S GOAL: ${goalDescription}
+
+USER'S STYLE: ${userProfile?.communicationStyle || 'Playful'}
+USER'S DATING GOAL: ${userProfile?.datingGoal || 'Casual'}
+
+⚠️ CRITICAL INSTRUCTIONS:
+1. Your replies MUST directly reference the ACTUAL conversation above
+2. DO NOT give generic responses like "Tell me more about that"
+3. PLAY OFF specific words, phrases, or topics from their messages
+4. Match their energy and vibe
+5. Be confident but not arrogant
+
+Generate a JSON response with this EXACT structure:
+{
+  "mainReply": "Your best response that directly references their last message",
+  "alternatives": {
+    "playful": "A playful/teasing version that references the conversation",
+    "confident": "A bold/direct version that references the conversation",
+    "direct": "A straightforward version that references the conversation"
+  },
+  "whyItWorks": [
+    "Reason 1 - specific to THIS conversation",
+    "Reason 2 - specific to THIS conversation",
+    "Reason 3 - specific to THIS conversation"
+  ],
+  "whatNotToSay": [
+    "Something to avoid in THIS specific situation",
+    "Another thing to avoid based on this conversation",
+    "Generic mistake to avoid"
+  ],
+  "nextMove": "Strategic next step based on this specific conversation"
+}
+
+IMPORTANT: Each reply should feel like it was written FOR this specific conversation, not a generic template. Reference their words!
+
+Return ONLY valid JSON.`;
+
+    try {
+      const response = await fetch(`${backendUrl}/api/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-session-id': window.chatSessionId || `reply_${Date.now()}`,
+          'x-user-id': localStorage.getItem('odId') || localStorage.getItem('guestId') || ''
+        },
+        body: JSON.stringify({
+          prompt: prompt,
+          conversationHistory: [],
+          systemPrompt: 'You are an expert dating coach. Return ONLY valid JSON with contextual, conversation-specific replies.'
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const aiResponse = data.response;
+        
+        // Parse JSON from response
+        const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          const parsed = JSON.parse(jsonMatch[0]);
+          setResults({
+            mainReply: parsed.mainReply || "I'd love to hear more about that!",
+            whyItWorks: parsed.whyItWorks || ['Shows genuine interest'],
+            alternatives: parsed.alternatives || {
+              playful: "Tell me more, I'm curious 😊",
+              confident: "I like where this is going",
+              direct: "That's interesting, go on"
+            },
+            whatNotToSay: parsed.whatNotToSay || ['Avoid being too eager'],
+            nextMove: parsed.nextMove || 'Keep building the connection'
+          });
+          return;
+        }
+      }
+    } catch (error) {
+      console.error('AI reply generation error:', error);
+    }
+    
+    // Fallback to engine-generated replies if AI fails
+    const engineResults = generateReply(selectedGoal, analysisData, userProfile);
     setResults({
       mainReply: engineResults.recommendedReply,
       whyItWorks: engineResults.whyItWorks,
@@ -93,7 +209,7 @@ export default function ReplyResults() {
       whatNotToSay: engineResults.avoid,
       nextMove: engineResults.nextMove
     });
-  }, [goal, analysis, navigate]);
+  };
 
   // ============================================================
   // FEEDBACK HANDLERS (Prompt 8)
@@ -167,8 +283,12 @@ export default function ReplyResults() {
 
   if (!results) {
     return (
-      <div className="w-full min-h-screen flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-2 border-purple-500 border-t-transparent rounded-full" />
+      <div className="w-full min-h-screen flex flex-col items-center justify-center px-4">
+        <Loader2 className="w-10 h-10 text-purple-500 animate-spin mb-4" />
+        <h2 className="text-white font-semibold text-lg mb-2">Crafting your perfect reply...</h2>
+        <p className="text-slate-400 text-sm text-center">
+          Analyzing the conversation and generating personalized suggestions
+        </p>
       </div>
     );
   }
