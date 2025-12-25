@@ -561,59 +561,90 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
 
   return (
     <div className="px-4 pt-6 pb-32 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950 w-full max-w-full overflow-x-hidden">
-      {/* Header */}
-      <div className="mb-6 text-center">
-        <div className="inline-block mb-3">
+      {/* Header - Fun & Playful */}
+      <div className="mb-6 text-center relative">
+        {/* Floating decorative elements */}
+        <div className="absolute -top-4 left-4 text-3xl animate-bounce opacity-60" style={{ animationDelay: '0s' }}>💕</div>
+        <div className="absolute -top-2 right-8 text-2xl animate-bounce opacity-50" style={{ animationDelay: '0.3s' }}>✨</div>
+        <div className="absolute top-12 left-8 text-xl animate-bounce opacity-40" style={{ animationDelay: '0.6s' }}>🌟</div>
+        
+        <div className="inline-block mb-4">
           <div className="relative">
-            <div className="w-20 h-20 bg-gradient-to-br from-pink-500 via-purple-500 to-blue-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-pink-500/50 animate-pulse">
-              <MapPin className="w-10 h-10 text-white" />
+            {/* Glowing ring effect */}
+            <div className="absolute inset-0 w-24 h-24 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 rounded-3xl blur-xl opacity-60 animate-pulse" />
+            <div className="relative w-24 h-24 bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-600 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/50 transform hover:rotate-6 transition-transform">
+              <span className="text-5xl">💖</span>
             </div>
-            <div className="absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center animate-bounce">
-              <Sparkles className="w-3 h-3 text-slate-900" />
+            <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center animate-bounce shadow-lg shadow-yellow-500/50">
+              <span className="text-lg">🔥</span>
+            </div>
+            <div className="absolute -bottom-1 -left-1 w-6 h-6 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full flex items-center justify-center animate-pulse">
+              <span className="text-sm">💫</span>
             </div>
           </div>
         </div>
-        <h1 className="text-3xl font-extrabold bg-gradient-to-r from-pink-300 via-purple-300 to-blue-300 bg-clip-text text-transparent mb-2">
-          Explore Dates & Events
+        <h1 className="text-3xl font-black mb-2">
+          <span className="bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+            Find Your Perfect
+          </span>
+          <br />
+          <span className="bg-gradient-to-r from-rose-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
+            Date Spot! 🎯
+          </span>
         </h1>
-        <p className="text-slate-400 text-sm">Find perfect venues and discover local events</p>
+        <p className="text-slate-400 text-sm flex items-center justify-center gap-2">
+          <span>Discover amazing venues</span>
+          <span className="text-pink-400">•</span>
+          <span>Plan unforgettable dates</span>
+        </p>
       </div>
       
-      {/* TAB NAVIGATION */}
-      <div className="mb-6 flex gap-2 bg-slate-900/50 p-1.5 rounded-2xl border border-slate-700/50">
-        <button
-          onClick={() => setActiveTab('venues')}
-          className={`flex-1 py-3 px-4 rounded-xl font-bold text-sm transition-all ${
-            activeTab === 'venues'
-              ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg shadow-pink-500/40'
-              : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
-          }`}
-        >
-          <span className="flex items-center justify-center gap-2">
-            <Coffee className="w-4 h-4" />
-            Date Venues
-          </span>
-        </button>
-        <button
-          onClick={() => setActiveTab('events')}
-          className={`flex-1 py-3 px-4 rounded-xl font-bold text-sm transition-all ${
-            activeTab === 'events'
-              ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white shadow-lg shadow-purple-500/40'
-              : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
-          }`}
-        >
-          <span className="flex items-center justify-center gap-2">
-            <PartyPopper className="w-4 h-4" />
-            Events
-          </span>
-        </button>
+      {/* TAB NAVIGATION - Fun Pills */}
+      <div className="mb-6 relative">
+        <div className="flex gap-3 p-2 bg-slate-900/70 rounded-2xl border border-slate-700/50 backdrop-blur-sm">
+          <button
+            onClick={() => setActiveTab('venues')}
+            className={`flex-1 py-4 px-4 rounded-xl font-bold text-sm transition-all transform ${
+              activeTab === 'venues'
+                ? 'bg-gradient-to-r from-pink-500 via-rose-500 to-orange-500 text-white shadow-lg shadow-pink-500/50 scale-[1.02]'
+                : 'text-slate-400 hover:text-white hover:bg-slate-800/50 hover:scale-[1.01]'
+            }`}
+          >
+            <span className="flex items-center justify-center gap-2">
+              <span className="text-xl">🍽️</span>
+              <span>Date Spots</span>
+              {activeTab === 'venues' && <span className="animate-pulse">✨</span>}
+            </span>
+          </button>
+          <button
+            onClick={() => setActiveTab('events')}
+            className={`flex-1 py-4 px-4 rounded-xl font-bold text-sm transition-all transform ${
+              activeTab === 'events'
+                ? 'bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-500 text-white shadow-lg shadow-purple-500/50 scale-[1.02]'
+                : 'text-slate-400 hover:text-white hover:bg-slate-800/50 hover:scale-[1.01]'
+            }`}
+          >
+            <span className="flex items-center justify-center gap-2">
+              <span className="text-xl">🎉</span>
+              <span>Events</span>
+              {activeTab === 'events' && <span className="animate-pulse">🎊</span>}
+            </span>
+          </button>
+        </div>
       </div>
-      {/* SHARED: City Selection - Modern Design */}
+      {/* SHARED: City Selection - Fun & Engaging */}
       <div className="mb-6">
-        <div className="flex items-center gap-2 mb-3">
-          <MapPin className="w-5 h-5 text-purple-400" />
-          <h2 className="text-lg font-bold text-white">{t('dates.selectCity')}</h2>
-          <span className="text-xs text-slate-500 ml-auto">{currentCountry?.flag} {localizedCountryName}</span>
+        <div className="flex items-center gap-2 mb-4">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
+            <span className="text-xl">📍</span>
+          </div>
+          <div className="flex-1">
+            <h2 className="text-lg font-bold text-white">{t('dates.selectCity')}</h2>
+            <p className="text-xs text-slate-400">Where's the magic happening? ✨</p>
+          </div>
+          <span className="px-3 py-1.5 bg-slate-800/70 rounded-full text-sm text-slate-300 border border-slate-700/50">
+            {currentCountry?.flag} {localizedCountryName}
+          </span>
         </div>
         <div className="flex flex-wrap gap-2">
           {/* Show first 12 cities, or all if showMoreCities */}
@@ -672,26 +703,34 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
       {/* VENUES TAB CONTENT */}
       {activeTab === 'venues' && (
         <>
-          {/* Time of Day Filter */}
+          {/* Time of Day Filter - Visual & Fun */}
           <div className="mb-6">
-            <h2 className="text-lg font-bold text-white mb-3">⏰ Time of Day</h2>
-        <div className="flex flex-wrap gap-2">
-          {timeOfDayOptions.map((time) => (
-            <button
-              key={time.id}
-              onClick={() => setSelectedTimeOfDay(time.id)}
-              className={`px-4 py-2.5 rounded-xl font-semibold text-sm transition-all ${
-                selectedTimeOfDay === time.id
-                  ? `bg-gradient-to-r ${time.color} text-white shadow-lg`
-                  : 'bg-slate-800/70 text-slate-300 hover:bg-slate-700/70 border border-slate-700/50 hover:border-purple-500/50'
-              }`}
-            >
-              <span className="mr-1.5">{time.emoji}</span>
-              {time.label}
-            </button>
-          ))}
-        </div>
-      </div>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/30">
+                <span className="text-xl">⏰</span>
+              </div>
+              <div>
+                <h2 className="text-lg font-bold text-white">When's the date?</h2>
+                <p className="text-xs text-slate-400">Set the mood 🌙</p>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {timeOfDayOptions.map((time) => (
+                <button
+                  key={time.id}
+                  onClick={() => setSelectedTimeOfDay(time.id)}
+                  className={`px-5 py-3 rounded-2xl font-bold text-sm transition-all transform hover:scale-105 ${
+                    selectedTimeOfDay === time.id
+                      ? `bg-gradient-to-r ${time.color} text-white shadow-xl shadow-purple-500/30 scale-105`
+                      : 'bg-slate-800/70 text-slate-300 hover:bg-slate-700/70 border border-slate-700/50 hover:border-purple-500/50'
+                  }`}
+                >
+                  <span className="text-xl mr-2">{time.emoji}</span>
+                  {time.label}
+                </button>
+              ))}
+            </div>
+          </div>
 
       {/* City Selection Modal */}
       {showCityModal && (
@@ -817,38 +856,47 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
         </div>
       )}
 
-      {/* Category Selection */}
+      {/* Category Selection - Big & Playful */}
       <div className="mb-6">
-        <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-purple-400" />
-          {t('dates.selectCategory')}
-        </h2>
-        <div className="grid grid-cols-2 gap-3">
-          {categories.map((category) => {
+        <div className="flex items-center gap-2 mb-4">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center shadow-lg shadow-pink-500/30">
+            <span className="text-xl">🎯</span>
+          </div>
+          <div>
+            <h2 className="text-lg font-bold text-white">{t('dates.selectCategory')}</h2>
+            <p className="text-xs text-slate-400">What kind of vibe are you after? 💫</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          {categories.map((category, index) => {
             const Icon = category.icon;
             const isSelected = selectedCategory?.id === category.id;
+            const categoryEmojis = ['🍽️', '☕', '🍸', '🎬', '🎵', '🏃', '🎨', '🌳'];
             return (
               <button
                 key={category.id}
                 onClick={() => handleCategorySelect(category)}
-                className={`p-4 rounded-2xl border-2 transition-all text-left ${
+                style={{ animationDelay: `${index * 50}ms` }}
+                className={`group p-5 rounded-3xl border-2 transition-all text-left transform hover:scale-[1.03] active:scale-95 ${
                   isSelected
-                    ? `bg-gradient-to-br ${category.color} border-transparent shadow-lg scale-105`
-                    : 'bg-slate-800/50 border-slate-700 hover:border-purple-500/50'
+                    ? `bg-gradient-to-br ${category.color} border-transparent shadow-2xl shadow-purple-500/40 scale-[1.02]`
+                    : 'bg-slate-800/60 border-slate-700/50 hover:border-purple-500/50 hover:bg-slate-800/80'
                 }`}
               >
-                <div className="flex items-start gap-3">
-                  <div className={`p-2 rounded-xl ${isSelected ? 'bg-white/20' : 'bg-slate-700/50'}`}>
-                    <Icon className={`w-6 h-6 ${isSelected ? 'text-white' : 'text-slate-400'}`} />
+                <div className="flex flex-col items-center text-center">
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-3 transition-all ${
+                    isSelected 
+                      ? 'bg-white/20 scale-110' 
+                      : 'bg-slate-700/50 group-hover:bg-slate-600/50 group-hover:scale-105'
+                  }`}>
+                    <span className="text-3xl">{categoryEmojis[index]}</span>
                   </div>
-                  <div className="flex-1">
-                    <h3 className={`font-bold text-sm mb-1 ${isSelected ? 'text-white' : 'text-slate-300'}`}>
-                      {category.name}
-                    </h3>
-                    <p className={`text-xs ${isSelected ? 'text-white/80' : 'text-slate-400'}`}>
-                      {category.description}
-                    </p>
-                  </div>
+                  <h3 className={`font-bold text-sm mb-1 ${isSelected ? 'text-white' : 'text-slate-200'}`}>
+                    {category.name}
+                  </h3>
+                  <p className={`text-xs line-clamp-2 ${isSelected ? 'text-white/80' : 'text-slate-400'}`}>
+                    {category.description}
+                  </p>
                 </div>
               </button>
             );
@@ -1074,123 +1122,204 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
         </div>
       )}
 
-      {/* Empty State */}
+      {/* Empty State - Fun & Encouraging */}
       {suggestions.length === 0 && selectedCategory && (
-        <div className="text-center py-12">
-          <div className="text-6xl mb-3 animate-bounce">💕</div>
-          <p className="text-slate-400">{t('dates.selectCityForSuggestions')}</p>
-        </div>
+        <Card className="bg-gradient-to-br from-pink-900/20 via-purple-900/20 to-indigo-900/20 border border-purple-500/20">
+          <div className="text-center py-12 px-6">
+            <div className="text-7xl mb-4 animate-bounce">💕</div>
+            <h3 className="text-xl font-bold text-white mb-2">Almost there!</h3>
+            <p className="text-slate-300 mb-4">{t('dates.selectCityForSuggestions')}</p>
+            <div className="flex justify-center gap-2">
+              <span className="px-3 py-1.5 bg-purple-500/20 rounded-full text-sm text-purple-300">👆 Pick a city above</span>
+            </div>
+          </div>
+        </Card>
       )}
 
       {!selectedCategory && (
-        <div className="text-center py-12">
-          <div className="text-6xl mb-3 animate-pulse">💭</div>
-          <p className="text-slate-400">{t('dates.selectCategoryToStart')}</p>
-        </div>
+        <Card className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700/30">
+          <div className="text-center py-12 px-6">
+            <div className="relative inline-block mb-4">
+              <span className="text-7xl">💭</span>
+              <span className="absolute -top-2 -right-2 text-2xl animate-ping">✨</span>
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2">Let's find your perfect spot!</h3>
+            <p className="text-slate-300 mb-4">{t('dates.selectCategoryToStart')}</p>
+            <div className="flex flex-wrap justify-center gap-2">
+              <span className="px-3 py-1.5 bg-pink-500/20 rounded-full text-sm text-pink-300 animate-pulse">🍽️ Dinner?</span>
+              <span className="px-3 py-1.5 bg-amber-500/20 rounded-full text-sm text-amber-300 animate-pulse" style={{ animationDelay: '0.2s' }}>☕ Coffee?</span>
+              <span className="px-3 py-1.5 bg-purple-500/20 rounded-full text-sm text-purple-300 animate-pulse" style={{ animationDelay: '0.4s' }}>🍸 Drinks?</span>
+            </div>
+          </div>
+        </Card>
       )}
         </>
       )}
       
-      {/* EVENTS TAB CONTENT */}
+      {/* EVENTS TAB CONTENT - Fun & Celebratory */}
       {activeTab === 'events' && (
         <div className="space-y-6">
+          {/* Header for events */}
+          <div className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full border border-purple-500/30 mb-3">
+              <span className="text-2xl animate-bounce">🎊</span>
+              <span className="text-purple-300 font-bold">Special Occasions</span>
+              <span className="text-2xl animate-bounce" style={{ animationDelay: '0.2s' }}>🎊</span>
+            </div>
+            <p className="text-slate-400 text-sm">Plan something special for these dates!</p>
+          </div>
+
           {/* Upcoming Festive Dates */}
           <div className="mb-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                <Calendar className="w-6 h-6 text-purple-400" />
-                Upcoming Celebrations
-              </h2>
-              <span className="text-xs text-slate-500">{currentCountry?.flag} {localizedCountryName}</span>
-            </div>
-            
-            {/* Next Festive Date - Big Card */}
+            {/* Next Festive Date - Hero Card */}
             {upcomingFestiveDates[0] && (
-              <Card className="mb-4 bg-gradient-to-br from-purple-900/40 via-pink-900/30 to-rose-900/40 border-2 border-pink-500/40 shadow-lg shadow-pink-500/10 overflow-hidden">
-                <div className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="text-6xl">{upcomingFestiveDates[0].emoji}</div>
+              <Card className="mb-5 relative overflow-hidden">
+                {/* Animated gradient background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-pink-600 to-rose-500 opacity-90" />
+                <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+                <div className="absolute bottom-0 left-0 w-32 h-32 bg-yellow-500/20 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2" />
+                
+                {/* Floating emojis */}
+                <div className="absolute top-4 right-4 text-3xl opacity-40 animate-bounce">✨</div>
+                <div className="absolute bottom-4 right-12 text-2xl opacity-30 animate-bounce" style={{ animationDelay: '0.5s' }}>💫</div>
+                
+                <div className="relative p-6">
+                  <div className="flex items-center gap-5">
+                    <div className="w-24 h-24 rounded-3xl bg-white/20 flex items-center justify-center backdrop-blur-sm shadow-xl">
+                      <span className="text-6xl">{upcomingFestiveDates[0].emoji}</span>
+                    </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <span className="px-3 py-1 bg-pink-500/20 border border-pink-500/40 rounded-full text-xs font-bold text-pink-300">
-                          {upcomingFestiveDates[0].daysUntil === 0 ? 'TODAY!' : upcomingFestiveDates[0].daysUntil === 1 ? 'TOMORROW!' : `IN ${upcomingFestiveDates[0].daysUntil} DAYS`}
+                        <span className={`px-4 py-1.5 rounded-full text-sm font-black ${
+                          upcomingFestiveDates[0].daysUntil === 0 
+                            ? 'bg-yellow-400 text-yellow-900 animate-pulse' 
+                            : upcomingFestiveDates[0].daysUntil === 1 
+                            ? 'bg-orange-400 text-orange-900'
+                            : 'bg-white/20 text-white'
+                        }`}>
+                          {upcomingFestiveDates[0].daysUntil === 0 ? '🔥 TODAY!' : upcomingFestiveDates[0].daysUntil === 1 ? '⚡ TOMORROW!' : `📅 IN ${upcomingFestiveDates[0].daysUntil} DAYS`}
                         </span>
                       </div>
-                      <h3 className="text-2xl font-bold text-white mb-1">{upcomingFestiveDates[0].name}</h3>
-                      <p className="text-slate-300">
+                      <h3 className="text-2xl font-black text-white mb-1">{upcomingFestiveDates[0].name}</h3>
+                      <p className="text-white/80 font-medium">
                         {upcomingFestiveDates[0].fullDate.toLocaleDateString(i18n.language, { 
                           weekday: 'long',
                           month: 'long', 
-                          day: 'numeric',
-                          year: 'numeric'
+                          day: 'numeric'
                         })}
                       </p>
                     </div>
+                  </div>
+                  
+                  {/* Date idea prompt */}
+                  <div className="mt-4 pt-4 border-t border-white/20">
+                    <p className="text-white/90 text-sm font-medium flex items-center gap-2">
+                      <span>💡</span>
+                      <span>Perfect time to plan a special date!</span>
+                    </p>
                   </div>
                 </div>
               </Card>
             )}
             
-            {/* More Upcoming Dates */}
-            <div className="space-y-3">
-              {upcomingFestiveDates.slice(1, showAllFestive ? upcomingFestiveDates.length : 6).map((festive, index) => (
-                <Card 
-                  key={index}
-                  className="bg-slate-800/60 border border-slate-700/50 hover:border-purple-500/40 transition-all"
-                >
-                  <div className="p-4">
-                    <div className="flex items-center gap-4">
-                      <div className="text-4xl">{festive.emoji}</div>
-                      <div className="flex-1">
-                        <h4 className="text-white font-bold text-lg">{festive.name}</h4>
-                        <p className="text-slate-400 text-sm">
-                          {festive.fullDate.toLocaleDateString(i18n.language, { 
-                            month: 'long', 
-                            day: 'numeric'
-                          })}
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <div className="px-3 py-1 bg-purple-500/20 border border-purple-500/40 rounded-full">
-                          <span className="text-sm font-bold text-purple-300">
-                            {festive.daysUntil === 0 ? 'Today' : festive.daysUntil === 1 ? 'Tomorrow' : `${festive.daysUntil}d`}
-                          </span>
+            {/* More Upcoming Dates - Fun Cards */}
+            <div className="grid gap-3">
+              {upcomingFestiveDates.slice(1, showAllFestive ? upcomingFestiveDates.length : 6).map((festive, index) => {
+                const colors = [
+                  'from-cyan-500/20 to-blue-500/20 border-cyan-500/30',
+                  'from-green-500/20 to-emerald-500/20 border-green-500/30',
+                  'from-orange-500/20 to-amber-500/20 border-orange-500/30',
+                  'from-pink-500/20 to-rose-500/20 border-pink-500/30',
+                  'from-violet-500/20 to-purple-500/20 border-violet-500/30',
+                ];
+                return (
+                  <Card 
+                    key={index}
+                    className={`bg-gradient-to-r ${colors[index % colors.length]} border backdrop-blur-sm transition-all hover:scale-[1.02] hover:shadow-lg`}
+                  >
+                    <div className="p-4">
+                      <div className="flex items-center gap-4">
+                        <div className="w-14 h-14 rounded-2xl bg-slate-900/40 flex items-center justify-center">
+                          <span className="text-3xl">{festive.emoji}</span>
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="text-white font-bold text-lg">{festive.name}</h4>
+                          <p className="text-slate-300 text-sm">
+                            {festive.fullDate.toLocaleDateString(i18n.language, { 
+                              weekday: 'short',
+                              month: 'short', 
+                              day: 'numeric'
+                            })}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <div className={`px-3 py-2 rounded-xl font-bold text-sm ${
+                            festive.daysUntil <= 7 
+                              ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white' 
+                              : festive.daysUntil <= 30
+                              ? 'bg-slate-800 text-white'
+                              : 'bg-slate-800/50 text-slate-300'
+                          }`}>
+                            {festive.daysUntil === 0 ? '🔥 Today' : festive.daysUntil === 1 ? 'Tomorrow' : `${festive.daysUntil} days`}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </Card>
-              ))}
+                  </Card>
+                );
+              })}
             </div>
             
             {/* Show More Button */}
             {upcomingFestiveDates.length > 6 && (
               <Button
                 onClick={() => setShowAllFestive(!showAllFestive)}
-                className="w-full mt-4 py-3 bg-slate-800/50 hover:bg-slate-700/50 text-white border border-slate-700 rounded-xl"
+                className="w-full mt-4 py-4 bg-gradient-to-r from-slate-800 to-slate-700 hover:from-slate-700 hover:to-slate-600 text-white font-bold border border-slate-600 rounded-2xl transition-all hover:scale-[1.01]"
               >
-                {showAllFestive ? 'Show Less' : `Show All ${upcomingFestiveDates.length} Celebrations`}
+                <span className="flex items-center justify-center gap-2">
+                  {showAllFestive ? '🔼 Show Less' : `🎉 View All ${upcomingFestiveDates.length} Celebrations`}
+                </span>
               </Button>
             )}
           </div>
           
-          {/* Local Events Section - Placeholder for future */}
-          {selectedCity && (
-            <div className="mt-8 text-center py-8 bg-slate-900/50 rounded-2xl border border-slate-700/50">
-              <div className="text-5xl mb-3">🎭</div>
-              <h3 className="text-xl font-bold text-white mb-2">Local Events in {selectedCity}</h3>
-              <p className="text-slate-400 text-sm">
-                Live events integration coming soon!
+          {/* Date Ideas for Events Section */}
+          <Card className="bg-gradient-to-br from-indigo-900/40 via-purple-900/30 to-pink-900/30 border border-purple-500/30">
+            <div className="p-6 text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-400 to-orange-500 mb-4 shadow-lg shadow-orange-500/30">
+                <span className="text-3xl">💡</span>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Date Ideas for Special Occasions</h3>
+              <p className="text-slate-300 text-sm mb-4">
+                Make these celebrations memorable with perfect date planning!
               </p>
-              <div className="mt-4 flex items-center justify-center gap-4 text-slate-500 text-xs">
-                <span>🎵 Concerts</span>
-                <span>•</span>
-                <span>🎪 Festivals</span>
-                <span>•</span>
-                <span>⚽ Sports</span>
+              <div className="flex flex-wrap justify-center gap-3">
+                <span className="px-3 py-2 bg-pink-500/20 rounded-full text-sm font-medium text-pink-300 border border-pink-500/30">💕 Valentine's Dinner</span>
+                <span className="px-3 py-2 bg-amber-500/20 rounded-full text-sm font-medium text-amber-300 border border-amber-500/30">🎄 Christmas Market</span>
+                <span className="px-3 py-2 bg-purple-500/20 rounded-full text-sm font-medium text-purple-300 border border-purple-500/30">🎆 New Year's Party</span>
               </div>
             </div>
-          )}
+          </Card>
+          
+          {/* Local Events Coming Soon */}
+          <Card className="bg-slate-900/50 border border-slate-700/50 overflow-hidden">
+            <div className="p-6 text-center relative">
+              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-purple-500/5 to-pink-500/5" />
+              <div className="relative">
+                <div className="text-6xl mb-4 animate-pulse">🎭</div>
+                <h3 className="text-xl font-bold text-white mb-2">Local Events Coming Soon!</h3>
+                <p className="text-slate-400 text-sm mb-4">
+                  We're working on bringing you live concerts, festivals, and events near you.
+                </p>
+                <div className="flex flex-wrap justify-center gap-3 text-slate-400 text-sm">
+                  <span className="px-3 py-1.5 bg-slate-800/50 rounded-full">🎵 Concerts</span>
+                  <span className="px-3 py-1.5 bg-slate-800/50 rounded-full">🎪 Festivals</span>
+                  <span className="px-3 py-1.5 bg-slate-800/50 rounded-full">⚽ Sports</span>
+                  <span className="px-3 py-1.5 bg-slate-800/50 rounded-full">🎨 Art Shows</span>
+                </div>
+              </div>
+            </div>
+          </Card>
         </div>
       )}
     </div>
