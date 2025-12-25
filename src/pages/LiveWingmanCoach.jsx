@@ -388,15 +388,21 @@ Return JSON only:
       });
 
       let parsedResponse;
+      
+      // Handle different response types
       if (typeof aiResponse === 'string') {
+        // Try to extract and parse JSON from string
         try {
           const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
           if (jsonMatch) {
             parsedResponse = JSON.parse(jsonMatch[0]);
+          } else {
+            throw new Error('No JSON found in response');
           }
-        } catch {
+        } catch (parseError) {
+          console.log('JSON parse error, using fallback:', parseError);
           parsedResponse = {
-            recommendation: aiResponse,
+            recommendation: "Stay confident and be yourself",
             trySaying: "You've got my attention. What are you gonna do with it?",
             bodyLanguage: "Lean in slightly, hold eye contact for 3 seconds, then glance at their lips before looking back at their eyes with a slight smile.",
             backup: "Walk with me, I want to show you something.",
@@ -404,9 +410,61 @@ Return JSON only:
             vibe: "🔥"
           };
         }
+      } else if (typeof aiResponse === 'object' && aiResponse !== null) {
+        // Already an object - check if it has the expected fields
+        if (aiResponse.trySaying || aiResponse.recommendation) {
+          parsedResponse = aiResponse;
+        } else if (aiResponse.response && typeof aiResponse.response === 'string') {
+          // Sometimes the response is wrapped in a response property
+          try {
+            const jsonMatch = aiResponse.response.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+              parsedResponse = JSON.parse(jsonMatch[0]);
+            } else {
+              parsedResponse = JSON.parse(aiResponse.response);
+            }
+          } catch {
+            parsedResponse = {
+              recommendation: aiResponse.response,
+              trySaying: "I like where this is going...",
+              bodyLanguage: "Maintain confident eye contact, slight smile",
+              backup: "Tell me more about that",
+              proTip: "Be present",
+              vibe: "✨"
+            };
+          }
+        } else {
+          // Unknown object structure, use as-is but ensure required fields
+          parsedResponse = {
+            recommendation: aiResponse.recommendation || "Stay confident and be yourself",
+            trySaying: aiResponse.trySaying || "You're interesting. I like that.",
+            bodyLanguage: aiResponse.bodyLanguage || "Lean in, maintain warm eye contact",
+            backup: aiResponse.backup || "Tell me something unexpected about you",
+            proTip: aiResponse.proTip || "Be authentic",
+            vibe: aiResponse.vibe || "💫"
+          };
+        }
       } else {
-        parsedResponse = aiResponse;
+        // Fallback for unexpected response types
+        parsedResponse = {
+          recommendation: "Stay confident and be yourself",
+          trySaying: "You've got my attention. What are you gonna do with it?",
+          bodyLanguage: "Lean in slightly, hold eye contact, smile warmly",
+          backup: "Walk with me, I want to show you something.",
+          proTip: "Confidence is everything",
+          vibe: "🔥"
+        };
       }
+      
+      // Ensure all required fields exist
+      parsedResponse = {
+        recommendation: parsedResponse.recommendation || "Stay present and confident",
+        trySaying: parsedResponse.trySaying || "I like talking to you",
+        bodyLanguage: parsedResponse.bodyLanguage || "Maintain eye contact and open body language",
+        backup: parsedResponse.backup || "Tell me more",
+        proTip: parsedResponse.proTip || "Be yourself",
+        vibe: parsedResponse.vibe || "✨"
+      };
 
       setResponse({
         ...parsedResponse,
@@ -1181,7 +1239,11 @@ Give specific advice with body language. Return JSON:
               <div className="p-5 space-y-4">
                 {/* Main recommendation */}
                 <div className="p-4 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-2xl border border-purple-500/20">
-                  <p className="text-white text-base leading-relaxed">{response.recommendation}</p>
+                  <p className="text-white text-base leading-relaxed">
+                    {typeof response.recommendation === 'string' && !response.recommendation.startsWith('{') 
+                      ? response.recommendation 
+                      : "Stay confident and make your move"}
+                  </p>
           </div>
 
                 {/* What to say */}
