@@ -1276,45 +1276,54 @@ Give specific advice with body language. Return JSON:
           </div>
         </div>
 
-        {/* More Options - Collapsible */}
+        {/* More Options - Always visible */}
         <div className="px-5 mb-6">
-                  <button
-            onClick={() => setShowMoreOptions(!showMoreOptions)}
-            className="w-full flex items-center justify-center gap-2 text-slate-400 hover:text-white py-3 transition-colors"
-                  >
-            <span className="text-sm">{showMoreOptions ? 'Less options' : 'More options'}</span>
-            {showMoreOptions ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                  </button>
-
-          {showMoreOptions && (
-            <div className="mt-3 grid grid-cols-3 gap-2">
-              {[
-                { id: 'compliment', emoji: '🥰', label: 'Compliment' },
-                { id: 'joke', emoji: '😂', label: 'Tell a joke' },
-                { id: 'story', emoji: '📖', label: 'Share story' },
-                { id: 'question', emoji: '❓', label: 'Ask them' },
-                { id: 'pullback', emoji: '↩️', label: 'Pull back' },
-                { id: 'rescue', emoji: '🆘', label: 'Save it' }
-              ].map((action) => (
-                  <button
-                  key={action.id}
-                  onClick={() => generateResponse(action.label)}
-                  disabled={isLoading}
-                  className="p-3 bg-slate-800/60 hover:bg-slate-700/60 border border-slate-700/50 rounded-xl text-center transition-all active:scale-95 disabled:opacity-50"
-                >
-                  <span className="text-2xl block mb-1">{action.emoji}</span>
-                  <span className="text-xs text-slate-300">{action.label}</span>
-                  </button>
-              ))}
-                </div>
-              )}
-            </div>
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <span className="text-lg">🎯</span>
+            <h3 className="text-base font-semibold text-white">More moves</h3>
+          </div>
+          <div className="grid grid-cols-3 gap-2">
+            {[
+              { id: 'compliment', emoji: '🥰', label: 'Compliment' },
+              { id: 'joke', emoji: '😂', label: 'Tell a joke' },
+              { id: 'story', emoji: '📖', label: 'Share story' },
+              { id: 'question', emoji: '❓', label: 'Ask them' },
+              { id: 'pullback', emoji: '↩️', label: 'Pull back' },
+              { id: 'rescue', emoji: '🆘', label: 'Save it' }
+            ].map((action) => (
+              <button
+                key={action.id}
+                onClick={() => generateResponse(action.label)}
+                disabled={isLoading}
+                className="p-3 bg-slate-800/60 hover:bg-slate-700/60 border border-slate-700/50 rounded-xl text-center transition-all active:scale-95 disabled:opacity-50"
+              >
+                <span className="text-2xl block mb-1">{action.emoji}</span>
+                <span className="text-xs text-slate-300">{action.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
 
         {/* Encouragement footer */}
-        <div className="px-5 text-center">
+        <div className="px-5 text-center mb-4">
           <p className="text-slate-500 text-sm">
             You got this! 💪 Be confident, be yourself.
           </p>
+        </div>
+        
+        {/* Consent Reminder */}
+        <div className="px-5 mb-8">
+          <div className="bg-slate-800/40 border border-slate-700/40 rounded-2xl p-4">
+            <div className="flex items-start gap-3">
+              <span className="text-2xl">💝</span>
+              <div>
+                <h4 className="text-white font-medium text-sm mb-1">Remember: Consent is everything</h4>
+                <p className="text-slate-400 text-xs leading-relaxed">
+                  All suggestions assume mutual interest and attraction. Always read body language, respect boundaries, and ensure enthusiastic consent before physical escalation. If they seem uncomfortable, back off gracefully. A good connection is built on mutual respect.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
