@@ -912,7 +912,7 @@ Give specific advice with body language. Return JSON:
                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${showDatingGenderPicker ? 'rotate-180' : ''}`} />
               </button>
               
-              {showDatingGenderPicker && (
+                  {showDatingGenderPicker && (
                 <div className="absolute top-full left-0 right-0 mt-2 bg-slate-800 border border-slate-600 rounded-2xl overflow-hidden z-50 shadow-xl shadow-black/50">
                   {genderOptions.map((g) => (
                     <button
@@ -932,14 +932,6 @@ Give specific advice with body language. Return JSON:
                   ))}
                 </div>
               )}
-            </div>
-          </div>
-          
-          {/* Orientation badge */}
-          <div className="flex justify-center mb-4">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-full">
-              <span className="text-lg">{getOrientation().emoji}</span>
-              <span className="text-sm text-purple-300 font-medium">{getOrientation().label}</span>
             </div>
           </div>
 
@@ -1075,13 +1067,9 @@ Give specific advice with body language. Return JSON:
                 </p>
               </div>
             </div>
-            <div className="flex flex-col items-center gap-1">
-              <div className="flex items-center gap-1">
-                <span className="text-lg">{genderOptions.find(g => g.id === myGender)?.emoji}</span>
-                <span className="text-slate-500">→</span>
-                <span className="text-lg">{genderOptions.find(g => g.id === datingGender)?.emoji}</span>
-              </div>
-              <span className="text-[10px] text-slate-500">{styleOptions.find(s => s.id === selectedStyle)?.label}</span>
+            <div className="flex flex-col items-end gap-1">
+              <span className="text-xl">{getOrientation().emoji}</span>
+              <span className="text-[10px] text-slate-400">{styleOptions.find(s => s.id === selectedStyle)?.label}</span>
             </div>
           </div>
         </div>
