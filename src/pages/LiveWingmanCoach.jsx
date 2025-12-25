@@ -410,101 +410,7 @@ export default function LiveWingmanCoach() {
     ];
   };
 
-  // Context-aware fallback generator - creates appropriate responses based on actual context
-  const getContextAwareFallback = (actionType, situation, stage, venue) => {
-    const venueName = venue?.label || 'the date';
-    
-    // Situation-specific fallbacks (these take priority)
-    const situationFallbacks = {
-      "I'm nervous": [
-        { recommendation: "It's okay to be nervous - they probably are too! Take a breath and focus on being curious about them.", trySaying: "I'll be honest, I was a little nervous about tonight... but you're making it easy", bodyLanguage: "Take a slow breath. Rest your hands on the table visibly (shows openness). Smile warmly when you make eye contact.", backup: "What made you say yes to meeting up tonight?", proTip: "Honesty is charming", vibe: "💜" },
-        { recommendation: "Channel your nerves into genuine interest in them. Ask a simple question.", trySaying: "So tell me... what's the most interesting thing you did this week?", bodyLanguage: "Uncross your arms if they're crossed. Lean forward slightly. Nod when they speak.", backup: "I'm curious - what do you do when you're not [whatever they do]?", proTip: "Curiosity beats nerves", vibe: "✨" },
-        { recommendation: "Admit you're human. Vulnerability is attractive when done confidently.", trySaying: "Okay confession - first dates make me nervous. But you seem cool so I'm relaxing", bodyLanguage: "Let out a small laugh. Relax your shoulders. Make casual eye contact with a genuine smile.", backup: "Is it just me or do first dates feel like job interviews sometimes?", proTip: "Relatable is likeable", vibe: "😊" }
-      ],
-      "It's awkward": [
-        { recommendation: "Name the awkwardness directly - it breaks the tension immediately.", trySaying: "Okay this is the part where we pretend we're not both thinking this is a little awkward, right?", bodyLanguage: "Smile knowingly, like you're sharing an inside joke. Relax your posture and lean back slightly.", backup: "Should we skip the small talk and get to the good stuff?", proTip: "Name it to tame it", vibe: "😅" },
-        { recommendation: "Use humor to cut through the tension.", trySaying: "I feel like we're both being too polite... let's be weird instead", bodyLanguage: "Break the tension with a genuine laugh. Shift your body to face them more directly.", backup: "What's something you're not supposed to admit on a first date?", proTip: "Weird beats boring", vibe: "🎭" },
-        { recommendation: "Change the energy with an unexpected question.", trySaying: "Random question - what's your most controversial opinion?", bodyLanguage: "Lean in with genuine curiosity. Raise your eyebrows expectantly. Let your enthusiasm show.", backup: "If you could only eat one cuisine forever, what would it be?", proTip: "Pivot the energy", vibe: "🔄" }
-      ],
-      "What to talk about?": [
-        { recommendation: "Ask about experiences, not facts. Stories create connection.", trySaying: "What's something you've been excited about lately?", bodyLanguage: "Put your phone completely away. Rest your chin on your hand showing you're ready to listen.", backup: "Tell me about your favorite trip ever", proTip: "Open questions work best", vibe: "💬" },
-        { recommendation: "Share something about yourself first, then ask them.", trySaying: "I've been really into [something] lately... what about you - any new obsessions?", bodyLanguage: "Use your hands when you talk about your interest - it shows passion. Then pause and give them space.", backup: "What's something you wish more people asked you about?", proTip: "Give to receive", vibe: "🤝" },
-        { recommendation: "Talk about what's around you - observations lead to conversations.", trySaying: "I like this place. How did you find out about it?", bodyLanguage: "Gesture around you casually. Then bring your attention back to them with interested eye contact.", backup: "What's your go-to spot for drinks/food around here?", proTip: "Environment = content", vibe: "📍" }
-      ],
-      "How to impress?": [
-        { recommendation: "Don't try to impress - be genuinely interested in them instead.", trySaying: "I want to know more about [something they mentioned]. What got you into that?", bodyLanguage: "Lean in slightly when they talk. Nod thoughtfully. Let your genuine interest show in your eyes.", backup: "That's actually really cool. Tell me more about that", proTip: "Interest > impressive", vibe: "🎯" },
-        { recommendation: "The best way to impress is to be a great listener.", trySaying: "Wait, go back to that thing you said about... I want to hear more", bodyLanguage: "Give them your full attention. Mirror their energy. Remember details to reference later.", backup: "I like how passionate you get when you talk about that", proTip: "Listening is magic", vibe: "✨" },
-        { recommendation: "Be confident without bragging. Share naturally, don't perform.", trySaying: "Oh that reminds me of something that happened to me...", bodyLanguage: "Speak with calm energy, not rushed. Make relaxed eye contact. Smile genuinely.", backup: "I actually have a funny story about that", proTip: "Confidence is calm", vibe: "😎" }
-      ],
-      "Feeling the vibe": [
-        { recommendation: "Great! The vibe is there - enjoy it and let it flow naturally.", trySaying: "I'm really enjoying this... you're easy to talk to", bodyLanguage: "Relax even more. Let comfortable silences happen. Smile genuinely.", backup: "We should do this again sometime", proTip: "Don't overthink it", vibe: "💫" },
-        { recommendation: "When the vibe is good, subtle touch escalation feels natural.", trySaying: "You have a really nice energy, you know that?", bodyLanguage: "Light touch on their arm when making a point. Lean in slightly closer than before.", backup: "This is nice. Better than I expected honestly", proTip: "Ride the wave", vibe: "🌊" }
-      ],
-      "Want to connect more": [
-        { recommendation: "Go deeper by asking about their dreams, values, or meaningful experiences.", trySaying: "What's something you're really proud of that most people don't know about?", bodyLanguage: "Lower your voice slightly. Lean in. Create an intimate bubble with your attention.", backup: "What's something you've always wanted to do but haven't yet?", proTip: "Depth creates bond", vibe: "🔮" }
-      ],
-      "It's getting boring": [
-        { recommendation: "Change the energy completely - suggest something spontaneous.", trySaying: "Okay new rule - let's only talk about things that actually excite us", bodyLanguage: "Sit up straighter. Increase your energy. Use bigger hand gestures.", backup: "Want to go on a mini adventure? I saw something cool nearby", proTip: "Energy is contagious", vibe: "⚡" }
-      ]
-    };
-
-    // Action-specific fallbacks for different stages
-    const actionFallbacks = {
-      "Break ice": [
-        { recommendation: "Start simple and genuine - overthinking kills conversations.", trySaying: "So... what's the best thing that happened to you this week?", bodyLanguage: "Warm smile, open posture, lean in slightly to show interest.", backup: "Tell me something that would surprise me about you", proTip: "Simple questions work", vibe: "🌟" },
-        { recommendation: "Find common ground by observing your surroundings.", trySaying: `I love the vibe here at ${venueName}. Do you come here often?`, bodyLanguage: "Gesture around you, then bring attention back to them with curious eye contact.", backup: "How did you hear about this place?", proTip: "Surroundings = topics", vibe: "📍" },
-        { recommendation: "Be genuine about wanting to know them.", trySaying: "I'm curious about you... what do you like to do when you're not working?", bodyLanguage: "Rest your chin on your hand, showing you're ready to listen. Make gentle eye contact.", backup: "What's something you're passionate about?", proTip: "Curiosity is key", vibe: "💭" }
-      ],
-      "Compliment": [
-        { recommendation: "Notice something specific rather than generic beauty compliments.", trySaying: "I really like your vibe - you seem really genuine", bodyLanguage: "Warm eye contact as you say it. Slight pause after for impact. Gentle smile.", backup: "You have a great laugh - it's infectious", proTip: "Specific beats generic", vibe: "💜" },
-        { recommendation: "Compliment their personality or energy, not just looks.", trySaying: "You're really easy to talk to. I wasn't sure what to expect but this is nice", bodyLanguage: "Let your guard down. Speak a bit softer. Sincere eye contact.", backup: "I love how you get excited when you talk about that", proTip: "Energy > appearance", vibe: "✨" }
-      ]
-    };
-
-    // Check for situation-specific fallback first
-    if (situation && situationFallbacks[situation]) {
-      const options = situationFallbacks[situation];
-      return options[Math.floor(Math.random() * options.length)];
-    }
-
-    // Check for action-specific fallback
-    if (actionType && actionFallbacks[actionType]) {
-      const options = actionFallbacks[actionType];
-      return options[Math.floor(Math.random() * options.length)];
-    }
-
-    // Stage-aware generic fallback
-    const stageFallbacks = {
-      'Just started': [
-        { recommendation: "Focus on making them comfortable and finding common ground.", trySaying: "I'm glad we're doing this. Tell me something about your week", bodyLanguage: "Warm smile, open body language, lean in when they speak.", backup: "What's been on your mind lately?", proTip: "Comfort first", vibe: "😊" },
-        { recommendation: "Start with genuine interest - ask about them.", trySaying: "So what made you swipe right? I'm curious", bodyLanguage: "Playful smile, curious head tilt, relaxed posture.", backup: "What do you usually do on weeknights?", proTip: "Be curious", vibe: "🤔" }
-      ],
-      'Vibing': [
-        { recommendation: "The energy is good - start showing more interest through touch and closeness.", trySaying: "I'm really enjoying this conversation", bodyLanguage: "Light touch on their arm when making a point. Lean in a bit closer.", backup: "We should definitely do this again", proTip: "Show don't tell", vibe: "💫" }
-      ],
-      'Heating up': [
-        { recommendation: "Time to be bolder - match the energy.", trySaying: "You're making it hard to concentrate on what you're saying", bodyLanguage: "Sustained eye contact, lower voice, closer proximity.", backup: "There's something about you I can't figure out", proTip: "Be bold now", vibe: "🔥" }
-      ],
-      'Wrapping up': [
-        { recommendation: "Create anticipation for next time or make your move.", trySaying: "I don't want this to end, but when can I see you again?", bodyLanguage: "Full attention, warm eye contact, take their hand.", backup: "This was really nice. I want to do this again", proTip: "Seal the deal", vibe: "🌙" }
-      ]
-    };
-
-    if (stage && stageFallbacks[stage]) {
-      const options = stageFallbacks[stage];
-      return options[Math.floor(Math.random() * options.length)];
-    }
-
-    // Ultimate fallback - general dating advice
-    return {
-      recommendation: "Be present and genuinely curious about them. Authenticity wins.",
-      trySaying: "I'm really enjoying getting to know you",
-      bodyLanguage: "Put your phone away, make warm eye contact, lean in slightly to show interest.",
-      backup: "Tell me more about that - I want to understand",
-      proTip: "Be present",
-      vibe: "💫"
-    };
-  };
+  // NO FALLBACKS - 100% REAL-TIME AI ONLY
 
   // Generate AI response
   const generateResponse = async (actionType, context = '') => {
@@ -573,79 +479,92 @@ Return JSON only:
   "vibe": "emoji"
 }`;
 
+    // Check if online first
+    if (!navigator.onLine) {
+      setResponse({
+        recommendation: "You're offline! Connect to the internet for real-time AI suggestions.",
+        trySaying: "Tap 'Try another suggestion' once you're back online",
+        bodyLanguage: "Stay present, be yourself, trust your instincts",
+        backup: "You've got this - just be genuine!",
+        proTip: "Go offline",
+        vibe: "📴",
+        actionType,
+        isAI: false,
+        isOffline: true
+      });
+      setIsLoading(false);
+      return;
+    }
+
     try {
+      console.log('🤖 Calling LIVE AI...');
       const aiResponse = await base44.integrations.Core.InvokeLLM({
         prompt,
         system_prompt: WINGMAN_SYSTEM_PROMPT,
         response_type: 'json'
       });
 
+      console.log('✅ AI Response received:', typeof aiResponse);
+
       let parsedResponse;
       
-      // Handle different response types
+      // Handle different response types - ALL from real AI
       if (typeof aiResponse === 'string') {
         // Try to extract and parse JSON from string
-        try {
-          const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
-          if (jsonMatch) {
-            parsedResponse = JSON.parse(jsonMatch[0]);
-          } else {
-            throw new Error('No JSON found in response');
-          }
-        } catch (parseError) {
-          console.log('JSON parse error, using context-aware fallback:', parseError);
-          // Create CONTEXT-AWARE fallbacks based on situation, stage, and action
-          parsedResponse = getContextAwareFallback(actionType, situationContext, stageContext, venueContext);
+        const jsonMatch = aiResponse.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          parsedResponse = JSON.parse(jsonMatch[0]);
+        } else {
+          // AI returned text without JSON - wrap it
+          parsedResponse = {
+            recommendation: aiResponse.substring(0, 200),
+            trySaying: "Let me think of something smooth...",
+            bodyLanguage: "Stay relaxed and present",
+            backup: "Be yourself",
+            proTip: "Retry for better",
+            vibe: "🔄"
+          };
         }
       } else if (typeof aiResponse === 'object' && aiResponse !== null) {
-        // Already an object - check if it has the expected fields
+        // Already an object - use it directly
         if (aiResponse.trySaying || aiResponse.recommendation) {
           parsedResponse = aiResponse;
         } else if (aiResponse.response && typeof aiResponse.response === 'string') {
-          // Sometimes the response is wrapped in a response property
-          try {
-            const jsonMatch = aiResponse.response.match(/\{[\s\S]*\}/);
-            if (jsonMatch) {
-              parsedResponse = JSON.parse(jsonMatch[0]);
-            } else {
-              parsedResponse = JSON.parse(aiResponse.response);
-            }
-          } catch {
+          // Response wrapped in response property
+          const jsonMatch = aiResponse.response.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            parsedResponse = JSON.parse(jsonMatch[0]);
+          } else {
             parsedResponse = {
               recommendation: aiResponse.response,
-              trySaying: "I like where this is going...",
-              bodyLanguage: "Maintain confident eye contact, slight smile",
-              backup: "Tell me more about that",
-              proTip: "Be present",
-              vibe: "✨"
+              trySaying: "Tap retry for a smoother line",
+              bodyLanguage: "Stay confident",
+              backup: "Be genuine",
+              proTip: "Retry",
+              vibe: "🔄"
             };
           }
         } else {
-          // Unknown object structure, use as-is but ensure required fields
+          // Use whatever fields exist
           parsedResponse = {
-            recommendation: aiResponse.recommendation || "Stay confident and be yourself",
-            trySaying: aiResponse.trySaying || "You're interesting. I like that.",
-            bodyLanguage: aiResponse.bodyLanguage || "Lean in, maintain warm eye contact",
-            backup: aiResponse.backup || "Tell me something unexpected about you",
-            proTip: aiResponse.proTip || "Be authentic",
-            vibe: aiResponse.vibe || "💫"
+            recommendation: aiResponse.recommendation || "Tap retry for fresh advice",
+            trySaying: aiResponse.trySaying || "Tap retry for a smooth line",
+            bodyLanguage: aiResponse.bodyLanguage || "Stay present",
+            backup: aiResponse.backup || "Be yourself",
+            proTip: aiResponse.proTip || "Retry",
+            vibe: aiResponse.vibe || "🔄"
           };
         }
       } else {
-        // Fallback for unexpected response types - use context-aware fallback
-        console.log('Unexpected response type, using context-aware fallback');
-        parsedResponse = getContextAwareFallback(actionType, situationContext, stageContext, venueContext);
+        throw new Error('Invalid AI response format');
       }
       
-      // Ensure all required fields exist
-      parsedResponse = {
-        recommendation: parsedResponse.recommendation || "Stay present and confident",
-        trySaying: parsedResponse.trySaying || "I like talking to you",
-        bodyLanguage: parsedResponse.bodyLanguage || "Maintain eye contact and open body language",
-        backup: parsedResponse.backup || "Tell me more",
-        proTip: parsedResponse.proTip || "Be yourself",
-        vibe: parsedResponse.vibe || "✨"
-      };
+      // Validate we got real content
+      if (!parsedResponse.trySaying || parsedResponse.trySaying.length < 5) {
+        throw new Error('AI response missing content');
+      }
+
+      console.log('✅ Parsed AI response:', parsedResponse.trySaying?.substring(0, 50));
 
       setResponse({
         ...parsedResponse,
@@ -654,289 +573,54 @@ Return JSON only:
       });
 
     } catch (error) {
-      console.error('AI Error:', error);
+      console.error('❌ AI Error:', error);
       
-      // Check if user is online
-      const isOnline = navigator.onLine;
-      
-      if (isOnline) {
-        // If online, retry with a simpler AI call
-        try {
-          const simplePrompt = `Quick dating advice for someone on a date. They want to: ${actionType}. 
-          
-Give specific advice with body language. Return JSON:
-{
-  "recommendation": "What to do (include a physical action)",
-  "trySaying": "Smooth line to say",
-  "bodyLanguage": "Specific body language technique",
-  "backup": "Alternative approach",
-  "proTip": "3-5 word wisdom",
-  "vibe": "emoji"
-}`;
-          
-          const retryResponse = await base44.integrations.Core.InvokeLLM({
-            prompt: simplePrompt,
-            response_type: 'json'
-          });
-          
-          const parsed = typeof retryResponse === 'string' ? JSON.parse(retryResponse.match(/\{[\s\S]*\}/)?.[0] || '{}') : retryResponse;
-          
-          if (parsed.trySaying) {
-            setResponse({ ...parsed, actionType, isAI: true });
-            setIsLoading(false);
-            return;
-          }
-        } catch (retryError) {
-          console.error('Retry also failed:', retryError);
-          // Show error to user instead of fallback
-          setResponse({
-            recommendation: "Having trouble connecting to AI. Please check your connection and try again.",
-            trySaying: "Tap 'Try another suggestion' to retry",
-            bodyLanguage: "Take a deep breath, stay present in the moment",
-            backup: "Trust your instincts - you've got this!",
-            proTip: "Connection issue",
-            vibe: "🔄",
-            actionType,
-            isAI: false,
-            isError: true
-          });
+      // ALWAYS retry once before showing error
+      try {
+        console.log('🔄 Retrying AI call...');
+        const retryPrompt = `Quick dating advice. Context: ${stageContext}, ${situationContext || actionType}, at ${venueContext?.label || 'a date'}. 
+
+Return JSON ONLY:
+{"recommendation":"advice","trySaying":"smooth line","bodyLanguage":"body tip","backup":"alt line","proTip":"3 words","vibe":"emoji"}`;
+        
+        const retryResponse = await base44.integrations.Core.InvokeLLM({
+          prompt: retryPrompt,
+          system_prompt: "You are a dating coach. Return ONLY valid JSON. No explanations.",
+          response_type: 'json'
+        });
+        
+        let parsed;
+        if (typeof retryResponse === 'string') {
+          const match = retryResponse.match(/\{[\s\S]*\}/);
+          if (match) parsed = JSON.parse(match[0]);
+        } else {
+          parsed = retryResponse;
+        }
+        
+        if (parsed && parsed.trySaying && parsed.trySaying.length > 5) {
+          console.log('✅ Retry succeeded!');
+          setResponse({ ...parsed, actionType, isAI: true });
           setIsLoading(false);
           return;
         }
-      }
-      
-      // ONLY use fallbacks if user is OFFLINE
-      if (!isOnline) {
-        console.log('User is offline - using fallback responses');
-        const fallbackOptions = {
-        // Starting stage actions
-        "Break ice": [
-          { recommendation: "Ask them something unexpected - 'What's the most spontaneous thing you've ever done?'", trySaying: "Okay real talk - what's your hot take on pineapple on pizza?", bodyLanguage: "Lean in slightly, maintain warm eye contact, smile genuinely when they answer. Nod slowly to show you're listening.", backup: "If you could be anywhere right now, where would it be?", proTip: "Weird questions > boring questions" },
-          { recommendation: "Find common ground with an observation about your surroundings.", trySaying: "I have a theory about this place... want to hear it?", bodyLanguage: "Gesture subtly toward what you're observing, then turn your full body toward them. Open posture, relaxed shoulders.", backup: "Quick question - are you always this interesting or is it just tonight?", proTip: "Observations create conversations" },
-          { recommendation: "Ask about their day in an unexpected way.", trySaying: "What's the best thing that happened to you today?", bodyLanguage: "Tilt your head slightly showing curiosity, rest your chin on your hand, maintain soft eye contact while they speak.", backup: "Tell me something that made you smile this week", proTip: "Positivity is attractive" }
-        ],
-        "Compliment": [
-          { recommendation: "Notice something specific about them, not just their looks.", trySaying: "I like the way you laugh - it's contagious", bodyLanguage: "Look at their eyes warmly, let a genuine smile spread slowly across your face. Brief touch on their arm as you say it.", backup: "There's something about your energy that's really refreshing", proTip: "Specific beats generic" },
-          { recommendation: "Compliment their vibe or energy, not just appearance.", trySaying: "You've got this energy... I can't quite put my finger on it but I like it", bodyLanguage: "Pause, look them up and down slowly (not creepy), then meet their eyes with a slight head tilt and mysterious smile.", backup: "The way you tell stories is actually captivating", proTip: "Unique compliments stick" },
-          { recommendation: "Notice something they've chosen - style, accessories, expressions.", trySaying: "That [item] is a vibe - it suits you", bodyLanguage: "Gesture toward what you're complimenting, then bring your gaze back to their eyes. Lean in like you're sharing a secret.", backup: "I love how expressive your face is when you talk", proTip: "Choices > genetics" }
-        ],
-        "Be funny": [
-          { recommendation: "Self-deprecating humor works. Don't try too hard.", trySaying: "I practiced my jokes in the mirror for this... and they still aren't funny", bodyLanguage: "Exaggerated disappointed face, then break into a real laugh. Relaxed shoulders, animated hand gestures.", backup: "I'm usually way cooler than this, I promise", proTip: "Laugh at yourself first" },
-          { recommendation: "Make a playful observation about the situation.", trySaying: "I feel like we're both trying to be cool and it's adorable", bodyLanguage: "Gesture between the two of you with a knowing look, raise your eyebrows playfully, then lean back with a satisfied grin.", backup: "Should we pretend to be more sophisticated or just embrace the chaos?", proTip: "Self-aware is charming" },
-          { recommendation: "Use absurd hypotheticals to be memorable.", trySaying: "Important question: in a fight between a taco and a burrito, who wins?", bodyLanguage: "Serious face like it's a real debate, count options on your fingers, then break character with a laugh when they respond.", backup: "If you had to describe yourself as a condiment, what would you be?", proTip: "Random is memorable" }
-        ],
-        // Vibing stage actions
-        "Flirt more": [
-          { recommendation: "Push-pull energy. Give a compliment, then playfully take it back.", trySaying: "You're actually kinda cute when you're not being annoying", bodyLanguage: "Lean in slightly with a playful smirk, hold eye contact for 2 seconds, then look away like you're considering something.", backup: "I can't tell if I like you or if you're just really good at this", proTip: "Tease, don't please" },
-          { recommendation: "Create playful tension with a challenge.", trySaying: "You're trouble... I can tell", bodyLanguage: "Triangle gaze: look at one eye, then the other, then briefly at their lips. Slight head tilt with a knowing smile.", backup: "Keep looking at me like that and we're gonna have a problem", proTip: "Tension creates attraction" },
-          { recommendation: "Use subtle physical escalation with words.", trySaying: "You're making it really hard to concentrate right now", bodyLanguage: "Touch their arm lightly while saying this, maintain eye contact, speak slightly slower than normal.", backup: "I should probably be listening but you're very distracting", proTip: "Implication is powerful" }
-        ],
-        "Tease them": [
-          { recommendation: "Find something small to playfully mock. Keep it light.", trySaying: "Oh no, you're one of THOSE people aren't you?", bodyLanguage: "Raise one eyebrow, lean back slightly with arms crossed, smirk like you're judging them playfully.", backup: "I'm starting to regret giving you my attention", proTip: "Confidence is attractive" },
-          { recommendation: "Mock their choices in a playful way.", trySaying: "That's your favorite? We might have to end this right now...", bodyLanguage: "Dramatic fake shock face, then break into a genuine smile. Light push on their shoulder.", backup: "I was into you until you said that... now I'm MORE into you", proTip: "Playful conflict creates chemistry" },
-          { recommendation: "Act disappointed in an obviously joking way.", trySaying: "And here I thought you were perfect. Guess I was wrong.", bodyLanguage: "Shake your head slowly with a suppressed smile, maintain eye contact, then look away with an exaggerated sigh.", backup: "I'm disappointed in you. Also I'm lying. But also am I?", proTip: "Mixed signals = intrigue" }
-        ],
-        "Get personal": [
-          { recommendation: "Ask about dreams, fears, or childhood memories.", trySaying: "What's something you've never told anyone on a first date?", bodyLanguage: "Lower your voice slightly, lean in closer, hold steady eye contact. Create intimacy with proximity.", backup: "When was the last time you felt truly alive?", proTip: "Vulnerability creates connection" },
-          { recommendation: "Share something personal first to invite openness.", trySaying: "Can I tell you something I don't usually share?", bodyLanguage: "Pause before speaking, look down briefly then back up to their eyes. Speak softer than normal.", backup: "What's the bravest thing you've ever done?", proTip: "Go first to inspire" },
-          { recommendation: "Ask about their passions, not their job.", trySaying: "What's something you could talk about for hours?", bodyLanguage: "Rest your hand near theirs on the table. Lean your head on your hand showing genuine interest.", backup: "If money didn't matter, what would you do every day?", proTip: "Dreams > details" }
-        ],
-        // Heating up stage actions
-        "Be bolder": [
-          { recommendation: "Slow down your speech. Hold eye contact longer. Move closer.", trySaying: "You need to stop looking at me like that...", bodyLanguage: "Lock eyes, pause for 3 full seconds, let your gaze drop to their lips for a moment, then back to their eyes with a slight smile.", backup: "I'm trying to focus but you're making it really hard", proTip: "Tension > words" },
-          { recommendation: "Use silence and proximity to create tension.", trySaying: "Come closer... I can't hear you", bodyLanguage: "Lean in slowly, position your face 6-8 inches from theirs, speak softly, let the moment hang.", backup: "*move closer* That's better", proTip: "Actions speak louder" },
-          { recommendation: "Lower your voice, lean in, slow down.", trySaying: "I've been thinking about something...", bodyLanguage: "Place your hand on their lower back, lean in close to their ear, speak just above a whisper, pause before the key words.", backup: "Can I tell you a secret?", proTip: "Whispers are intimate" }
-        ],
-        "Touch more": [
-          { recommendation: "Start with arm or shoulder. Read their reaction before escalating.", trySaying: "Come closer, I want to tell you something", bodyLanguage: "Light touch on their forearm as you speak, let it linger 2-3 seconds. If they lean in, move to hand or lower back.", backup: "Give me your hand for a second", proTip: "Touch speaks louder" },
-          { recommendation: "Find natural excuses for contact - cold hands, something on their face.", trySaying: "Wait, hold still... *touches face gently*", bodyLanguage: "Reach toward their face slowly, brush hair away or touch their cheek briefly. Maintain soft eye contact throughout.", backup: "Let me see your hands... as I thought, interesting", proTip: "Natural touch is best" },
-          { recommendation: "Touch while making a point for emphasis.", trySaying: "No but seriously *touches arm* listen to this", bodyLanguage: "Grip their arm lightly as you make your point, don't let go immediately. Use touch to emphasize key words.", backup: "Come here *pulls slightly closer*", proTip: "Purposeful > random" }
-        ],
-        "Build tension": [
-          { recommendation: "Pause mid-sentence. Look at their lips. Don't break eye contact first.", trySaying: "...", bodyLanguage: "Stop talking. Triangle gaze: eyes → lips → eyes. Lean in 10%. Let the silence build for 3-4 seconds.", backup: "*just hold eye contact and smile slightly*", proTip: "Silence is powerful" },
-          { recommendation: "Say less. Let the moment breathe.", trySaying: "*pause, look at their lips, look back at eyes*", bodyLanguage: "Lower your voice to near-whisper. Slow your movements. Let your gaze linger on their lips before returning to eyes.", backup: "What?... *slight smile, hold eye contact*", proTip: "Less is more" },
-          { recommendation: "Create a moment of charged silence.", trySaying: "You have really nice... *pause* ...energy", bodyLanguage: "Lean in as if to say something, pause 6 inches from their face, let the moment hang, then lean back with a knowing smile.", backup: "*lean in like you're going to say something, then don't*", proTip: "Almost-moments are magic" }
-        ],
-        // Ending stage actions  
-        "Go for kiss": [
-          { recommendation: "90/10 rule. Lean in 90%, let them close the gap.", trySaying: "I really want to kiss you right now", bodyLanguage: "Hold eye contact, glance at their lips, lean in slowly 90% of the way. Pause. Let them come the last 10%.", backup: "*lean in slowly, pause, let the moment build*", proTip: "Hesitation kills the moment" },
-          { recommendation: "Make your intention known with confidence.", trySaying: "I'm thinking about kissing you", bodyLanguage: "Triangle gaze intensifies. Move closer. One hand on their waist or face. Speak slowly, lower voice.", backup: "Come here", proTip: "Confidence is key" },
-          { recommendation: "Use words to build anticipation.", trySaying: "I've been thinking about this all night...", bodyLanguage: "Cup their face with one hand. Thumb gently on cheek. Eyes locked. Lean in slowly.", backup: "*look at lips, look at eyes, slight smile*", proTip: "Build-up matters" },
-          { recommendation: "Create the moment with tension and eye contact.", trySaying: "Stop talking for a second...", bodyLanguage: "Place finger gently on their lips, then remove. Hold intense eye contact. Lean in.", backup: "*gentle touch on face, pause, lean in*", proTip: "Silence before the kiss" },
-          { recommendation: "Be direct and bold. They'll respect it.", trySaying: "I'm going to kiss you now", bodyLanguage: "Cup their face with both hands. Pull them toward you gently. Kiss with intention, not hesitation.", backup: "*cup their face gently, lean in*", proTip: "Bold moves get bold results" },
-          { recommendation: "Use humor to ease the tension, then go for it.", trySaying: "I've been trying not to kiss you all night... I'm failing", bodyLanguage: "Smile genuinely, shake your head slightly, then lean in confidently. Hand on their lower back.", backup: "Fair warning, I'm about to make a move", proTip: "Humor + action = perfect" }
-        ],
-        "Get number": [
-          { recommendation: "Don't ask - tell. Hand them your phone.", trySaying: "Put your number in. I'm taking you somewhere better next time.", backup: "Save yourself as whatever you want me to remember you by", proTip: "Statement > question" },
-          { recommendation: "Make it feel like a natural continuation.", trySaying: "I need to see you again - what's your number?", backup: "This isn't ending here. Give me your number.", proTip: "Certainty wins" },
-          { recommendation: "Create urgency or playful demand.", trySaying: "Quick, give me your number before you realize I'm not this cool", backup: "I'm texting you tomorrow. Number. Now.", proTip: "Playful commands work" }
-        ],
-        "Lock date 2": [
-          { recommendation: "Be specific about plans. Vague = forgettable.", trySaying: "I know a spot you'd love. We're going Thursday.", backup: "Clear your schedule Saturday. You'll thank me later.", proTip: "Certainty is magnetic" },
-          { recommendation: "Suggest an activity you discussed during the date.", trySaying: "That thing you mentioned? We're doing it. Next week.", backup: "I already know where I'm taking you next. You'll love it.", proTip: "Callback shows you listened" },
-          { recommendation: "Make them excited for what's coming.", trySaying: "Next time, I have something planned you won't forget", backup: "You free next weekend? Good. Keep it that way.", proTip: "Mystery creates anticipation" }
-        ],
-        // New ending stage options
-        "Play smooth": [
-          { recommendation: "Be cool, calm, collected. Don't seem too eager. Let them wonder about you.", trySaying: "I had a great time... we should do this again sometime", backup: "Tonight was fun. I'll text you.", proTip: "Cool confidence is magnetic" },
-          { recommendation: "Leave with mystery. Don't give them everything tonight.", trySaying: "I'd stay longer but I've got an early morning... next time", backup: "This was nice. To be continued.", proTip: "Scarcity creates value" },
-          { recommendation: "End on a high note without overdoing it.", trySaying: "I really enjoyed this. Let's definitely do it again soon", backup: "You're easy to talk to. That's rare.", proTip: "Genuine beats eager" },
-          { recommendation: "Keep them guessing about how much you like them.", trySaying: "You're alright I guess... *smile* I'm kidding, tonight was great", backup: "Not bad for a first date. Let's see if you can top it next time.", proTip: "Playful uncertainty" },
-          { recommendation: "Show interest but don't be clingy about it.", trySaying: "I'm gonna head out, but text me when you get home safe", backup: "This was fun. Don't be a stranger.", proTip: "Care without pressure" },
-          { recommendation: "Leave them with a lingering thought.", trySaying: "You're definitely someone I want to know better", backup: "There's more to you than I expected. I like it.", proTip: "Intrigue creates desire" }
-        ],
-        "Make them miss you": [
-          { recommendation: "End slightly before they expect. Leave them wanting more.", trySaying: "I should probably go... but I don't want to", bodyLanguage: "Hold their gaze, let out a small sigh, touch their hand briefly before pulling away slowly.", backup: "I have to leave but I really don't want this to end", proTip: "Always leave them wanting more" },
-          { recommendation: "Create anticipation for next time.", trySaying: "Next time we're finishing what we started...", bodyLanguage: "Lean close to their ear, speak softly, then pull back with a knowing smile. Light touch on their arm.", backup: "To be continued. I promise it'll be worth the wait.", proTip: "Anticipation > instant gratification" },
-          { recommendation: "Give them something to think about after you leave.", trySaying: "I'll be thinking about tonight... you should too", bodyLanguage: "Intense eye contact, slight smile, touch their face briefly, then step back maintaining eye contact.", backup: "Don't forget me too quickly", proTip: "Plant the seed" },
-          { recommendation: "Make your exit memorable.", trySaying: "This was just the preview. The main show is next time.", bodyLanguage: "Wink or smirk as you say it. Turn to leave, then glance back one more time with a smile.", backup: "I'm leaving on purpose so you miss me", proTip: "Memorable exits matter" },
-          { recommendation: "Show you're interested but still leaving.", trySaying: "I don't want to go but if I stay I might not leave", bodyLanguage: "Hand on their waist, pull them slightly closer, look at their lips, then step back with restraint.", backup: "You're making this really hard to leave...", proTip: "Desire + restraint = tension" },
-          { recommendation: "Create future anticipation with a tease.", trySaying: "I have plans for us next time... you'll see", bodyLanguage: "Mysterious smile, raised eyebrow. Squeeze their hand once firmly before letting go.", backup: "You have no idea what I have planned for date two", proTip: "Mystery builds excitement" }
-        ],
-        "Invite over": [
-          { recommendation: "Make it natural, not pushy. Have a genuine reason.", trySaying: "I have that thing I told you about at my place... want to see it?", bodyLanguage: "Casual posture, genuine smile, maintain comfortable eye contact. Don't lean in too eagerly.", backup: "My place isn't far. I make great coffee.", proTip: "Genuine invites work" },
-          { recommendation: "Be direct but give them an easy out.", trySaying: "Want to come over? No pressure, but I'd love that", bodyLanguage: "Relaxed shoulders, warm smile, hold their hand lightly while asking. No pressure in your body language.", backup: "The night doesn't have to end here...", proTip: "Confidence with no pressure" },
-          { recommendation: "Use something from earlier in the conversation.", trySaying: "Remember that song I mentioned? I'll play it for you at mine", bodyLanguage: "Playful expression, light touch on their arm, act like it just occurred to you naturally.", backup: "I promised to show you that thing. Tonight works.", proTip: "Callbacks create continuity" }
-        ],
-        "Perfect hug": [
-          { recommendation: "Make it a real hug - not the awkward side hug. Hold for 3 seconds.", trySaying: "Come here... *pulls in for a proper hug*", bodyLanguage: "Open your arms confidently. Full body contact, not just shoulders. Hold for 3-4 seconds. Breathe them in.", backup: "*hug slightly longer than expected, then pull back slowly*", proTip: "A good hug says everything" },
-          { recommendation: "Whisper something as you hug.", trySaying: "*during hug* I really had fun tonight", bodyLanguage: "Pull them in close. One arm around their waist, one higher on their back. Speak softly near their ear.", backup: "*hug* Text me when you're home safe", proTip: "Whispers are intimate" },
-          { recommendation: "Let the hug linger slightly, then look at them before leaving.", trySaying: "*pull back from hug slowly, maintain eye contact, smile*", bodyLanguage: "Release slowly. Keep hands on their shoulders or arms for a moment. Hold eye contact. Small genuine smile.", backup: "*hug, pause, look at them* ...okay I'll go now", proTip: "The pause after matters" }
-        ],
-        // Additional options for other stages
-        "Ask questions": [
-          { recommendation: "Ask follow-up questions. Show you're genuinely interested.", trySaying: "Wait, tell me more about that - how did that happen?", backup: "That's interesting. What made you get into that?", proTip: "Curiosity is attractive" },
-          { recommendation: "Ask questions that reveal personality, not just facts.", trySaying: "If you could do anything for a day with no consequences, what would it be?", backup: "What's something that always makes you smile?", proTip: "Interesting questions = interesting answers" }
-        ],
-        "Stay relaxed": [
-          { recommendation: "Don't try too hard. Just be present and enjoy the moment.", trySaying: "I'm having a good time just hanging out like this", backup: "This is nice. No pressure, just vibes", proTip: "Relaxed energy is contagious" },
-          { recommendation: "Let silences be comfortable, not awkward.", trySaying: "*comfortable silence, slight smile*", backup: "I like that we don't have to fill every second with words", proTip: "Comfort > performance" }
-        ],
-        "Be mysterious": [
-          { recommendation: "Don't reveal everything. Let them wonder about you.", trySaying: "I'll tell you that story... but not tonight", backup: "There's a lot you don't know about me yet", proTip: "Mystery creates intrigue" },
-          { recommendation: "Give partial answers that make them want to know more.", trySaying: "Let's just say I've had some interesting experiences...", backup: "That's a story for next time", proTip: "Curiosity keeps them hooked" }
-        ],
-        "Find common": [
-          { recommendation: "Look for shared interests, experiences, or values.", trySaying: "Wait, you too? I thought I was the only one!", backup: "No way, I love that too! What are the chances?", proTip: "Connection through similarity" },
-          { recommendation: "Build on common ground you discover.", trySaying: "Okay we need to do that together sometime", backup: "See, this is why we get along", proTip: "Common ground = bonding" }
-        ],
-        "Challenge": [
-          { recommendation: "Playfully challenge them. Creates tension and attraction.", trySaying: "I bet you can't [playful challenge]", backup: "Oh really? Prove it.", proTip: "Challenges create investment" },
-          { recommendation: "Challenge their opinions in a fun way.", trySaying: "That's a hot take... convince me", backup: "I'm not sure I believe you. Show me.", proTip: "Debate creates chemistry" }
-        ],
-        "Listen more": [
-          { recommendation: "Put away distractions. Make them feel heard.", trySaying: "Hold on, I want to hear this properly", backup: "Wait, that's actually really interesting. Keep going.", proTip: "Feeling heard = feeling valued" },
-          { recommendation: "Remember details and bring them up later.", trySaying: "Earlier you mentioned... I've been thinking about that", backup: "I noticed you said... what did you mean by that?", proTip: "Remembering = caring" }
-        ],
-        "Open up": [
-          { recommendation: "Share something personal to invite them to do the same.", trySaying: "Can I tell you something I don't usually share?", backup: "I don't know why but I feel like I can be honest with you", proTip: "Vulnerability invites vulnerability" },
-          { recommendation: "Be genuine about your feelings without being intense.", trySaying: "I'm actually really enjoying this more than I expected", backup: "Not gonna lie, you're different from what I expected. In a good way.", proTip: "Authentic beats rehearsed" }
-        ],
-        "Suggest fun": [
-          { recommendation: "Propose something spontaneous or adventurous.", trySaying: "Want to do something random? Trust me.", backup: "I have an idea. You in?", proTip: "Spontaneity is exciting" },
-          { recommendation: "Suggest continuing the date somewhere else.", trySaying: "I know a place you'd love. Let's go.", backup: "This is fun but I know something better. Come with me.", proTip: "Leading is attractive" }
-        ],
-        "Touch them": [
-          { recommendation: "Use excuses to close physical distance - show them something, whisper.", trySaying: "Come closer, I want to tell you something", backup: "*lean in* Can you hear me okay?", proTip: "Proximity creates tension" },
-          { recommendation: "Create reasons for closeness.", trySaying: "It's loud in here... *moves closer*", backup: "Here, look at this *holds phone close to them*", proTip: "Natural closeness" }
-        ],
-        "Eye contact": [
-          { recommendation: "Hold eye contact slightly longer than comfortable. Then smile.", trySaying: "*hold gaze for 3 seconds, slight smile*", backup: "*look at their eyes, then lips, back to eyes*", proTip: "Eyes speak volumes" },
-          { recommendation: "Use the triangle technique - eyes, lips, eyes.", trySaying: "Sorry I keep looking at you... you're distracting", backup: "*maintain eye contact* ...what were we talking about?", proTip: "Breaking eye contact is breaking tension" }
-        ],
-        "Slow down": [
-          { recommendation: "If things feel rushed, pace yourself. Tension builds with time.", trySaying: "We have all night... no rush", backup: "I want to take my time with you", proTip: "Patience builds anticipation" },
-          { recommendation: "Pull back slightly to build more tension.", trySaying: "Let's slow down... I want to enjoy this", backup: "There's no hurry. I'm not going anywhere.", proTip: "Slow burn > quick flash" }
-        ],
-        "Tease hard": [
-          { recommendation: "Push the teasing further while keeping it playful.", trySaying: "You're making it really hard to be nice to you", backup: "I can't tell if I want to kiss you or argue with you", proTip: "Tension through playful conflict" },
-          { recommendation: "Create push-pull dynamic.", trySaying: "You're so annoying... don't stop", backup: "I hate how much I like talking to you", proTip: "Mixed signals = attraction" }
-        ]
-      };
-      
-      // Helper to pick random option
-      const pickRandomOption = (options) => options[Math.floor(Math.random() * options.length)];
-      
-      // Situation-specific fallbacks - MULTIPLE OPTIONS
-      const situationFallbackOptions = {
-        "silence": [
-          { recommendation: "Break the silence with something random - awkward silences are only awkward if you make them awkward.", trySaying: "Okay what's something weird you believed as a kid?", backup: "I feel like we're in a staring contest and I'm losing", proTip: "Own the silence or break it boldly" },
-          { recommendation: "Use the pause as an opportunity, not a problem.", trySaying: "You know what I like about you? *pause* I'll tell you later", backup: "I'm not good at small talk. Let's skip to the interesting stuff.", proTip: "Silence isn't always bad" },
-          { recommendation: "Make an observation about the moment itself.", trySaying: "This is the part where one of us says something clever... no pressure", backup: "Should we just stare at each other or...?", proTip: "Meta-comments break tension" }
-        ],
-        "signals": [
-          { recommendation: "When in doubt, test with light touch or a bold statement. Their reaction tells you everything.", trySaying: "I can't figure you out... and I kinda like it", backup: "So are we vibing or is this just polite conversation?", proTip: "Ask directly if unsure" },
-          { recommendation: "Make a move and observe the response.", trySaying: "Come a little closer", backup: "I have a question but I need you to be honest with me", proTip: "Action reveals truth" },
-          { recommendation: "Ask them directly in a playful way.", trySaying: "Real talk - do you actually like me or are you just being nice?", backup: "Give me a sign here... I'm working with limited information", proTip: "Direct can be charming" }
-        ],
-        "move": [
-          { recommendation: "If you're thinking about it, do it. Hesitation shows more than action ever could.", trySaying: "I should probably keep my hands to myself but...", backup: "Come here", proTip: "Confidence > perfection" },
-          { recommendation: "Lead with intention, not hesitation.", trySaying: "I've been thinking about doing something...", backup: "Can I be honest with you about something?", proTip: "Boldness is attractive" },
-          { recommendation: "Close the gap with purpose.", trySaying: "Stay right there... *moves closer*", backup: "I want to try something", proTip: "Just do it" }
-        ],
-        "boring": [
-          { recommendation: "Change the energy. Suggest something spontaneous or share something unexpected about yourself.", trySaying: "This is getting too normal. Want to do something stupid?", backup: "Let's play a game - you ask me anything, I have to answer honestly", proTip: "Unpredictable = unforgettable" },
-          { recommendation: "Inject some chaos into the conversation.", trySaying: "Okay new rule - no boring answers allowed", backup: "Tell me something nobody else knows about you", proTip: "Surprise them" },
-          { recommendation: "Change the scenery or activity.", trySaying: "Let's get out of here. I have an idea.", backup: "Want to do something random? Trust me.", proTip: "Movement creates energy" }
-        ],
-        "nervous": [
-          { recommendation: "Own your nerves out loud - vulnerability is attractive when paired with humor.", trySaying: "I'm totally cool and not nervous at all... okay I lied", backup: "Fair warning: I might say something dumb because you're really pretty", proTip: "Authentic beats polished" },
-          { recommendation: "Turn anxiety into connection.", trySaying: "Is it obvious I'm nervous? Because I definitely am", backup: "Okay I'll admit it - I was nervous to meet you. You're intimidating.", proTip: "Vulnerability is strength" },
-          { recommendation: "Use humor to acknowledge the feeling.", trySaying: "My brain is doing that thing where it forgets words because you're attractive", backup: "Sorry if I'm weird, I'm actually trying really hard right now", proTip: "Honest is endearing" }
-        ],
-        "awkward": [
-          { recommendation: "Call out the awkwardness directly. Naming it destroys its power.", trySaying: "Well this is awkward... want to make it weirder?", backup: "We're both being weird right? Or is it just me?", proTip: "Lean into the awkward" },
-          { recommendation: "Turn the awkward into a shared joke.", trySaying: "I think we just had a moment. Or maybe that was just me", backup: "Should we acknowledge how weird this is or just power through?", proTip: "Shared awkwardness bonds" },
-          { recommendation: "Reset with something absurd.", trySaying: "Okay pretend I just walked in and said something really smooth", backup: "Let me try that again. *clears throat* Hey, how YOU doin?", proTip: "Absurdity breaks tension" }
-        ],
-        "topics": [
-          { recommendation: "Ask about their passions, not their job. What makes them lose track of time?", trySaying: "What's something you could talk about for hours?", backup: "Okay rapid fire - morning person or night owl?", proTip: "Passion creates connection" },
-          { recommendation: "Go for interesting hypotheticals.", trySaying: "If you could have dinner with anyone, dead or alive, who?", backup: "What's your most controversial opinion?", proTip: "Unique questions = memorable" },
-          { recommendation: "Ask about their dreams and goals.", trySaying: "If you won the lottery tomorrow, what's the first thing you'd do?", backup: "What's on your bucket list that you haven't done yet?", proTip: "Dreams reveal character" }
-        ],
-        "impress": [
-          { recommendation: "Don't try to impress - be impressed. Ask follow-up questions. Remember details.", trySaying: "Wait, tell me more about that - that's actually fascinating", backup: "I've never met anyone who [thing they mentioned]. That's cool.", proTip: "Interest > impressive" },
-          { recommendation: "Be genuinely curious about them.", trySaying: "How did you get into that? That's really interesting", backup: "I want to know more about that. Seriously.", proTip: "Curiosity is attractive" },
-          { recommendation: "Make them feel like the interesting one.", trySaying: "You're way more interesting than I expected", backup: "Stop, you're making me look boring", proTip: "Make them the star" }
-        ]
-      };
-      
-      // Default fallbacks for when nothing matches - expanded for variety
-      const defaultFallbacks = [
-        { recommendation: "The vibe is there. Stop overthinking and make your move.", trySaying: "You have my full attention... what are you gonna do with it?", bodyLanguage: "Lean in, lock eyes, let a slow smile spread. Turn your body fully toward them.", backup: "Walk with me, I want to show you something", proTip: "Action beats hesitation" },
-        { recommendation: "Be present. Put down your phone, make eye contact, listen.", trySaying: "Tell me something real about you", bodyLanguage: "Phone away. Square your shoulders toward them. Lean slightly forward. Nod as they speak.", backup: "I'm curious about something...", proTip: "Presence is attractive" },
-        { recommendation: "Lead the conversation somewhere interesting.", trySaying: "Let's play a game - truth or dare?", bodyLanguage: "Playful expression, raised eyebrow, lean back confidently like you're in charge.", backup: "I have a question but you have to answer honestly", proTip: "Take the lead" },
-        { recommendation: "Create a moment of genuine connection.", trySaying: "Can I be honest with you about something?", bodyLanguage: "Lower your voice, lean in closer, pause before speaking. Maintain soft eye contact.", backup: "There's something about you I can't figure out", proTip: "Honesty creates intimacy" },
-        { recommendation: "Show confidence by being direct about your interest.", trySaying: "I'm really glad we did this", bodyLanguage: "Warm genuine smile, hold their gaze for 3 seconds, light touch on their arm.", backup: "You're even better in person", proTip: "Direct compliments work" },
-        { recommendation: "Keep them engaged with your energy.", trySaying: "Okay your turn - tell me something interesting about yourself", bodyLanguage: "Animated expression, use hands when talking, mirror their energy level.", backup: "What's the craziest thing you've ever done?", proTip: "Energy is contagious" },
-        { recommendation: "Be playfully mysterious.", trySaying: "I'll tell you a secret but you have to keep it", bodyLanguage: "Lean in conspiratorially, lower your voice to a near-whisper, glance around playfully.", backup: "There's something I've been wanting to say all night...", proTip: "Mystery intrigues" },
-        { recommendation: "Match and mirror their energy.", trySaying: "I like your vibe. It matches mine.", bodyLanguage: "Subtly mirror their posture. If they lean in, you lean in. Match their pace.", backup: "We have the same energy. I noticed that.", proTip: "Similarity bonds" },
-        { recommendation: "Create an inside joke together.", trySaying: "Okay that's our thing now. We can never tell anyone.", bodyLanguage: "Conspiratorial smile, maybe a wink. Lean in like you're sharing a secret.", backup: "This is going to be our secret", proTip: "Shared secrets connect" },
-        { recommendation: "Show genuine appreciation.", trySaying: "I haven't laughed like this in a while", bodyLanguage: "Genuine smile that reaches your eyes. Relaxed posture. Brief touch on their hand.", backup: "You're refreshing. Most people aren't like you.", proTip: "Appreciation is attractive" }
-      ];
-      
-      // Try situation first, then action type, then default
-      let fb;
-      if (situation && situationFallbackOptions[situation]) {
-        fb = pickRandomOption(situationFallbackOptions[situation]);
-      } else if (actionType && fallbackOptions[actionType]) {
-        fb = pickRandomOption(fallbackOptions[actionType]);
-          } else {
-        fb = pickRandomOption(defaultFallbacks);
-      }
-
+        throw new Error('Retry response invalid');
+        
+      } catch (retryError) {
+        console.error('❌ Retry failed:', retryError);
+        
+        // Show clear error - NO fallbacks
         setResponse({
-          recommendation: fb.recommendation,
-          trySaying: fb.trySaying,
-          bodyLanguage: fb.bodyLanguage || "Stay calm and present. Maintain relaxed, open body language.",
-          backup: fb.backup,
-          proTip: fb.proTip,
-          vibe: "💫",
+          recommendation: "⚠️ AI couldn't connect. Tap 'Try another suggestion' to retry.",
+          trySaying: "Waiting for AI... tap retry button below",
+          bodyLanguage: "Stay relaxed and present while we reconnect",
+          backup: "Trust yourself - you've got this!",
+          proTip: "Tap retry ↓",
+          vibe: "🔄",
           actionType,
           isAI: false,
-          isOffline: true
+          isError: true
         });
-      } // end of if (!isOnline)
+      }
     } finally {
       setIsLoading(false);
     }
@@ -1394,24 +1078,19 @@ Give specific advice with body language. Return JSON:
             </div>
               </div>
                   {response.isAI ? (
-                    <div className="flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-500/40 rounded-full">
+                    <div className="flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-500/40 rounded-full animate-pulse">
                       <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                      <span className="text-xs font-medium text-emerald-300">AI Live</span>
+                      <span className="text-xs font-medium text-emerald-300">🟢 AI Live</span>
               </div>
-                  ) : response.isOffline ? (
-                    <div className="flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-slate-500/20 to-gray-500/20 border border-slate-500/40 rounded-full">
-                      <span className="text-xs">📴</span>
-                      <span className="text-xs font-medium text-slate-300">Offline Mode</span>
-                    </div>
-                  ) : response.isError ? (
+                  ) : (response.isOffline || response.isError) ? (
                     <div className="flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-red-500/20 to-orange-500/20 border border-red-500/40 rounded-full">
-                      <span className="text-xs">⚠️</span>
-                      <span className="text-xs font-medium text-red-300">Retry</span>
+                      <span className="text-xs">🔄</span>
+                      <span className="text-xs font-medium text-red-300">Tap Retry Below</span>
                     </div>
                   ) : (
-                    <div className="flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/40 rounded-full">
-                      <Zap className="w-3.5 h-3.5 text-amber-400" />
-                      <span className="text-xs font-medium text-amber-300">Quick Tip</span>
+                    <div className="flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-500/40 rounded-full">
+                      <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                      <span className="text-xs font-medium text-emerald-300">🟢 AI Live</span>
                     </div>
                   )}
             </div>
@@ -1469,14 +1148,18 @@ Give specific advice with body language. Return JSON:
         </div>
                 )}
 
-                {/* Try Another Button */}
+                {/* Try Another Button - More prominent when error */}
                 <button
                   onClick={() => generateResponse(response.actionType)}
                   disabled={isLoading}
-                  className="w-full mt-2 py-3 px-4 bg-gradient-to-r from-violet-600/80 to-purple-600/80 hover:from-violet-500 hover:to-purple-500 text-white font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50"
+                  className={`w-full mt-2 py-3 px-4 text-white font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 ${
+                    (response.isError || response.isOffline) 
+                      ? 'bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 animate-pulse'
+                      : 'bg-gradient-to-r from-violet-600/80 to-purple-600/80 hover:from-violet-500 hover:to-purple-500'
+                  }`}
                 >
                   <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
-                  {isLoading ? 'Getting new suggestion...' : 'Try another suggestion'}
+                  {isLoading ? 'Getting AI suggestion...' : (response.isError || response.isOffline) ? '🔄 Retry - Get AI Suggestion' : 'Try another suggestion'}
                 </button>
 
                 {/* Consent Disclaimer */}
