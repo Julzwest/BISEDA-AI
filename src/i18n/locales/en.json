@@ -13,7 +13,7 @@
     "steps": {
       "welcome": {
         "title": "Welcome to Biseda.ai! 👋",
-        "description": "Your personal AI Coach for dating and conversations. Let us show you how it works!",
+        "description": "Your Dating Bestie - the friend who always knows what to say! Let us show you how it works!",
         "features": [
           "Copy conversations and get advice",
           "Practice with AI Coach",
@@ -195,7 +195,7 @@
     "typing": "Typing...",
     "history": "Chat history",
     "newChat": "New chat",
-    "welcome": "Hey! I'm your AI Coach for dating and conversations! 💬\n\n📸 **Tip:** You can upload screenshots from WhatsApp, Tinder, Bumble, Instagram DMs, or any dating app - I'll analyze the conversation and help you craft the perfect reply!\n\nHow can I help you today?",
+    "welcome": "Heyyy! 👋 I'm your Dating Bestie - think of me as that friend who always knows what to say!\n\n📸 **Pro tip:** Upload screenshots from Tinder, Bumble, WhatsApp, IG DMs - I'll help you craft the perfect reply!\n\nSo what's going on? Spill the tea! ☕✨",
     "upgradeForScreenshot": "Upgrade for screenshot analysis",
     "imageAnalysisNotAvailable": "📸 Image analysis is not available on your current plan. Upgrade to unlock this feature!",
     "screenshotLimitReached": "📸 You've used your screenshot analyses! Upgrade for more analyses. ☕💕",

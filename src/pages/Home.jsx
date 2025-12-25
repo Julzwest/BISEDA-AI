@@ -111,8 +111,8 @@ export default function Home() {
   const features = [
     {
       icon: Bot,
-      title: 'Biseda AI',
-      description: 'Your dating bestie 💬',
+      title: 'Dating Bestie 💬',
+      description: 'Your BFF for dating advice',
       color: 'from-purple-500 to-pink-500',
       page: 'Chat'
     },

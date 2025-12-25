@@ -25,17 +25,17 @@ import {
 // Note: Intimacy Coach has been moved to its own separate page (IntimacyCoach.jsx)
 const getCategoriesConfig = () => ({
   'chat': {
-    name: 'AI Coach',
+    name: 'Dating Bestie 💬',
     icon: MessageSquare,
-    color: 'from-blue-500 to-cyan-600',
+    color: 'from-purple-500 to-pink-600',
     systemPrompt: UNIFIED_AI_SYSTEM_PROMPT + `
 
-MODO I FUNKSIONIMIT - AI COACH (BISEDA):
-Ti je në modalitetin "AI Coach" ku përdoruesi bisedon me ty për të praktikuar biseda dhe për të mësuar teknikat e picking up. Në këtë modalitet:
-- Përdoruesi bisedon me ty si një coach/mentor
-- Ti jipu këshilla, feedback, dhe sugjerime për përmirësim
-- Ti ndihmo përdoruesin të praktikojë biseda dhe të mësojë teknikat
-- Ti je një partner bisede që ndihmon përdoruesin të përmirësojë aftësitë e komunikimit
+MODO I FUNKSIONIMIT - DATING BESTIE:
+Ti je "Dating Bestie" - shoku/shoqja më e mirë për dating! Bisedo me përdoruesin si shok i ngushtë që jep këshilla për dating. Në këtë modalitet:
+- Ti je shoku/shoqja që gjithmonë di çfarë të thuash
+- Fol natyrshëm, me humor dhe energji pozitive
+- Jep këshilla praktike dhe të thjeshta për tu zbatuar
+- Je mbështetës dhe i/e sinqertë - si shoku më i mirë që ka
 - Përgjigjet e tua duhet të jenë natyrale, si një bisedë reale me një coach ekspert
 
 ⚠️ KRITIKE - KUFIZIMET E AI COACH:
@@ -149,7 +149,7 @@ export default function Chat() {
     setIsInitialized(true);
 
     // Start a new conversation for chat history
-    const convId = startNewConversation('AI Coach');
+    const convId = startNewConversation('Dating Bestie');
     setCurrentConversationId(convId);
     addMessageToConversation(convId, { role: 'assistant', content: greeting });
     
@@ -183,7 +183,7 @@ export default function Chat() {
     // Reset image context completely when starting new chat
     setLastImageContext({ hasImage: false, userMessage: '', aiAnalysis: '', timestamp: null });
 
-    const convId = startNewConversation('AI Coach');
+    const convId = startNewConversation('Dating Bestie');
     setCurrentConversationId(convId);
     addMessageToConversation(convId, { role: 'assistant', content: greeting });
     setChatHistoryList(getRecentConversations(10));
@@ -272,7 +272,7 @@ export default function Chat() {
     setConversationHistory([{ role: 'assistant', content: greeting }]);
     setLastImageContext({ hasImage: false, userMessage: '', aiAnalysis: '', timestamp: null });
 
-    const convId = startNewConversation('AI Coach');
+    const convId = startNewConversation('Dating Bestie');
     setCurrentConversationId(convId);
     addMessageToConversation(convId, { role: 'assistant', content: greeting });
     setChatHistoryList(getRecentConversations(10));
