@@ -310,12 +310,12 @@ export default function UserProfile({ onLogout }) {
   };
 
   const getTierBadge = (tier) => {
-    const badges = {
-      free: { label: 'Free', color: 'bg-slate-500/20 text-slate-300 border-slate-500/30', icon: Shield },
-      pro: { label: 'Pro', color: 'bg-purple-500/20 text-purple-300 border-purple-500/30', icon: Crown },
-      elite: { label: 'Elite', color: 'bg-amber-500/20 text-amber-300 border-amber-500/30', icon: Crown },
+    // Everything is FREE now! Show VIP badge to make users feel special
+    return { 
+      label: '🎉 VIP Member', 
+      color: 'bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-300 border-emerald-500/30', 
+      icon: Sparkles 
     };
-    return badges[tier?.toLowerCase()] || badges.free;
   };
 
   const currentTier = usage?.tier || localStorage.getItem('userSubscriptionTier') || 'free';
@@ -323,15 +323,18 @@ export default function UserProfile({ onLogout }) {
   const TierIcon = tierBadge.icon;
   const currentCountry = getCountryByCode(userCountry);
 
+  // Fun achievements to unlock!
   const achievements = [
-    { id: 'first_message', title: 'First Message', desc: 'Sent your first AI chat', icon: '🎯', unlocked: stats.totalMessages > 0 },
-    { id: 'conversationalist', title: 'Conversationalist', desc: 'Sent 50 messages', icon: '💬', unlocked: stats.totalMessages >= 50 },
-    { id: 'date_planner', title: 'Date Planner', desc: 'Planned 5 dates', icon: '📅', unlocked: stats.datesPlanned >= 5 },
-    { id: 'rehearsal_pro', title: 'Rehearsal Pro', desc: 'Completed 3 rehearsals', icon: '🎭', unlocked: stats.rehearsalsSessions >= 3 },
-    { id: 'photo_perfectionist', title: 'Photo Perfectionist', desc: 'Got photo feedback', icon: '📸', unlocked: stats.photosFeedback > 0 },
-    { id: 'smooth_talker', title: 'Smooth Talker', desc: 'Used 10 conversation starters', icon: '😎', unlocked: stats.conversationStartersUsed >= 10 },
-    { id: 'wisdom_seeker', title: 'Wisdom Seeker', desc: 'Read 20 tips', icon: '📚', unlocked: stats.tipsViewed >= 20 },
-    { id: 'on_fire', title: 'On Fire', desc: '7-day streak', icon: '🔥', unlocked: stats.currentStreak >= 7 }
+    { id: 'first_message', title: 'Hello World 👋', desc: 'Started your first chat', icon: '🎯', unlocked: stats.totalMessages > 0 },
+    { id: 'conversationalist', title: 'Chatterbox', desc: 'Sent 50+ messages', icon: '💬', unlocked: stats.totalMessages >= 50 },
+    { id: 'chat_master', title: 'Chat Master', desc: 'Sent 200+ messages', icon: '🏆', unlocked: stats.totalMessages >= 200 },
+    { id: 'date_planner', title: 'Date Planner', desc: 'Planned 5+ dates', icon: '📅', unlocked: stats.datesPlanned >= 5 },
+    { id: 'rehearsal_pro', title: 'Practice Makes Perfect', desc: 'Did 3+ rehearsals', icon: '🎭', unlocked: stats.rehearsalsSessions >= 3 },
+    { id: 'smooth_talker', title: 'Smooth Operator 😎', desc: 'Used 10 convo starters', icon: '✨', unlocked: stats.conversationStartersUsed >= 10 },
+    { id: 'wisdom_seeker', title: 'Knowledge Seeker', desc: 'Read 20+ tips', icon: '📚', unlocked: stats.tipsViewed >= 20 },
+    { id: 'on_fire', title: 'On Fire! 🔥', desc: 'Used app 7 days straight', icon: '🔥', unlocked: stats.currentStreak >= 7 },
+    { id: 'dedicated', title: 'Dedicated Dater', desc: 'Used app 30 days', icon: '💪', unlocked: stats.currentStreak >= 30 },
+    { id: 'vip', title: 'VIP Status', desc: 'You have full access!', icon: '👑', unlocked: true }
   ];
 
   const unlockedCount = achievements.filter(a => a.unlocked).length;
@@ -419,15 +422,11 @@ export default function UserProfile({ onLogout }) {
           )}
           
           <div className="flex gap-2">
-            {currentTier === 'free' && (
-              <Button
-                onClick={() => setShowUpgradeModal(true)}
-                className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-2 rounded-xl text-sm font-semibold"
-              >
-                <Crown className="w-4 h-4 mr-1.5" />
-                Upgrade to Pro
-              </Button>
-            )}
+            {/* FREE VIP Status Badge */}
+            <div className="flex-1 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 py-2 px-4 rounded-xl text-sm font-semibold text-center text-emerald-300 flex items-center justify-center gap-2">
+              <Sparkles className="w-4 h-4" />
+              ✨ All Features Unlocked!
+            </div>
             <Button
               onClick={onLogout}
               variant="outline"

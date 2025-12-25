@@ -181,23 +181,10 @@ export default function ClipboardSuggestions() {
   };
 
   // Check usage limits before generating
+  // Everything is FREE - no limits!
   const checkUsage = async () => {
-    try {
-      const response = await fetch(`${backendUrl}/api/usage`);
-      if (response.ok) {
-        const data = await response.json();
-        setUsage(data);
-        // Block if: no remaining messages AND no credits
-        const isBlocked =
-          data.dailyUsage.remainingMessages === 0 &&
-          (!data.credits || data.credits === 0);
-        setIsLimitReached(isBlocked);
-        return !isBlocked;
-      }
-    } catch (error) {
-      console.error('Error checking usage:', error);
-    }
-    return true; // Allow if check fails (fail open for better UX)
+    setIsLimitReached(false);
+    return true; // Always allow - everything is free!
   };
 
   const generateSuggestions = async (text) => {
@@ -369,7 +356,7 @@ export default function ClipboardSuggestions() {
                   className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={isLoading || isLimitReached}
                 >
-                  {isLoading ? t('clipboard.analyzing', 'Analyzing...') : isLimitReached ? t('clipboard.limitReached', 'Limit reached - Upgrade') : t('clipboard.analyzeGenerate', 'Analyze & Generate')}
+                  {isLoading ? t('clipboard.analyzing', 'Analyzing...') : '✨ Analyze & Generate'}
                 </Button>
               </div>
             </Card>
@@ -416,7 +403,7 @@ export default function ClipboardSuggestions() {
               <textarea
                 value={clipboardText}
                 onChange={handleManualInput}
-                placeholder={isLimitReached ? t('clipboard.limitPlaceholder', '🚫 Limit reached - Upgrade to continue') : hasChecked ? t('clipboard.typePlaceholder', '💬 Type or paste message here...') : t('clipboard.checkingPlaceholder', '⏳ Checking...')}
+                placeholder={hasChecked ? t('clipboard.typePlaceholder', '💬 Type or paste message here...') : t('clipboard.checkingPlaceholder', '⏳ Checking...')}
                 className={`w-full p-4 pr-24 pb-16 bg-slate-800/80 border-2 rounded-xl text-white placeholder-slate-400 focus:outline-none resize-none ${isLimitReached ? 'border-red-500/50 opacity-60' : 'border-purple-500/30 focus:border-purple-500'}`}
                 rows={3}
                 style={{ fontSize: '16px' }}

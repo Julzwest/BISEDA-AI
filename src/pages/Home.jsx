@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { createPageUrl } from '../utils';
-import { Lightbulb, TrendingUp, Zap, Star, Sparkles, Heart, HeartCrack, MessageSquare, Calendar, Bot, Gift, PartyPopper, Smile, Camera, BookOpen, Users, User, MapPin, Lock, Crown } from 'lucide-react';
+import { Lightbulb, TrendingUp, Zap, Star, Sparkles, Heart, HeartCrack, MessageSquare, Calendar, Bot, Gift, PartyPopper, Smile, Camera, BookOpen, Users, User, MapPin, Lock, Crown, Eye } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import UsageDisplay from '@/components/UsageDisplay';
@@ -107,67 +107,63 @@ export default function Home() {
     } catch (e) {}
   }, []);
 
+  // ALL FEATURES ARE FREE NOW! 🎉
   const features = [
     {
       icon: Bot,
-      title: 'AI Coach',
-      description: 'Get instant dating advice',
-      color: 'from-purple-500 to-pink-500', // Purple-Pink gradient for AI/chat
+      title: 'Biseda AI',
+      description: 'Your dating bestie 💬',
+      color: 'from-purple-500 to-pink-500',
       page: 'Chat'
     },
     {
-      icon: Heart,
-      title: 'Intimacy Coach',
-      description: 'Expert guidance on intimacy & bedroom',
-      color: 'from-pink-600 to-rose-500', // Pink-Rose for intimacy
-      page: 'IntimacyCoach',
-      requiresProOrElite: true
+      icon: Zap,
+      title: 'Rizz Master ⚡',
+      description: 'Live coaching on dates',
+      color: 'from-amber-500 to-orange-600',
+      page: 'wingman'
     },
     {
       icon: Users,
-      title: 'Date Rehearsal',
-      description: 'Practice with AI roleplay',
-      color: 'from-violet-600 to-fuchsia-500', // Violet-Fuchsia for roleplay
-      page: 'Rehearsal',
-      requiresProOrElite: true
+      title: 'Date Practice',
+      description: 'Roleplay before the real thing',
+      color: 'from-violet-600 to-fuchsia-500',
+      page: 'Rehearsal'
     },
     {
       icon: MapPin,
-      title: 'Explore Dates & Events',
-      description: 'Find venues and local events',
-      color: 'from-emerald-500 to-teal-500', // Green-Teal for location/exploration
+      title: 'Date Ideas 📍',
+      description: 'Find the perfect spot',
+      color: 'from-emerald-500 to-teal-500',
       page: 'explore'
     },
     {
       icon: Gift,
-      title: t('home.features.gifts.title'),
-      description: t('home.features.gifts.desc'),
-      color: 'from-rose-500 to-red-600', // Rose-Red for gifts/love
-      page: 'Gifts',
-      requiresProOrElite: true
+      title: 'Gift Ideas 🎁',
+      description: 'Find the perfect gift',
+      color: 'from-rose-500 to-red-600',
+      page: 'Gifts'
     },
     {
       icon: Heart,
-      title: t('home.features.mood.title', 'Mood Check'),
-      description: t('home.features.mood.desc', 'Check your dating readiness'),
-      color: 'from-pink-500 to-rose-400', // Pink-Rose for emotions/mood
+      title: 'Vibe Check 💕',
+      description: 'Check your dating energy',
+      color: 'from-pink-500 to-rose-400',
       page: 'MoodCheck'
     },
     {
-      icon: Zap,
-      title: 'Live Date Wingman',
-      description: 'Real-time help during your dates',
-      color: 'from-amber-500 to-orange-600', // Amber-Orange for live/urgent
-      page: 'LiveWingman',
-      requiresProOrElite: true
+      icon: Eye,
+      title: 'Body Language 👀',
+      description: 'Read the signals',
+      color: 'from-cyan-500 to-blue-500',
+      page: 'bodylanguage'
     },
     {
       icon: HeartCrack,
       title: 'Breakup Recovery',
-      description: 'Heal from heartbreak with support',
-      color: 'from-purple-600 to-indigo-600', // Purple-Indigo for healing
-      page: 'BreakupCoach',
-      requiresProOrElite: true
+      description: 'Heal and move on 💪',
+      color: 'from-purple-600 to-indigo-600',
+      page: 'BreakupCoach'
     }
   ];
 
@@ -246,7 +242,7 @@ export default function Home() {
           <UsageDisplay onUpgrade={() => setShowUpgradeModal(true)} />
         </div>
 
-        {/* Live Wingman Quick Access Button */}
+        {/* Rizz Master Quick Access Button */}
         <Link to="/wingman" className="block mb-6">
           <div className="relative overflow-hidden bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 rounded-2xl p-4 shadow-xl shadow-orange-500/30 hover:shadow-orange-500/50 transition-all hover:scale-[1.02] active:scale-[0.98]">
             {/* Animated background pulse */}
@@ -258,10 +254,10 @@ export default function Home() {
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <h3 className="text-xl font-bold text-white">Live Wingman</h3>
+                  <h3 className="text-xl font-bold text-white">Rizz Master ⚡</h3>
                   <span className="bg-white/20 text-white text-xs font-bold px-2 py-0.5 rounded-full">LIVE</span>
                 </div>
-                <p className="text-white/80 text-sm">Real-time coaching while you text 🔥</p>
+                <p className="text-white/80 text-sm">Your secret weapon on dates 🔥</p>
               </div>
               <div className="text-white/80">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

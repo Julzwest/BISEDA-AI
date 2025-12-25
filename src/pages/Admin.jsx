@@ -391,11 +391,11 @@ export default function Admin() {
             <Card className="bg-gradient-to-br from-amber-900/40 to-orange-900/40 border-amber-500/30 p-4">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
-                  <DollarSign className="w-6 h-6 text-white" />
+                  <Zap className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-slate-400 text-xs">Revenue/Month</p>
-                  <p className="text-white text-2xl font-bold">€{stats?.overview?.monthlyRevenue || '0.00'}</p>
+                  <p className="text-slate-400 text-xs">App Status</p>
+                  <p className="text-emerald-400 text-xl font-bold">🟢 FREE</p>
                 </div>
               </div>
             </Card>
@@ -431,15 +431,15 @@ export default function Admin() {
               </Card>
             </button>
 
-            <button onClick={() => setActiveTab('subscriptions')} className="text-left transition-all hover:scale-[1.02] active:scale-[0.98]">
+            <button onClick={() => setActiveTab('users')} className="text-left transition-all hover:scale-[1.02] active:scale-[0.98]">
               <Card className="bg-gradient-to-br from-rose-900/40 to-pink-900/40 border-rose-500/30 p-4 hover:border-rose-400/50 transition-all h-full">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-gradient-to-br from-rose-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
-                    <Crown className="w-6 h-6 text-white" />
+                    <Heart className="w-6 h-6 text-white" />
                   </div>
                   <div>
                     <p className="text-slate-400 text-xs">Manage</p>
-                    <p className="text-white text-lg font-bold">Subs</p>
+                    <p className="text-white text-lg font-bold">Users</p>
                   </div>
                 </div>
               </Card>
@@ -460,49 +460,61 @@ export default function Admin() {
             </button>
           </div>
 
-          {/* Financial Overview */}
+          {/* App Engagement Stats */}
           <Card className="bg-slate-800/50 border-slate-700/50 p-5 mb-6">
             <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-green-400" /> Pasqyra Financiare
+              <TrendingUp className="w-5 h-5 text-green-400" /> 📊 App Engagement
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-slate-700/30 p-4 rounded-xl">
-                <p className="text-slate-400 text-sm mb-1">Të Ardhura Mujore</p>
-                <p className="text-white text-xl font-bold">€{stats?.overview?.monthlyRevenue || '0.00'}</p>
+              <div className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/30 p-4 rounded-xl">
+                <p className="text-slate-400 text-sm mb-1">👥 Total Users</p>
+                <p className="text-white text-xl font-bold">{registeredUsers.length || 0}</p>
               </div>
-              <div className="bg-slate-700/30 p-4 rounded-xl">
-                <p className="text-slate-400 text-sm mb-1">Kosto API (OpenAI)</p>
-                <p className="text-white text-xl font-bold">${stats?.overview?.totalCost || '0.00'}</p>
+              <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-500/30 p-4 rounded-xl">
+                <p className="text-slate-400 text-sm mb-1">🟢 Active Today</p>
+                <p className="text-emerald-400 text-xl font-bold">{registeredUsers.filter(u => u.onlineStatus === 'online' || u.onlineStatus === 'away').length}</p>
               </div>
-              <div className="bg-slate-700/30 p-4 rounded-xl">
-                <p className="text-slate-400 text-sm mb-1">Fitimi Neto</p>
-                <p className="text-green-400 text-xl font-bold">€{stats?.overview?.profit || '0.00'}</p>
+              <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/30 p-4 rounded-xl">
+                <p className="text-slate-400 text-sm mb-1">💬 Total Chats</p>
+                <p className="text-purple-400 text-xl font-bold">{stats?.overview?.totalMessages || 0}</p>
               </div>
-              <div className="bg-slate-700/30 p-4 rounded-xl">
-                <p className="text-slate-400 text-sm mb-1">Kredite Aktive</p>
-                <p className="text-purple-400 text-xl font-bold">{stats?.overview?.totalCreditsBalance || 0}</p>
+              <div className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/30 p-4 rounded-xl">
+                <p className="text-slate-400 text-sm mb-1">🎉 App Status</p>
+                <p className="text-emerald-400 text-xl font-bold">FREE 4 ALL</p>
               </div>
             </div>
           </Card>
 
-          {/* App Features */}
+          {/* App Features - Updated */}
           <Card className="bg-slate-800/50 border-slate-700/50 p-5 mb-6">
             <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <Zap className="w-5 h-5 text-yellow-400" /> Veçoritë e Aplikacionit
+              <Zap className="w-5 h-5 text-yellow-400" /> 🚀 App Features (All FREE!)
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-              {[
-                { icon: Bot, name: 'AI Coach', color: 'purple' },
-                { icon: Heart, name: 'First Dates', color: 'pink' },
-                { icon: Lightbulb, name: 'Tips', color: 'amber' },
-                { icon: PartyPopper, name: 'Events', color: 'yellow' },
-                { icon: Gift, name: 'Gifts', color: 'rose' },
-              ].map((feature, i) => (
-                <div key={i} className={`bg-${feature.color}-500/10 border border-${feature.color}-500/30 p-4 rounded-xl text-center`}>
-                  <feature.icon className={`w-8 h-8 text-${feature.color}-400 mx-auto mb-2`} />
-                  <p className="text-white font-semibold text-sm">{feature.name}</p>
-                </div>
-              ))}
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+              <div className="bg-purple-500/10 border border-purple-500/30 p-3 rounded-xl text-center">
+                <span className="text-2xl mb-1 block">🤖</span>
+                <p className="text-white font-semibold text-xs">Biseda AI</p>
+              </div>
+              <div className="bg-orange-500/10 border border-orange-500/30 p-3 rounded-xl text-center">
+                <span className="text-2xl mb-1 block">⚡</span>
+                <p className="text-white font-semibold text-xs">Rizz Master</p>
+              </div>
+              <div className="bg-pink-500/10 border border-pink-500/30 p-3 rounded-xl text-center">
+                <span className="text-2xl mb-1 block">💕</span>
+                <p className="text-white font-semibold text-xs">Vibe Coach</p>
+              </div>
+              <div className="bg-cyan-500/10 border border-cyan-500/30 p-3 rounded-xl text-center">
+                <span className="text-2xl mb-1 block">👀</span>
+                <p className="text-white font-semibold text-xs">Body Lang</p>
+              </div>
+              <div className="bg-emerald-500/10 border border-emerald-500/30 p-3 rounded-xl text-center">
+                <span className="text-2xl mb-1 block">📍</span>
+                <p className="text-white font-semibold text-xs">Date Ideas</p>
+              </div>
+              <div className="bg-rose-500/10 border border-rose-500/30 p-3 rounded-xl text-center">
+                <span className="text-2xl mb-1 block">🎁</span>
+                <p className="text-white font-semibold text-xs">Gift Ideas</p>
+              </div>
             </div>
           </Card>
 

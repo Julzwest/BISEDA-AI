@@ -1,154 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Zap, TrendingUp, Image as ImageIcon } from 'lucide-react';
-import CreditsModal from './CreditsModal';
-import { getBackendUrl } from '@/utils/getBackendUrl';
+import { Sparkles, Heart, Infinity } from 'lucide-react';
 
-export default function UsageDisplay({ onUpgrade, onLimitReached }) {
+// Everything is FREE now - no limits!
+export default function UsageDisplay() {
   const { t } = useTranslation();
-  const [usage, setUsage] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [showCreditsModal, setShowCreditsModal] = useState(false);
-  const backendUrl = getBackendUrl();
-
-  useEffect(() => {
-    fetchUsage();
-    // Refresh usage every 30 seconds
-    const interval = setInterval(fetchUsage, 30000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const fetchUsage = async () => {
-    try {
-      // Get logged-in user's ID from localStorage
-      const userId = localStorage.getItem('userId');
-      
-      const headers = {};
-      if (userId) {
-        headers['x-user-id'] = userId;
-      }
-      
-      const response = await fetch(`${backendUrl}/api/usage`, { headers });
-      if (response.ok) {
-        const data = await response.json();
-        setUsage(data);
-        
-        // Sync subscription tier to localStorage (keeps it up to date if admin changed it)
-        if (data.tier) {
-          localStorage.setItem('userSubscriptionTier', data.tier);
-        }
-        
-        // Check if limit is reached and notify parent
-        if (onLimitReached && data.dailyUsage.remainingMessages === 0 && (!data.credits || data.credits === 0)) {
-          onLimitReached(true);
-        } else if (onLimitReached) {
-          onLimitReached(false);
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching usage:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (loading || !usage) {
-    return null;
-  }
-
-  const { dailyUsage, tier, credits } = usage;
-  const percentageUsed = (dailyUsage.messages / dailyUsage.messagesLimit) * 100;
-  const isNearLimit = percentageUsed >= 80;
-  const isAtLimit = dailyUsage.messages >= dailyUsage.messagesLimit;
-  const hasNoCredits = !credits || credits === 0;
-  const isBlocked = isAtLimit && hasNoCredits;
 
   return (
-    <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm p-4 mb-4">
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-2">
-          <Zap className="w-5 h-5 text-amber-400" />
-          <h3 className="text-sm font-semibold text-white">
-            {tier === 'free_trial' ? t('usage.freeTrial') : 
-             tier === 'free' ? t('usage.freePlan') : 
-             tier === 'starter' ? t('usage.starterPlan') : 
-             tier === 'pro' ? t('usage.proPlan') : 
-             tier === 'elite' ? t('usage.elitePlan') : 
-             tier === 'premium' ? t('usage.elitePlan') : t('usage.basePlan')}
-          </h3>
+    <Card className="bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border-emerald-500/30 backdrop-blur-sm p-4 mb-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center">
+            <Sparkles className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h3 className="text-base font-bold text-white flex items-center gap-2">
+              100% Free Access 🎉
+            </h3>
+            <p className="text-emerald-300 text-sm">All features unlocked!</p>
+          </div>
         </div>
-        <div className="flex gap-2">
-          {credits !== undefined && credits > 0 && (
-            <Button
-              onClick={() => setShowCreditsModal(true)}
-              size="sm"
-              className="bg-purple-600 hover:bg-purple-700 text-white text-xs h-7 px-3"
-            >
-              {t('usage.buyCredits')}
-            </Button>
-          )}
-          {(tier === 'free_trial' || tier === 'free' || tier === 'starter' || tier === 'pro') && (
-            <Button
-              onClick={onUpgrade}
-              size="sm"
-              className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white text-xs h-7 px-3"
-            >
-              {(tier === 'free_trial' || tier === 'free') ? t('home.upgrade') : t('usage.upgradeMore')}
-            </Button>
-          )}
+        <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/20 border border-emerald-500/40 rounded-full">
+          <Infinity className="w-4 h-4 text-emerald-400" />
+          <span className="text-emerald-300 text-sm font-medium">Unlimited</span>
         </div>
       </div>
-
-      <div className="space-y-2">
-        {credits !== undefined && credits > 0 && (
-          <div className="mb-2 p-2 bg-purple-500/10 border border-purple-500/30 rounded-lg">
-            <div className="flex items-center justify-between">
-              <span className="text-xs text-purple-300">{t('usage.credits')}</span>
-              <span className="text-sm font-semibold text-purple-300">{credits}</span>
-            </div>
-          </div>
-        )}
-        <div>
-          <div className="flex justify-between text-xs text-slate-400 mb-1">
-            <span>{t('home.messagesRemaining')}</span>
-            <span className={isNearLimit ? 'text-red-400 font-semibold' : ''}>
-              {dailyUsage.messages} / {dailyUsage.messagesLimit}
-            </span>
-          </div>
-          <div className="w-full bg-slate-700 rounded-full h-2">
-            <div
-              className={`h-2 rounded-full transition-all ${
-                isAtLimit
-                  ? 'bg-red-500'
-                  : isNearLimit
-                  ? 'bg-amber-500'
-                  : 'bg-gradient-to-r from-green-500 to-emerald-500'
-              }`}
-              style={{ width: `${Math.min(100, percentageUsed)}%` }}
-            />
-          </div>
+      
+      <div className="mt-3 p-3 bg-white/5 rounded-xl">
+        <div className="flex items-center justify-center gap-2 text-slate-300 text-sm">
+          <Heart className="w-4 h-4 text-pink-400 fill-pink-400" />
+          <span>Enjoy all features for free - no limits, no ads!</span>
         </div>
-
-        {dailyUsage.remainingMessages === 0 && (
-          <div className="mt-3 p-2 bg-red-500/10 border border-red-500/30 rounded-lg">
-            <p className="text-xs text-red-400 text-center">
-              {t('usage.limitReached')} {tier === 'free' && t('usage.upgradeToChat')}
-            </p>
-          </div>
-        )}
-
-        {isNearLimit && !isAtLimit && (tier === 'free' || tier === 'free_trial') && (
-          <div className="mt-2 p-2 bg-amber-500/10 border border-amber-500/30 rounded-lg">
-            <p className="text-xs text-amber-400 text-center">
-              {t('home.limitWarning')}
-            </p>
-          </div>
-        )}
       </div>
-      <CreditsModal isOpen={showCreditsModal} onClose={() => setShowCreditsModal(false)} />
     </Card>
   );
 }
-

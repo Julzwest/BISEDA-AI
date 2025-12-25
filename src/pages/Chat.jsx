@@ -86,7 +86,8 @@ export default function Chat() {
   const [selectedImages, setSelectedImages] = useState([]);
   const [isLimitReached, setIsLimitReached] = useState(false);
   const [usage, setUsage] = useState(null);
-  const [screenshotUsage, setScreenshotUsage] = useState({ used: 0, limit: 1, remaining: 1, isPaidUser: false });
+  // Everything is FREE - unlimited screenshots!
+  const [screenshotUsage, setScreenshotUsage] = useState({ used: 0, limit: 999, remaining: 999, isPaidUser: true });
   const [showScreenshotLimitModal, setShowScreenshotLimitModal] = useState(false);
   const [currentConversationId, setCurrentConversationId] = useState(null);
   const [showHistory, setShowHistory] = useState(false);
@@ -514,9 +515,9 @@ export default function Chat() {
           setScreenshotUsage(data.screenshotAnalyses);
         }
         
-        const isBlocked = data.dailyUsage.remainingMessages === 0 && (!data.credits || data.credits === 0);
-        setIsLimitReached(isBlocked);
-        return !isBlocked;
+        // Everything is FREE - no limits!
+        setIsLimitReached(false);
+        return true;
       }
     } catch (error) {
       console.error('Error checking usage:', error);
@@ -1046,14 +1047,8 @@ Do NOT give generic advice - reference the SPECIFIC conversation they showed you
                 <ImageIcon className="w-3 h-3" />
                 Screenshot analyses
               </span>
-              <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
-                screenshotUsage.remaining === 0 
-                  ? 'bg-red-500/20 text-red-400 border border-red-500/30' 
-                  : screenshotUsage.remaining <= 5
-                  ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
-                  : 'bg-green-500/20 text-green-400 border border-green-500/30'
-              }`}>
-                {screenshotUsage.remaining}/{screenshotUsage.limit} {screenshotUsage.isPaidUser ? t('chat.thisMonth') : t('chat.remaining')}
+              <span className="text-xs font-semibold px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                ✨ Unlimited
               </span>
             </div>
 
@@ -1072,24 +1067,12 @@ Do NOT give generic advice - reference the SPECIFIC conversation they showed you
               
               {/* Input row with buttons */}
               <div className="flex items-end gap-2">
-                {/* Upload Screenshot Button - Icon only, clean */}
+                {/* Upload Screenshot Button - Unlimited! */}
                 <button
-                  onClick={() => {
-                    if (screenshotUsage.remaining === 0) {
-                      setShowScreenshotLimitModal(true);
-                    } else {
-                      fileInputRef.current?.click();
-                    }
-                  }}
-                  className={`flex-shrink-0 p-3 rounded-lg transition-all ${
-                    screenshotUsage.remaining === 0
-                      ? 'bg-orange-600/80 hover:bg-orange-600'
-                      : 'bg-slate-700 hover:bg-slate-600'
-                  } text-white disabled:opacity-50`}
+                  onClick={() => fileInputRef.current?.click()}
+                  className="flex-shrink-0 p-3 rounded-lg transition-all bg-emerald-600 hover:bg-emerald-500 text-white disabled:opacity-50"
                   disabled={isLoading || selectedImages.length >= 4}
-                  title={screenshotUsage.remaining > 0 
-                    ? `Upload screenshot (${screenshotUsage.remaining} left)`
-                    : t('chat.upgradeForScreenshot')}
+                  title="Upload screenshot (Unlimited!)"
                 >
                   <ImageIcon className="w-5 h-5" />
                 </button>

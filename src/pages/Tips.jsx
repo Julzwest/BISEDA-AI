@@ -248,21 +248,10 @@ ${customQuestion ? `\nSpecific question: ${customQuestion}` : ''}`,
   };
 
   // Check usage limits
+  // Everything is FREE - no limits!
   const checkUsage = async () => {
-    try {
-      const response = await fetch(`${backendUrl}/api/usage`);
-      if (response.ok) {
-        const data = await response.json();
-        const isBlocked =
-          data.dailyUsage.remainingMessages === 0 &&
-          (!data.credits || data.credits === 0);
-        setIsLimitReached(isBlocked);
-        return !isBlocked;
-      }
-    } catch (error) {
-      console.error('Error checking usage:', error);
-    }
-    return true; // Allow if check fails
+    setIsLimitReached(false);
+    return true; // Always allow - everything is free!
   };
 
   useEffect(() => {

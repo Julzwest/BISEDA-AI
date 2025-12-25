@@ -1222,11 +1222,11 @@ Respond naturally as the Intimacy Coach. Be warm, helpful, and educational. Keep
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-                  {activeMode === 'live' ? 'Date Coach' : 'Intimacy Coach'} 
+                  {activeMode === 'live' ? 'Rizz Master' : 'Vibe Coach'} 
                   <span className="text-xl">{activeMode === 'live' ? '⚡' : '💕'}</span>
                 </h1>
                 <p className="text-sm text-slate-400">
-                  {activeMode === 'live' ? 'Real-time dating tips' : 'Relationship & intimacy advice'}
+                  {activeMode === 'live' ? 'Your secret weapon on dates' : 'Real talk about love & connection'}
                 </p>
               </div>
             </div>
@@ -1244,7 +1244,7 @@ Respond naturally as the Intimacy Coach. Be warm, helpful, and educational. Keep
               }`}
             >
               <Zap className="w-4 h-4" />
-              <span>On a Date</span>
+              <span>🔥 Live Mode</span>
             </button>
             <button
               onClick={() => setActiveMode('chat')}
@@ -1255,7 +1255,7 @@ Respond naturally as the Intimacy Coach. Be warm, helpful, and educational. Keep
               }`}
             >
               <Heart className="w-4 h-4" />
-              <span>Ask Coach</span>
+              <span>💬 Chat</span>
             </button>
           </div>
         </div>
