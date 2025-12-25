@@ -54,8 +54,8 @@ export default function Tools() {
     {
       id: 'chat',
       icon: MessageSquare,
-      title: 'Ask the Co-Pilot',
-      description: 'Get quick dating advice anytime',
+      title: 'Dating Buddy 💬',
+      description: 'Your friend for dating advice',
       color: 'from-purple-500 to-pink-500',
       route: '/chat',
       requiresPro: false,

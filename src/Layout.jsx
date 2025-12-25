@@ -46,7 +46,7 @@ export default function Layout({ children, onLogout }) {
     { name: 'Hub', icon: Home, page: 'Copilot' },
     { name: 'Wingman', icon: Zap, page: 'Wingman' },
     { name: 'Rehearse', icon: Users, page: 'Rehearsal' },
-    { name: 'Tools', icon: Wrench, page: 'Tools' },
+    { name: 'More', icon: Wrench, page: 'Tools' },
     { name: 'Profile', icon: User, page: 'Profile' }
   ];
 
