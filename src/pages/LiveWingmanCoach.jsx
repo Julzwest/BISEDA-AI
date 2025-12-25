@@ -60,12 +60,20 @@ FOR ALL ORIENTATIONS:
 STRICT JSON FORMAT:
 {
   "recommendation": "Strategic advice combining body language + words",
-  "trySaying": "Smooth line to say - natural, creates tension",
-  "bodyLanguage": "SPECIFIC body language instruction - eyes, posture, touch, proximity",
+  "trySaying": "Smooth line to say - natural, creates tension - DIFFERENT EVERY TIME",
+  "bodyLanguage": "SPECIFIC body language instruction - VARY between: eye contact, touch, posture, proximity, voice. NEVER repeat the same technique twice in a row!",
   "backup": "Alternative approach",
   "proTip": "6 words max",
   "vibe": "emoji"
 }
+
+⚡ CRITICAL - VARIETY IS KEY:
+- NEVER give the same response twice
+- Rotate through ALL body language categories (eyes, touch, posture, proximity, voice)
+- Each "trySaying" must be completely different - vary the tone (flirty, mysterious, playful, bold, sweet)
+- Use the random seed in the prompt to generate truly unique responses
+- If the action is "Share story" - give a DIFFERENT story topic each time
+- Mix up body language: sometimes eyes-focused, sometimes touch-focused, sometimes proximity-focused
 
 🎭 BODY LANGUAGE MASTERY:
 
@@ -370,11 +378,20 @@ ${stageContext === 'Vibing' ? 'STAGE TIP: Start escalating - lean closer, linger
 ${stageContext === 'Heating up' ? 'STAGE TIP: Be bold - hand on lower back, intense eye contact, almost-kiss moments.' : ''}
 ${stageContext === 'Wrapping up' ? 'STAGE TIP: Create anticipation or make your move - go for the kiss, leave them wanting more.' : ''}
 
+BODY LANGUAGE VARIETY - Pick ONE from these categories (rotate between them):
+- EYE TECHNIQUES: Triangle gaze, 3-second hold, bedroom eyes, glance-back with smile
+- TOUCH MOVES: Arm touch, hand comparison, lower back guide, playful push, shoulder squeeze
+- PROXIMITY: Lean in to whisper, close the gap, pull-back tease, side-by-side closeness
+- POSTURE: Mirror them, take up space, turn body fully toward them, relaxed confidence
+- VOICE: Lower voice, pause before speaking, speak slower, whisper something
+
+IMPORTANT: Each response must use a DIFFERENT body language technique. Be creative and specific!
+
 Return JSON only:
 {
   "recommendation": "Strategic advice - what to do",
-  "trySaying": "Natural, smooth line to say",
-  "bodyLanguage": "SPECIFIC body language: eye contact technique, touch, posture, or proximity move. Be precise like 'Lock eyes for 3 seconds, glance at their lips, then back to eyes with a slight smile'",
+  "trySaying": "Natural, smooth line to say - UNIQUE each time",
+  "bodyLanguage": "Pick ONE specific technique from the categories above - be precise with timing and execution. Example: 'Touch their forearm for 2 seconds while laughing, then lean back with a knowing smile'",
   "backup": "Alternative line or move",
   "proTip": "3-5 word wisdom",
   "vibe": "emoji"
