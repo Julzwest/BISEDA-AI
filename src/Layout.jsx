@@ -41,11 +41,11 @@ export default function Layout({ children, onLogout }) {
     trackPageView(currentPageName);
   }, [currentPageName]);
 
-  // 5-tab navigation: Co-Pilot, Wingman, Rehearsal, Tools, Profile
+  // 5-tab navigation: Hub, Rizz, Practice, Tools, Profile
   const navItems = [
-    { name: 'Co-Pilot', icon: Home, page: 'Copilot' },
-    { name: 'Wingman', icon: Zap, page: 'Wingman' },
-    { name: 'Rehearsal', icon: Users, page: 'Rehearsal' },
+    { name: 'Hub', icon: Home, page: 'Copilot' },
+    { name: 'Rizz', icon: Zap, page: 'Wingman' },
+    { name: 'Practice', icon: Users, page: 'Rehearsal' },
     { name: 'Tools', icon: Wrench, page: 'Tools' },
     { name: 'Profile', icon: User, page: 'Profile' }
   ];
