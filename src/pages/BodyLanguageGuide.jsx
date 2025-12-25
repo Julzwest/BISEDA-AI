@@ -1,19 +1,57 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Eye, Search, Heart, AlertTriangle, X } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { ArrowLeft, Eye, Search, Heart, AlertTriangle, X, Sparkles, Lightbulb, Target, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { bodyLanguageDatabase, getRandomTip, getTipsForStage, getTipsForSituation } from '@/data/bodyLanguageDatabase';
 
 const BodyLanguageGuide = () => {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('positive');
   const [selectedSignal, setSelectedSignal] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showQuickTips, setShowQuickTips] = useState(false);
+  const [quickTipCategory, setQuickTipCategory] = useState('eyeContact');
+  const [refreshTips, setRefreshTips] = useState(0);
 
+  // Categories with fun styling
   const categories = [
-    { id: 'positive', label: 'Attraction', icon: '💚', color: 'emerald' },
-    { id: 'neutral', label: 'Uncertain', icon: '💛', color: 'amber' },
-    { id: 'negative', label: 'Disinterest', icon: '❤️‍🩹', color: 'red' },
-    { id: 'deception', label: 'Lie Detector', icon: '🔍', color: 'cyan' },
+    { id: 'positive', label: 'Attraction', icon: '💚', color: 'emerald', emoji: '😍' },
+    { id: 'neutral', label: 'Uncertain', icon: '💛', color: 'amber', emoji: '🤔' },
+    { id: 'negative', label: 'Disinterest', icon: '❤️‍🩹', color: 'red', emoji: '😬' },
+    { id: 'deception', label: 'Lie Detector', icon: '🔍', color: 'cyan', emoji: '🕵️' },
   ];
+
+  // Quick tip categories from the database
+  const quickTipCategories = [
+    { id: 'eyeContact', label: 'Eye Contact', emoji: '👀' },
+    { id: 'touch', label: 'Touch', emoji: '✋' },
+    { id: 'posture', label: 'Posture', emoji: '🧍' },
+    { id: 'voice', label: 'Voice', emoji: '🗣️' },
+    { id: 'flirting', label: 'Flirting', emoji: '😏' },
+    { id: 'confidence', label: 'Confidence', emoji: '💪' },
+  ];
+
+  // Get random tips from the database
+  const randomTips = useMemo(() => {
+    const tips = [];
+    const categories = ['eyeContact', 'touch', 'posture', 'facialExpressions', 'voice'];
+    categories.forEach(cat => {
+      const categoryData = bodyLanguageDatabase[cat];
+      if (categoryData) {
+        const subCategories = Object.keys(categoryData);
+        subCategories.forEach(subCat => {
+          if (Array.isArray(categoryData[subCat])) {
+            const randomIndex = Math.floor(Math.random() * categoryData[subCat].length);
+            tips.push({
+              category: cat,
+              subCategory: subCat,
+              tip: categoryData[subCat][randomIndex]
+            });
+          }
+        });
+      }
+    });
+    return tips.slice(0, 5);
+  }, [refreshTips]);
 
   const bodyLanguageSignals = {
     positive: [
@@ -680,187 +718,342 @@ const BodyLanguageGuide = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-900 to-black text-white pb-24">
-      {/* Header */}
-      <div className="sticky top-0 z-20 bg-slate-900/95 backdrop-blur-xl border-b border-slate-800/50">
-        <div className="flex items-center gap-3 px-5 py-4">
-          <button 
-            onClick={() => navigate(-1)}
-            className="p-2 -ml-2 hover:bg-slate-800/50 rounded-xl transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5 text-slate-400" />
-          </button>
-          <div className="flex-1">
-            <h1 className="text-lg font-bold text-white flex items-center gap-2">
-              <Eye className="w-5 h-5 text-violet-400" />
-              Body Language Guide
-            </h1>
-            <p className="text-xs text-slate-500">Learn to read the signs</p>
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-950/10 to-black text-white pb-24">
+      {/* Fun Header */}
+      <div className="px-5 pt-6 pb-4 relative">
+        {/* Floating decorations */}
+        <div className="absolute top-4 right-4 text-2xl animate-bounce opacity-50">👀</div>
+        <div className="absolute top-8 right-12 text-xl animate-bounce opacity-40" style={{ animationDelay: '0.3s' }}>✨</div>
+        <div className="absolute top-6 left-4 text-xl animate-pulse opacity-40">💫</div>
+        
+        {/* Back button */}
+        <button 
+          onClick={() => navigate(-1)}
+          className="p-2 -ml-2 mb-4 hover:bg-slate-800/50 rounded-xl transition-colors inline-flex items-center gap-2 text-slate-400"
+        >
+          <ArrowLeft className="w-5 h-5" />
+          <span className="text-sm">Back</span>
+        </button>
+
+        {/* Main header */}
+        <div className="text-center mb-6">
+          <div className="inline-block mb-4">
+            <div className="relative">
+              <div className="absolute inset-0 w-24 h-24 bg-gradient-to-r from-violet-500 via-purple-500 to-pink-500 rounded-3xl blur-xl opacity-60 animate-pulse" />
+              <div className="relative w-24 h-24 bg-gradient-to-br from-violet-500 via-purple-500 to-pink-600 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/50 mx-auto transform hover:rotate-6 transition-transform">
+                <span className="text-5xl">👁️</span>
+              </div>
+              <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center animate-bounce shadow-lg">
+                <span className="text-lg">🔥</span>
+              </div>
+            </div>
+          </div>
+          <h1 className="text-3xl font-black mb-2">
+            <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Read Their
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-pink-400 via-rose-400 to-red-400 bg-clip-text text-transparent">
+              Body Language! 🎯
+            </span>
+          </h1>
+          <p className="text-slate-400 text-sm">
+            Master the art of non-verbal communication ✨
+          </p>
+          
+          {/* Stats badge */}
+          <div className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full border border-purple-500/30">
+            <Sparkles className="w-4 h-4 text-purple-400" />
+            <span className="text-purple-300 text-sm font-bold">3,000+ Tips & Techniques</span>
           </div>
         </div>
+      </div>
 
+      {/* Quick Tips Section from Database */}
+      <div className="px-5 mb-6">
+        <div className="bg-gradient-to-br from-violet-900/40 via-purple-900/30 to-pink-900/30 border border-purple-500/30 rounded-2xl p-4">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Lightbulb className="w-5 h-5 text-yellow-400" />
+              <h2 className="text-white font-bold">Quick Tips</h2>
+            </div>
+            <button 
+              onClick={() => setRefreshTips(prev => prev + 1)}
+              className="px-3 py-1.5 bg-purple-500/20 hover:bg-purple-500/30 rounded-lg text-xs font-bold text-purple-300 transition-all flex items-center gap-1"
+            >
+              <Zap className="w-3 h-3" />
+              New Tips
+            </button>
+          </div>
+          <div className="space-y-2">
+            {randomTips.slice(0, 3).map((tip, index) => (
+              <div 
+                key={index}
+                className="p-3 bg-slate-800/50 rounded-xl text-sm text-slate-300 border border-slate-700/50"
+              >
+                <span className="mr-2">💡</span>
+                {tip.tip}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Sticky Search & Categories */}
+      <div className="sticky top-0 z-20 bg-slate-900/95 backdrop-blur-xl border-y border-slate-800/50 px-5 py-3">
         {/* Search */}
-        <div className="px-5 pb-3">
+        <div className="mb-3">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
             <input
               type="text"
-              placeholder="Search signals..."
+              placeholder="🔍 Search body language signals..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-800/50 border border-slate-700/50 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-violet-500/50"
+              className="w-full bg-slate-800/50 border border-slate-700/50 rounded-2xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20"
             />
           </div>
         </div>
 
-        {/* Category Tabs */}
-        <div className="flex gap-2 px-5 pb-3">
+        {/* Category Tabs - More colorful */}
+        <div className="flex gap-2 overflow-x-auto no-scrollbar">
           {categories.map(cat => (
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`flex-1 py-2 px-2 rounded-xl text-[10px] font-medium transition-all flex items-center justify-center gap-1 ${
+              className={`flex-1 min-w-fit py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 transform hover:scale-105 ${
                 selectedCategory === cat.id
                   ? cat.id === 'positive' 
-                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                    ? 'bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg shadow-emerald-500/30'
                     : cat.id === 'neutral'
-                      ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                      ? 'bg-gradient-to-r from-amber-500 to-yellow-600 text-white shadow-lg shadow-amber-500/30'
                       : cat.id === 'deception'
-                        ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
-                        : 'bg-red-500/20 text-red-300 border border-red-500/30'
-                  : 'bg-slate-800/50 text-slate-400 border border-slate-700/30 hover:bg-slate-700/50'
+                        ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/30'
+                        : 'bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-lg shadow-red-500/30'
+                  : 'bg-slate-800/70 text-slate-400 border border-slate-700/50 hover:bg-slate-700/70'
               }`}
             >
-              <span>{cat.icon}</span>
+              <span className="text-lg">{cat.emoji}</span>
               <span>{cat.label}</span>
             </button>
           ))}
         </div>
       </div>
 
-      {/* Signals List */}
+      {/* Category Info Card */}
+      <div className="px-5 pt-4 pb-2">
+        <div className={`p-4 rounded-2xl ${
+          selectedCategory === 'positive'
+            ? 'bg-gradient-to-r from-emerald-500/20 to-green-500/20 border border-emerald-500/30'
+            : selectedCategory === 'neutral'
+              ? 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-500/30'
+              : selectedCategory === 'deception'
+                ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-500/30'
+                : 'bg-gradient-to-r from-red-500/20 to-rose-500/20 border border-red-500/30'
+        }`}>
+          <div className="flex items-center gap-3">
+            <span className="text-3xl">
+              {selectedCategory === 'positive' ? '💚' : selectedCategory === 'neutral' ? '💛' : selectedCategory === 'deception' ? '🔍' : '❤️‍🩹'}
+            </span>
+            <div>
+              <h3 className="text-white font-bold">
+                {selectedCategory === 'positive' ? "Signs They're Into You" : 
+                 selectedCategory === 'neutral' ? "Mixed Signals" :
+                 selectedCategory === 'deception' ? "Spotting Lies" : "Red Flags"}
+              </h3>
+              <p className="text-sm text-slate-300">
+                {selectedCategory === 'positive' ? "These signals show genuine interest and attraction! 🔥" : 
+                 selectedCategory === 'neutral' ? "Could go either way - read the context carefully 🤔" :
+                 selectedCategory === 'deception' ? "Learn to spot when someone isn't being truthful 🕵️" : 
+                 "Warning signs they might not be interested 😬"}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Signals List - Colorful Cards */}
       <div className="px-5 py-4 space-y-3">
-        {filteredSignals.map(signal => (
+        {filteredSignals.map((signal, index) => (
           <button
             key={signal.id}
             onClick={() => setSelectedSignal(signal)}
-            className={`w-full p-4 rounded-2xl border transition-all text-left ${
+            style={{ animationDelay: `${index * 30}ms` }}
+            className={`w-full p-4 rounded-2xl border transition-all text-left transform hover:scale-[1.02] active:scale-[0.98] ${
               selectedCategory === 'positive'
-                ? 'bg-slate-800/40 border-emerald-500/20 hover:border-emerald-500/40'
+                ? 'bg-gradient-to-r from-emerald-900/30 to-green-900/20 border-emerald-500/30 hover:border-emerald-400/60 hover:shadow-lg hover:shadow-emerald-500/10'
                 : selectedCategory === 'neutral'
-                  ? 'bg-slate-800/40 border-amber-500/20 hover:border-amber-500/40'
+                  ? 'bg-gradient-to-r from-amber-900/30 to-yellow-900/20 border-amber-500/30 hover:border-amber-400/60 hover:shadow-lg hover:shadow-amber-500/10'
                   : selectedCategory === 'deception'
-                    ? 'bg-slate-800/40 border-cyan-500/20 hover:border-cyan-500/40'
-                    : 'bg-slate-800/40 border-red-500/20 hover:border-red-500/40'
+                    ? 'bg-gradient-to-r from-cyan-900/30 to-blue-900/20 border-cyan-500/30 hover:border-cyan-400/60 hover:shadow-lg hover:shadow-cyan-500/10'
+                    : 'bg-gradient-to-r from-red-900/30 to-rose-900/20 border-red-500/30 hover:border-red-400/60 hover:shadow-lg hover:shadow-red-500/10'
             }`}
           >
-            <div className="flex items-start gap-3">
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${
+            <div className="flex items-start gap-4">
+              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center text-3xl shadow-lg ${
                 selectedCategory === 'positive'
-                  ? 'bg-emerald-500/20'
+                  ? 'bg-gradient-to-br from-emerald-500 to-green-600'
                   : selectedCategory === 'neutral'
-                    ? 'bg-amber-500/20'
+                    ? 'bg-gradient-to-br from-amber-500 to-yellow-600'
                     : selectedCategory === 'deception'
-                      ? 'bg-cyan-500/20'
-                      : 'bg-red-500/20'
+                      ? 'bg-gradient-to-br from-cyan-500 to-blue-600'
+                      : 'bg-gradient-to-br from-red-500 to-rose-600'
               }`}>
                 {signal.emoji}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="font-semibold text-white text-sm">{signal.title}</h3>
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full border ${getIntensityColor(signal.intensity)}`}>
-                    {signal.intensity}
+                <div className="flex items-center gap-2 mb-1 flex-wrap">
+                  <h3 className="font-bold text-white">{signal.title}</h3>
+                  <span className={`text-[10px] px-2 py-1 rounded-full font-bold ${
+                    signal.intensity === 'high' 
+                      ? 'bg-purple-500/30 text-purple-300 border border-purple-500/50' 
+                      : signal.intensity === 'medium'
+                        ? 'bg-blue-500/30 text-blue-300 border border-blue-500/50'
+                        : 'bg-slate-500/30 text-slate-300 border border-slate-500/50'
+                  }`}>
+                    {signal.intensity === 'high' ? '🔥 Strong' : signal.intensity === 'medium' ? '✨ Medium' : '💫 Subtle'}
                   </span>
                 </div>
-                <p className="text-xs text-slate-400">{signal.shortDesc}</p>
+                <p className="text-sm text-slate-400">{signal.shortDesc}</p>
               </div>
-              <div className="text-slate-600">→</div>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                selectedCategory === 'positive'
+                  ? 'bg-emerald-500/20 text-emerald-400'
+                  : selectedCategory === 'neutral'
+                    ? 'bg-amber-500/20 text-amber-400'
+                    : selectedCategory === 'deception'
+                      ? 'bg-cyan-500/20 text-cyan-400'
+                      : 'bg-red-500/20 text-red-400'
+              }`}>
+                →
+              </div>
             </div>
           </button>
         ))}
+
+        {/* Database tip at bottom */}
+        <div className="mt-6 p-4 bg-gradient-to-r from-purple-900/30 to-pink-900/30 rounded-2xl border border-purple-500/30">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+              <Target className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h4 className="text-white font-bold text-sm">Pro Tip from the Database</h4>
+              <p className="text-slate-300 text-xs mt-1">
+                {randomTips[0]?.tip || "Look for clusters of signals, not just one sign!"}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Signal Detail Modal */}
+      {/* Signal Detail Modal - Fun & Colorful */}
       {selectedSignal && (
         <div className="fixed inset-0 z-50 flex items-end justify-center">
           <div 
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
             onClick={() => setSelectedSignal(null)}
           />
-          <div className={`relative w-full max-w-lg bg-slate-900 rounded-t-3xl border-t ${
+          <div className={`relative w-full max-w-lg rounded-t-3xl border-t-2 p-6 pb-10 max-h-[85vh] overflow-y-auto ${
             selectedCategory === 'positive'
-              ? 'border-emerald-500/30'
+              ? 'bg-gradient-to-b from-emerald-950 via-slate-900 to-slate-900 border-emerald-500'
               : selectedCategory === 'neutral'
-                ? 'border-amber-500/30'
+                ? 'bg-gradient-to-b from-amber-950 via-slate-900 to-slate-900 border-amber-500'
                 : selectedCategory === 'deception'
-                  ? 'border-cyan-500/30'
-                  : 'border-red-500/30'
-          } p-6 pb-10 max-h-[80vh] overflow-y-auto`}>
+                  ? 'bg-gradient-to-b from-cyan-950 via-slate-900 to-slate-900 border-cyan-500'
+                  : 'bg-gradient-to-b from-red-950 via-slate-900 to-slate-900 border-red-500'
+          }`}>
+            {/* Decorative glow */}
+            <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-40 h-20 rounded-full blur-3xl opacity-30 ${
+              selectedCategory === 'positive' ? 'bg-emerald-500' :
+              selectedCategory === 'neutral' ? 'bg-amber-500' :
+              selectedCategory === 'deception' ? 'bg-cyan-500' : 'bg-red-500'
+            }`} />
+
             {/* Close button */}
             <button
               onClick={() => setSelectedSignal(null)}
-              className="absolute top-4 right-4 p-2 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors"
+              className="absolute top-4 right-4 p-2.5 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors border border-slate-700"
             >
-              <X className="w-4 h-4 text-slate-400" />
+              <X className="w-5 h-5 text-slate-400" />
             </button>
 
-            {/* Header */}
-            <div className="flex items-center gap-4 mb-6">
-              <div className={`w-16 h-16 rounded-2xl flex items-center justify-center text-3xl ${
+            {/* Header with big emoji */}
+            <div className="text-center mb-6 relative">
+              <div className={`w-20 h-20 rounded-3xl flex items-center justify-center text-5xl mx-auto mb-4 shadow-2xl ${
                 selectedCategory === 'positive'
-                  ? 'bg-emerald-500/20'
+                  ? 'bg-gradient-to-br from-emerald-500 to-green-600 shadow-emerald-500/30'
                   : selectedCategory === 'neutral'
-                    ? 'bg-amber-500/20'
+                    ? 'bg-gradient-to-br from-amber-500 to-yellow-600 shadow-amber-500/30'
                     : selectedCategory === 'deception'
-                      ? 'bg-cyan-500/20'
-                      : 'bg-red-500/20'
+                      ? 'bg-gradient-to-br from-cyan-500 to-blue-600 shadow-cyan-500/30'
+                      : 'bg-gradient-to-br from-red-500 to-rose-600 shadow-red-500/30'
               }`}>
                 {selectedSignal.emoji}
               </div>
-              <div>
-                <h2 className="text-xl font-bold text-white">{selectedSignal.title}</h2>
-                <p className="text-sm text-slate-400">{selectedSignal.shortDesc}</p>
-              </div>
-            </div>
-
-            {/* Meaning */}
-            <div className="mb-5">
-              <h3 className={`text-xs font-semibold mb-2 flex items-center gap-2 ${
-                selectedCategory === 'positive'
-                  ? 'text-emerald-400'
-                  : selectedCategory === 'neutral'
-                    ? 'text-amber-400'
-                    : selectedCategory === 'deception'
-                      ? 'text-cyan-400'
-                      : 'text-red-400'
-              }`}>
-                <Heart className="w-3.5 h-3.5" />
-                What it means
-              </h3>
-              <p className="text-sm text-slate-300 leading-relaxed bg-slate-800/50 p-4 rounded-xl">
-                {selectedSignal.meaning}
-              </p>
-            </div>
-
-            {/* What to do */}
-            <div>
-              <h3 className="text-xs font-semibold text-violet-400 mb-2 flex items-center gap-2">
-                ⚡ What to do
-              </h3>
-              <p className="text-sm text-slate-300 leading-relaxed bg-violet-500/10 border border-violet-500/20 p-4 rounded-xl">
-                {selectedSignal.whatToDo}
-              </p>
-            </div>
-
-            {/* Intensity indicator */}
-            <div className="mt-5 pt-5 border-t border-slate-800">
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-slate-500">Signal Strength</span>
-                <span className={`text-xs px-3 py-1 rounded-full border ${getIntensityColor(selectedSignal.intensity)}`}>
+              <h2 className="text-2xl font-black text-white mb-1">{selectedSignal.title}</h2>
+              <p className="text-slate-400">{selectedSignal.shortDesc}</p>
+              
+              {/* Intensity badge */}
+              <div className="mt-3 inline-flex">
+                <span className={`px-4 py-2 rounded-full font-bold text-sm ${
+                  selectedSignal.intensity === 'high' 
+                    ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white' 
+                    : selectedSignal.intensity === 'medium'
+                      ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
+                      : 'bg-gradient-to-r from-slate-600 to-slate-700 text-white'
+                }`}>
                   {selectedSignal.intensity === 'high' ? '🔥 Strong Signal' : selectedSignal.intensity === 'medium' ? '✨ Moderate Signal' : '💫 Subtle Signal'}
                 </span>
               </div>
+            </div>
+
+            {/* Meaning Card */}
+            <div className="mb-4">
+              <div className={`p-4 rounded-2xl ${
+                selectedCategory === 'positive'
+                  ? 'bg-emerald-500/10 border border-emerald-500/30'
+                  : selectedCategory === 'neutral'
+                    ? 'bg-amber-500/10 border border-amber-500/30'
+                    : selectedCategory === 'deception'
+                      ? 'bg-cyan-500/10 border border-cyan-500/30'
+                      : 'bg-red-500/10 border border-red-500/30'
+              }`}>
+                <h3 className={`text-sm font-bold mb-2 flex items-center gap-2 ${
+                  selectedCategory === 'positive' ? 'text-emerald-400' :
+                  selectedCategory === 'neutral' ? 'text-amber-400' :
+                  selectedCategory === 'deception' ? 'text-cyan-400' : 'text-red-400'
+                }`}>
+                  <Heart className="w-4 h-4" />
+                  What It Means
+                </h3>
+                <p className="text-slate-300 leading-relaxed">
+                  {selectedSignal.meaning}
+                </p>
+              </div>
+            </div>
+
+            {/* What to do Card */}
+            <div className="mb-4">
+              <div className="p-4 rounded-2xl bg-gradient-to-r from-violet-500/10 to-purple-500/10 border border-violet-500/30">
+                <h3 className="text-sm font-bold text-violet-400 mb-2 flex items-center gap-2">
+                  ⚡ What To Do
+                </h3>
+                <p className="text-slate-300 leading-relaxed">
+                  {selectedSignal.whatToDo}
+                </p>
+              </div>
+            </div>
+
+            {/* Extra tip from database */}
+            <div className="p-4 rounded-2xl bg-slate-800/50 border border-slate-700/50">
+              <h3 className="text-sm font-bold text-pink-400 mb-2 flex items-center gap-2">
+                💡 Pro Tip
+              </h3>
+              <p className="text-slate-400 text-sm">
+                {randomTips[Math.floor(Math.random() * randomTips.length)]?.tip || 
+                 "Always look for clusters of signals - one sign isn't enough to draw conclusions!"}
+              </p>
             </div>
           </div>
         </div>
