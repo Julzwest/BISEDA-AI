@@ -63,27 +63,78 @@ export default function MoodCheck() {
       const context = contexts.find(c => c.id === selectedContext);
       
       const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are a supportive dating coach and confidence expert. The user is checking in with their mood before a dating-related situation.
+        prompt: `You are an enthusiastic, supportive dating coach and confidence expert. The user needs a quick pep talk!
 
-USER'S CURRENT STATE:
+USER'S STATE:
 - Mood: ${mood?.label} ${mood?.emoji}
-- Energy Level: ${energy?.label} ${energy?.emoji}
+- Energy: ${energy?.label} ${energy?.emoji}
 - Situation: ${context?.label} ${context?.emoji}
 
-Based on this, provide:
-1. A warm, understanding acknowledgment of how they're feeling (1-2 sentences)
-2. 3 specific confidence boosters or tips tailored to their mood and situation
-3. A powerful affirmation or mantra they can repeat
-4. One practical action they can take RIGHT NOW
+Return a JSON object with this EXACT structure:
+{
+  "hypeMessage": "A short, energetic 1-2 sentence acknowledgment that hypes them up (max 25 words)",
+  "vibe": "one emoji that captures the overall vibe",
+  "tips": [
+    { "emoji": "🎯", "title": "Short title (2-4 words)", "text": "Quick actionable tip (max 15 words)" },
+    { "emoji": "💪", "title": "Short title (2-4 words)", "text": "Quick actionable tip (max 15 words)" },
+    { "emoji": "✨", "title": "Short title (2-4 words)", "text": "Quick actionable tip (max 15 words)" }
+  ],
+  "mantra": "Powerful 3-6 word affirmation they can repeat",
+  "action": "One specific thing to do RIGHT NOW (max 12 words)",
+  "actionEmoji": "emoji for the action"
+}
 
-Keep it encouraging, practical, and supportive. Be their hype person! ${langInstruction}
-
-Format with clear sections using emojis.`
+Be FUN, ENERGETIC, and SUPPORTIVE! Use casual, friendly language. ${langInstruction}`,
+        response_type: 'json'
       });
       
-      setAdvice(response);
+      // Parse the response
+      let parsedAdvice;
+      if (typeof response === 'string') {
+        try {
+          const jsonMatch = response.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            parsedAdvice = JSON.parse(jsonMatch[0]);
+          }
+        } catch (e) {
+          console.error('Parse error:', e);
+        }
+      } else if (typeof response === 'object') {
+        parsedAdvice = response;
+      }
+      
+      // Fallback if parsing fails
+      if (!parsedAdvice || !parsedAdvice.tips) {
+        parsedAdvice = {
+          hypeMessage: "You've got this! Your energy is exactly what you need right now. Let's channel it!",
+          vibe: "🔥",
+          tips: [
+            { emoji: "🎯", title: "Be Present", text: "Focus on enjoying the moment, not the outcome" },
+            { emoji: "💪", title: "Own Your Vibe", text: "Your confidence is your superpower - wear it!" },
+            { emoji: "✨", title: "Stay Curious", text: "Ask questions and genuinely listen to them" }
+          ],
+          mantra: "I am magnetic and worthy",
+          action: "Take 3 deep breaths and smile",
+          actionEmoji: "🌟"
+        };
+      }
+      
+      setAdvice(parsedAdvice);
     } catch (error) {
       console.error('Error getting advice:', error);
+      // Fallback advice
+      setAdvice({
+        hypeMessage: "Hey, you're already winning by checking in with yourself! Let's get you ready!",
+        vibe: "💫",
+        tips: [
+          { emoji: "🎯", title: "Breathe & Ground", text: "Take 3 deep breaths to center yourself" },
+          { emoji: "💪", title: "Remember Your Wins", text: "Think of a time you felt amazing" },
+          { emoji: "✨", title: "Be Authentically You", text: "The right person will love the real you" }
+        ],
+        mantra: "I am enough, always",
+        action: "Strike a power pose for 30 seconds",
+        actionEmoji: "🦸"
+      });
     }
     setIsLoading(false);
   };
@@ -250,40 +301,112 @@ Format with clear sections using emojis.`
           )}
         </div>
       ) : (
-        /* Results */
+        /* Results - Fun & Colorful! */
         <div className="space-y-4">
-          {/* Summary Card */}
-          <Card className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 border-purple-500/30 backdrop-blur-sm p-5">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="text-3xl">{moods.find(m => m.id === selectedMood)?.emoji}</div>
-              <div className="text-3xl">{energyLevels.find(e => e.id === selectedEnergy)?.emoji}</div>
-              <div className="text-3xl">{contexts.find(c => c.id === selectedContext)?.emoji}</div>
+          {/* Big Vibe Header */}
+          <div className="text-center py-4">
+            <div className="text-6xl mb-3 animate-bounce">{advice.vibe}</div>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500/30 to-pink-500/30 rounded-full border border-purple-400/30">
+              <span className="text-2xl">{moods.find(m => m.id === selectedMood)?.emoji}</span>
+              <span className="text-slate-400">+</span>
+              <span className="text-2xl">{energyLevels.find(e => e.id === selectedEnergy)?.emoji}</span>
+              <span className="text-slate-400">+</span>
+              <span className="text-2xl">{contexts.find(c => c.id === selectedContext)?.emoji}</span>
             </div>
-            <p className="text-purple-200 text-sm">
-              {t('mood.yourState', "Your current state: {{mood}}, {{energy}} energy, {{context}}", {
-                mood: moods.find(m => m.id === selectedMood)?.label,
-                energy: energyLevels.find(e => e.id === selectedEnergy)?.label,
-                context: contexts.find(c => c.id === selectedContext)?.label
-              })}
+          </div>
+
+          {/* Hype Message Card */}
+          <Card className="relative overflow-hidden bg-gradient-to-br from-fuchsia-500 via-purple-600 to-indigo-600 border-0 p-6">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-pink-400/20 rounded-full blur-xl translate-y-1/2 -translate-x-1/2" />
+            <div className="relative">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-2xl">🎉</span>
+                <span className="text-white/80 text-xs uppercase tracking-wider font-bold">Your Vibe Check</span>
+              </div>
+              <p className="text-white text-xl font-bold leading-relaxed">
+                {advice.hypeMessage}
+              </p>
+            </div>
+          </Card>
+
+          {/* Tips - Colorful Cards */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-xl">💡</span>
+              <span className="text-white font-bold">{t('mood.quickTips', 'Quick Tips for You')}</span>
+            </div>
+            {advice.tips?.map((tip, index) => {
+              const colors = [
+                'from-cyan-500 to-blue-600',
+                'from-orange-500 to-red-500',
+                'from-green-500 to-emerald-600'
+              ];
+              const bgColors = [
+                'bg-cyan-500/10 border-cyan-500/30',
+                'bg-orange-500/10 border-orange-500/30',
+                'bg-green-500/10 border-green-500/30'
+              ];
+              return (
+                <Card 
+                  key={index} 
+                  className={`${bgColors[index]} border backdrop-blur-sm p-4 transform transition-all hover:scale-[1.02]`}
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="flex items-start gap-3">
+                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${colors[index]} flex items-center justify-center flex-shrink-0 shadow-lg`}>
+                      <span className="text-2xl">{tip.emoji}</span>
+                    </div>
+                    <div>
+                      <h4 className="text-white font-bold text-sm mb-1">{tip.title}</h4>
+                      <p className="text-slate-300 text-sm">{tip.text}</p>
+                    </div>
+                  </div>
+                </Card>
+              );
+            })}
+          </div>
+
+          {/* Mantra Card */}
+          <Card className="bg-gradient-to-r from-amber-500/20 via-yellow-500/20 to-orange-500/20 border-yellow-500/30 p-5 text-center">
+            <div className="flex justify-center mb-2">
+              <span className="text-3xl">🔮</span>
+            </div>
+            <p className="text-yellow-200/80 text-xs uppercase tracking-widest mb-2 font-bold">
+              {t('mood.yourMantra', 'Your Power Mantra')}
+            </p>
+            <p className="text-2xl font-bold bg-gradient-to-r from-yellow-300 via-orange-300 to-amber-300 bg-clip-text text-transparent">
+              "{advice.mantra}"
             </p>
           </Card>
 
-          {/* Advice Card */}
-          <Card className="bg-slate-800/50 border-slate-700 backdrop-blur-sm p-5">
-            <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-purple-400" />
-              {t('mood.yourAdvice', 'Your Personalized Advice')}
-            </h3>
-            <div className="text-slate-300 leading-relaxed whitespace-pre-wrap">
-              {advice}
+          {/* Action Card */}
+          <Card className="relative overflow-hidden bg-slate-800/80 border-slate-600 p-5">
+            <div className="absolute top-0 right-0 w-20 h-20 bg-green-500/20 rounded-full blur-xl" />
+            <div className="relative flex items-center gap-4">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-green-500/30 flex-shrink-0">
+                <span className="text-3xl">{advice.actionEmoji}</span>
+              </div>
+              <div>
+                <p className="text-green-400 text-xs uppercase tracking-wider font-bold mb-1">
+                  ⚡ {t('mood.doThisNow', 'Do This RIGHT NOW')}
+                </p>
+                <p className="text-white font-bold text-lg">{advice.action}</p>
+              </div>
             </div>
           </Card>
+
+          {/* Fun Footer */}
+          <div className="text-center py-4">
+            <p className="text-slate-400 text-sm mb-4">
+              ✨ {t('mood.youGotThis', "You've got this!")} ✨
+            </p>
+          </div>
 
           {/* Reset Button */}
           <Button
             onClick={resetCheck}
-            variant="outline"
-            className="w-full border-slate-700 text-slate-300 hover:bg-slate-800"
+            className="w-full bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 text-white font-semibold py-5 border border-slate-600"
           >
             <RefreshCw className="w-4 h-4 mr-2" />
             {t('mood.checkAgain', 'Check Again')}
