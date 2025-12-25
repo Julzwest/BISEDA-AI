@@ -44,7 +44,7 @@ export default function Layout({ children, onLogout }) {
   // 5-tab navigation: Hub, Rizz, Practice, Tools, Profile
   const navItems = [
     { name: 'Hub', icon: Home, page: 'Copilot' },
-    { name: 'Rizz', icon: Zap, page: 'Wingman' },
+    { name: 'Wingman', icon: Zap, page: 'Wingman' },
     { name: 'Practice', icon: Users, page: 'Rehearsal' },
     { name: 'Tools', icon: Wrench, page: 'Tools' },
     { name: 'Profile', icon: User, page: 'Profile' }
