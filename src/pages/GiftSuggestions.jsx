@@ -56,6 +56,7 @@ export default function GiftSuggestions() {
   const [isLoadingShops, setIsLoadingShops] = useState(false);
   const [isLoadingMoreShops, setIsLoadingMoreShops] = useState(false);
   const [showLocalShops, setShowLocalShops] = useState(false); // Toggle for local shops
+  const [shoppingMode, setShoppingMode] = useState('online'); // 'online' or 'physical'
 
   // Gender options for gift recipient
   const genderOptions = [
@@ -427,154 +428,251 @@ Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
 
 
   return (
-    <div className="px-6 pt-20 pb-32 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950">
-      {/* Header */}
-      <div className="mb-6 text-center">
-        <div className="inline-block mb-3">
+    <div className="px-4 pt-6 pb-32 bg-gradient-to-b from-slate-950 via-rose-950/10 to-slate-950">
+      {/* Header - Fun & Playful */}
+      <div className="mb-6 text-center relative">
+        {/* Floating decorative elements */}
+        <div className="absolute -top-2 left-6 text-3xl animate-bounce opacity-60" style={{ animationDelay: '0s' }}>🎁</div>
+        <div className="absolute top-4 right-4 text-2xl animate-bounce opacity-50" style={{ animationDelay: '0.3s' }}>✨</div>
+        <div className="absolute top-16 left-4 text-xl animate-bounce opacity-40" style={{ animationDelay: '0.6s' }}>💝</div>
+        <div className="absolute top-8 right-8 text-xl animate-pulse opacity-30">💫</div>
+        
+        <div className="inline-block mb-4">
           <div className="relative">
-            <div className="w-20 h-20 bg-gradient-to-br from-pink-500 via-rose-500 to-red-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-pink-500/50 animate-pulse">
-              <Gift className="w-10 h-10 text-white" fill="currentColor" />
+            {/* Glowing ring effect */}
+            <div className="absolute inset-0 w-24 h-24 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 rounded-3xl blur-xl opacity-60 animate-pulse" />
+            <div className="relative w-24 h-24 bg-gradient-to-br from-pink-500 via-rose-500 to-red-600 rounded-3xl flex items-center justify-center shadow-2xl shadow-rose-500/50 transform hover:rotate-6 transition-transform">
+              <span className="text-5xl">🎁</span>
             </div>
-            <div className="absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center animate-bounce">
-              <Sparkles className="w-3 h-3 text-slate-900" />
+            <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center animate-bounce shadow-lg shadow-yellow-500/50">
+              <span className="text-lg">💖</span>
+            </div>
+            <div className="absolute -bottom-1 -left-1 w-6 h-6 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center animate-pulse">
+              <span className="text-sm">✨</span>
             </div>
           </div>
         </div>
-        <h1 className="text-3xl font-extrabold bg-gradient-to-r from-pink-300 via-rose-300 to-red-300 bg-clip-text text-transparent mb-2">
-          {t('gifts.title')}
+        <h1 className="text-3xl font-black mb-2">
+          <span className="bg-gradient-to-r from-pink-400 via-rose-400 to-red-400 bg-clip-text text-transparent">
+            Find the Perfect
+          </span>
+          <br />
+          <span className="bg-gradient-to-r from-rose-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
+            Gift! 🎯
+          </span>
         </h1>
-        <p className="text-slate-400 text-sm">{t('gifts.subtitle')}</p>
+        <p className="text-slate-400 text-sm flex items-center justify-center gap-2">
+          <span>Personalized suggestions</span>
+          <span className="text-pink-400">•</span>
+          <span>They'll love it!</span>
+        </p>
       </div>
 
-      {/* Partner Interests Input */}
+      {/* Shopping Mode Selector - Online vs Physical */}
       <div className="mb-6">
-        <label className="block text-sm font-semibold text-white mb-2">
-          {t('gifts.partnerInterests')}
-        </label>
+        <div className="flex gap-3 p-2 bg-slate-900/70 rounded-2xl border border-slate-700/50 backdrop-blur-sm">
+          <button
+            onClick={() => setShoppingMode('online')}
+            className={`flex-1 py-4 px-4 rounded-xl font-bold text-sm transition-all transform ${
+              shoppingMode === 'online'
+                ? 'bg-gradient-to-r from-purple-500 via-pink-500 to-rose-500 text-white shadow-lg shadow-pink-500/50 scale-[1.02]'
+                : 'text-slate-400 hover:text-white hover:bg-slate-800/50 hover:scale-[1.01]'
+            }`}
+          >
+            <span className="flex items-center justify-center gap-2">
+              <span className="text-xl">🛒</span>
+              <span>Online Stores</span>
+              {shoppingMode === 'online' && <span className="animate-pulse">✨</span>}
+            </span>
+          </button>
+          <button
+            onClick={() => setShoppingMode('physical')}
+            className={`flex-1 py-4 px-4 rounded-xl font-bold text-sm transition-all transform ${
+              shoppingMode === 'physical'
+                ? 'bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 text-white shadow-lg shadow-cyan-500/50 scale-[1.02]'
+                : 'text-slate-400 hover:text-white hover:bg-slate-800/50 hover:scale-[1.01]'
+            }`}
+          >
+            <span className="flex items-center justify-center gap-2">
+              <span className="text-xl">🏪</span>
+              <span>Local Shops</span>
+              {shoppingMode === 'physical' && <span className="animate-pulse">📍</span>}
+            </span>
+          </button>
+        </div>
+      </div>
+
+      {/* Partner Interests Input - Fun Design */}
+      <div className="mb-6">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
+            <span className="text-xl">💭</span>
+          </div>
+          <div>
+            <label className="block text-sm font-bold text-white">
+              {t('gifts.partnerInterests')}
+            </label>
+            <p className="text-xs text-slate-400">What do they love? 💕</p>
+          </div>
+        </div>
         <textarea
           value={partnerInterests}
           onChange={(e) => setPartnerInterests(e.target.value)}
           placeholder={t('gifts.partnerInterestsPlaceholder')}
-          className="w-full p-4 bg-slate-800/80 border-2 border-purple-500/30 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-purple-500 resize-none"
+          className="w-full p-4 bg-slate-800/80 border-2 border-pink-500/30 rounded-2xl text-white placeholder-slate-400 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20 resize-none transition-all"
           rows={3}
           style={{ fontSize: '16px' }}
         />
+        <div className="flex flex-wrap gap-2 mt-2">
+          <span className="text-xs text-slate-500">Quick ideas:</span>
+          {['🎵 Music', '📚 Books', '🎮 Gaming', '✈️ Travel', '🍳 Cooking'].map((idea) => (
+            <button
+              key={idea}
+              onClick={() => setPartnerInterests(prev => prev ? `${prev}, ${idea.split(' ')[1]}` : idea.split(' ')[1])}
+              className="px-2 py-1 bg-slate-800/50 hover:bg-pink-500/20 border border-slate-700 hover:border-pink-500/50 rounded-lg text-xs text-slate-300 hover:text-pink-300 transition-all"
+            >
+              {idea}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Gender Selection */}
+      {/* Gender Selection - Big & Playful */}
       <div className="mb-6">
-        <label className="block text-sm font-semibold text-white mb-3">
-          {t('gifts.giftFor', 'Gift for')}
-        </label>
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-500 to-pink-500 flex items-center justify-center shadow-lg shadow-rose-500/30">
+            <span className="text-xl">🎯</span>
+          </div>
+          <div>
+            <label className="block text-sm font-bold text-white">
+              {t('gifts.giftFor', 'Gift for')}
+            </label>
+            <p className="text-xs text-slate-400">Who's the lucky one? ✨</p>
+          </div>
+        </div>
         <div className="grid grid-cols-3 gap-3">
           {genderOptions.map((g) => (
             <button
               key={g.id}
               onClick={() => setPartnerGender(g.id)}
-              className={`p-4 rounded-xl text-center transition-all ${
+              className={`p-5 rounded-2xl text-center transition-all transform hover:scale-105 active:scale-95 ${
                 partnerGender === g.id
-                  ? `bg-gradient-to-r ${g.color} text-white shadow-lg scale-105`
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white border-2 border-slate-700'
+                  ? `bg-gradient-to-br ${g.color} text-white shadow-xl shadow-pink-500/30 scale-105`
+                  : 'bg-slate-800/60 text-slate-300 hover:bg-slate-700/60 border-2 border-slate-700/50 hover:border-pink-500/50'
               }`}
             >
-              <div className="text-3xl mb-1">{g.emoji}</div>
-              <div className="text-xs font-medium">{g.label}</div>
+              <div className="text-4xl mb-2">{g.emoji}</div>
+              <div className="text-sm font-bold">{g.label}</div>
             </button>
           ))}
         </div>
       </div>
 
-      {/* Occasion Selection */}
+      {/* Occasion Selection - Fun Cards */}
       <div className="mb-6">
-        <label className="block text-sm font-semibold text-white mb-3">
-          {t('gifts.specialOccasion')}
-        </label>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/30">
+            <span className="text-xl">🎉</span>
+          </div>
+          <div>
+            <label className="block text-sm font-bold text-white">
+              {t('gifts.specialOccasion')}
+            </label>
+            <p className="text-xs text-slate-400">What's the celebration? 🥳</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-3">
           {occasions.map((occ) => (
             <button
               key={occ.id}
               onClick={() => setOccasion(occ.id)}
-              className={`p-3 rounded-xl text-sm font-medium transition-all ${
+              className={`p-4 rounded-2xl text-center transition-all transform hover:scale-105 active:scale-95 ${
                 occasion === occ.id
-                  ? 'bg-gradient-to-r from-pink-600 to-rose-600 text-white shadow-lg shadow-pink-500/30 scale-105'
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white'
+                  ? 'bg-gradient-to-br from-pink-500 to-rose-600 text-white shadow-xl shadow-pink-500/30 scale-105'
+                  : 'bg-slate-800/60 text-slate-300 hover:bg-slate-700/60 border border-slate-700/50 hover:border-pink-500/50'
               }`}
             >
-              <div className="text-2xl mb-1">{occ.icon}</div>
-              <div className="text-xs">{occ.name}</div>
+              <div className="text-3xl mb-1">{occ.icon}</div>
+              <div className="text-xs font-bold">{occ.name}</div>
             </button>
           ))}
         </div>
       </div>
 
-      {/* Budget Selection */}
+      {/* Budget Selection - Colorful Chips */}
       <div className="mb-6">
-        <label className="block text-sm font-semibold text-white mb-3">
-          {t('gifts.budget')}
-        </label>
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-green-500/30">
+            <span className="text-xl">💰</span>
+          </div>
+          <div>
+            <label className="block text-sm font-bold text-white">
+              {t('gifts.budget')}
+            </label>
+            <p className="text-xs text-slate-400">How much do you want to spend? 💸</p>
+          </div>
+        </div>
         <div className="grid grid-cols-4 gap-2">
-          {budgets.map((bud) => (
-            <button
-              key={bud.id}
-              onClick={() => setBudget(bud.value)}
-              className={`p-3 rounded-xl text-sm font-medium transition-all ${
-                budget === bud.value
-                  ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30 scale-105'
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white'
-              }`}
-            >
-              {bud.name}
-            </button>
-          ))}
+          {budgets.map((bud, index) => {
+            const colors = [
+              'from-green-500 to-emerald-500',
+              'from-blue-500 to-cyan-500',
+              'from-purple-500 to-pink-500',
+              'from-amber-500 to-orange-500'
+            ];
+            return (
+              <button
+                key={bud.id}
+                onClick={() => setBudget(bud.value)}
+                className={`p-3 rounded-xl text-sm font-bold transition-all transform hover:scale-105 active:scale-95 ${
+                  budget === bud.value
+                    ? `bg-gradient-to-r ${colors[index]} text-white shadow-lg shadow-purple-500/30 scale-105`
+                    : 'bg-slate-800/60 text-slate-300 hover:bg-slate-700/60 border border-slate-700/50'
+                }`}
+              >
+                {bud.name}
+              </button>
+            );
+          })}
         </div>
       </div>
 
       {/* Current Country Display */}
-      <div className="mb-4 p-3 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-xl">
-        <div className="flex items-center gap-2">
-          <Globe className="w-4 h-4 text-cyan-400" />
-          <span className="text-cyan-300 text-sm font-medium">
-            {t('gifts.location')}: {currentCountry?.flag} {localizedCountryName}
-          </span>
-          <a href="#/profile" className="ml-auto text-xs text-cyan-400 hover:text-cyan-300 underline">
+      <div className="mb-4 p-4 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-2xl">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
+            <Globe className="w-5 h-5 text-white" />
+          </div>
+          <div className="flex-1">
+            <span className="text-white text-sm font-bold block">
+              {t('gifts.location')}: {currentCountry?.flag} {localizedCountryName}
+            </span>
+            <span className="text-cyan-300 text-xs">Prices shown in {currencySymbol}</span>
+          </div>
+          <a href="#/profile" className="px-3 py-1.5 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 rounded-lg text-xs text-cyan-300 font-medium transition-all">
             {t('gifts.change')}
           </a>
         </div>
       </div>
 
-      {/* Local Shops Toggle (Optional) */}
-      <div className="mb-6">
-        <button
-          onClick={() => setShowLocalShops(!showLocalShops)}
-          className={`w-full p-3 rounded-xl text-sm font-medium transition-all flex items-center justify-between ${
-            showLocalShops
-              ? 'bg-cyan-500/20 border-2 border-cyan-500/50 text-cyan-300'
-              : 'bg-slate-800/50 border-2 border-slate-700 text-slate-400 hover:border-slate-600'
-          }`}
-        >
-          <span className="flex items-center gap-2">
-            <Store className="w-4 h-4" />
-            {t('gifts.alsoShowLocalShops', 'Also show local shops near me')}
-          </span>
-          <span className={`w-10 h-6 rounded-full transition-all flex items-center ${showLocalShops ? 'bg-cyan-500 justify-end' : 'bg-slate-600 justify-start'}`}>
-            <span className="w-5 h-5 bg-white rounded-full mx-0.5 shadow-md"></span>
-          </span>
-        </button>
-        
-        {showLocalShops && (
-          <div className="mt-3 p-3 bg-slate-800/50 rounded-xl">
-            <label className="block text-xs font-medium text-slate-400 mb-2">
-              {t('gifts.selectCity', 'Select your city')}:
-            </label>
+      {/* City Selection for Physical Mode */}
+      {shoppingMode === 'physical' && (
+        <div className="mb-6">
+          <div className="p-4 bg-gradient-to-br from-cyan-900/30 to-blue-900/30 border border-cyan-500/30 rounded-2xl">
+            <div className="flex items-center gap-2 mb-3">
+              <MapPin className="w-5 h-5 text-cyan-400" />
+              <span className="text-white font-bold">{t('gifts.selectCity', 'Select your city')}</span>
+            </div>
+            <p className="text-xs text-slate-400 mb-3">We'll find gift shops near you! 📍</p>
             <div className="flex flex-wrap gap-2">
               {localizedCities.map((city) => (
                 <button
                   key={city.nameEn}
                   onClick={() => setSelectedCity(selectedCity === city.displayName ? '' : city.displayName)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all transform hover:scale-105 ${
                     selectedCity === city.displayName
-                      ? 'bg-cyan-500 text-white'
-                      : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                      ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/30'
+                      : 'bg-slate-800/70 text-slate-300 hover:bg-slate-700 border border-slate-700/50'
                   }`}
                 >
                   {city.displayName}
@@ -582,40 +680,68 @@ Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
               ))}
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
-      {/* Generate Button */}
+      {/* Generate Button - Big & Fun */}
       <div className="mb-6">
         <Button
-          onClick={generateGiftSuggestions}
-          disabled={isLoading || !partnerInterests.trim()}
-          className="w-full bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 hover:from-pink-600 hover:via-rose-600 hover:to-red-600 text-white font-bold py-3 text-base disabled:opacity-50"
+          onClick={() => {
+            generateGiftSuggestions();
+            if (shoppingMode === 'physical' && selectedCity) {
+              searchLocalShops();
+            }
+          }}
+          disabled={isLoading || !partnerInterests.trim() || (shoppingMode === 'physical' && !selectedCity)}
+          className={`w-full py-5 rounded-2xl font-bold text-lg transition-all transform hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:transform-none ${
+            shoppingMode === 'online' 
+              ? 'bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 hover:from-pink-600 hover:via-rose-600 hover:to-red-600 shadow-xl shadow-pink-500/30'
+              : 'bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 hover:from-cyan-600 hover:via-blue-600 hover:to-indigo-600 shadow-xl shadow-cyan-500/30'
+          } text-white`}
         >
           {isLoading ? (
             <span className="flex items-center justify-center gap-2">
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-6 h-6 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
               <span>{t('gifts.generating')}</span>
             </span>
           ) : (
             <span className="flex items-center justify-center gap-2">
-              <Sparkles className="w-5 h-5" />
-              <span>{t('gifts.generateSuggestions')}</span>
+              {shoppingMode === 'online' ? (
+                <>
+                  <span className="text-xl">🛒</span>
+                  <span>Find Online Gifts</span>
+                  <span className="text-xl">✨</span>
+                </>
+              ) : (
+                <>
+                  <span className="text-xl">🏪</span>
+                  <span>Find Local Shops</span>
+                  <span className="text-xl">📍</span>
+                </>
+              )}
             </span>
           )}
         </Button>
+        {shoppingMode === 'physical' && !selectedCity && (
+          <p className="text-center text-amber-400 text-sm mt-2 animate-pulse">
+            👆 Select your city above first
+          </p>
+        )}
       </div>
 
       {/* Loading Local Shops */}
-      {isLoadingShops && selectedCity && (
-        <div className="text-center py-6 mb-6">
-          <div className="inline-block w-6 h-6 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin" />
-          <p className="text-slate-400 mt-3 text-sm">{t('gifts.searchingLocalShops', { city: selectedCity })}</p>
+      {isLoadingShops && selectedCity && shoppingMode === 'physical' && (
+        <div className="text-center py-8 mb-6">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 mb-4">
+            <div className="w-8 h-8 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin" />
+          </div>
+          <p className="text-white font-bold">{t('gifts.searchingLocalShops', { city: selectedCity })}</p>
+          <p className="text-slate-400 text-sm mt-1">Finding the best gift shops near you... 🔍</p>
         </div>
       )}
 
-      {/* Local Shops Section - SHOWN FIRST */}
-      {selectedCity && localShops.length > 0 && (
+      {/* Local Shops Section - SHOWN FOR PHYSICAL MODE */}
+      {shoppingMode === 'physical' && selectedCity && localShops.length > 0 && (
         <div className="mb-8">
           <div className="flex items-center justify-center gap-2 mb-4">
             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent"></div>
@@ -713,8 +839,8 @@ Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
         </div>
       )}
 
-      {/* Online Gift Suggestions */}
-      {!isLoading && suggestions.length > 0 && (
+      {/* Online Gift Suggestions - SHOWN FOR ONLINE MODE */}
+      {shoppingMode === 'online' && !isLoading && suggestions.length > 0 && (
         <div className="mb-6">
           <div className="flex items-center justify-center gap-2 mb-4">
             <div className="h-px flex-1 bg-gradient-to-r from-transparent via-pink-500 to-transparent"></div>
@@ -844,13 +970,23 @@ Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
         </div>
       )}
 
-      {/* Empty State */}
+      {/* Empty State - Fun & Encouraging */}
       {!isLoading && !isLoadingShops && suggestions.length === 0 && localShops.length === 0 && (
-        <div className="text-center py-12">
-          <div className="text-6xl mb-3">🎁</div>
-          <p className="text-slate-400 text-sm mb-2">{t('gifts.emptyState')}</p>
-          <p className="text-slate-500 text-xs">{t('gifts.emptyStateSubtitle')}</p>
-        </div>
+        <Card className="bg-gradient-to-br from-pink-900/20 via-purple-900/20 to-indigo-900/20 border border-purple-500/20">
+          <div className="text-center py-12 px-6">
+            <div className="relative inline-block mb-4">
+              <span className="text-7xl">🎁</span>
+              <span className="absolute -top-2 -right-2 text-2xl animate-ping">✨</span>
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2">Let's find something special!</h3>
+            <p className="text-slate-300 mb-4">{t('gifts.emptyState')}</p>
+            <div className="flex flex-wrap justify-center gap-2">
+              <span className="px-3 py-1.5 bg-pink-500/20 rounded-full text-sm text-pink-300 animate-pulse">💝 Thoughtful gifts</span>
+              <span className="px-3 py-1.5 bg-purple-500/20 rounded-full text-sm text-purple-300 animate-pulse" style={{ animationDelay: '0.2s' }}>🎯 Personalized ideas</span>
+              <span className="px-3 py-1.5 bg-rose-500/20 rounded-full text-sm text-rose-300 animate-pulse" style={{ animationDelay: '0.4s' }}>💖 Made with love</span>
+            </div>
+          </div>
+        </Card>
       )}
 
       {/* Affiliate Info */}
