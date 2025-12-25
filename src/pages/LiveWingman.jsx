@@ -160,11 +160,24 @@ export default function LiveWingman() {
   const [theirMessage, setTheirMessage] = useState('');
   const [theirName, setTheirName] = useState('');
   const [platform, setPlatform] = useState('');
+  const [struggle, setStruggle] = useState('');
   const [analysis, setAnalysis] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [conversationContext, setConversationContext] = useState([]);
   const [copiedIndex, setCopiedIndex] = useState(null);
   const [sessionActive, setSessionActive] = useState(false);
+
+  // Struggle options
+  const struggles = [
+    { id: 'dry_texts', label: 'Dry texts', emoji: '😐', desc: 'Getting short/boring replies' },
+    { id: 'left_on_read', label: 'Left on read', emoji: '👀', desc: 'They stopped replying' },
+    { id: 'friend_zone', label: 'Friend zone', emoji: '🫂', desc: 'Stuck as friends' },
+    { id: 'asking_out', label: 'Asking out', emoji: '📅', desc: 'Getting the date' },
+    { id: 'keeping_interest', label: 'Keeping interest', emoji: '🔥', desc: 'Maintaining the spark' },
+    { id: 'being_too_nice', label: 'Too nice', emoji: '😇', desc: 'Coming across as boring' },
+    { id: 'flirting', label: 'Flirting', emoji: '😏', desc: 'Building attraction' },
+    { id: 'other', label: 'Other', emoji: '💭', desc: 'Something else' }
+  ];
   
   // Modals
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
@@ -228,13 +241,21 @@ export default function LiveWingman() {
         ? `Previous messages:\n${updatedContext.slice(-5).map(m => `${m.sender === 'them' ? theirName : 'You'}: ${m.text}`).join('\n')}\n\nLatest message from ${theirName}:`
         : `First message from ${theirName}:`;
       
+      // Get struggle context if selected
+      const struggleContext = struggle ? struggles.find(s => s.id === struggle) : null;
+      const struggleText = struggleContext 
+        ? `\n- MAIN STRUGGLE: ${struggleContext.label} (${struggleContext.desc}) - FOCUS YOUR ADVICE ON FIXING THIS!`
+        : '';
+      
       const prompt = `${WINGMAN_PROMPT}
 
 SITUATION:
 - Chatting with: ${theirName}
-- Platform: ${platform || 'dating app'}
+- Platform: ${platform || 'dating app'}${struggleText}
 - ${contextString}
 "${theirMessage}"
+
+${struggleContext ? `⚠️ PRIORITY: This person is struggling with "${struggleContext.label}" - tailor your advice to specifically help with this issue!` : ''}
 
 Analyze and provide reply options:`;
       
@@ -369,6 +390,34 @@ Analyze and provide reply options:`;
                 </div>
               </div>
 
+              {/* What are you struggling with? */}
+              <div>
+                <label className="block text-sm font-medium text-slate-300 mb-2">
+                  What are you struggling with? <span className="text-slate-500">(optional)</span>
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {struggles.map(s => (
+                    <button
+                      key={s.id}
+                      onClick={() => setStruggle(struggle === s.id ? '' : s.id)}
+                      className={`p-3 rounded-xl text-left transition-all ${
+                        struggle === s.id
+                          ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white'
+                          : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                      }`}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg">{s.emoji}</span>
+                        <div>
+                          <p className="font-medium text-sm">{s.label}</p>
+                          <p className={`text-xs ${struggle === s.id ? 'text-white/70' : 'text-slate-500'}`}>{s.desc}</p>
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {/* Start Button */}
               <Button
                 onClick={startSession}
@@ -408,10 +457,17 @@ Analyze and provide reply options:`;
             </div>
             <div>
               <h1 className="text-lg font-bold text-white">Live with {theirName}</h1>
-              <p className="text-xs text-amber-400 flex items-center gap-1">
-                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                Session Active
-              </p>
+              <div className="flex items-center gap-2">
+                <p className="text-xs text-amber-400 flex items-center gap-1">
+                  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                  Session Active
+                </p>
+                {struggle && (
+                  <span className="text-xs px-2 py-0.5 bg-purple-500/20 text-purple-300 rounded-full">
+                    {struggles.find(s => s.id === struggle)?.emoji} {struggles.find(s => s.id === struggle)?.label}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
           <Button
