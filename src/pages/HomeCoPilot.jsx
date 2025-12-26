@@ -620,7 +620,7 @@ export default function HomeCoPilot() {
         <span className="absolute top-72 right-6 text-2xl animate-bounce opacity-50" style={{ animationDuration: '3.5s', animationDelay: '0.3s' }}>🔥</span>
       </div>
 
-      <div className="relative z-10 px-5 pt-8 pb-28 w-full max-w-full">
+      <div className="relative z-10 px-5 pt-8 pb-20 w-full max-w-full">
         
         {/* Logo + Branding */}
         <div className="text-center mb-6">
@@ -805,7 +805,7 @@ export default function HomeCoPilot() {
         </div>
 
         {/* Works With */}
-        <div className="pb-8">
+        <div>
           <p className="text-slate-500 text-xs text-center mb-3 uppercase tracking-wider font-medium">Works with all dating apps</p>
           <div className="flex justify-center gap-3 flex-wrap">
             {[
