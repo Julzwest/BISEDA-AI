@@ -10,7 +10,8 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  RefreshCw
+  RefreshCw,
+  Send
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { base44 } from '@/api/base44Client';
@@ -1113,7 +1114,7 @@ Return JSON ONLY:
               </button>
             </div>
           </div>
-          </div>
+        </div>
 
         {/* Current Status Card */}
         <div className="px-5 mb-4">
