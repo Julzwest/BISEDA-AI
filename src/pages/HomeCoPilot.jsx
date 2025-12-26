@@ -12,8 +12,55 @@ import {
   Shield,
   CheckCircle2,
   Flame,
-  Stars
+  Stars,
+  Loader2,
+  Plus,
+  History,
+  Trash2,
+  ChevronRight
 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import base44 from '@/api/base44Client';
+import {
+  startNewConversation,
+  addMessageToConversation,
+  getRecentConversations,
+  getConversation,
+  deleteConversation
+} from '@/utils/chatHistory';
+
+// Vibe Coach System Prompt
+const VIBE_COACH_SYSTEM_PROMPT = `You are an expert Intimacy and Relationship Coach. Your role is to provide supportive, educational, and empowering guidance on building deeper connections, enhancing romance, and improving communication in intimate relationships.
+
+YOUR VIBE:
+- Professional, warm, and approachable
+- Focus on healthy relationships, mutual respect, and consent
+- Empower users to explore intimacy confidently and safely
+- Sex-positive, but always within App Store guidelines (no explicit content)
+- Emphasize communication, emotional connection, and shared pleasure
+
+HOW YOU TALK:
+- Use clear, encouraging, and respectful language
+- Be descriptive and helpful in your guidance, focusing on emotional and physical connection
+- Add positive affirmations and encouragement
+- Use phrases like "Consider trying...", "A great way to explore...", "Focus on..."
+- Be enthusiastic about helping people build fulfilling intimate lives
+- Keep responses concise but helpful (2-3 paragraphs max)
+
+WHAT YOU HELP WITH:
+💕 Building emotional connection and intimacy
+💬 Communication mastery in relationships
+✨ Enhancing romance and keeping the spark alive
+🔥 Physical intimacy guidance (suggestive, not explicit)
+💪 Self-confidence and body positivity
+
+ALWAYS EMPHASIZE:
+- Consent is essential - enthusiastic yes from both partners
+- Communication is key - talk to your partner
+- Everyone is different - encourage exploration together
+- Respect boundaries - yours and theirs
+
+You're here to help people have healthier, happier, more connected relationships. Be the supportive coach everyone deserves!`;
 
 export default function HomeCoPilot() {
   const { i18n } = useTranslation();
@@ -23,6 +70,24 @@ export default function HomeCoPilot() {
   // Secret admin access - tap logo 6 times
   const [logoTapCount, setLogoTapCount] = useState(0);
   const tapTimeoutRef = useRef(null);
+  
+  // Vibe Coach state
+  const [showVibeCoach, setShowVibeCoach] = useState(false);
+  const [chatMessages, setChatMessages] = useState([]);
+  const [chatInput, setChatInput] = useState('');
+  const [chatLoading, setChatLoading] = useState(false);
+  const [chatConversationHistory, setChatConversationHistory] = useState([]);
+  const [currentChatConversationId, setCurrentChatConversationId] = useState(null);
+  const [showChatHistory, setShowChatHistory] = useState(false);
+  const messagesEndRef = useRef(null);
+  
+  // Chat topics
+  const chatTopics = [
+    { emoji: '💬', label: 'Communication tips' },
+    { emoji: '✨', label: 'Setting the mood' },
+    { emoji: '💕', label: 'Building connection' },
+    { emoji: '🔥', label: 'Keeping the spark' }
+  ];
   
   const handleLogoTap = () => {
     if (tapTimeoutRef.current) {
@@ -70,6 +135,124 @@ export default function HomeCoPilot() {
 
   const handleUploadScreenshot = () => {
     navigate('/copilot/upload?mode=screenshot');
+  };
+  
+  // Vibe Coach functions
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+  
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatMessages]);
+  
+  useEffect(() => {
+    if (showVibeCoach && chatMessages.length === 0) {
+      const convId = startNewConversation('Vibe Coach');
+      setCurrentChatConversationId(convId);
+      setChatMessages([{
+        role: 'assistant',
+        content: "Hey! 👋 I'm your Vibe Coach - here to help with relationships, communication, and building deeper connections.\n\nWhat's on your mind? 💕",
+        timestamp: new Date().toISOString()
+      }]);
+    }
+  }, [showVibeCoach]);
+  
+  const loadConversations = () => {
+    const recent = getRecentConversations();
+    setChatConversationHistory(recent);
+  };
+  
+  useEffect(() => {
+    loadConversations();
+  }, []);
+  
+  const handleChatSend = async () => {
+    if (!chatInput.trim() || chatLoading) return;
+    
+    const userMessage = {
+      role: 'user',
+      content: chatInput.trim(),
+      timestamp: new Date().toISOString()
+    };
+    
+    setChatMessages(prev => [...prev, userMessage]);
+    setChatInput('');
+    setChatLoading(true);
+    
+    if (currentChatConversationId) {
+      addMessageToConversation(currentChatConversationId, userMessage);
+    }
+    
+    try {
+      const conversationContext = chatMessages
+        .slice(-6)
+        .map(m => `${m.role === 'user' ? 'User' : 'Coach'}: ${m.content}`)
+        .join('\n');
+      
+      const result = await base44.integrations.Core.InvokeLLM({
+        prompt: `${conversationContext}\nUser: ${userMessage.content}\n\nRespond as the Vibe Coach:`,
+        system_prompt: VIBE_COACH_SYSTEM_PROMPT
+      });
+      
+      const aiMessage = {
+        role: 'assistant',
+        content: result.response || result,
+        timestamp: new Date().toISOString()
+      };
+      
+      setChatMessages(prev => [...prev, aiMessage]);
+      
+      if (currentChatConversationId) {
+        addMessageToConversation(currentChatConversationId, aiMessage);
+      }
+    } catch (error) {
+      console.error('Chat error:', error);
+      setChatMessages(prev => [...prev, {
+        role: 'assistant',
+        content: "Oops! Something went wrong. Let's try that again? 💕",
+        timestamp: new Date().toISOString()
+      }]);
+    } finally {
+      setChatLoading(false);
+    }
+  };
+  
+  const handleChatKeyPress = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleChatSend();
+    }
+  };
+  
+  const startNewChat = () => {
+    const convId = startNewConversation('Vibe Coach');
+    setCurrentChatConversationId(convId);
+    setChatMessages([{
+      role: 'assistant',
+      content: "Fresh start! 🌟 What would you like to talk about?",
+      timestamp: new Date().toISOString()
+    }]);
+    setShowChatHistory(false);
+    loadConversations();
+  };
+  
+  const loadChatConversation = (convId) => {
+    const conv = getConversation(convId);
+    if (conv && conv.messages) {
+      setCurrentChatConversationId(convId);
+      setChatMessages(conv.messages);
+      setShowChatHistory(false);
+    }
+  };
+  
+  const handleDeleteConversation = (convId, e) => {
+    e.stopPropagation();
+    deleteConversation(convId);
+    loadConversations();
+    if (currentChatConversationId === convId) {
+      startNewChat();
+    }
   };
 
   return (
@@ -179,11 +362,234 @@ export default function HomeCoPilot() {
         </div>
 
         {/* Trust Badge */}
-        <div className="flex items-center justify-center gap-2 mb-10 px-4">
+        <div className="flex items-center justify-center gap-2 mb-6 px-4">
           <Shield className="w-4 h-4 text-emerald-400" />
           <p className="text-slate-400 text-sm">
             100% private. Your chats stay on your device.
           </p>
+        </div>
+        
+        {/* OR Divider */}
+        <div className="flex items-center gap-3 mb-6">
+          <div className="flex-1 h-px bg-slate-700"></div>
+          <span className="text-slate-500 text-sm font-medium">OR</span>
+          <div className="flex-1 h-px bg-slate-700"></div>
+        </div>
+        
+        {/* Vibe Coach Card */}
+        <div className="mb-10">
+          {!showVibeCoach ? (
+            <button
+              onClick={() => setShowVibeCoach(true)}
+              className="w-full group relative overflow-hidden active:scale-[0.98] transition-transform"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-pink-500 via-rose-500 to-pink-500 rounded-2xl animate-gradient-x opacity-80"></div>
+              
+              <div className="relative m-[2px] bg-gradient-to-br from-slate-900 via-pink-900/30 to-slate-900 rounded-2xl p-5 group-hover:from-slate-800 group-hover:via-pink-800/40 group-hover:to-slate-800 transition-all duration-300">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-pink-500 via-rose-500 to-red-500 rounded-2xl flex items-center justify-center shadow-lg shadow-pink-500/30 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                    <Heart className="w-8 h-8 text-white" fill="white" />
+                  </div>
+                  <div className="text-left flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="text-xl font-bold text-white group-hover:text-pink-200 transition-colors">
+                        Vibe Coach
+                      </h3>
+                      <span className="px-2 py-0.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-[10px] font-bold rounded-full uppercase flex items-center gap-1">
+                        <Sparkles className="w-3 h-3" /> AI
+                      </span>
+                    </div>
+                    <p className="text-slate-400 text-sm">Relationship & intimacy guidance 💕</p>
+                  </div>
+                  <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-pink-500 transition-all duration-300">
+                    <ArrowRight className="w-5 h-5 text-white group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </div>
+            </button>
+          ) : (
+            /* Vibe Coach Chat Interface */
+            <div className="bg-gradient-to-br from-slate-900 via-pink-900/20 to-slate-900 rounded-2xl border border-pink-500/30 overflow-hidden">
+              {/* Chat Header */}
+              <div className="p-4 border-b border-pink-500/20 bg-gradient-to-r from-pink-500/10 to-rose-500/10">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-rose-500 rounded-xl flex items-center justify-center">
+                      <Heart className="w-5 h-5 text-white" fill="white" />
+                    </div>
+                    <div>
+                      <h3 className="text-white font-bold text-lg">Vibe Coach</h3>
+                      <span className="text-pink-300 text-xs flex items-center gap-1">
+                        <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                        Online
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setShowChatHistory(!showChatHistory)}
+                      className="p-2 hover:bg-pink-500/20 rounded-lg transition-colors"
+                      title="Chat History"
+                    >
+                      <History className="w-5 h-5 text-pink-300" />
+                    </button>
+                    <button
+                      onClick={startNewChat}
+                      className="p-2 hover:bg-pink-500/20 rounded-lg transition-colors"
+                      title="New Chat"
+                    >
+                      <Plus className="w-5 h-5 text-pink-300" />
+                    </button>
+                    <button
+                      onClick={() => setShowVibeCoach(false)}
+                      className="text-slate-400 hover:text-white text-sm px-3 py-1 rounded-lg hover:bg-slate-700 transition-colors"
+                    >
+                      Minimize
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Chat History Panel */}
+              {showChatHistory && (
+                <div className="border-b border-pink-500/20 bg-slate-900/50 p-3 max-h-48 overflow-y-auto">
+                  <p className="text-slate-400 text-xs mb-2">Recent Conversations</p>
+                  {chatConversationHistory.length === 0 ? (
+                    <p className="text-slate-500 text-sm text-center py-2">No previous chats</p>
+                  ) : (
+                    <div className="space-y-1">
+                      {chatConversationHistory.map((conv) => (
+                        <div
+                          key={conv.id}
+                          onClick={() => loadChatConversation(conv.id)}
+                          className={`flex items-center justify-between p-2 rounded-lg cursor-pointer transition-colors ${
+                            currentChatConversationId === conv.id
+                              ? 'bg-pink-500/20 border border-pink-500/30'
+                              : 'hover:bg-slate-800'
+                          }`}
+                        >
+                          <div className="flex-1 min-w-0">
+                            <p className="text-white text-sm truncate">{conv.title || 'Chat'}</p>
+                            <p className="text-slate-500 text-xs">
+                              {new Date(conv.updatedAt).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <button
+                            onClick={(e) => handleDeleteConversation(conv.id, e)}
+                            className="p-1 hover:bg-red-500/20 rounded text-slate-500 hover:text-red-400"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+              
+              {/* Quick Topics */}
+              {chatMessages.length <= 1 && (
+                <div className="px-4 py-3 border-b border-pink-500/20">
+                  <p className="text-slate-400 text-xs mb-2">Quick topics:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {chatTopics.map((topic, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setChatInput(topic.label)}
+                        className="px-3 py-1.5 bg-slate-800/60 hover:bg-pink-500/20 border border-slate-700/50 hover:border-pink-500/50 rounded-full text-xs text-slate-300 hover:text-white transition-all flex items-center gap-1"
+                      >
+                        <span>{topic.emoji}</span>
+                        <span>{topic.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {/* Messages */}
+              <div className="h-64 overflow-y-auto px-4 py-3 space-y-3">
+                {chatMessages.map((msg, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                  >
+                    <div
+                      className={`max-w-[85%] rounded-2xl px-4 py-3 ${
+                        msg.role === 'user'
+                          ? 'bg-gradient-to-r from-pink-500 to-rose-600 text-white'
+                          : 'bg-slate-800/80 text-slate-100 border border-pink-500/20'
+                      }`}
+                    >
+                      <p className="whitespace-pre-wrap text-sm leading-relaxed">{msg.content}</p>
+                    </div>
+                  </div>
+                ))}
+                
+                {chatLoading && (
+                  <div className="flex justify-start">
+                    <div className="bg-slate-800/80 rounded-2xl px-4 py-3 border border-pink-500/20">
+                      <div className="flex gap-1">
+                        <span className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                        <span className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                        <span className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
+                <div ref={messagesEndRef} />
+              </div>
+              
+              {/* Chat Input */}
+              <div className="p-4 border-t border-pink-500/20 bg-slate-900/50">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={chatInput}
+                    onChange={(e) => setChatInput(e.target.value)}
+                    onKeyPress={handleChatKeyPress}
+                    placeholder="Ask me anything about relationships..."
+                    className="flex-1 bg-slate-800/80 border border-pink-500/30 rounded-xl px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-pink-500 text-sm"
+                    disabled={chatLoading}
+                  />
+                  <Button
+                    onClick={handleChatSend}
+                    disabled={!chatInput.trim() || chatLoading}
+                    className="bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 px-5 rounded-xl disabled:opacity-50"
+                  >
+                    {chatLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
+                  </Button>
+                </div>
+                
+                {/* OR - Upload Screenshot */}
+                <div className="mt-3">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="flex-1 h-px bg-slate-700"></div>
+                    <span className="text-slate-500 text-[10px]">OR</span>
+                    <div className="flex-1 h-px bg-slate-700"></div>
+                  </div>
+                  
+                  <button
+                    onClick={() => navigate('/copilot/upload')}
+                    className="w-full bg-slate-800/60 border border-purple-500/30 rounded-xl p-3 hover:border-purple-500/50 transition-all flex items-center gap-3 group"
+                  >
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+                      <Camera className="w-5 h-5 text-white" />
+                    </div>
+                    <div className="flex-1 text-left">
+                      <p className="text-white text-sm font-medium">Upload Screenshot</p>
+                      <p className="text-slate-500 text-xs">Get advice on your chats</p>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-slate-500" />
+                  </button>
+                </div>
+                
+                <p className="text-center text-slate-500 text-[10px] mt-3">
+                  💕 Educational advice for healthy relationships.
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Stats Section */}

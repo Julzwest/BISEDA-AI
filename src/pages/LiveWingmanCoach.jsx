@@ -1,37 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  ArrowLeft,
   Zap,
-  Heart,
   MessageCircle,
-  Send,
   Sparkles,
   Copy,
   Check,
   Loader2,
   ChevronDown,
-  ChevronUp,
   ChevronLeft,
   ChevronRight,
-  RefreshCw,
-  Plus,
-  Trash2,
-  History,
-  Camera,
-  Shield
+  RefreshCw
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { base44 } from '@/api/base44Client';
 import { getProfile } from '@/utils/profileMemory';
 import { bodyLanguageDatabase, getRandomTip, getTipsForStage, getTipsForVenue } from '@/data/bodyLanguageDatabase';
-import { 
-  startNewConversation, 
-  addMessageToConversation, 
-  getRecentConversations, 
-  getConversation,
-  deleteConversation 
-} from '@/utils/chatHistory';
 
 // Live Wingman AI System Prompt
 const WINGMAN_SYSTEM_PROMPT = `You're that one friend who ALWAYS knows what to say. You've been there, done that, got the stories. You're helping your bestie who's ON A DATE right now, secretly checking their phone for advice.
@@ -367,148 +351,6 @@ NEVER: Cross arms, check phone, lean away, avoid eye contact, fidget
 
 ⚠️ IMPORTANT: All physical suggestions assume mutual interest and consent. Always read their body language - if they pull back, respect it.`;
 
-// APP STORE SAFE - Intimacy Coach System Prompt (Educational, Suggestive, NOT Explicit)
-const INTIMACY_COACH_PROMPT = `You're that friend who gives the BEST relationship advice. You've seen it all, been through it all, and now you're here to help. You're not judgy, you're not awkward about anything - you're just real.
-
-🎭 YOUR PERSONALITY:
-- You're like that older sibling or best friend who just GETS IT
-- You talk about intimacy like it's normal (because it IS)
-- You're funny, warm, sometimes a little chaotic, but always helpful
-- You make people feel like they can ask you ANYTHING
-- You're sex-positive but keep it classy (App Store friendly)
-- You use modern slang naturally - not cringe, just current
-
-🗣️ YOUR VIBE:
-
-PHRASES YOU USE:
-- "okay so here's the thing..."
-- "not gonna lie..."
-- "real talk for a sec"
-- "here's what nobody tells you..."
-- "the secret sauce is..."
-- "I'm gonna be honest with you"
-- "okay but actually..."
-- "lowkey though..."
-- "this is so valid"
-- "no because..."
-- "the way this works is..."
-- "trust the process bestie"
-- "we're normalizing this"
-- "hot take:"
-- "unpopular opinion but..."
-- "the green flag here is..."
-- "red flag if they don't..."
-
-SLANG YOU USE NATURALLY:
-- "it's giving romance novel" - setting a mood
-- "main character energy" - confidence
-- "the vibes are immaculate" - great atmosphere
-- "we love communication" - emphasizing talking
-- "that's so valid" - understanding
-- "I'm obsessed with this" - when something's good
-- "understood the assignment" - doing it right
-- "chef's kiss" - perfect
-- "hits different" - something special
-- "rent free in their head" - can't stop thinking
-- "no thoughts just vibes" - being present
-- "in your era" - your time to shine
-- "slay" - doing great
-- "the ick" - turnoff
-- "green/red flags" - good/bad signs
-- "love language" - how you show love
-- "emotional intelligence" - understanding feelings
-- "self-care but make it spicy" - intimate self-care
-- "boundaries are hot" - consent is attractive
-- "vulnerability is strength" - opening up
-
-ALBANIAN EXPRESSIONS:
-- "ore" / "plako" - casual address
-- "ma ke thy" - you killed it
-- "je tu bo" - you're doing great
-- "hajde mo" - come on now
-- "t'lumt" - well done
-- "normal" - obviously
-- "s'ka lidhje" - no problem
-- "çfarë tip/tipe" - what a character
-
-HOW YOU HELP:
-
-💕 BUILDING CONNECTION:
-"Okay so emotional intimacy is literally the foundation - you can't have fire without building the spark first, you know?"
-- Deep conversations that actually matter
-- Vulnerability without being clingy
-- Making them feel SEEN
-- "Love languages are real, learn theirs"
-- Building trust over time
-
-🔥 SETTING THE MOOD:
-"It's not about some movie scene - it's about building anticipation, bestie"
-- The art of anticipation (underrated)
-- Creating atmosphere (lighting, music, vibes)
-- Taking your time (the slow burn hits different)
-- Reading the room
-- "Make them feel like the only person in the world"
-
-💬 COMMUNICATION:
-"We're normalizing talking about what you want - silence is NOT golden here"
-- How to actually ASK for what you want
-- Having THE conversation (without dying of awkwardness)
-- Checking in with your partner
-- Boundaries as a form of respect
-- "If they can't handle the convo, that's a red flag"
-
-😰 NERVES & ANXIETY:
-"Okay first of all, everyone is nervous - that's literally normal"
-- First time jitters are valid
-- Performance anxiety is common
-- "They're probably nervous too"
-- Being present > being perfect
-- Laughter is allowed (and actually good)
-
-✨ CONFIDENCE:
-"The energy you bring matters more than anything else, trust"
-- Confidence is the ultimate attraction
-- Fake it till you make it works here
-- Body positivity (all bodies are good bodies)
-- Your pleasure matters too
-- "Main character energy in the bedroom"
-
-🎯 PRACTICAL STUFF:
-- Date nights that actually lead somewhere
-- Keeping the spark in long relationships
-- After the honeymoon phase
-- "The 7-year itch is real, here's how to fight it"
-- Scheduling intimacy (not as unsexy as it sounds)
-
-TOPICS YOU HANDLE WELL:
-✅ Building emotional connection
-✅ Setting romantic atmosphere
-✅ Communication about desires (tastefully)
-✅ Overcoming nervousness
-✅ Confidence building
-✅ First times (keeping it sweet)
-✅ Long-term relationship advice
-✅ Understanding signals
-✅ Love languages
-✅ Emotional intelligence
-
-THINGS YOU AVOID:
-❌ Explicit graphic descriptions
-❌ Crude/vulgar language
-❌ Anything that sounds like a medical textbook
-❌ Content that would get the app banned
-❌ Being robotic or stiff
-
-YOUR CORE MESSAGES:
-- "Consent is literally the bare minimum - enthusiastic yes or it's a no"
-- "Communication is the sexiest thing ever"
-- "Everyone's different - there's no one right way"
-- "Respect boundaries like your life depends on it"
-- "Laughter during intimacy is actually a green flag"
-- "Connection > performance, always"
-
-Be the friend everyone wishes they had to ask these questions. Real talk, no judgment, lots of humor, actually helpful. You're here to help people have better, happier, more connected relationships!`;
-
 export default function LiveWingmanCoach() {
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
@@ -516,18 +358,6 @@ export default function LiveWingmanCoach() {
   const [copied, setCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showMoreOptions, setShowMoreOptions] = useState(false);
-  
-  // ===== TAB MODE: 'live' for quick tips, 'chat' for intimacy coach =====
-  const [activeMode, setActiveMode] = useState('live');
-  
-  // ===== CHAT MODE STATE (Intimacy Coach) =====
-  const [chatMessages, setChatMessages] = useState([]);
-  const [chatInput, setChatInput] = useState('');
-  const [chatLoading, setChatLoading] = useState(false);
-  const [currentConversationId, setCurrentConversationId] = useState(null);
-  const [chatHistoryList, setChatHistoryList] = useState([]);
-  const [showChatHistory, setShowChatHistory] = useState(false);
-  const messagesEndRef = useRef(null);
   
   // Simplified state
   const [dateStage, setDateStage] = useState('starting');
@@ -947,185 +777,6 @@ Return JSON ONLY:
     generateResponse(action.label);
   };
 
-  // ===== CHAT MODE FUNCTIONS (Intimacy Coach) =====
-  
-  // Initialize chat with greeting
-  const initializeChat = () => {
-    const userGender = myGender;
-    let greeting;
-    
-    // Randomize greetings so it feels fresh each time
-    const greetingsForMen = [
-      "Yo! 👋 Okay so this is your safe space to ask literally anything about relationships, setting the mood, or just... life stuff. No judgment, no awkwardness, just real talk. What's on your mind? 🔥",
-      "Hey king! 👑 Welcome to the chat. Whether you're trying to understand what she wants, build that connection, or just figure out how to not be awkward - I got you. No cap, ask me anything. What we working with? 💪",
-      "What's good! 🙌 This is basically like texting your most unhinged but helpful friend about relationship stuff. I'm here for the deep questions AND the 'is this normal' questions. Spill - what do you wanna know? ✨"
-    ];
-    
-    const greetingsForWomen = [
-      "Heyyy! 💕 Okay so this is your no-judgment zone. Wanna talk about what you actually want? Figure out if he's worth it? Learn how to communicate without it being weird? I'm here for ALL of it. What's the tea? ☕",
-      "Hey gorgeous! ✨ Welcome to the chat where we normalize talking about relationships, intimacy, and all that good stuff. No question is too much, promise. What's on your mind bestie? 💖",
-      "Hey babe! 🌸 Think of me as that friend who gives actually good advice and doesn't judge. Whether it's confidence stuff, communication, or just venting - I'm here. What we talking about today? 💕"
-    ];
-    
-    const greetingsForNonBinary = [
-      "Hey! 💜 Welcome to the chat! This is your space to ask anything about relationships, connection, intimacy - all of it. No assumptions, no judgment, just real talk and good vibes. What's on your mind? ✨",
-      "Heyyy! 🌈 Okay so think of this as texting your coolest friend who happens to know a lot about relationships. Ask me literally anything - I'm here for it. What we diving into? 💫",
-      "Hey friend! 💜 This is your safe space for all the questions. Relationships, communication, confidence, connection - whatever you need. No judgment zone. What's up? ✨"
-    ];
-    
-    if (userGender === 'man') {
-      greeting = greetingsForMen[Math.floor(Math.random() * greetingsForMen.length)];
-    } else if (userGender === 'woman') {
-      greeting = greetingsForWomen[Math.floor(Math.random() * greetingsForWomen.length)];
-    } else {
-      greeting = greetingsForNonBinary[Math.floor(Math.random() * greetingsForNonBinary.length)];
-    }
-    
-    const greetingMessage = { role: 'assistant', content: greeting, timestamp: new Date() };
-    setChatMessages([greetingMessage]);
-    
-    try {
-      const convId = startNewConversation('Intimacy Coach');
-      setCurrentConversationId(convId);
-      addMessageToConversation(convId, { role: 'assistant', content: greeting });
-      setChatHistoryList(getRecentConversations(10));
-    } catch (e) {
-      console.log('Chat history not available:', e);
-    }
-  };
-  
-  // Start new chat
-  const startNewChat = () => {
-    initializeChat();
-  };
-  
-  // Load conversation from history
-  const loadConversation = (convId) => {
-    try {
-      const conv = getConversation(convId);
-      if (conv && conv.messages) {
-        setChatMessages(conv.messages.map(m => ({
-          ...m,
-          timestamp: m.timestamp ? new Date(m.timestamp) : new Date()
-        })));
-        setCurrentConversationId(convId);
-        setShowChatHistory(false);
-      }
-    } catch (e) {
-      console.log('Could not load conversation:', e);
-    }
-  };
-  
-  // Delete conversation
-  const handleDeleteConversation = (convId, e) => {
-    e.stopPropagation();
-    try {
-      deleteConversation(convId);
-      setChatHistoryList(getRecentConversations(10));
-      if (convId === currentConversationId) {
-        startNewChat();
-      }
-    } catch (e) {
-      console.log('Could not delete conversation:', e);
-    }
-  };
-  
-  // Scroll to bottom of chat
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [chatMessages]);
-  
-  // Initialize chat when switching to chat mode
-  useEffect(() => {
-    if (activeMode === 'chat' && chatMessages.length === 0) {
-      initializeChat();
-    }
-  }, [activeMode]);
-  
-  // Send chat message
-  const handleChatSend = async () => {
-    if (!chatInput.trim() || chatLoading) return;
-    
-    const userMessage = chatInput.trim();
-    setChatInput('');
-    
-    // Add user message to chat
-    const userMsg = { role: 'user', content: userMessage, timestamp: new Date() };
-    setChatMessages(prev => [...prev, userMsg]);
-    
-    if (currentConversationId) {
-      try {
-        addMessageToConversation(currentConversationId, userMsg);
-      } catch (e) {}
-    }
-    
-    setChatLoading(true);
-    
-    try {
-      // Build conversation history for context
-      const historyText = chatMessages.map(m => 
-        `${m.role === 'user' ? 'User' : 'Coach'}: ${m.content}`
-      ).join('\n');
-      
-      const orientationContext = getOrientation();
-      
-      const prompt = `CONVERSATION SO FAR:
-${historyText}
-User: ${userMessage}
-
-USER CONTEXT:
-- User is: ${genderOptions.find(g => g.id === myGender)?.label || 'person'}
-- Their partner/interest is: ${genderOptions.find(g => g.id === datingGender)?.label || 'person'}
-- Orientation: ${orientationContext.label} (${orientationContext.context})
-
-Respond naturally as the Intimacy Coach. Be warm, helpful, and educational. Keep response focused and practical.`;
-      
-      const response = await base44.integrations.Core.InvokeLLM({
-        prompt,
-        system_prompt: INTIMACY_COACH_PROMPT,
-        response_type: 'text'
-      });
-      
-      const aiContent = typeof response === 'string' ? response : response?.content || response?.text || "I'm here to help! What would you like to know about building connection and intimacy? 💕";
-      
-      const aiMsg = { role: 'assistant', content: aiContent, timestamp: new Date() };
-      setChatMessages(prev => [...prev, aiMsg]);
-      
-      if (currentConversationId) {
-        try {
-          addMessageToConversation(currentConversationId, aiMsg);
-        } catch (e) {}
-      }
-      
-    } catch (error) {
-      console.error('Chat error:', error);
-      const errorMsg = { role: 'assistant', content: "Hmm, I had a little hiccup! Try asking again. 💕", timestamp: new Date() };
-      setChatMessages(prev => [...prev, errorMsg]);
-    } finally {
-      setChatLoading(false);
-    }
-  };
-  
-  // Handle key press for chat
-  const handleChatKeyPress = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleChatSend();
-    }
-  };
-  
-  // Quick topic suggestions for chat - more fun and human
-  const chatTopics = [
-    { emoji: '🗣️', label: "How do I say what I want?" },
-    { emoji: '🔥', label: "How to set the mood" },
-    { emoji: '💕', label: "Building deeper connection" },
-    { emoji: '😅', label: "I'm nervous, help!" },
-    { emoji: '✨', label: "First time tips" },
-    { emoji: '🤔', label: "Reading the signals" },
-    { emoji: '💪', label: "Confidence boost" },
-    { emoji: '❤️‍🔥', label: "Keep the spark alive" },
-  ];
-
   const handleSituationSelect = (sit) => {
     setSituation(sit.id);
     generateResponse(sit.label);
@@ -1209,62 +860,27 @@ Respond naturally as the Intimacy Coach. Be warm, helpful, and educational. Keep
 
       <div className="relative z-10">
         
-        {/* ===== HEADER WITH MODE TABS ===== */}
+        {/* ===== HEADER ===== */}
         <div className="px-5 pt-6 pb-4">
           {/* Top row: Logo + Title */}
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              {/* Dynamic icon based on mode */}
-              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg ${
-                activeMode === 'live' 
-                  ? 'bg-gradient-to-br from-orange-500 to-amber-500 shadow-orange-500/40' 
-                  : 'bg-gradient-to-br from-pink-500 to-rose-500 shadow-pink-500/40'
-              }`}>
-                {activeMode === 'live' ? <Zap className="w-7 h-7 text-white" /> : <Heart className="w-7 h-7 text-white" />}
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg bg-gradient-to-br from-orange-500 to-amber-500 shadow-orange-500/40">
+                <Zap className="w-7 h-7 text-white" />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-                  {activeMode === 'live' ? 'Live Wingman' : 'Vibe Coach'} 
-                  <span className="text-xl">{activeMode === 'live' ? '⚡' : '💕'}</span>
+                  Live Wingman <span className="text-xl">⚡</span>
                 </h1>
-                <p className="text-sm text-slate-400">
-                  {activeMode === 'live' ? 'Real-time dating tips' : 'Love & relationship advice'}
-                </p>
+                <p className="text-sm text-slate-400">Real-time dating tips</p>
               </div>
             </div>
-            <div className="text-3xl animate-pulse">{activeMode === 'live' ? '💫' : '✨'}</div>
-          </div>
-          
-          {/* ===== MODE TABS ===== */}
-          <div className="flex gap-2 mb-5 p-1 bg-slate-800/50 rounded-2xl">
-            <button
-              onClick={() => setActiveMode('live')}
-              className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium transition-all ${
-                activeMode === 'live'
-                  ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-500/30'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
-              }`}
-            >
-              <Zap className="w-4 h-4" />
-              <span>🔥 Live Mode</span>
-            </button>
-            <button
-              onClick={() => setActiveMode('chat')}
-              className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium transition-all ${
-                activeMode === 'chat'
-                  ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg shadow-pink-500/30'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
-              }`}
-            >
-              <Heart className="w-4 h-4" />
-              <span>💬 Chat</span>
-            </button>
+            <div className="text-3xl animate-pulse">💫</div>
           </div>
         </div>
 
         {/* ===== LIVE MODE CONTENT ===== */}
-        {activeMode === 'live' && (
-          <>
+        <>
           <div className="px-5 pb-4">
           {/* Style Dropdown - Full width */}
           <div className="mb-4">
@@ -1784,185 +1400,6 @@ Respond naturally as the Intimacy Coach. Be warm, helpful, and educational. Keep
           </div>
         </div>
         </>
-        )}
-        
-        {/* ===== CHAT MODE CONTENT (Intimacy Coach) ===== */}
-        {activeMode === 'chat' && (
-          <div className="flex flex-col h-[calc(100vh-220px)]">
-            {/* Chat Header with History & New Chat */}
-            <div className="px-5 mb-3 flex items-center justify-between">
-              <button
-                onClick={() => setShowChatHistory(!showChatHistory)}
-                className="flex items-center gap-2 px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-xl transition-all"
-              >
-                <History className="w-4 h-4" />
-                <span className="text-sm">History</span>
-              </button>
-              <button
-                onClick={startNewChat}
-                className="flex items-center gap-2 px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-xl transition-all"
-              >
-                <Plus className="w-4 h-4" />
-                <span className="text-sm">New Chat</span>
-              </button>
-            </div>
-            
-            {/* Chat History Panel */}
-            {showChatHistory && (
-              <div className="mx-5 mb-3 bg-slate-800/80 border border-slate-700 rounded-2xl shadow-xl max-h-60 overflow-y-auto">
-                <div className="p-3 border-b border-slate-700 flex justify-between items-center">
-                  <h3 className="font-medium text-white text-sm">Chat History</h3>
-                  <button onClick={() => setShowChatHistory(false)} className="text-slate-400 hover:text-white text-xl">×</button>
-                </div>
-                <div className="p-2">
-                  {chatHistoryList.length === 0 ? (
-                    <p className="text-slate-500 text-sm text-center py-4">No previous chats</p>
-                  ) : (
-                    chatHistoryList.map(conv => (
-                      <div
-                        key={conv.id}
-                        onClick={() => loadConversation(conv.id)}
-                        className={`p-3 rounded-xl cursor-pointer flex items-center justify-between mb-1 ${
-                          conv.id === currentConversationId ? 'bg-pink-500/20' : 'hover:bg-slate-700/50'
-                        }`}
-                      >
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm text-white truncate">{conv.title || 'Intimacy Chat'}</p>
-                          <p className="text-xs text-slate-500">
-                            {new Date(conv.timestamp).toLocaleDateString()}
-                          </p>
-                        </div>
-                        <button
-                          onClick={(e) => handleDeleteConversation(conv.id, e)}
-                          className="text-slate-500 hover:text-red-400 p-1 ml-2"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
-            )}
-            
-            {/* Quick Topics (show when no messages or few messages) */}
-            {chatMessages.length <= 1 && (
-              <div className="px-5 mb-4">
-                <p className="text-slate-400 text-xs mb-2 text-center">Quick topics:</p>
-                <div className="flex flex-wrap justify-center gap-2">
-                  {chatTopics.map((topic, i) => (
-                    <button
-                      key={i}
-                      onClick={() => {
-                        setChatInput(topic.label);
-                      }}
-                      className="px-3 py-2 bg-slate-800/60 hover:bg-pink-500/20 border border-slate-700/50 hover:border-pink-500/50 rounded-xl text-sm text-slate-300 hover:text-white transition-all flex items-center gap-1"
-                    >
-                      <span>{topic.emoji}</span>
-                      <span>{topic.label}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-            
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto px-5 space-y-3">
-              {chatMessages.map((msg, idx) => (
-                <div
-                  key={idx}
-                  className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div
-                    className={`max-w-[85%] rounded-2xl px-4 py-3 ${
-                      msg.role === 'user'
-                        ? 'bg-gradient-to-r from-pink-500 to-rose-600 text-white'
-                        : 'bg-slate-800/80 text-slate-100 border border-pink-500/20'
-                    }`}
-                  >
-                    <p className="whitespace-pre-wrap text-sm leading-relaxed">{msg.content}</p>
-                    {msg.timestamp && (
-                      <p className={`text-[10px] mt-1 ${msg.role === 'user' ? 'text-pink-200' : 'text-slate-500'}`}>
-                        {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              ))}
-              
-              {chatLoading && (
-                <div className="flex justify-start">
-                  <div className="bg-slate-800/80 rounded-2xl px-4 py-3 border border-pink-500/20">
-                    <div className="flex gap-1">
-                      <span className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                      <span className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                      <span className="w-2 h-2 bg-pink-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
-                    </div>
-                  </div>
-                </div>
-              )}
-              
-              <div ref={messagesEndRef} />
-            </div>
-            
-            {/* Chat Input */}
-            <div className="p-4 border-t border-pink-500/20 bg-slate-900/50">
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
-                  onKeyPress={handleChatKeyPress}
-                  placeholder="Ask me anything about relationships & intimacy..."
-                  className="flex-1 bg-slate-800/80 border border-pink-500/30 rounded-xl px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:border-pink-500 text-sm"
-                  disabled={chatLoading}
-                />
-                <Button
-                  onClick={handleChatSend}
-                  disabled={!chatInput.trim() || chatLoading}
-                  className="bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 px-5 rounded-xl disabled:opacity-50"
-                >
-                  {chatLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
-                </Button>
-              </div>
-              
-              {/* OR Divider + Upload Screenshot Option */}
-              <div className="mt-4">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="flex-1 h-px bg-slate-700"></div>
-                  <span className="text-slate-500 text-xs font-medium">OR</span>
-                  <div className="flex-1 h-px bg-slate-700"></div>
-                </div>
-                
-                <button
-                  onClick={() => navigate('/copilot/upload')}
-                  className="w-full bg-gradient-to-r from-purple-600/30 via-pink-600/30 to-purple-600/30 border-2 border-purple-500/50 rounded-2xl p-4 hover:border-pink-500/70 transition-all hover:scale-[1.01] active:scale-[0.99] group"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                      <Camera className="w-6 h-6 text-white" />
-                    </div>
-                    <div className="flex-1 text-left">
-                      <div className="flex items-center gap-2 mb-0.5">
-                        <h3 className="text-base font-bold text-white">Upload Screenshot</h3>
-                        <span className="bg-amber-500 text-black text-[10px] font-bold px-1.5 py-0.5 rounded-full">POPULAR</span>
-                      </div>
-                      <p className="text-slate-400 text-xs">Snap → Upload → Get your reply ✨</p>
-                    </div>
-                    <div className="w-9 h-9 bg-slate-700/80 rounded-xl flex items-center justify-center">
-                      <ChevronRight className="w-4 h-4 text-white" />
-                    </div>
-                  </div>
-                </button>
-                
-                <p className="text-center text-slate-500 text-[10px] mt-2 flex items-center justify-center gap-1">
-                  <Shield className="w-3 h-3 text-emerald-500" />
-                  100% private. Your chats stay on your device.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
