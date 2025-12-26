@@ -267,9 +267,18 @@ export default function HomeCoPilot() {
   // Full-screen Vibe Coach Modal
   if (showVibeCoach) {
     return (
-      <div className="fixed inset-0 z-50 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex flex-col">
-        {/* Header */}
-        <div className="px-5 pt-5 pb-3 border-b border-slate-800/50">
+      <div className="fixed inset-0 z-50 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex flex-col pt-16">
+        {/* Header with Back Button */}
+        <div className="px-4 py-3 border-b border-slate-800/50">
+          {/* Back Button - Very Prominent */}
+          <button
+            onClick={() => setShowVibeCoach(false)}
+            className="flex items-center gap-2 text-white mb-3 px-3 py-2 bg-slate-800/80 rounded-xl hover:bg-slate-700 transition-all w-fit"
+          >
+            <ChevronDown className="w-5 h-5 rotate-90" />
+            <span className="font-medium">Back to Home</span>
+          </button>
+          
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="relative">
@@ -299,12 +308,6 @@ export default function HomeCoPilot() {
                 className="p-2 bg-slate-800/60 rounded-lg text-slate-400 hover:text-white transition-all"
               >
                 <Plus className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => setShowVibeCoach(false)}
-                className="p-2 bg-slate-800/60 rounded-lg text-slate-400 hover:text-white transition-all"
-              >
-                <X className="w-5 h-5" />
               </button>
             </div>
           </div>
