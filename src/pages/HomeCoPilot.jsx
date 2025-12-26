@@ -372,111 +372,115 @@ export default function HomeCoPilot() {
   if (showVibeCoach) {
     return (
       <div className="fixed inset-0 z-50 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex flex-col pt-16">
-        {/* Header with Back Button */}
-        <div className="px-4 py-3 border-b border-slate-800/50">
-          {/* Back Button - Very Prominent */}
+        {/* Sticky Back Button at Top */}
+        <div className="sticky top-0 z-10 px-4 py-2 bg-slate-950/95 backdrop-blur-lg border-b border-slate-800/50">
           <button
             onClick={() => setShowVibeCoach(false)}
-            className="flex items-center gap-2 text-white mb-3 px-3 py-2 bg-slate-800/80 rounded-xl hover:bg-slate-700 transition-all w-fit"
+            className="flex items-center gap-2 text-white px-3 py-2 bg-slate-800/80 rounded-xl hover:bg-slate-700 transition-all w-fit"
           >
             <ChevronDown className="w-5 h-5 rotate-90" />
             <span className="font-medium">Back to Home</span>
           </button>
-          
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl blur-md opacity-60"></div>
-                <div className="relative w-10 h-10 bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500 rounded-xl flex items-center justify-center">
-                  <Heart className="w-5 h-5 text-white" fill="white" />
-                </div>
-              </div>
-              <div>
-                <h1 className="text-lg font-bold text-white">Vibe Coach</h1>
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                  <span className="text-xs text-green-400">AI Online</span>
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setShowChatHistory(!showChatHistory)}
-                className={`p-2 rounded-lg transition-all ${showChatHistory ? 'bg-pink-500/30 text-pink-300' : 'bg-slate-800/60 text-slate-400 hover:text-white'}`}
-              >
-                <History className="w-5 h-5" />
-              </button>
-              <button
-                onClick={startNewChat}
-                className="p-2 bg-slate-800/60 rounded-lg text-slate-400 hover:text-white transition-all"
-              >
-                <Plus className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
         </div>
         
-        {/* Chat History Panel */}
-        {showChatHistory && (
-          <div className="mx-5 mt-3 bg-slate-900/90 backdrop-blur-xl border border-slate-700/50 rounded-2xl overflow-hidden">
-            <div className="p-3 border-b border-slate-700/50">
-              <h3 className="text-white font-semibold text-sm">Recent Chats</h3>
-            </div>
-            <div className="max-h-40 overflow-y-auto p-2">
-              {chatConversationHistory.length === 0 ? (
-                <p className="text-slate-500 text-sm text-center py-3">No previous chats</p>
-              ) : (
-                <div className="space-y-1">
-                  {chatConversationHistory.map((conv) => (
-                    <div
-                      key={conv.id}
-                      onClick={() => loadChatConversation(conv.id)}
-                      className={`flex items-center justify-between p-2 rounded-xl cursor-pointer transition-all ${
-                        currentChatConversationId === conv.id
-                          ? 'bg-pink-500/20 border border-pink-500/30'
-                          : 'hover:bg-slate-800/50'
-                      }`}
-                    >
-                      <div className="flex-1 min-w-0">
-                        <p className="text-white text-sm truncate">{conv.title || 'Chat'}</p>
-                        <p className="text-slate-500 text-xs">{new Date(conv.updatedAt).toLocaleDateString()}</p>
-                      </div>
-                      <button
-                        onClick={(e) => handleDeleteConversation(conv.id, e)}
-                        className="p-1 hover:bg-red-500/20 rounded text-slate-500 hover:text-red-400"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  ))}
+        {/* SCROLLABLE CONTENT - Everything scrolls together */}
+        <div className="flex-1 overflow-y-auto pb-32">
+          {/* Header */}
+          <div className="px-4 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl blur-md opacity-60"></div>
+                  <div className="relative w-12 h-12 bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500 rounded-xl flex items-center justify-center">
+                    <Heart className="w-6 h-6 text-white" fill="white" />
+                  </div>
                 </div>
-              )}
-            </div>
-          </div>
-        )}
-        
-        {/* Quick Starters */}
-        {chatMessages.length <= 1 && !showChatHistory && (
-          <div className="px-5 py-3">
-            <p className="text-slate-500 text-xs mb-2">Quick start:</p>
-            <div className="flex flex-wrap gap-2">
-              {quickStarters.map((starter, i) => (
+                <div>
+                  <h1 className="text-xl font-bold text-white">Vibe Coach</h1>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                    <span className="text-xs text-green-400">AI Online</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex items-center gap-2">
                 <button
-                  key={i}
-                  onClick={() => handleQuickStart(starter.label)}
-                  className="px-3 py-2 bg-slate-800/60 border border-slate-700/50 rounded-xl text-xs text-white hover:border-pink-500/50 transition-all flex items-center gap-1.5"
+                  onClick={() => setShowChatHistory(!showChatHistory)}
+                  className={`p-2.5 rounded-xl transition-all ${showChatHistory ? 'bg-pink-500/30 text-pink-300' : 'bg-slate-800/60 text-slate-400 hover:text-white'}`}
                 >
-                  <span>{starter.emoji}</span>
-                  <span>{starter.label}</span>
+                  <History className="w-5 h-5" />
                 </button>
-              ))}
+                <button
+                  onClick={startNewChat}
+                  className="p-2.5 bg-slate-800/60 rounded-xl text-slate-400 hover:text-white transition-all"
+                >
+                  <Plus className="w-5 h-5" />
+                </button>
+              </div>
             </div>
           </div>
-        )}
-        
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto px-5 py-3 space-y-3">
+          
+          {/* Chat History Panel */}
+          {showChatHistory && (
+            <div className="mx-4 mb-4 bg-slate-900/90 backdrop-blur-xl border border-slate-700/50 rounded-2xl overflow-hidden">
+              <div className="p-3 border-b border-slate-700/50">
+                <h3 className="text-white font-semibold text-sm">Recent Chats</h3>
+              </div>
+              <div className="max-h-60 overflow-y-auto p-2">
+                {chatConversationHistory.length === 0 ? (
+                  <p className="text-slate-500 text-sm text-center py-3">No previous chats</p>
+                ) : (
+                  <div className="space-y-1">
+                    {chatConversationHistory.map((conv) => (
+                      <div
+                        key={conv.id}
+                        onClick={() => loadChatConversation(conv.id)}
+                        className={`flex items-center justify-between p-2 rounded-xl cursor-pointer transition-all ${
+                          currentChatConversationId === conv.id
+                            ? 'bg-pink-500/20 border border-pink-500/30'
+                            : 'hover:bg-slate-800/50'
+                        }`}
+                      >
+                        <div className="flex-1 min-w-0">
+                          <p className="text-white text-sm truncate">{conv.title || 'Chat'}</p>
+                          <p className="text-slate-500 text-xs">{new Date(conv.updatedAt).toLocaleDateString()}</p>
+                        </div>
+                        <button
+                          onClick={(e) => handleDeleteConversation(conv.id, e)}
+                          className="p-1 hover:bg-red-500/20 rounded text-slate-500 hover:text-red-400"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+          
+          {/* Quick Starters */}
+          {chatMessages.length <= 1 && !showChatHistory && (
+            <div className="px-4 pb-4">
+              <p className="text-slate-500 text-xs mb-2">Quick start:</p>
+              <div className="flex flex-wrap gap-2">
+                {quickStarters.map((starter, i) => (
+                  <button
+                    key={i}
+                    onClick={() => handleQuickStart(starter.label)}
+                    className="px-3 py-2 bg-slate-800/60 border border-slate-700/50 rounded-xl text-xs text-white hover:border-pink-500/50 transition-all flex items-center gap-1.5"
+                  >
+                    <span>{starter.emoji}</span>
+                    <span>{starter.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {/* Messages */}
+          <div className="px-4 space-y-3">
           {chatMessages.map((msg, idx) => (
             <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               {msg.role === 'assistant' && (
@@ -511,9 +515,11 @@ export default function HomeCoPilot() {
           
           <div ref={messagesEndRef} />
         </div>
+        {/* End of scrollable content */}
+        </div>
         
-        {/* Input Area */}
-        <div className="p-4 border-t border-slate-800/50 bg-slate-950/80 backdrop-blur-lg pb-24">
+        {/* Sticky Input Area at Bottom */}
+        <div className="fixed bottom-0 left-0 right-0 p-4 border-t border-slate-800/50 bg-slate-950/95 backdrop-blur-lg pb-24 z-20">
           {/* Hidden file input */}
           <input
             type="file"
