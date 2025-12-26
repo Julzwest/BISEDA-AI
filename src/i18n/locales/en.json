@@ -771,6 +771,59 @@
       "newyear": "New Year",
       "justbecause": "Just Because"
     }
+  },
+  "homepage": {
+    "tagline": "Your Dating Wingman 🎯",
+    "greeting": "Hey",
+    "heroTitle": "Never get left on read again",
+    "heroSubtitle": "Upload your chat. Get the perfect reply.",
+    "heroHighlight": "It's that easy.",
+    "vibeCoach": "Vibe Coach",
+    "vibeCoachLive": "LIVE",
+    "vibeCoachSubtitle": "Your AI dating assistant 💕",
+    "screenshotAnalysis": "Screenshot Analysis",
+    "chatAdvice": "Chat Advice",
+    "replyIdeas": "Reply Ideas",
+    "stats": {
+      "betterReplies": "Better replies",
+      "datesLanded": "Dates landed",
+      "aiResponse": "AI response"
+    },
+    "howItWorks": "How it works",
+    "steps": {
+      "screenshot": "Screenshot your chat",
+      "screenshotDesc": "Works with Tinder, Bumble, Hinge & more",
+      "aiReads": "AI reads the vibe",
+      "aiReadsDesc": "Understands context, tone & intent",
+      "sendReply": "Send the perfect reply",
+      "sendReplyDesc": "Copy, paste, and watch the magic happen"
+    },
+    "testimonial": "This app literally saved my dating life. Got 3 dates in one week!",
+    "testimonialAuthor": "Alex, 26",
+    "worksWithAll": "WORKS WITH ALL DATING APPS",
+    "quickStart": "Quick start:",
+    "quickStarters": {
+      "whatToText": "What should I text them?",
+      "keepSpark": "Keep the spark alive",
+      "deeperConnection": "Build deeper connection",
+      "nervous": "I'm nervous, help!"
+    },
+    "uploadScreenshot": "Upload Screenshot",
+    "uploadScreenshotDesc": "Tap to upload & get advice on your chats",
+    "askAnything": "Ask me anything...",
+    "backToHome": "Back to Home"
+  },
+  "vibeCoach": {
+    "title": "Vibe Coach",
+    "aiOnline": "AI Online",
+    "recentChats": "Recent Chats",
+    "noChats": "No previous chats",
+    "welcome": "Hey {{name}}! 👋 I'm your Vibe Coach.\n\nWhether you need help with what to text, relationship advice, or just want to chat about love stuff - I got you! 💕\n\nWhat's on your mind?",
+    "welcomeGeneric": "Hey! 👋 I'm your Vibe Coach.\n\nWhether you need help with what to text, relationship advice, or just want to chat about love stuff - I got you! 💕\n\nWhat's on your mind?",
+    "newChat": "Fresh start! 🌟 What would you like to talk about?",
+    "analyzing": "Analyzing...",
+    "readingChat": "Reading your chat...",
+    "errorAnalyzing": "Hmm, I had trouble analyzing that screenshot. Could you describe what's in the conversation instead? 💕"
   }
 }
 

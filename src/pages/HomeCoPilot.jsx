@@ -71,7 +71,7 @@ ALWAYS EMPHASIZE:
 You're here to help people have healthier, happier, more connected relationships. Be the supportive coach everyone deserves!`;
 
 export default function HomeCoPilot() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [userName, setUserName] = useState(null);
   const navigate = useNavigate();
   
@@ -95,12 +95,12 @@ export default function HomeCoPilot() {
   const [screenshotPreview, setScreenshotPreview] = useState(null);
   const [isExtractingText, setIsExtractingText] = useState(false);
   
-  // Fun conversation starters
+  // Fun conversation starters - use translations
   const quickStarters = [
-    { emoji: '💬', label: 'What should I text them?' },
-    { emoji: '🔥', label: 'Keep the spark alive' },
-    { emoji: '💕', label: 'Build deeper connection' },
-    { emoji: '😰', label: "I'm nervous, help!" },
+    { emoji: '💬', labelKey: 'homepage.quickStarters.whatToText' },
+    { emoji: '🔥', labelKey: 'homepage.quickStarters.keepSpark' },
+    { emoji: '💕', labelKey: 'homepage.quickStarters.deeperConnection' },
+    { emoji: '😰', labelKey: 'homepage.quickStarters.nervous' },
   ];
   
   const handleLogoTap = () => {
@@ -150,11 +150,11 @@ export default function HomeCoPilot() {
   // Initialize chat when Vibe Coach opens
   useEffect(() => {
     if (showVibeCoach && chatMessages.length === 0) {
-      const convId = startNewConversation('Vibe Coach');
+      const convId = startNewConversation(t('vibeCoach.title'));
       setCurrentChatConversationId(convId);
       const greeting = userName 
-        ? `Hey ${userName}! 👋 I'm your Vibe Coach.\n\nWhether you need help with what to text, relationship advice, or just want to chat about love stuff - I got you! 💕\n\nWhat's on your mind?`
-        : "Hey! 👋 I'm your Vibe Coach.\n\nWhether you need help with what to text, relationship advice, or just want to chat about love stuff - I got you! 💕\n\nWhat's on your mind?";
+        ? t('vibeCoach.welcome', { name: userName })
+        : t('vibeCoach.welcomeGeneric');
       
       setChatMessages([{
         role: 'assistant',
@@ -246,11 +246,11 @@ export default function HomeCoPilot() {
   };
   
   const startNewChat = () => {
-    const convId = startNewConversation('Vibe Coach');
+    const convId = startNewConversation(t('vibeCoach.title'));
     setCurrentChatConversationId(convId);
     setChatMessages([{
       role: 'assistant',
-      content: "Fresh start! 🌟 What would you like to talk about?",
+      content: t('vibeCoach.newChat'),
       timestamp: new Date().toISOString()
     }]);
     setShowChatHistory(false);
@@ -339,7 +339,7 @@ export default function HomeCoPilot() {
       console.error('Screenshot analysis error:', error);
       setChatMessages(prev => [...prev, {
         role: 'assistant',
-        content: "Hmm, I had trouble analyzing that screenshot. Could you describe what's in the conversation instead? 💕",
+        content: t('vibeCoach.errorAnalyzing'),
         timestamp: new Date().toISOString()
       }]);
     } finally {
@@ -379,7 +379,7 @@ export default function HomeCoPilot() {
             className="flex items-center gap-2 text-white px-3 py-2 bg-slate-800/80 rounded-xl hover:bg-slate-700 transition-all w-fit"
           >
             <ChevronDown className="w-5 h-5 rotate-90" />
-            <span className="font-medium">Back to Home</span>
+            <span className="font-medium">{t('homepage.backToHome')}</span>
           </button>
         </div>
         
@@ -396,10 +396,10 @@ export default function HomeCoPilot() {
                   </div>
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-white">Vibe Coach</h1>
+                  <h1 className="text-xl font-bold text-white">{t('vibeCoach.title')}</h1>
                   <div className="flex items-center gap-1.5">
                     <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                    <span className="text-xs text-green-400">AI Online</span>
+                    <span className="text-xs text-green-400">{t('vibeCoach.aiOnline')}</span>
                   </div>
                 </div>
               </div>
@@ -425,11 +425,11 @@ export default function HomeCoPilot() {
           {showChatHistory && (
             <div className="mx-4 mb-4 bg-slate-900/90 backdrop-blur-xl border border-slate-700/50 rounded-2xl overflow-hidden">
               <div className="p-3 border-b border-slate-700/50">
-                <h3 className="text-white font-semibold text-sm">Recent Chats</h3>
+                <h3 className="text-white font-semibold text-sm">{t('vibeCoach.recentChats')}</h3>
               </div>
               <div className="max-h-60 overflow-y-auto p-2">
                 {chatConversationHistory.length === 0 ? (
-                  <p className="text-slate-500 text-sm text-center py-3">No previous chats</p>
+                  <p className="text-slate-500 text-sm text-center py-3">{t('vibeCoach.noChats')}</p>
                 ) : (
                   <div className="space-y-1">
                     {chatConversationHistory.map((conv) => (
@@ -463,16 +463,16 @@ export default function HomeCoPilot() {
           {/* Quick Starters */}
           {chatMessages.length <= 1 && !showChatHistory && (
             <div className="px-4 pb-4">
-              <p className="text-slate-500 text-xs mb-2">Quick start:</p>
+              <p className="text-slate-500 text-xs mb-2">{t('homepage.quickStart')}</p>
               <div className="flex flex-wrap gap-2">
                 {quickStarters.map((starter, i) => (
                   <button
                     key={i}
-                    onClick={() => handleQuickStart(starter.label)}
+                    onClick={() => handleQuickStart(t(starter.labelKey))}
                     className="px-3 py-2 bg-slate-800/60 border border-slate-700/50 rounded-xl text-xs text-white hover:border-pink-500/50 transition-all flex items-center gap-1.5"
                   >
                     <span>{starter.emoji}</span>
-                    <span>{starter.label}</span>
+                    <span>{t(starter.labelKey)}</span>
                   </button>
                 ))}
               </div>
@@ -544,10 +544,10 @@ export default function HomeCoPilot() {
             </div>
             <div className="flex-1 text-left">
               <p className="text-white text-sm font-medium flex items-center gap-2">
-                {isExtractingText ? 'Analyzing...' : '📸 Upload Screenshot'}
+                {isExtractingText ? t('vibeCoach.analyzing') : `📸 ${t('homepage.uploadScreenshot')}`}
                 <span className="px-1.5 py-0.5 bg-amber-500/20 text-amber-400 text-[10px] font-bold rounded-full">INSTANT</span>
               </p>
-              <p className="text-slate-400 text-xs">Tap to upload & get advice on your chats</p>
+              <p className="text-slate-400 text-xs">{t('homepage.uploadScreenshotDesc')}</p>
             </div>
             <Upload className="w-5 h-5 text-purple-400" />
           </button>
@@ -570,7 +570,7 @@ export default function HomeCoPilot() {
                 <div className="absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center">
                   <div className="text-center">
                     <Loader2 className="w-8 h-8 text-purple-400 animate-spin mx-auto mb-2" />
-                    <p className="text-white text-sm">Reading your chat...</p>
+                    <p className="text-white text-sm">{t('vibeCoach.readingChat')}</p>
                   </div>
                 </div>
               )}
@@ -585,7 +585,7 @@ export default function HomeCoPilot() {
               value={chatInput}
               onChange={(e) => setChatInput(e.target.value)}
               onKeyPress={handleChatKeyPress}
-              placeholder="Ask me anything..."
+              placeholder={t('homepage.askAnything')}
               className="flex-1 bg-slate-800/80 border border-slate-700/50 focus:border-pink-500/50 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none text-sm"
               disabled={chatLoading}
             />
@@ -644,12 +644,12 @@ export default function HomeCoPilot() {
           </h1>
           
           <p className="text-lg font-semibold bg-gradient-to-r from-purple-300 via-pink-300 to-purple-300 bg-clip-text text-transparent">
-            Your Dating Wingman 🎯
+            {t('homepage.tagline')}
           </p>
           
           {userName && (
             <div className="mt-3 inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full border border-purple-500/30">
-              <span className="text-purple-300 text-sm font-medium">Hey {userName}!</span>
+              <span className="text-purple-300 text-sm font-medium">{t('homepage.greeting')} {userName}!</span>
               <span className="text-lg">👋</span>
             </div>
           )}
@@ -657,9 +657,9 @@ export default function HomeCoPilot() {
 
         {/* Hero Text */}
         <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-white mb-2">Never get left on read again</h2>
+          <h2 className="text-2xl font-bold text-white mb-2">{t('homepage.heroTitle')}</h2>
           <p className="text-slate-400 text-base">
-            Upload your chat. Get the perfect reply. <span className="text-purple-400">It's that easy.</span>
+            {t('homepage.heroSubtitle')} <span className="text-purple-400">{t('homepage.heroHighlight')}</span>
           </p>
         </div>
 
@@ -681,12 +681,12 @@ export default function HomeCoPilot() {
                 </div>
                 <div className="text-left flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-2xl font-bold text-white">Vibe Coach</h3>
+                    <h3 className="text-2xl font-bold text-white">{t('homepage.vibeCoach')}</h3>
                     <span className="px-2 py-0.5 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-[10px] font-bold rounded-full uppercase flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span> LIVE
+                      <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span> {t('homepage.vibeCoachLive')}
                     </span>
                   </div>
-                  <p className="text-slate-300 text-sm">Your AI dating assistant 💕</p>
+                  <p className="text-slate-300 text-sm">{t('homepage.vibeCoachSubtitle')}</p>
                 </div>
                 <ChevronRight className="w-6 h-6 text-white opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
               </div>
@@ -695,15 +695,15 @@ export default function HomeCoPilot() {
               <div className="flex flex-wrap gap-2">
                 <div className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-500/20 border border-purple-500/30 rounded-full">
                   <Camera className="w-4 h-4 text-purple-400" />
-                  <span className="text-purple-300 text-xs font-medium">Screenshot Analysis</span>
+                  <span className="text-purple-300 text-xs font-medium">{t('homepage.screenshotAnalysis')}</span>
                 </div>
                 <div className="flex items-center gap-1.5 px-3 py-1.5 bg-pink-500/20 border border-pink-500/30 rounded-full">
                   <MessageSquare className="w-4 h-4 text-pink-400" />
-                  <span className="text-pink-300 text-xs font-medium">Chat Advice</span>
+                  <span className="text-pink-300 text-xs font-medium">{t('homepage.chatAdvice')}</span>
                 </div>
                 <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/20 border border-amber-500/30 rounded-full">
                   <Sparkles className="w-4 h-4 text-amber-400" />
-                  <span className="text-amber-300 text-xs font-medium">Reply Ideas</span>
+                  <span className="text-amber-300 text-xs font-medium">{t('homepage.replyIdeas')}</span>
                 </div>
               </div>
             </div>
@@ -718,21 +718,21 @@ export default function HomeCoPilot() {
                 <Flame className="w-6 h-6 text-orange-400" />
               </div>
               <div className="text-2xl font-black text-white">10x</div>
-              <div className="text-xs text-slate-400">Better replies</div>
+              <div className="text-xs text-slate-400">{t('homepage.stats.betterReplies')}</div>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 mx-auto mb-2 bg-gradient-to-br from-pink-500/20 to-rose-500/20 rounded-2xl flex items-center justify-center border border-pink-500/20">
                 <Heart className="w-6 h-6 text-pink-400" />
               </div>
               <div className="text-2xl font-black text-white">50K+</div>
-              <div className="text-xs text-slate-400">Dates landed</div>
+              <div className="text-xs text-slate-400">{t('homepage.stats.datesLanded')}</div>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 mx-auto mb-2 bg-gradient-to-br from-amber-500/20 to-yellow-500/20 rounded-2xl flex items-center justify-center border border-amber-500/20">
                 <Zap className="w-6 h-6 text-amber-400" />
               </div>
               <div className="text-2xl font-black text-white">&lt;3s</div>
-              <div className="text-xs text-slate-400">AI response</div>
+              <div className="text-xs text-slate-400">{t('homepage.stats.aiResponse')}</div>
             </div>
           </div>
         </div>
@@ -741,7 +741,7 @@ export default function HomeCoPilot() {
         <div className="mb-8">
           <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-purple-400" />
-            How it works
+            {t('homepage.howItWorks')}
           </h3>
           
           <div className="space-y-3">
@@ -750,8 +750,8 @@ export default function HomeCoPilot() {
                 <Camera className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1">
-                <h4 className="text-white font-semibold text-sm">Screenshot your chat</h4>
-                <p className="text-slate-400 text-xs">Works with Tinder, Bumble, Hinge & more</p>
+                <h4 className="text-white font-semibold text-sm">{t('homepage.steps.screenshot')}</h4>
+                <p className="text-slate-400 text-xs">{t('homepage.steps.screenshotDesc')}</p>
               </div>
               <span className="text-2xl">📸</span>
             </div>
@@ -761,8 +761,8 @@ export default function HomeCoPilot() {
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1">
-                <h4 className="text-white font-semibold text-sm">AI reads the vibe</h4>
-                <p className="text-slate-400 text-xs">Understands context, tone & intent</p>
+                <h4 className="text-white font-semibold text-sm">{t('homepage.steps.aiReads')}</h4>
+                <p className="text-slate-400 text-xs">{t('homepage.steps.aiReadsDesc')}</p>
               </div>
               <span className="text-2xl">🧠</span>
             </div>
@@ -772,8 +772,8 @@ export default function HomeCoPilot() {
                 <Send className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1">
-                <h4 className="text-white font-semibold text-sm">Send the perfect reply</h4>
-                <p className="text-slate-400 text-xs">Copy, paste, and watch the magic happen</p>
+                <h4 className="text-white font-semibold text-sm">{t('homepage.steps.sendReply')}</h4>
+                <p className="text-slate-400 text-xs">{t('homepage.steps.sendReplyDesc')}</p>
               </div>
               <span className="text-2xl">🎯</span>
             </div>
@@ -798,15 +798,15 @@ export default function HomeCoPilot() {
               </div>
             </div>
             <p className="text-slate-300 text-sm italic">
-              "This app literally saved my dating life. Got 3 dates in one week!" 
-              <span className="text-slate-500 ml-1">— Alex, 26</span>
+              "{t('homepage.testimonial')}" 
+              <span className="text-slate-500 ml-1">— {t('homepage.testimonialAuthor')}</span>
             </p>
           </div>
         </div>
 
         {/* Works With */}
         <div>
-          <p className="text-slate-500 text-xs text-center mb-3 uppercase tracking-wider font-medium">Works with all dating apps</p>
+          <p className="text-slate-500 text-xs text-center mb-3 uppercase tracking-wider font-medium">{t('homepage.worksWithAll')}</p>
           <div className="flex justify-center gap-3 flex-wrap">
             {[
               { name: 'Tinder', emoji: '🔥' },

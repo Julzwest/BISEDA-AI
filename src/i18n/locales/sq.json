@@ -770,6 +770,59 @@
       "newyear": "Viti i Ri",
       "justbecause": "Thjesht sepse"
     }
+  },
+  "homepage": {
+    "tagline": "Wingman-i yt për Dating 🎯",
+    "greeting": "Hej",
+    "heroTitle": "Mos u lër pa përgjigje më",
+    "heroSubtitle": "Ngarko chat-in tënd. Merr përgjigjen perfekte.",
+    "heroHighlight": "Kaq e thjeshtë.",
+    "vibeCoach": "Vibe Coach",
+    "vibeCoachLive": "LIVE",
+    "vibeCoachSubtitle": "Asistenti yt AI për dating 💕",
+    "screenshotAnalysis": "Analizo Screenshot",
+    "chatAdvice": "Këshilla Chat",
+    "replyIdeas": "Ide Përgjigjesh",
+    "stats": {
+      "betterReplies": "Përgjigje më të mira",
+      "datesLanded": "Takime të fituara",
+      "aiResponse": "Përgjigje AI"
+    },
+    "howItWorks": "Si funksionon",
+    "steps": {
+      "screenshot": "Fotografo chat-in tënd",
+      "screenshotDesc": "Funksionon me Tinder, Bumble, Hinge e më shumë",
+      "aiReads": "AI lexon vibin",
+      "aiReadsDesc": "Kupton kontekstin, tonin dhe qëllimin",
+      "sendReply": "Dërgo përgjigjen perfekte",
+      "sendReplyDesc": "Kopjo, ngjit, dhe shiko magjinë"
+    },
+    "testimonial": "Ky app më shpëtoi jetën e dating. Mora 3 takime në një javë!",
+    "testimonialAuthor": "Aleksi, 26",
+    "worksWithAll": "FUNKSIONON ME TË GJITHA APP-ET E DATING",
+    "quickStart": "Fillo shpejt:",
+    "quickStarters": {
+      "whatToText": "Çfarë t'i shkruaj?",
+      "keepSpark": "Mbaj shkëndijën gjallë",
+      "deeperConnection": "Ndërto lidhje më të thellë",
+      "nervous": "Jam nervoz, ndihmë!"
+    },
+    "uploadScreenshot": "Ngarko Screenshot",
+    "uploadScreenshotDesc": "Kliko për të ngarkuar dhe merr këshilla për chat-et e tua",
+    "askAnything": "Më pyet çfarëdo...",
+    "backToHome": "Kthehu në Kryefaqe"
+  },
+  "vibeCoach": {
+    "title": "Vibe Coach",
+    "aiOnline": "AI Online",
+    "recentChats": "Bisedat e Fundit",
+    "noChats": "Nuk ka biseda të mëparshme",
+    "welcome": "Hej {{name}}! 👋 Jam Vibe Coach-i yt.\n\nQoftë që ke nevojë për ndihmë çfarë të shkruash, këshilla për marrëdhënie, apo thjesht dëshiron të bisedosh për dashuri - të kam! 💕\n\nÇfarë ke në mendje?",
+    "welcomeGeneric": "Hej! 👋 Jam Vibe Coach-i yt.\n\nQoftë që ke nevojë për ndihmë çfarë të shkruash, këshilla për marrëdhënie, apo thjesht dëshiron të bisedosh për dashuri - të kam! 💕\n\nÇfarë ke në mendje?",
+    "newChat": "Fillim i ri! 🌟 Për çfarë dëshiron të bisedojmë?",
+    "analyzing": "Duke analizuar...",
+    "readingChat": "Duke lexuar chat-in tënd...",
+    "errorAnalyzing": "Hmm, pata problem me analizimin e atij screenshot. A mund të përshkruash çfarë ka në bisedë? 💕"
   }
 }
 
