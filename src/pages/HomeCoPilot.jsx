@@ -17,7 +17,9 @@ import {
   Star,
   Flame,
   Zap,
-  X
+  X,
+  Image as ImageIcon,
+  Upload
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { base44 } from '@/api/base44Client';
@@ -28,6 +30,10 @@ import {
   getConversation,
   deleteConversation
 } from '@/utils/chatHistory';
+import { 
+  extractTextFromImage, 
+  formatExtractedMessagesAsText 
+} from '@/services/ocrService';
 
 // Vibe Coach System Prompt
 const VIBE_COACH_SYSTEM_PROMPT = `You are an expert Intimacy and Relationship Coach. Your role is to provide supportive, educational, and empowering guidance on building deeper connections, enhancing romance, and improving communication in intimate relationships.
@@ -83,6 +89,11 @@ export default function HomeCoPilot() {
   const [showChatHistory, setShowChatHistory] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+  const fileInputRef = useRef(null);
+  
+  // Screenshot upload state
+  const [screenshotPreview, setScreenshotPreview] = useState(null);
+  const [isExtractingText, setIsExtractingText] = useState(false);
   
   // Fun conversation starters
   const quickStarters = [
@@ -263,6 +274,99 @@ export default function HomeCoPilot() {
       startNewChat();
     }
   };
+  
+  // Screenshot upload handler
+  const handleScreenshotUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file || !file.type.startsWith('image/')) return;
+    
+    // Show preview
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setScreenshotPreview(e.target.result);
+    };
+    reader.readAsDataURL(file);
+    
+    // Extract text and analyze
+    setIsExtractingText(true);
+    setChatLoading(true);
+    
+    // Add user message showing they uploaded a screenshot
+    const userMessage = {
+      role: 'user',
+      content: '📸 [Uploaded a screenshot for analysis]',
+      timestamp: new Date().toISOString(),
+      hasImage: true,
+      imagePreview: null // Will be set after reader completes
+    };
+    setChatMessages(prev => [...prev, userMessage]);
+    
+    try {
+      // Extract text from screenshot using OCR
+      const result = await extractTextFromImage(file, { platform: 'auto' });
+      
+      let extractedText = '';
+      if (result.success && result.messages) {
+        extractedText = formatExtractedMessagesAsText(result.messages);
+      }
+      
+      // If no text extracted, use a generic message
+      if (!extractedText.trim()) {
+        extractedText = "I uploaded a screenshot but couldn't extract the text clearly. Can you help me with dating advice based on what I describe?";
+      }
+      
+      // Send to AI for analysis
+      const aiPrompt = `The user uploaded a screenshot from a dating app conversation. Here's the extracted text from their chat:\n\n${extractedText}\n\nPlease analyze this conversation and help them with:\n1. What's the vibe/tone of the conversation?\n2. How interested does the other person seem?\n3. What should they say next?\n\nGive practical, specific advice.`;
+      
+      const aiResult = await base44.integrations.Core.InvokeLLM({
+        prompt: aiPrompt,
+        system_prompt: VIBE_COACH_SYSTEM_PROMPT
+      });
+      
+      const aiMessage = {
+        role: 'assistant',
+        content: aiResult.response || aiResult,
+        timestamp: new Date().toISOString()
+      };
+      
+      setChatMessages(prev => [...prev, aiMessage]);
+      
+      if (currentChatConversationId) {
+        addMessageToConversation(currentChatConversationId, userMessage);
+        addMessageToConversation(currentChatConversationId, aiMessage);
+      }
+    } catch (error) {
+      console.error('Screenshot analysis error:', error);
+      setChatMessages(prev => [...prev, {
+        role: 'assistant',
+        content: "Hmm, I had trouble analyzing that screenshot. Could you describe what's in the conversation instead? 💕",
+        timestamp: new Date().toISOString()
+      }]);
+    } finally {
+      setIsExtractingText(false);
+      setChatLoading(false);
+      setScreenshotPreview(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+  
+  const clearScreenshot = () => {
+    setScreenshotPreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+  
+  // Open Vibe Coach and immediately trigger file upload
+  const openVibeCoachWithUpload = () => {
+    setShowVibeCoach(true);
+    // Use setTimeout to ensure the modal is rendered before triggering file input
+    setTimeout(() => {
+      fileInputRef.current?.click();
+    }, 100);
+  };
 
   // Full-screen Vibe Coach Modal
   if (showVibeCoach) {
@@ -410,20 +514,62 @@ export default function HomeCoPilot() {
         
         {/* Input Area */}
         <div className="p-4 border-t border-slate-800/50 bg-slate-950/80 backdrop-blur-lg pb-24">
-          {/* Screenshot Upload Option */}
+          {/* Hidden file input */}
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleScreenshotUpload}
+            accept="image/*"
+            className="hidden"
+          />
+          
+          {/* Screenshot Upload Button */}
           <button
-            onClick={() => navigate('/copilot/upload')}
-            className="w-full mb-3 bg-slate-800/60 border border-slate-700/50 rounded-xl p-3 hover:border-purple-500/50 transition-all flex items-center gap-3"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={chatLoading || isExtractingText}
+            className="w-full mb-3 bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-xl p-3 hover:border-purple-500/50 transition-all flex items-center gap-3 disabled:opacity-50"
           >
             <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-              <Camera className="w-5 h-5 text-white" />
+              {isExtractingText ? (
+                <Loader2 className="w-5 h-5 text-white animate-spin" />
+              ) : (
+                <Camera className="w-5 h-5 text-white" />
+              )}
             </div>
             <div className="flex-1 text-left">
-              <p className="text-white text-sm font-medium">Upload Screenshot</p>
-              <p className="text-slate-500 text-xs">Get help with your dating app chats</p>
+              <p className="text-white text-sm font-medium flex items-center gap-2">
+                {isExtractingText ? 'Analyzing...' : '📸 Upload Screenshot'}
+                <span className="px-1.5 py-0.5 bg-amber-500/20 text-amber-400 text-[10px] font-bold rounded-full">INSTANT</span>
+              </p>
+              <p className="text-slate-400 text-xs">Tap to upload & get advice on your chats</p>
             </div>
-            <ChevronRight className="w-5 h-5 text-slate-500" />
+            <Upload className="w-5 h-5 text-purple-400" />
           </button>
+          
+          {/* Screenshot Preview */}
+          {screenshotPreview && (
+            <div className="mb-3 relative">
+              <img 
+                src={screenshotPreview} 
+                alt="Screenshot preview" 
+                className="w-full h-32 object-cover rounded-xl border border-purple-500/30"
+              />
+              <button
+                onClick={clearScreenshot}
+                className="absolute top-2 right-2 bg-red-500 rounded-full p-1"
+              >
+                <X className="w-4 h-4 text-white" />
+              </button>
+              {isExtractingText && (
+                <div className="absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center">
+                  <div className="text-center">
+                    <Loader2 className="w-8 h-8 text-purple-400 animate-spin mx-auto mb-2" />
+                    <p className="text-white text-sm">Reading your chat...</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
           
           {/* Main Input */}
           <div className="flex gap-2">
@@ -514,7 +660,7 @@ export default function HomeCoPilot() {
         {/* PRIMARY CTA - Screenshot Upload */}
         <div className="mb-4">
           <button
-            onClick={() => navigate('/copilot/upload?mode=screenshot')}
+            onClick={openVibeCoachWithUpload}
             className="w-full group relative overflow-hidden active:scale-[0.98] transition-transform"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 rounded-2xl animate-gradient-x"></div>
