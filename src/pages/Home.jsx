@@ -111,7 +111,7 @@ export default function Home() {
   const features = [
     {
       icon: Zap,
-      title: 'Live Coach ⚡',
+      title: 'Live Wingman ⚡',
       description: 'Real-time dating tips',
       color: 'from-amber-500 to-orange-600',
       page: 'wingman'
@@ -235,7 +235,7 @@ export default function Home() {
           <UsageDisplay onUpgrade={() => setShowUpgradeModal(true)} />
         </div>
 
-        {/* Live Coach Quick Access Button */}
+        {/* Live Wingman Quick Access Button */}
         <Link to="/wingman" className="block mb-6">
           <div className="relative overflow-hidden bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 rounded-2xl p-4 shadow-xl shadow-orange-500/30 hover:shadow-orange-500/50 transition-all hover:scale-[1.02] active:scale-[0.98]">
             {/* Animated background pulse */}
@@ -247,7 +247,7 @@ export default function Home() {
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <h3 className="text-xl font-bold text-white">Live Coach ⚡</h3>
+                  <h3 className="text-xl font-bold text-white">Live Wingman ⚡</h3>
                   <span className="bg-white/20 text-white text-xs font-bold px-2 py-0.5 rounded-full">LIVE</span>
                 </div>
                 <p className="text-white/80 text-sm">Real-time dating tips 🔥</p>

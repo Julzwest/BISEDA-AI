@@ -1222,11 +1222,11 @@ Respond naturally as the Intimacy Coach. Be warm, helpful, and educational. Keep
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-                  {activeMode === 'live' ? 'Live Coach' : 'Ask Coach'} 
-                  <span className="text-xl">{activeMode === 'live' ? '⚡' : '💬'}</span>
+                  {activeMode === 'live' ? 'Live Wingman' : 'Vibe Coach'} 
+                  <span className="text-xl">{activeMode === 'live' ? '⚡' : '💕'}</span>
                 </h1>
                 <p className="text-sm text-slate-400">
-                  {activeMode === 'live' ? 'Real-time dating tips' : 'Get advice anytime'}
+                  {activeMode === 'live' ? 'Real-time dating tips' : 'Love & relationship advice'}
                 </p>
               </div>
             </div>
