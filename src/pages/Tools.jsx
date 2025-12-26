@@ -52,16 +52,6 @@ export default function Tools() {
       emoji: '💪'
     },
     {
-      id: 'chat',
-      icon: MessageSquare,
-      title: 'Dating Buddy 💬',
-      description: 'Your friend for dating advice',
-      color: 'from-purple-500 to-pink-500',
-      route: '/chat',
-      requiresPro: false,
-      emoji: '💬'
-    },
-    {
       id: 'bodylanguage',
       icon: Eye,
       title: 'Body Language Guide',

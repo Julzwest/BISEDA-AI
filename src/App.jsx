@@ -147,7 +147,7 @@ function App() {
           <Route path="/dates" element={<Navigate to="/explore" replace />} />
           <Route path="/events" element={<Navigate to="/explore" replace />} />
           <Route path="/gifts" element={<GiftSuggestions />} />
-          <Route path="/chat" element={<Chat />} />
+          <Route path="/chat" element={<Navigate to="/wingman" replace />} />
           
           {/* Redirects */}
           <Route path="/progress" element={<Navigate to="/profile" replace />} />

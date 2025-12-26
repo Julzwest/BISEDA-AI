@@ -110,16 +110,9 @@ export default function Home() {
   // ALL FEATURES ARE FREE NOW! 🎉
   const features = [
     {
-      icon: Bot,
-      title: 'Dating Buddy 💬',
-      description: 'Your friend for dating advice',
-      color: 'from-purple-500 to-pink-500',
-      page: 'Chat'
-    },
-    {
       icon: Zap,
-      title: 'Rizz Master ⚡',
-      description: 'Live coaching on dates',
+      title: 'Live Coach ⚡',
+      description: 'Real-time dating tips',
       color: 'from-amber-500 to-orange-600',
       page: 'wingman'
     },
@@ -242,7 +235,7 @@ export default function Home() {
           <UsageDisplay onUpgrade={() => setShowUpgradeModal(true)} />
         </div>
 
-        {/* Rizz Master Quick Access Button */}
+        {/* Live Coach Quick Access Button */}
         <Link to="/wingman" className="block mb-6">
           <div className="relative overflow-hidden bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 rounded-2xl p-4 shadow-xl shadow-orange-500/30 hover:shadow-orange-500/50 transition-all hover:scale-[1.02] active:scale-[0.98]">
             {/* Animated background pulse */}
@@ -254,10 +247,10 @@ export default function Home() {
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <h3 className="text-xl font-bold text-white">Rizz Master ⚡</h3>
+                  <h3 className="text-xl font-bold text-white">Live Coach ⚡</h3>
                   <span className="bg-white/20 text-white text-xs font-bold px-2 py-0.5 rounded-full">LIVE</span>
                 </div>
-                <p className="text-white/80 text-sm">Your secret weapon on dates 🔥</p>
+                <p className="text-white/80 text-sm">Real-time dating tips 🔥</p>
               </div>
               <div className="text-white/80">
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
