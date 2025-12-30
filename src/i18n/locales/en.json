@@ -460,6 +460,9 @@
   "rehearsal": {
     "title": "Date Rehearsal",
     "subtitle": "Practice conversations with AI roleplay",
+    "selectParentGender": "Select parent gender:",
+    "mom": "Mom",
+    "dad": "Dad",
     "personName": "Person's name",
     "parentName": "Parent's name",
     "partnerName": "Partner's name",
@@ -1123,7 +1126,16 @@
     "weeklyActivity": "Weekly Activity",
     "level": "Level",
     "streak": "Streak",
-    "days": "days"
+    "days": "days",
+    "noSavedItems": "No Saved Items Yet",
+    "savedVenues": "Saved Venues",
+    "savedTips": "Saved Tips",
+    "savedGifts": "Saved Gift Ideas",
+    "locationSettings": "Location Settings",
+    "selectCountry": "Select Country",
+    "selectCity": "Select City",
+    "saveLocation": "Save Location",
+    "locationSaved": "Location Saved!"
   },
   "rehearsalScenarios": {
     "firstDate": "First Date",

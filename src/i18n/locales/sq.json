@@ -460,6 +460,9 @@
   "rehearsal": {
     "title": "Prova e Takimit",
     "subtitle": "Praktiko bisedat me roleplay AI",
+    "selectParentGender": "Zgjidh gjininë e prindit:",
+    "mom": "Nënë",
+    "dad": "Baba",
     "personName": "Emri i personit",
     "parentName": "Emri i prindit",
     "partnerName": "Emri i partnerit",
@@ -1122,7 +1125,16 @@
     "weeklyActivity": "Aktiviteti Javor",
     "level": "Niveli",
     "streak": "Seria",
-    "days": "ditë"
+    "days": "ditë",
+    "noSavedItems": "Asnjë Gjë e Ruajtur Ende",
+    "savedVenues": "Vende të Ruajtura",
+    "savedTips": "Këshilla të Ruajtura",
+    "savedGifts": "Ide Dhuratash të Ruajtura",
+    "locationSettings": "Cilësimet e Vendndodhjes",
+    "selectCountry": "Zgjidh Shtetin",
+    "selectCity": "Zgjidh Qytetin",
+    "saveLocation": "Ruaj Vendndodhjen",
+    "locationSaved": "Vendndodhja u Ruajt!"
   },
   "rehearsalScenarios": {
     "firstDate": "Takimi i Parë",

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   TrendingUp, Award, Target, Zap, Calendar, MessageSquare, Heart, Star, Trophy, Flame,
   User, Crown, Shield, LogOut, Bookmark, Settings, MapPin, Globe, Check, CreditCard, Trash2,
@@ -14,6 +15,7 @@ import UpgradeModal from '@/components/UpgradeModal';
 import { getProfile, saveProfile, defaultProfile } from '@/utils/profileMemory';
 
 export default function UserProfile({ onLogout }) {
+  const { t } = useTranslation();
   const [stats, setStats] = useState({
     totalMessages: 0,
     messagesThisWeek: 0,
@@ -312,7 +314,7 @@ export default function UserProfile({ onLogout }) {
   const getTierBadge = (tier) => {
     // Everything is FREE now! Show VIP badge to make users feel special
     return { 
-      label: '🎉 VIP Member', 
+      label: `🎉 ${t('userProfile.vipMember', 'VIP Member')}`, 
       color: 'bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-300 border-emerald-500/30', 
       icon: Sparkles 
     };
@@ -341,10 +343,10 @@ export default function UserProfile({ onLogout }) {
   const progressPercent = (unlockedCount / achievements.length) * 100;
 
   const statCards = [
-    { label: 'Total Messages', value: usage?.dailyUsage?.messages || stats.totalMessages, icon: MessageSquare, color: 'from-purple-500 to-pink-500' },
-    { label: 'This Week', value: stats.messagesThisWeek, icon: Zap, color: 'from-blue-500 to-cyan-500' },
-    { label: 'Dates Planned', value: stats.datesPlanned, icon: Calendar, color: 'from-rose-500 to-pink-500' },
-    { label: 'Current Level', value: stats.level, icon: Star, color: 'from-yellow-500 to-orange-500' }
+    { label: t('userProfile.totalMessages', 'Total Messages'), value: usage?.dailyUsage?.messages || stats.totalMessages, icon: MessageSquare, color: 'from-purple-500 to-pink-500' },
+    { label: t('userProfile.thisWeek', 'This Week'), value: stats.messagesThisWeek, icon: Zap, color: 'from-blue-500 to-cyan-500' },
+    { label: t('userProfile.datesPlanned', 'Dates Planned'), value: stats.datesPlanned, icon: Calendar, color: 'from-rose-500 to-pink-500' },
+    { label: t('userProfile.level', 'Level'), value: stats.level, icon: Star, color: 'from-yellow-500 to-orange-500' }
   ];
 
   const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -425,7 +427,7 @@ export default function UserProfile({ onLogout }) {
             {/* FREE VIP Status Badge */}
             <div className="flex-1 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 py-2 px-4 rounded-xl text-sm font-semibold text-center text-emerald-300 flex items-center justify-center gap-2">
               <Sparkles className="w-4 h-4" />
-              ✨ All Features Unlocked!
+              {t('userProfile.allUnlocked', '✨ All Features Unlocked!')}
             </div>
             <Button
               onClick={onLogout}
@@ -433,7 +435,7 @@ export default function UserProfile({ onLogout }) {
               className="px-4 py-2 bg-slate-800/50 border-slate-700 hover:bg-slate-700/50 text-slate-300 rounded-xl text-sm"
             >
               <LogOut className="w-4 h-4 mr-1.5" />
-              Logout
+              {t('userProfile.logout', 'Logout')}
             </Button>
           </div>
         </div>
@@ -450,7 +452,7 @@ export default function UserProfile({ onLogout }) {
           }`}
         >
           <Trophy className="w-4 h-4 inline mr-1.5" />
-          Progress
+          {t('userProfile.progress', 'Progress')}
         </button>
         <button
           onClick={() => setActiveSection('saved')}
@@ -461,7 +463,7 @@ export default function UserProfile({ onLogout }) {
           }`}
         >
           <Bookmark className="w-4 h-4 inline mr-1.5" />
-          Saved ({totalFavorites})
+          {t('userProfile.saved', 'Saved')} ({totalFavorites})
         </button>
         <button
           onClick={() => setActiveSection('settings')}
@@ -472,7 +474,7 @@ export default function UserProfile({ onLogout }) {
           }`}
         >
           <Settings className="w-4 h-4 inline mr-1.5" />
-          Settings
+          {t('userProfile.settings', 'Settings')}
         </button>
       </div>
 
@@ -499,7 +501,7 @@ export default function UserProfile({ onLogout }) {
           <Card className="bg-slate-800/50 border-slate-700 p-5 mb-6">
             <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
               <Flame className="w-5 h-5 text-orange-400" />
-              This Week's Activity
+              {t('userProfile.weeklyActivity', "This Week's Activity")}
             </h3>
             <div className="flex items-end justify-between gap-2 h-32">
               {weeklyActivity.map((activity, i) => {
