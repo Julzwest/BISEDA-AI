@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next';
 import { createPageUrl } from './utils';
 import { Lightbulb, Home, Calendar, Bot, Flag, User, PartyPopper, Sparkles, MessageCircle, Heart, MapPin, Zap, Users, Wrench } from 'lucide-react';
 import RegionSwitcher from '@/components/RegionSwitcher';
-import GuestBanner from '@/components/GuestBanner';
+// GuestBanner removed - guest sessions no longer supported
 import TrialCountdown from '@/components/TrialCountdown';
 import TrialExpiredModal from '@/components/TrialExpiredModal';
-import { clearGuestSession } from '@/pages/AuthComponent';
+// Guest sessions removed - all users must register
 import { trackPageView } from '@/utils/analytics';
 import { getBackendUrl } from '@/utils/getBackendUrl';
 
@@ -20,11 +20,7 @@ export default function Layout({ children, onLogout }) {
   // Trial expiration state
   const [showTrialExpiredModal, setShowTrialExpiredModal] = useState(false);
   
-  // 🔒 FIX: Only show guest banner if TRULY a guest (no real userId)
-  // If user has a userId, they're logged in - ignore stale isGuest flag
-  const userId = localStorage.getItem('userId');
-  const hasRealAccount = userId && userId.length > 10; // Real user IDs are long
-  const isGuest = localStorage.getItem('isGuest') === 'true' && !hasRealAccount;
+  // All users are now registered - no guest sessions
   
   // Check trial expiration status
   useEffect(() => {
@@ -219,20 +215,7 @@ export default function Layout({ children, onLogout }) {
           
           {/* Center - Trial Countdown Timer */}
           <div className="absolute left-1/2 transform -translate-x-1/2">
-            {isGuest ? (
-              <GuestBanner 
-                onExpired={() => {
-                  clearGuestSession();
-                  if (onLogout) onLogout();
-                }}
-                onSignUp={() => {
-                  clearGuestSession();
-                  if (onLogout) onLogout();
-                }}
-              />
-            ) : (
-              <TrialCountdown />
-            )}
+            <TrialCountdown />
           </div>
           
           {/* Right side - Profile + Region Switcher */}
