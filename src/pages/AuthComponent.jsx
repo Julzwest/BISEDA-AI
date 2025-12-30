@@ -56,8 +56,29 @@ export default function Auth({ onAuthSuccess }) {
   // Age verification state
   const [showAgeVerification, setShowAgeVerification] = useState(false);
   const [selectedAge, setSelectedAge] = useState('');
+  
+  // Welcome modal state
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
+  const [pendingAuthData, setPendingAuthData] = useState(null);
 
   const backendUrl = getBackendUrl();
+
+  // Password strength calculator
+  const getPasswordStrength = (pwd) => {
+    if (!pwd) return { level: 0, label: '', color: '' };
+    let strength = 0;
+    if (pwd.length >= 6) strength++;
+    if (pwd.length >= 8) strength++;
+    if (/[A-Z]/.test(pwd)) strength++;
+    if (/[0-9]/.test(pwd)) strength++;
+    if (/[^A-Za-z0-9]/.test(pwd)) strength++;
+    
+    if (strength <= 2) return { level: strength, label: t('auth.passwordWeak', 'Weak'), color: 'bg-red-500' };
+    if (strength <= 3) return { level: strength, label: t('auth.passwordMedium', 'Medium'), color: 'bg-yellow-500' };
+    return { level: strength, label: t('auth.passwordStrong', 'Strong'), color: 'bg-green-500' };
+  };
+
+  const passwordStrength = getPasswordStrength(password);
   
   // Check if running on iOS native app
   const isNativeIOS = Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'ios';
@@ -227,13 +248,25 @@ export default function Auth({ onAuthSuccess }) {
 
         console.log('✅ Auth successful:', { userId, userName, email: data.user.email });
 
-        if (onAuthSuccess) {
-          onAuthSuccess({
+        // For new registrations, show welcome modal first
+        if (!isLogin) {
+          setPendingAuthData({
             userId,
             email: data.user.email,
             userName,
             country: data.user.country || 'AL',
           });
+          setShowWelcomeModal(true);
+        } else {
+          // For login, proceed directly
+          if (onAuthSuccess) {
+            onAuthSuccess({
+              userId,
+              email: data.user.email,
+              userName,
+              country: data.user.country || 'AL',
+            });
+          }
         }
       } else {
         setError(data.error || t('authErrors.somethingWrong'));
@@ -557,6 +590,28 @@ export default function Auth({ onAuthSuccess }) {
               </button>
             </div>
 
+            {/* Password Strength Indicator - Only show on Register */}
+            {!isLogin && password && (
+              <div className="space-y-1.5">
+                <div className="flex gap-1">
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <div
+                      key={i}
+                      className={`h-1.5 flex-1 rounded-full transition-all duration-300 ${
+                        i <= passwordStrength.level ? passwordStrength.color : 'bg-slate-700'
+                      }`}
+                    />
+                  ))}
+                </div>
+                <p className={`text-xs text-right ${
+                  passwordStrength.level <= 2 ? 'text-red-400' : 
+                  passwordStrength.level <= 3 ? 'text-yellow-400' : 'text-green-400'
+                }`}>
+                  {passwordStrength.label} {passwordStrength.level >= 4 ? '💪' : passwordStrength.level <= 2 ? '⚠️' : ''}
+                </p>
+              </div>
+            )}
+
             {/* Error */}
             {error && (
               <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-xl animate-shake">
@@ -681,6 +736,62 @@ export default function Auth({ onAuthSuccess }) {
             <p className="mt-4 text-center text-xs text-slate-500">
               {t('ageVerification.disclaimer')}
             </p>
+          </Card>
+        </div>
+      )}
+
+      {/* Welcome Modal - Shows after successful registration */}
+      {showWelcomeModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <Card className="bg-slate-900/95 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20 max-w-md w-full animate-fade-in">
+            <div className="text-center">
+              {/* Animated emoji */}
+              <div className="relative mb-6">
+                <div className="w-24 h-24 bg-gradient-to-br from-pink-500 via-purple-500 to-fuchsia-600 rounded-full flex items-center justify-center mx-auto animate-bounce-slow">
+                  <span className="text-5xl">🎉</span>
+                </div>
+                <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center animate-pulse">
+                  <span className="text-lg">✨</span>
+                </div>
+              </div>
+
+              {/* Welcome text */}
+              <h2 className="text-3xl font-bold text-white mb-3">
+                {t('auth.welcomeTitle', 'Welcome!')} 🥳
+              </h2>
+              <p className="text-lg text-slate-300 mb-6">
+                {t('auth.welcomeMessage', "Let's level up your dating game! 💕")}
+              </p>
+
+              {/* Features preview */}
+              <div className="bg-slate-800/50 rounded-2xl p-4 mb-6 text-left space-y-3">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">💬</span>
+                  <span className="text-slate-300 text-sm">{t('auth.feature1', 'AI-powered conversation tips')}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">🎯</span>
+                  <span className="text-slate-300 text-sm">{t('auth.feature2', 'Practice date scenarios')}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">📍</span>
+                  <span className="text-slate-300 text-sm">{t('auth.feature3', 'Discover perfect date spots')}</span>
+                </div>
+              </div>
+
+              {/* Continue button */}
+              <Button
+                onClick={() => {
+                  setShowWelcomeModal(false);
+                  if (onAuthSuccess && pendingAuthData) {
+                    onAuthSuccess(pendingAuthData);
+                  }
+                }}
+                className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold h-14 rounded-xl text-lg shadow-lg transition-all duration-300"
+              >
+                {t('auth.letsGo', "Let's Go!")} 🚀
+              </Button>
+            </div>
           </Card>
         </div>
       )}
