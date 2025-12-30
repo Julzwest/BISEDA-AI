@@ -113,12 +113,12 @@ export default function Layout({ children, onLogout }) {
     trackPageView(currentPageName);
   }, [currentPageName]);
 
-  // 5-tab navigation: Home, Wingman, Rehearse, Explore, More (Profile moved to header)
+  // 5-tab navigation: Home, Wingman, Rehearse, Date Spots, More (Profile moved to header)
   const navItems = [
     { name: t('nav.hub', 'Home'), icon: Home, page: 'Copilot' },
     { name: t('nav.wingman', 'Wingman'), icon: Zap, page: 'Wingman' },
     { name: t('nav.rehearse', 'Rehearse'), icon: Users, page: 'Rehearsal' },
-    { name: t('nav.explore', 'Explore'), icon: Calendar, page: 'Explore' },
+    { name: t('nav.dateSpots', 'Date Spots'), icon: MapPin, page: 'Explore' },
     { name: t('nav.more', 'More'), icon: Wrench, page: 'Tools' }
   ];
 
@@ -235,9 +235,8 @@ export default function Layout({ children, onLogout }) {
             )}
           </div>
           
-          {/* Right side - Region Switcher + Profile */}
+          {/* Right side - Profile + Region Switcher */}
           <div className="flex items-center gap-2">
-            <RegionSwitcher />
             <Link 
               to="/profile"
               className={`p-2 rounded-xl transition-all ${
@@ -248,6 +247,7 @@ export default function Layout({ children, onLogout }) {
             >
               <User className="w-5 h-5" />
             </Link>
+            <RegionSwitcher />
           </div>
         </div>
       </header>
