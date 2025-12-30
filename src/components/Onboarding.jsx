@@ -85,25 +85,31 @@ export default function Onboarding({ onComplete }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-b from-slate-950 via-purple-950/30 to-slate-950 z-50 flex flex-col items-center justify-center p-6">
+    <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center p-6" style={{ backgroundColor: '#0a0a1a' }}>
+      {/* Solid background layer to prevent any bleed-through */}
+      <div className="absolute inset-0 bg-slate-950" />
+      
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-purple-950/50 to-slate-950" />
+      
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-pink-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
       </div>
 
       {/* Skip Button */}
       {currentStep < steps.length - 1 && (
         <button
           onClick={handleSkip}
-          className="absolute top-6 right-6 text-slate-500 hover:text-white text-sm font-medium transition-colors"
+          className="absolute top-6 right-6 text-slate-500 hover:text-white text-sm font-medium transition-colors z-20"
         >
           {t('onboarding.skip', 'Skip')}
         </button>
       )}
 
       {/* Content */}
-      <div className="relative text-center z-10 min-h-[280px] flex items-center justify-center">
+      <div className="relative text-center z-20 min-h-[280px] flex items-center justify-center">
         {steps.map((step, index) => (
           <OnboardingStep
             key={index}
@@ -117,7 +123,7 @@ export default function Onboarding({ onComplete }) {
       </div>
 
       {/* Progress Dots */}
-      <div className="flex gap-2 mt-10 mb-8">
+      <div className="flex gap-2 mt-10 mb-8 z-20">
         {steps.map((_, index) => (
           <div
             key={index}
@@ -139,7 +145,7 @@ export default function Onboarding({ onComplete }) {
         onClick={handleNext}
         disabled={isAnimating}
         className={`
-          px-8 py-6 rounded-2xl font-semibold text-lg flex items-center gap-2 transition-all transform
+          px-8 py-6 rounded-2xl font-semibold text-lg flex items-center gap-2 transition-all transform z-20
           ${currentStep === steps.length - 1
             ? 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 shadow-lg shadow-green-500/30'
             : 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg shadow-purple-500/30'
@@ -162,7 +168,7 @@ export default function Onboarding({ onComplete }) {
 
       {/* Feature Pills at bottom */}
       {currentStep === steps.length - 1 && (
-        <div className="mt-6 flex flex-wrap justify-center gap-2 animate-fadeIn">
+        <div className="mt-6 flex flex-wrap justify-center gap-2 animate-fadeIn z-20">
           <span className="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-xs">
             ✓ {t('onboarding.feature1', 'Chat Analysis')}
           </span>
@@ -176,12 +182,12 @@ export default function Onboarding({ onComplete }) {
       )}
 
       {/* Legal Links */}
-      <div className="absolute bottom-6 flex gap-4 text-xs text-slate-600">
-        <a href="/privacy" className="hover:text-slate-400 transition-colors">
+      <div className="absolute bottom-6 flex gap-4 text-xs text-slate-600 z-20">
+        <a href="#/privacy" className="hover:text-slate-400 transition-colors">
           {t('legal.privacyPolicy', 'Privacy Policy')}
         </a>
         <span>•</span>
-        <a href="/terms" className="hover:text-slate-400 transition-colors">
+        <a href="#/terms" className="hover:text-slate-400 transition-colors">
           {t('legal.termsOfService', 'Terms of Service')}
         </a>
       </div>
