@@ -353,7 +353,9 @@ export default function UserProfile({ onLogout }) {
   const TierIcon = tierBadge.icon;
   const currentCountry = getCountryByCode(userCountry);
 
-  // Fun achievements to unlock!
+  // Calculate total favorites first (needed for achievements)
+  const totalFavorites = localFavorites.venues.length + localFavorites.dateIdeas.length + localFavorites.tips.length + localFavorites.gifts.length;
+
   // Realistic, attainable achievements based on actual tracked activity
   const achievements = [
     // Easy entry points (unlock quickly to hook users)
@@ -393,8 +395,6 @@ export default function UserProfile({ onLogout }) {
 
   const weekDays = getWeekDayLabels(i18n.language);
   const maxActivity = Math.max(...weeklyActivity, 1);
-
-  const totalFavorites = localFavorites.venues.length + localFavorites.dateIdeas.length + localFavorites.tips.length + localFavorites.gifts.length;
 
   if (loading) {
     return (
