@@ -365,42 +365,48 @@ export default function Admin() {
               </Card>
             </button>
 
-            <Card className="bg-gradient-to-br from-green-900/40 to-emerald-900/40 border-green-500/30 p-4">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg relative">
-                  <Activity className="w-6 h-6 text-white" />
-                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-slate-900 animate-pulse"></span>
+            <button onClick={() => { setActiveTab('users'); setFilterStatus('online'); }} className="text-left transition-all hover:scale-[1.02] active:scale-[0.98]">
+              <Card className="bg-gradient-to-br from-green-900/40 to-emerald-900/40 border-green-500/30 p-4 hover:border-green-400/50 transition-all h-full">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg relative">
+                    <Activity className="w-6 h-6 text-white" />
+                    <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-slate-900 animate-pulse"></span>
+                  </div>
+                  <div>
+                    <p className="text-slate-400 text-xs">{t('admin.onlineNow')}</p>
+                    <p className="text-white text-2xl font-bold">{registeredUsers.filter(u => u.onlineStatus === 'online').length}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-slate-400 text-xs">{t('admin.onlineNow')}</p>
-                  <p className="text-white text-2xl font-bold">{registeredUsers.filter(u => u.onlineStatus === 'online').length}</p>
-                </div>
-              </div>
-            </Card>
+              </Card>
+            </button>
 
-            <Card className="bg-gradient-to-br from-purple-900/40 to-pink-900/40 border-purple-500/30 p-4">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
-                  <MessageSquare className="w-6 h-6 text-white" />
+            <button onClick={() => { setActiveTab('conversations'); fetchConversations(); }} className="text-left transition-all hover:scale-[1.02] active:scale-[0.98]">
+              <Card className="bg-gradient-to-br from-purple-900/40 to-pink-900/40 border-purple-500/30 p-4 hover:border-purple-400/50 transition-all h-full">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
+                    <MessageSquare className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-slate-400 text-xs">{t('admin.totalMessages')}</p>
+                    <p className="text-white text-2xl font-bold">{stats?.overview?.totalMessages || 0}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-slate-400 text-xs">{t('admin.totalMessages')}</p>
-                  <p className="text-white text-2xl font-bold">{stats?.overview?.totalMessages || 0}</p>
-                </div>
-              </div>
-            </Card>
+              </Card>
+            </button>
 
-            <Card className="bg-gradient-to-br from-amber-900/40 to-orange-900/40 border-amber-500/30 p-4">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
-                  <Zap className="w-6 h-6 text-white" />
+            <button onClick={() => setActiveTab('subscriptions')} className="text-left transition-all hover:scale-[1.02] active:scale-[0.98]">
+              <Card className="bg-gradient-to-br from-amber-900/40 to-orange-900/40 border-amber-500/30 p-4 hover:border-amber-400/50 transition-all h-full">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+                    <Zap className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-slate-400 text-xs">{t('admin.appStatus')}</p>
+                    <p className="text-emerald-400 text-xl font-bold">🟢 LIVE</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-slate-400 text-xs">{t('admin.appStatus')}</p>
-                  <p className="text-emerald-400 text-xl font-bold">🟢 LIVE</p>
-                </div>
-              </div>
-            </Card>
+              </Card>
+            </button>
           </div>
 
           {/* Quick Navigation - 4 Cards matching top stats style */}
