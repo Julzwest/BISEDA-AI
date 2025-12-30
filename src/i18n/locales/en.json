@@ -1370,7 +1370,16 @@
     "changeTierConfirm": "Change {{name}}'s tier to {{tier}}?",
     "tierUpdated": "Tier updated to {{tier}}!",
     "tierUpdateFailed": "Failed to update tier",
-    "nowViewingAs": "Now viewing as: {{name}}\n\nYou can see exactly what they see!\n\nClick 'Exit Impersonation' in your profile to return to admin."
+    "nowViewingAs": "Now viewing as: {{name}}\n\nYou can see exactly what they see!\n\nClick 'Exit Impersonation' in your profile to return to admin.",
+    "fadingAway": "Fading Away Users",
+    "fadingAwayDesc": "These users haven't been active recently. Consider sending them a re-engagement message!",
+    "inactive1Week": "1 week inactive",
+    "inactive2Weeks": "2 weeks inactive",
+    "inactive1Month": "1+ month inactive",
+    "daysAgo": "days ago",
+    "allUsersActive": "All users are active!",
+    "noInactiveUsers": "No inactive users at the moment.",
+    "moreInactiveUsers": "more inactive users"
   }
 }
 

@@ -521,7 +521,7 @@ export default function Admin() {
           </Card>
 
           {/* Recent Signups */}
-          <Card className="bg-slate-800/50 border-slate-700/50 p-5">
+          <Card className="bg-slate-800/50 border-slate-700/50 p-5 mb-6">
             <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
               <UserPlus className="w-5 h-5 text-blue-400" /> {t('admin.recentSignups')}
             </h2>
@@ -564,6 +564,93 @@ export default function Admin() {
                 </div>
               ))}
             </div>
+          </Card>
+
+          {/* Fading Away Users - Inactive */}
+          <Card className="bg-gradient-to-br from-orange-900/30 to-red-900/30 border-orange-500/30 p-5">
+            <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+              <Clock className="w-5 h-5 text-orange-400" /> ⚠️ {t('admin.fadingAway')}
+            </h2>
+            <p className="text-slate-400 text-sm mb-4">{t('admin.fadingAwayDesc')}</p>
+            
+            {(() => {
+              const now = new Date();
+              const oneWeekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+              const twoWeeksAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+              const oneMonthAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+              
+              const inactiveUsers = registeredUsers.filter(user => {
+                const lastSeen = user.lastSeenAt ? new Date(user.lastSeenAt) : 
+                                 user.lastLoginAt ? new Date(user.lastLoginAt) :
+                                 user.updatedAt ? new Date(user.updatedAt) : null;
+                return lastSeen && lastSeen < oneWeekAgo;
+              }).sort((a, b) => {
+                const aDate = new Date(a.lastSeenAt || a.lastLoginAt || a.updatedAt || 0);
+                const bDate = new Date(b.lastSeenAt || b.lastLoginAt || b.updatedAt || 0);
+                return aDate - bDate; // Oldest first
+              });
+
+              const getInactivityLabel = (user) => {
+                const lastSeen = new Date(user.lastSeenAt || user.lastLoginAt || user.updatedAt || 0);
+                if (lastSeen < oneMonthAgo) return { text: t('admin.inactive1Month'), color: 'bg-red-500/20 text-red-300' };
+                if (lastSeen < twoWeeksAgo) return { text: t('admin.inactive2Weeks'), color: 'bg-orange-500/20 text-orange-300' };
+                return { text: t('admin.inactive1Week'), color: 'bg-yellow-500/20 text-yellow-300' };
+              };
+
+              const getDaysSinceLastSeen = (user) => {
+                const lastSeen = new Date(user.lastSeenAt || user.lastLoginAt || user.updatedAt || 0);
+                return Math.floor((now - lastSeen) / (24 * 60 * 60 * 1000));
+              };
+
+              if (inactiveUsers.length === 0) {
+                return (
+                  <div className="text-center py-8">
+                    <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-3" />
+                    <p className="text-green-400 font-semibold">{t('admin.allUsersActive')}</p>
+                    <p className="text-slate-500 text-sm">{t('admin.noInactiveUsers')}</p>
+                  </div>
+                );
+              }
+
+              return (
+                <div className="space-y-2 max-h-[300px] overflow-y-auto">
+                  {inactiveUsers.slice(0, 10).map((user, i) => {
+                    const inactivityInfo = getInactivityLabel(user);
+                    const daysSince = getDaysSinceLastSeen(user);
+                    
+                    return (
+                      <div key={i} className="flex items-center justify-between p-3 bg-slate-800/50 rounded-xl border border-orange-500/20">
+                        <div className="flex items-center gap-3">
+                          <div className="relative">
+                            <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-full flex items-center justify-center text-white font-bold opacity-60">
+                              {(user.firstName?.[0] || user.email?.[0] || '?').toUpperCase()}
+                            </div>
+                            <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-slate-500 rounded-full border-2 border-slate-700"></span>
+                          </div>
+                          <div>
+                            <p className="text-white font-medium">{user.firstName} {user.lastName || ''}</p>
+                            <p className="text-slate-400 text-xs">{user.email}</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <span className={`px-2 py-1 rounded-lg text-xs font-semibold ${inactivityInfo.color}`}>
+                            {inactivityInfo.text}
+                          </span>
+                          <p className="text-slate-500 text-xs mt-1">
+                            {daysSince} {t('admin.daysAgo')}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                  {inactiveUsers.length > 10 && (
+                    <p className="text-center text-slate-500 text-sm pt-2">
+                      +{inactiveUsers.length - 10} {t('admin.moreInactiveUsers')}
+                    </p>
+                  )}
+                </div>
+              );
+            })()}
           </Card>
         </>
       )}
@@ -967,31 +1054,31 @@ export default function Admin() {
                       value={selectedUser.subscriptionTier || 'free'}
                       onChange={async (e) => {
                         const newTier = e.target.value;
-                        if (confirm(`Change ${selectedUser.firstName}'s tier to ${newTier}?`)) {
+                        if (confirm(t('admin.changeTierConfirm', { name: selectedUser.firstName, tier: newTier }))) {
                           try {
-                            const response = await fetch(`${backendUrl}/api/admin/update-user-tier`, {
+                            const token = localStorage.getItem('adminToken');
+                            const response = await fetch(`${backendUrl}/api/admin/users/${selectedUser.odId}/update-tier`, {
                               method: 'PUT',
                               headers: {
                                 'Content-Type': 'application/json',
-                                'x-admin-key': localStorage.getItem('adminKey')
+                                'Authorization': `Bearer ${token}`
                               },
                               body: JSON.stringify({
-                                odId: selectedUser.odId,
                                 tier: newTier
                               })
                             });
                             
                             if (response.ok) {
-                              alert(`✅ Tier updated to ${newTier}!`);
+                              alert(`✅ ${t('admin.tierUpdated', { tier: newTier })}`);
                               setSelectedUser({ ...selectedUser, subscriptionTier: newTier });
-                              fetchUsers(); // Refresh user list
+                              fetchData(); // Refresh user list
                             } else {
                               const error = await response.json();
-                              alert(`❌ Failed: ${error.error}`);
+                              alert(`❌ ${t('admin.tierUpdateFailed')}: ${error.error}`);
                             }
                           } catch (error) {
                             console.error('Update tier error:', error);
-                            alert('❌ Failed to update tier');
+                            alert(`❌ ${t('admin.tierUpdateFailed')}`);
                           }
                         }
                       }}

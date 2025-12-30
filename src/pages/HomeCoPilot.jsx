@@ -816,7 +816,7 @@ export default function HomeCoPilot() {
                 <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full border-2 border-slate-900 flex items-center justify-center text-xs">😎</div>
                 <div className="w-8 h-8 bg-gradient-to-br from-cyan-400 to-blue-400 rounded-full border-2 border-slate-900 flex items-center justify-center text-xs">🥰</div>
                 <div className="w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-400 rounded-full border-2 border-slate-900 flex items-center justify-center text-xs">😍</div>
-                <div className="w-8 h-8 bg-slate-700 rounded-full border-2 border-slate-900 flex items-center justify-center text-xs text-slate-300">+5K</div>
+                <div className="w-8 h-8 bg-slate-700 rounded-full border-2 border-slate-900 flex items-center justify-center text-xs text-slate-300">+10K</div>
               </div>
               <div className="flex items-center gap-1">
                 {[1,2,3,4,5].map((i) => (

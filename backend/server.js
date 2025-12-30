@@ -2117,6 +2117,72 @@ app.put('/api/admin/update-user-tier', checkAdminAuth, async (req, res) => {
   }
 });
 
+// Alias: Update user tier with odId in URL path (for frontend compatibility)
+app.put('/api/admin/users/:odId/update-tier', checkAdminAuth, async (req, res) => {
+  try {
+    const { odId } = req.params;
+    const { tier } = req.body;
+    
+    if (!tier) {
+      return res.status(400).json({ error: 'tier is required' });
+    }
+    
+    const validTiers = ['free', 'free_trial', 'starter', 'pro', 'elite', 'premium'];
+    if (!validTiers.includes(tier)) {
+      return res.status(400).json({ error: 'Invalid tier. Must be one of: ' + validTiers.join(', ') });
+    }
+    
+    // Determine subscription status and expiration
+    const isPaidTier = ['starter', 'pro', 'elite', 'premium'].includes(tier);
+    const subscriptionStatus = isPaidTier ? 'active' : (tier === 'free_trial' ? 'active' : 'inactive');
+    const subscriptionExpiresAt = isPaidTier ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) : null;
+    
+    // UPDATE MONGODB FIRST
+    let mongoUser = await UserAccountModel.findOne({ odId });
+    const oldTier = mongoUser?.subscriptionTier || 'free_trial';
+    
+    if (mongoUser) {
+      await UserAccountModel.updateOne(
+        { odId },
+        {
+          $set: {
+            subscriptionTier: tier,
+            subscriptionStatus: subscriptionStatus,
+            subscriptionExpiresAt: subscriptionExpiresAt,
+            updatedAt: new Date()
+          }
+        }
+      );
+      console.log(`💾 MongoDB: Updated user ${odId} tier: ${oldTier} → ${tier}`);
+    }
+    
+    // UPDATE IN-MEMORY USER
+    const user = getUser(odId);
+    user.subscriptionTier = tier;
+    user.subscriptionStatus = subscriptionStatus;
+    user.subscriptionExpiresAt = subscriptionExpiresAt;
+    
+    if (isPaidTier) {
+      user.screenshotAnalyses.monthlyUsed = 0;
+      user.screenshotAnalyses.currentMonth = new Date().getMonth();
+      user.screenshotAnalyses.currentYear = new Date().getFullYear();
+    }
+    
+    saveUser(user);
+    console.log(`⚡ Updated user ${odId} tier: ${oldTier} → ${tier}`);
+    
+    res.json({
+      success: true,
+      message: `User tier updated from ${oldTier} to ${tier}`,
+      oldTier,
+      newTier: tier
+    });
+  } catch (error) {
+    console.error('Update user tier error:', error);
+    res.status(500).json({ error: 'Failed to update user tier', details: error.message });
+  }
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 Backend server running on http://localhost:${PORT}`);

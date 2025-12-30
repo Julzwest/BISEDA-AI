@@ -1369,7 +1369,16 @@
     "changeTierConfirm": "Ndrysho tierin e {{name}} në {{tier}}?",
     "tierUpdated": "Tieri u përditësua në {{tier}}!",
     "tierUpdateFailed": "Dështoi përditësimi i tierit",
-    "nowViewingAs": "Tani shikon si: {{name}}\n\nMund të shikosh saktësisht çfarë shohin ata!\n\nKliko 'Dil nga Imitimi' në profil për t'u kthyer në admin."
+    "nowViewingAs": "Tani shikon si: {{name}}\n\nMund të shikosh saktësisht çfarë shohin ata!\n\nKliko 'Dil nga Imitimi' në profil për t'u kthyer në admin.",
+    "fadingAway": "Përdorues që Po Largohen",
+    "fadingAwayDesc": "Këta përdorues nuk kanë qenë aktivë kohët e fundit. Konsidero t'u dërgosh një mesazh rikthimi!",
+    "inactive1Week": "1 javë pa aktivitet",
+    "inactive2Weeks": "2 javë pa aktivitet",
+    "inactive1Month": "1+ muaj pa aktivitet",
+    "daysAgo": "ditë më parë",
+    "allUsersActive": "Të gjithë përdoruesit janë aktivë!",
+    "noInactiveUsers": "Asnjë përdorues i paaktivizuar për momentin.",
+    "moreInactiveUsers": "përdorues të tjerë joaktivë"
   }
 }
 
