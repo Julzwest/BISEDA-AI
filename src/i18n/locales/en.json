@@ -150,6 +150,7 @@
     "forgotPassword": "Forgot password?",
     "email": "Email",
     "password": "Password",
+    "createPassword": "Create Password",
     "confirmPassword": "Confirm Password",
     "name": "Name",
     "firstName": "First Name",

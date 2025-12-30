@@ -150,6 +150,7 @@
     "forgotPassword": "Harruat fjalëkalimin?",
     "email": "Email",
     "password": "Fjalëkalimi",
+    "createPassword": "Krijo Fjalëkalimin",
     "confirmPassword": "Konfirmo Fjalëkalimin",
     "name": "Emri",
     "firstName": "Emri",

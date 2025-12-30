@@ -544,7 +544,7 @@ export default function Auth({ onAuthSuccess }) {
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); setError(''); }}
                 className="w-full px-4 py-4 pr-12 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
-                placeholder={t('auth.password') + " 🔐"}
+                placeholder={isLogin ? t('auth.password') + " 🔐" : t('auth.createPassword') + " 🔐"}
                 style={{ fontSize: '16px' }}
                 required
               />
