@@ -723,19 +723,19 @@ export default function HomeCoPilot() {
                 <ChevronRight className="w-6 h-6 text-white opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
               </div>
               
-              {/* Feature Pills */}
-              <div className="flex flex-wrap gap-2">
-                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-500/20 border border-purple-500/30 rounded-full">
-                  <Camera className="w-4 h-4 text-purple-400" />
-                  <span className="text-purple-300 text-xs font-medium">{t('homepage.screenshotAnalysis')}</span>
+              {/* Feature Pills - Always One Row */}
+              <div className="flex gap-1.5 overflow-x-auto no-scrollbar">
+                <div className="flex items-center gap-1 px-2 py-1 bg-purple-500/20 border border-purple-500/30 rounded-full shrink-0">
+                  <Camera className="w-3.5 h-3.5 text-purple-400" />
+                  <span className="text-purple-300 text-[10px] font-medium whitespace-nowrap">{t('homepage.screenshotAnalysis')}</span>
                 </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-pink-500/20 border border-pink-500/30 rounded-full">
-                  <MessageSquare className="w-4 h-4 text-pink-400" />
-                  <span className="text-pink-300 text-xs font-medium">{t('homepage.chatAdvice')}</span>
+                <div className="flex items-center gap-1 px-2 py-1 bg-pink-500/20 border border-pink-500/30 rounded-full shrink-0">
+                  <MessageSquare className="w-3.5 h-3.5 text-pink-400" />
+                  <span className="text-pink-300 text-[10px] font-medium whitespace-nowrap">{t('homepage.chatAdvice')}</span>
                 </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/20 border border-amber-500/30 rounded-full">
-                  <Sparkles className="w-4 h-4 text-amber-400" />
-                  <span className="text-amber-300 text-xs font-medium">{t('homepage.replyIdeas')}</span>
+                <div className="flex items-center gap-1 px-2 py-1 bg-amber-500/20 border border-amber-500/30 rounded-full shrink-0">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                  <span className="text-amber-300 text-[10px] font-medium whitespace-nowrap">{t('homepage.replyIdeas')}</span>
                 </div>
               </div>
             </div>
