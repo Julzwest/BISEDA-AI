@@ -888,8 +888,12 @@
     }
   },
   "gifts": {
-    "title": "Sugjerime Dhuratash 🎁",
-    "subtitle": "Gjej dhuratën perfekte bazuar në interesat e partnerit",
+    "title": "Gjej Dhuratën Perfekte",
+    "subtitle": "Sugjerime të personalizuara që do t'i pëlqejnë",
+    "yourLocation": "Vendndodhja Jote",
+    "pricesShownIn": "Çmimet në",
+    "onlineStores": "Dyqane Online",
+    "localShops": "Dyqane Lokale",
     "partnerInterests": "Çfarë i pëlqen partnerit tënd? (interesat, hobby-t, etj.)",
     "partnerInterestsPlaceholder": "P.sh: I pëlqen muzika, futbolli, libra, teknologjia, moda...",
     "enterInterests": "Ju lutem shkruani interesat e partnerit",

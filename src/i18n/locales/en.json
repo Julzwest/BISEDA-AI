@@ -889,8 +889,12 @@
     }
   },
   "gifts": {
-    "title": "Gift Suggestions 🎁",
-    "subtitle": "Find the perfect gift based on your partner's interests",
+    "title": "Find the Perfect Gift",
+    "subtitle": "Personalized suggestions they'll love",
+    "yourLocation": "Your Location",
+    "pricesShownIn": "Prices shown in",
+    "onlineStores": "Online Stores",
+    "localShops": "Local Shops",
     "partnerInterests": "What does your partner like? (interests, hobbies, etc.)",
     "partnerInterestsPlaceholder": "e.g: They like music, football, books, technology, fashion...",
     "enterInterests": "Please enter your partner's interests",

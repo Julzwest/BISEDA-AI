@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Gift, Heart, Sparkles, ShoppingBag, Star, TrendingUp, ExternalLink, MapPin, Store, Globe, Lock, Crown } from 'lucide-react';
+import { Gift, Heart, Sparkles, ShoppingBag, Star, TrendingUp, ExternalLink, MapPin, Store, Globe, Lock, Crown, ChevronRight } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { SaveButton } from '@/components/SaveButton';
@@ -30,7 +30,8 @@ export default function GiftSuggestions() {
   }, []);
   
   // Get user's country from localStorage
-  const userCountry = localStorage.getItem('userCountry') || 'AL';
+  const [userCountry, setUserCountry] = useState(localStorage.getItem('userCountry') || 'AL');
+  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const currentCountry = getCountryByCode(userCountry);
   const currencySymbol = getCurrencySymbol(userCountry);
   
@@ -429,74 +430,103 @@ Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
 
   return (
     <div className="px-4 pt-6 pb-32 bg-gradient-to-b from-slate-950 via-rose-950/10 to-slate-950">
-      {/* Header - Fun & Playful */}
+      {/* Header - Professional Style */}
       <div className="mb-6 text-center relative">
-        {/* Floating decorative elements */}
-        <div className="absolute -top-2 left-6 text-3xl animate-bounce opacity-60" style={{ animationDelay: '0s' }}>🎁</div>
-        <div className="absolute top-4 right-4 text-2xl animate-bounce opacity-50" style={{ animationDelay: '0.3s' }}>✨</div>
-        <div className="absolute top-16 left-4 text-xl animate-bounce opacity-40" style={{ animationDelay: '0.6s' }}>💝</div>
-        <div className="absolute top-8 right-8 text-xl animate-pulse opacity-30">💫</div>
-        
         <div className="inline-block mb-4">
           <div className="relative">
-            {/* Glowing ring effect */}
-            <div className="absolute inset-0 w-24 h-24 bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 rounded-3xl blur-xl opacity-60 animate-pulse" />
-            <div className="relative w-24 h-24 bg-gradient-to-br from-pink-500 via-rose-500 to-red-600 rounded-3xl flex items-center justify-center shadow-2xl shadow-rose-500/50 transform hover:rotate-6 transition-transform">
-              <span className="text-5xl">🎁</span>
+            <div className="absolute inset-0 bg-gradient-to-br from-pink-500 to-rose-500 rounded-3xl blur-xl opacity-50 animate-pulse"></div>
+            <div className="relative w-20 h-20 bg-gradient-to-br from-pink-500 via-rose-500 to-red-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-rose-500/50 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
+              <Gift className="w-10 h-10 text-white relative z-10" />
             </div>
-            <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center animate-bounce shadow-lg shadow-yellow-500/50">
-              <span className="text-lg">💖</span>
-            </div>
-            <div className="absolute -bottom-1 -left-1 w-6 h-6 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center animate-pulse">
-              <span className="text-sm">✨</span>
+            <div className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center shadow-lg">
+              <Heart className="w-3.5 h-3.5 text-white" />
             </div>
           </div>
         </div>
-        <h1 className="text-3xl font-black mb-2">
-          <span className="bg-gradient-to-r from-pink-400 via-rose-400 to-red-400 bg-clip-text text-transparent">
-            Find the Perfect
-          </span>
-          <br />
-          <span className="bg-gradient-to-r from-rose-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
-            Gift! 🎯
-          </span>
+        <h1 className="text-2xl font-black text-white mb-2">
+          {t('gifts.title', 'Find the Perfect Gift')}
         </h1>
-        <p className="text-slate-400 text-sm flex items-center justify-center gap-2">
-          <span>Personalized suggestions</span>
-          <span className="text-pink-400">•</span>
-          <span>They'll love it!</span>
+        <p className="text-slate-400 text-sm">
+          {t('gifts.subtitle', 'Personalized suggestions they\'ll love')}
         </p>
       </div>
 
-      {/* Shopping Mode Selector - Online vs Physical */}
+      {/* Location & Currency Section */}
       <div className="mb-6">
-        <div className="flex gap-3 p-2 bg-slate-900/70 rounded-2xl border border-slate-700/50 backdrop-blur-sm">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="flex-1">
+            <h2 className="text-lg font-bold text-white">{t('gifts.yourLocation', 'Your Location')}</h2>
+            <p className="text-xs text-slate-400">{t('gifts.pricesShownIn', 'Prices shown in')} {currencySymbol}</p>
+          </div>
+          {/* Country Dropdown */}
+          <div className="relative min-w-[140px]">
+            <button
+              onClick={() => setShowCountryDropdown(!showCountryDropdown)}
+              className="w-full px-3 py-2 bg-slate-800/80 hover:bg-slate-700/80 rounded-xl text-sm text-slate-300 border border-slate-700/50 hover:border-pink-500/50 transition-all flex items-center justify-between gap-2"
+            >
+              <span className="flex items-center gap-2">
+                <span>{currentCountry?.flag}</span>
+                <span>{localizedCountryName}</span>
+              </span>
+              <ChevronRight className={`w-4 h-4 transition-transform ${showCountryDropdown ? 'rotate-90' : ''}`} />
+            </button>
+            
+            {/* Dropdown Menu */}
+            {showCountryDropdown && (
+              <div className="absolute right-0 top-full mt-1 bg-slate-800 border border-slate-700 rounded-xl shadow-xl z-50 w-full overflow-hidden">
+                {countries.map((country) => (
+                  <button
+                    key={country.code}
+                    onClick={() => {
+                      setUserCountry(country.code);
+                      localStorage.setItem('userCountry', country.code);
+                      setSelectedCity('');
+                      setShowCountryDropdown(false);
+                    }}
+                    className={`w-full px-3 py-2.5 text-left text-sm flex items-center gap-2 transition-colors ${
+                      userCountry === country.code
+                        ? 'bg-pink-600 text-white'
+                        : 'text-slate-300 hover:bg-slate-700'
+                    }`}
+                  >
+                    <span>{country.flag}</span>
+                    <span className="truncate">{i18n.language === 'sq' ? country.nameAl : country.nameEn}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Shopping Mode Selector - Clean Professional Style */}
+      <div className="mb-6">
+        <div className="flex gap-2 p-1.5 bg-slate-800/50 rounded-xl border border-slate-700/50">
           <button
             onClick={() => setShoppingMode('online')}
-            className={`flex-1 py-4 px-4 rounded-xl font-bold text-sm transition-all transform ${
+            className={`flex-1 py-3 px-4 rounded-lg font-semibold text-sm transition-all ${
               shoppingMode === 'online'
-                ? 'bg-gradient-to-r from-purple-500 via-pink-500 to-rose-500 text-white shadow-lg shadow-pink-500/50 scale-[1.02]'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800/50 hover:scale-[1.01]'
+                ? 'bg-gradient-to-r from-pink-600 to-rose-600 text-white shadow-lg'
+                : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
             }`}
           >
             <span className="flex items-center justify-center gap-2">
-              <span className="text-xl">🛒</span>
-              <span>Online Stores</span>
-              {shoppingMode === 'online' && <span className="animate-pulse">✨</span>}
+              <ShoppingBag className="w-4 h-4" />
+              <span>{t('gifts.onlineStores', 'Online Stores')}</span>
             </span>
           </button>
           <button
             onClick={() => setShoppingMode('physical')}
-            className={`flex-1 py-4 px-4 rounded-xl font-bold text-sm transition-all transform ${
+            className={`flex-1 py-3 px-4 rounded-lg font-semibold text-sm transition-all ${
               shoppingMode === 'physical'
-                ? 'bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 text-white shadow-lg shadow-cyan-500/50 scale-[1.02]'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800/50 hover:scale-[1.01]'
+                ? 'bg-gradient-to-r from-pink-600 to-rose-600 text-white shadow-lg'
+                : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
             }`}
           >
             <span className="flex items-center justify-center gap-2">
-              <span className="text-xl">🏪</span>
-              <span>Local Shops</span>
-              {shoppingMode === 'physical' && <span className="animate-pulse">📍</span>}
+              <Store className="w-4 h-4" />
+              <span>{t('gifts.localShops', 'Local Shops')}</span>
             </span>
           </button>
         </div>
@@ -637,23 +667,6 @@ Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
         </div>
       </div>
 
-      {/* Current Country Display */}
-      <div className="mb-4 p-4 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-2xl">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center">
-            <Globe className="w-5 h-5 text-white" />
-          </div>
-          <div className="flex-1">
-            <span className="text-white text-sm font-bold block">
-              {t('gifts.location')}: {currentCountry?.flag} {localizedCountryName}
-            </span>
-            <span className="text-cyan-300 text-xs">Prices shown in {currencySymbol}</span>
-          </div>
-          <a href="#/profile" className="px-3 py-1.5 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 rounded-lg text-xs text-cyan-300 font-medium transition-all">
-            {t('gifts.change')}
-          </a>
-        </div>
-      </div>
 
       {/* City Selection for Physical Mode */}
       {shoppingMode === 'physical' && (
