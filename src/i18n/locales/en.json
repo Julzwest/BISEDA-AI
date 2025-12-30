@@ -12,6 +12,23 @@
     "disposableEmail": "Please use a valid email address. Temporary emails are not allowed.",
     "deviceAlreadyUsed": "A free trial has already been used on this device."
   },
+  "trialExpired": {
+    "title": "Your Free Trial Has Ended",
+    "subtitle": "Choose a plan to continue using Biseda.ai"
+  },
+  "subscription": {
+    "mostPopular": "MOST POPULAR",
+    "creditsMonth": "credits/month",
+    "month": "month",
+    "processing": "Processing...",
+    "subscribe": "Subscribe Now",
+    "restorePurchases": "Restore Previous Purchases",
+    "securePayment": "Secure payment via Apple Pay",
+    "terms": "Subscription auto-renews monthly. Cancel anytime in App Store settings.",
+    "starter": "Starter",
+    "pro": "Pro",
+    "elite": "Elite"
+  },
   "onboarding": {
     "skip": "Skip",
     "back": "Back",

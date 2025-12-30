@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { createPageUrl } from './utils';
@@ -6,8 +6,10 @@ import { Lightbulb, Home, Calendar, Bot, Flag, User, PartyPopper, Sparkles, Mess
 import RegionSwitcher from '@/components/RegionSwitcher';
 import GuestBanner from '@/components/GuestBanner';
 import TrialCountdown from '@/components/TrialCountdown';
+import TrialExpiredModal from '@/components/TrialExpiredModal';
 import { clearGuestSession } from '@/pages/AuthComponent';
 import { trackPageView } from '@/utils/analytics';
+import { getBackendUrl } from '@/utils/getBackendUrl';
 
 export default function Layout({ children, onLogout }) {
   const { t } = useTranslation();
@@ -15,11 +17,80 @@ export default function Layout({ children, onLogout }) {
   const location = useLocation();
   const currentPageName = location.pathname.split('/')[1]?.charAt(0).toUpperCase() + location.pathname.split('/')[1]?.slice(1) || 'Home';
   
+  // Trial expiration state
+  const [showTrialExpiredModal, setShowTrialExpiredModal] = useState(false);
+  
   // 🔒 FIX: Only show guest banner if TRULY a guest (no real userId)
   // If user has a userId, they're logged in - ignore stale isGuest flag
   const userId = localStorage.getItem('userId');
   const hasRealAccount = userId && userId.length > 10; // Real user IDs are long
   const isGuest = localStorage.getItem('isGuest') === 'true' && !hasRealAccount;
+  
+  // Check trial expiration status
+  useEffect(() => {
+    const checkTrialExpiration = () => {
+      const subscriptionTier = localStorage.getItem('subscriptionTier');
+      const trialStartTime = localStorage.getItem('trialStartTime');
+      
+      // Paid users - no modal needed
+      if (subscriptionTier && !['free', 'trial'].includes(subscriptionTier)) {
+        setShowTrialExpiredModal(false);
+        return;
+      }
+      
+      // Check if trial has expired
+      if (trialStartTime) {
+        const startTime = parseInt(trialStartTime);
+        const trialDuration = 24 * 60 * 60 * 1000; // 24 hours
+        const endTime = startTime + trialDuration;
+        
+        if (Date.now() >= endTime) {
+          setShowTrialExpiredModal(true);
+        }
+      }
+    };
+    
+    checkTrialExpiration();
+    
+    // Check every 10 seconds
+    const interval = setInterval(checkTrialExpiration, 10000);
+    return () => clearInterval(interval);
+  }, []);
+  
+  // Handle subscription purchase
+  const handlePurchase = async (tierId) => {
+    console.log('💳 Processing purchase for tier:', tierId);
+    
+    // TODO: Integrate with Apple In-App Purchases
+    // For now, simulate successful purchase
+    localStorage.setItem('subscriptionTier', tierId);
+    localStorage.removeItem('trialStartTime');
+    localStorage.removeItem('trialExpired');
+    setShowTrialExpiredModal(false);
+    
+    // Update backend
+    try {
+      const backendUrl = getBackendUrl();
+      const token = localStorage.getItem('authToken');
+      await fetch(`${backendUrl}/api/subscription/update`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ tier: tierId })
+      });
+    } catch (error) {
+      console.error('Failed to update subscription on backend:', error);
+    }
+  };
+  
+  // Handle restore purchases
+  const handleRestore = async () => {
+    console.log('🔄 Restoring purchases...');
+    // TODO: Integrate with Apple StoreKit restore
+    alert('Checking for previous purchases...');
+  };
 
   // Scroll to top on route change
   useEffect(() => {
@@ -53,6 +124,14 @@ export default function Layout({ children, onLogout }) {
 
   return (
     <>
+      {/* 🚫 Trial Expired Modal - Blocks entire app */}
+      {showTrialExpiredModal && (
+        <TrialExpiredModal 
+          onPurchase={handlePurchase}
+          onRestore={handleRestore}
+        />
+      )}
+      
       <style>{`
         html, body {
           background: var(--bg-primary, #0f172a) !important;

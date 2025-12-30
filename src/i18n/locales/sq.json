@@ -8,6 +8,23 @@
     "disposableEmail": "Ju lutem përdorni një email të vlefshëm. Email-et e përkohshme nuk lejohen.",
     "deviceAlreadyUsed": "Një provë falas është përdorur tashmë në këtë pajisje."
   },
+  "trialExpired": {
+    "title": "Prova Jote Falas ka Mbaruar",
+    "subtitle": "Zgjidh një plan për të vazhduar përdorimin e Biseda.ai"
+  },
+  "subscription": {
+    "mostPopular": "MË POPULLORJA",
+    "creditsMonth": "kredite/muaj",
+    "month": "muaj",
+    "processing": "Duke procesuar...",
+    "subscribe": "Abonohu Tani",
+    "restorePurchases": "Rikthe Blerjet e Mëparshme",
+    "securePayment": "Pagesë e sigurt përmes Apple Pay",
+    "terms": "Abonimi rinovohet automatikisht çdo muaj. Anulo kurdo në App Store.",
+    "starter": "Fillestar",
+    "pro": "Pro",
+    "elite": "Elitë"
+  },
   "onboarding": {
     "skip": "Kalo",
     "back": "Prapa",
