@@ -588,22 +588,20 @@ export default function Auth({ onAuthSuccess }) {
               </div>
             )}
 
-            {/* Submit Buttons - TWO BUTTONS SIDE BY SIDE */}
-            <div className="grid grid-cols-2 gap-3">
-              <Button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl text-base shadow-lg transition-all duration-300"
-              >
-                {loading ? (
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="w-4 h-4 border-3 border-white/30 border-t-white rounded-full animate-spin"></div>
-                  </div>
-                ) : (
-                  <span>{isLogin ? ('🚀 ' + t('auth.login')) : ('✨ ' + t('auth.createAccount'))}</span>
-                )}
-              </Button>
-            </div>
+            {/* Submit Button - Full Width */}
+            <Button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl text-base shadow-lg transition-all duration-300"
+            >
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-4 h-4 border-3 border-white/30 border-t-white rounded-full animate-spin"></div>
+                </div>
+              ) : (
+                <span>{isLogin ? ('🚀 ' + t('auth.login')) : ('✨ ' + t('auth.createAccount'))}</span>
+              )}
+            </Button>
 
             {/* Apple Sign In Button */}
             <button
