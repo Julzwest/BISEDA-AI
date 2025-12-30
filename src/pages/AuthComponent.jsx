@@ -190,6 +190,12 @@ export default function Auth({ onAuthSuccess }) {
     e.preventDefault();
     setError('');
 
+    // Validate name for registration
+    if (!isLogin && !firstName.trim()) {
+      setError(t('authErrors.enterName', 'Please enter your name'));
+      return;
+    }
+
     if (!email.trim()) {
       setError(t('authErrors.enterEmail'));
       return;
@@ -204,12 +210,10 @@ export default function Auth({ onAuthSuccess }) {
 
     try {
       const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
-      // For registration, derive name from email (can be updated later in profile)
-      const derivedName = email.split('@')[0];
       const payload = isLogin
         ? { email: email.trim(), password }
         : {
-            firstName: derivedName,
+            firstName: firstName.trim(),
             lastName: '',
             email: email.trim(),
             password,
@@ -554,6 +558,21 @@ export default function Auth({ onAuthSuccess }) {
                   <span className="text-green-400">✓</span>
                   <span className="text-slate-300">{t('auth.benefit2', 'AI powered')}</span>
                 </div>
+              </div>
+            )}
+
+            {/* Name - Only show on Register */}
+            {!isLogin && (
+              <div>
+                <input
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => { setFirstName(e.target.value); setError(''); }}
+                  className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
+                  placeholder={t('auth.yourName', 'Your Name') + " 👤"}
+                  style={{ fontSize: '16px' }}
+                  required
+                />
               </div>
             )}
 

@@ -156,6 +156,7 @@
     "feature2": "Practice date scenarios",
     "feature3": "Discover perfect date spots",
     "letsGo": "Let's Go!",
+    "yourName": "Your Name",
     "forgotPassword": "Forgot password?",
     "email": "Email",
     "password": "Password",
@@ -189,6 +190,7 @@
     "tagline4": "✨ Dates that start with perfect messages"
   },
   "authErrors": {
+    "enterName": "Please enter your name 👤",
     "enterFirstName": "Enter your first name ✏️",
     "enterLastName": "Enter your last name ✏️",
     "selectGender": "Please select your gender 👤",

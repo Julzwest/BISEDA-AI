@@ -156,6 +156,7 @@
     "feature2": "Praktiko skenarë takimesh",
     "feature3": "Zbulo vendet perfekte për takime",
     "letsGo": "Nisemi!",
+    "yourName": "Emri Yt",
     "forgotPassword": "Harruat fjalëkalimin?",
     "email": "Email",
     "password": "Fjalëkalimi",
@@ -189,6 +190,7 @@
     "tagline4": "✨ Takime që fillojnë me mesazhe perfekte"
   },
   "authErrors": {
+    "enterName": "Shkruaj emrin tënd 👤",
     "enterFirstName": "Shkruaj emrin tënd ✏️",
     "enterLastName": "Shkruaj mbiemrin tënd ✏️",
     "selectGender": "Zgjidh gjininë tënde 👤",
