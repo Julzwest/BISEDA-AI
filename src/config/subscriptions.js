@@ -12,7 +12,7 @@ export const SUBSCRIPTION_TIERS = {
     priceDisplayAlbanian: '€0',
     credits: 50, // Limited trial credits (not unlimited - prevents abuse)
     dailyLimit: 20, // Max 20 messages per day during trial
-    durationHours: 24, // 24-hour trial
+    durationHours: 12, // 12-hour trial
     features: {
       chat: true,
       screenshots: true,
@@ -149,12 +149,12 @@ export const getRemainingDailyCredits = (tierId, todayUsage) => {
   return Math.max(0, dailyLimit - todayUsage);
 };
 
-// Calculate remaining trial time (24 hours)
+// Calculate remaining trial time (12 hours)
 export const getTrialTimeRemaining = (trialStartDate) => {
   if (!trialStartDate) return null;
   
   const trialEnd = new Date(trialStartDate);
-  trialEnd.setHours(trialEnd.getHours() + 24); // 24-hour trial
+  trialEnd.setHours(trialEnd.getHours() + 12); // 12-hour trial
   
   const now = new Date();
   const remaining = trialEnd - now;

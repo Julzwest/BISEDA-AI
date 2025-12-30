@@ -282,7 +282,7 @@ export default function Auth({ onAuthSuccess }) {
 
         // For new registrations, set trial start time and register device
         if (!isLogin) {
-          // 🕐 Start 24-hour trial countdown
+          // 🕐 Start 12-hour trial countdown
           localStorage.setItem('trialStartTime', Date.now().toString());
           localStorage.setItem('subscriptionTier', 'trial');
           

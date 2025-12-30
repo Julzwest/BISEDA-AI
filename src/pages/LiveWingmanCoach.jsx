@@ -19,6 +19,7 @@ import { base44 } from '@/api/base44Client';
 import { getProfile } from '@/utils/profileMemory';
 import { bodyLanguageDatabase, getRandomTip, getTipsForStage, getTipsForVenue } from '@/data/bodyLanguageDatabase';
 import { canPerformAction, useCredits } from '@/utils/credits';
+import { trackMessage } from '@/utils/activityTracker';
 import SubscriptionModal from '@/components/SubscriptionModal';
 
 // Live Wingman AI System Prompt
@@ -746,6 +747,9 @@ Return JSON only:
       
       // Consume credits after successful response
       useCredits('chat_message');
+      
+      // Track activity for weekly stats
+      trackMessage();
 
     } catch (error) {
       console.error('❌ AI Error:', error);

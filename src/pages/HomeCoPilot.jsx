@@ -35,6 +35,7 @@ import {
   formatExtractedMessagesAsText 
 } from '@/services/ocrService';
 import { canPerformAction, useCredits, getSubscription, getTrialStatus } from '@/utils/credits';
+import { trackMessage } from '@/utils/activityTracker';
 import SubscriptionModal from '@/components/SubscriptionModal';
 
 // Ask Biseda System Prompt
@@ -239,6 +240,9 @@ export default function HomeCoPilot() {
       
       // Consume credits after successful response
       useCredits('chat_message');
+      
+      // Track activity for weekly stats
+      trackMessage();
       
       if (currentChatConversationId) {
         addMessageToConversation(currentChatConversationId, aiMessage);

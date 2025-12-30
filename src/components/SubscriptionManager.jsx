@@ -19,7 +19,7 @@ export const SUBSCRIPTION_TIERS = {
     period: 'month',
     credits: 50,
     dailyLimit: 20,
-    features: ['50 AI credits total', '20 daily limit', 'Basic features', '24 hours only'],
+    features: ['50 AI credits total', '20 daily limit', 'Basic features', '12 hours only'],
     color: 'from-slate-500 to-slate-600',
     icon: Clock,
     order: 0

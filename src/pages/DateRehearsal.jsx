@@ -11,6 +11,7 @@ import {
   ArrowLeft, CheckCircle, XCircle, Lock, Crown, Target
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
+import { trackRehearsal, trackMessage } from '@/utils/activityTracker';
 
 // ============================================================
 // 🔒 HARDCODED: Robust API call with retry logic
@@ -453,6 +454,9 @@ ${safeDateName} (speaking naturally, 1-3 sentences):`;
       const suggestions = generateSuggestedReplies(responseText, selectedScenario);
       setSuggestedReplies(suggestions);
 
+      // Track rehearsal session start
+      trackRehearsal();
+      
       setMessages([{
         id: Date.now(),
         sender: 'date',
@@ -645,6 +649,9 @@ ${safeDateName} responds naturally (1-3 sentences, NO AI phrases, GENUINE reacti
         text: responseText,
         timestamp: new Date()
       }]);
+      
+      // Track activity for weekly stats
+      trackMessage();
     } catch (error) {
       console.error('❌ Error sending message:', error);
       console.error('❌ Error details:', error.message, error.code);

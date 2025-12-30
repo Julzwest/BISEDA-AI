@@ -18,9 +18,10 @@ import SubscriptionManager, {
   getDailyRemainingCredits 
 } from '@/components/SubscriptionManager';
 import { getProfile, saveProfile, defaultProfile } from '@/utils/profileMemory';
+import { getWeeklyActivity, getAllStats, getWeekDayLabels } from '@/utils/activityTracker';
 
 export default function UserProfile({ onLogout }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [stats, setStats] = useState({
     totalMessages: 0,
     messagesThisWeek: 0,
@@ -96,43 +97,25 @@ export default function UserProfile({ onLogout }) {
     try {
       // Load stats from localStorage
       const savedStats = localStorage.getItem('userProgressStats');
+      // Get stats from activity tracker (uses localStorage)
+      const trackedStats = getAllStats();
+      
+      // Merge with any saved stats
       if (savedStats) {
         const parsedStats = JSON.parse(savedStats);
-        setStats(parsedStats);
+        setStats({
+          ...parsedStats,
+          ...trackedStats,
+          // Use higher value between tracked and saved
+          totalMessages: Math.max(parsedStats.totalMessages || 0, trackedStats.totalMessages),
+          messagesThisWeek: trackedStats.messagesThisWeek
+        });
       } else {
-        // Initialize default stats
-        const defaultStats = {
-          totalMessages: 0,
-          messagesThisWeek: 0,
-          datesPlanned: 0,
-          rehearsalsSessions: 0,
-          tipsViewed: 0,
-          photosFeedback: 0,
-          conversationStartersUsed: 0,
-          currentStreak: 0,
-          level: 1
-        };
-        setStats(defaultStats);
-        localStorage.setItem('userProgressStats', JSON.stringify(defaultStats));
+        setStats(trackedStats);
       }
-
-      // Calculate real weekly activity from user actions
-      const calculateWeeklyActivity = () => {
-        const activity = [];
-        const today = new Date();
-        
-        for (let i = 6; i >= 0; i--) {
-          const dayDate = new Date(today);
-          dayDate.setDate(today.getDate() - i);
-          const dayKey = `activity_${dayDate.toISOString().split('T')[0]}`;
-          const dayActivity = parseInt(localStorage.getItem(dayKey) || '0');
-          activity.push(dayActivity);
-        }
-        
-        return activity;
-      };
       
-      setWeeklyActivity(calculateWeeklyActivity());
+      // Get weekly activity from activity tracker
+      setWeeklyActivity(getWeeklyActivity());
 
       // Fetch usage stats from backend
       const usageRes = await fetch(`${backendUrl}/api/usage`, {
@@ -394,7 +377,7 @@ export default function UserProfile({ onLogout }) {
     { label: t('userProfile.level', 'Level'), value: stats.level, icon: Star, color: 'from-yellow-500 to-orange-500' }
   ];
 
-  const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  const weekDays = getWeekDayLabels(i18n.language);
   const maxActivity = Math.max(...weeklyActivity, 1);
 
   const totalFavorites = localFavorites.venues.length + localFavorites.dateIdeas.length + localFavorites.tips.length + localFavorites.gifts.length;

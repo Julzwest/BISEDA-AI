@@ -41,7 +41,7 @@ export default function Layout({ children, onLogout }) {
       // Check if trial has expired
       if (trialStartTime) {
         const startTime = parseInt(trialStartTime);
-        const trialDuration = 24 * 60 * 60 * 1000; // 24 hours
+        const trialDuration = 12 * 60 * 60 * 1000; // 12 hours
         const endTime = startTime + trialDuration;
         
         if (Date.now() >= endTime) {
