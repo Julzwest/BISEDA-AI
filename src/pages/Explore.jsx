@@ -82,6 +82,11 @@ export default function Explore() {
   const [isLoadingEvents, setIsLoadingEvents] = useState(false);
   const [showAllFestive, setShowAllFestive] = useState(false);
   
+  // Expanded festive date state - for showing venue suggestions
+  const [expandedFestiveId, setExpandedFestiveId] = useState(null);
+  const [festiveSuggestions, setFestiveSuggestions] = useState([]);
+  const [loadingFestive, setLoadingFestive] = useState(false);
+  
   // Get user's country from localStorage
   const [userCountry, setUserCountry] = useState(localStorage.getItem('userCountry') || 'AL');
   const currentCountry = getCountryByCode(userCountry);
@@ -125,6 +130,116 @@ export default function Explore() {
   };
   
   const upcomingFestiveDates = getUpcomingFestiveDates();
+
+  // Handle festive date click - fetch venue suggestions
+  const handleFestiveDateClick = async (festive, index) => {
+    const festiveId = `${festive.name}-${index}`;
+    
+    // If already expanded, collapse it
+    if (expandedFestiveId === festiveId) {
+      setExpandedFestiveId(null);
+      setFestiveSuggestions([]);
+      return;
+    }
+    
+    setExpandedFestiveId(festiveId);
+    setLoadingFestive(true);
+    setFestiveSuggestions([]);
+    
+    // Determine what type of venues to search for based on the occasion
+    const getSearchQuery = (name) => {
+      const lowerName = name.toLowerCase();
+      if (lowerName.includes('valentine') || lowerName.includes('dashuri')) {
+        return { query: 'romantic restaurants', ideas: ['💕 Romantic Dinner', '🌹 Flowers Shop', '💆 Spa Experience', '🍫 Chocolate Shop'] };
+      }
+      if (lowerName.includes('christmas') || lowerName.includes('krishtlindj')) {
+        return { query: 'christmas events restaurants', ideas: ['🎄 Christmas Dinner', '☕ Cozy Cafe', '🎁 Shopping', '⛸️ Ice Skating'] };
+      }
+      if (lowerName.includes('new year') || lowerName.includes('vit') || lowerName.includes('year')) {
+        return { query: 'nightclubs rooftop bars party', ideas: ['🎆 Rooftop Party', '🍾 Fine Dining', '🪩 Nightclub', '🎇 Fireworks Spot'] };
+      }
+      if (lowerName.includes('halloween')) {
+        return { query: 'bars nightclubs', ideas: ['🎃 Costume Party', '👻 Haunted House', '🍸 Themed Bar', '🎭 Horror Movie'] };
+      }
+      if (lowerName.includes('mother') || lowerName.includes('nën')) {
+        return { query: 'brunch restaurants spa', ideas: ['🌸 Brunch Date', '💐 Flower Delivery', '💆‍♀️ Spa Day', '🍰 Afternoon Tea'] };
+      }
+      if (lowerName.includes('father') || lowerName.includes('baba')) {
+        return { query: 'steakhouse sports bar', ideas: ['🥩 Steakhouse', '⛳ Golf Course', '🍺 Sports Bar', '🎳 Bowling'] };
+      }
+      if (lowerName.includes('patrick')) {
+        return { query: 'irish pub bar', ideas: ['☘️ Irish Pub', '🍺 Beer Garden', '🎵 Live Music', '🥳 Street Party'] };
+      }
+      // Default for other celebrations
+      return { query: 'restaurants bars events', ideas: ['🍽️ Special Dinner', '🍸 Cocktail Bar', '🎵 Live Music', '🎭 Local Event'] };
+    };
+    
+    const { query, ideas } = getSearchQuery(festive.name);
+    
+    try {
+      // Use the selected city or default to first city
+      const searchCity = selectedCity || cities[0] || 'Tiranë';
+      const cityNameEn = getCityNameEn(userCountry, searchCity) || searchCity;
+      const countryNameEn = currentCountry?.nameEn || 'Albania';
+      
+      console.log(`🔍 Searching ${query} for ${festive.name} in ${cityNameEn}...`);
+      
+      const placesResponse = await fetch(`${backendUrl}/api/places/search`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: `${query} in ${cityNameEn}`,
+          location: `${cityNameEn}, ${countryNameEn}`,
+          category: 'restaurants',
+          strictLocation: true,
+          cityName: cityNameEn,
+          countryName: countryNameEn
+        })
+      });
+      
+      if (placesResponse.ok) {
+        const data = await placesResponse.json();
+        
+        if (data.places && data.places.length > 0) {
+          console.log(`✅ Got ${data.places.length} results for ${festive.name}`);
+          
+          setFestiveSuggestions({
+            ideas: ideas,
+            places: data.places.slice(0, 6).map(place => ({
+              name: place.name,
+              description: place.description,
+              location: place.location,
+              rating: place.rating,
+              price: place.price,
+              googleMapsLink: place.googleMapsLink,
+              isOpen: place.isOpen
+            }))
+          });
+        } else {
+          // Fallback to just ideas
+          setFestiveSuggestions({
+            ideas: ideas,
+            places: []
+          });
+        }
+      } else {
+        setFestiveSuggestions({
+          ideas: ideas,
+          places: []
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching festive suggestions:', error);
+      setFestiveSuggestions({
+        ideas: ideas,
+        places: []
+      });
+    } finally {
+      setLoadingFestive(false);
+    }
+  };
   
   // Listen for country changes
   useEffect(() => {
@@ -1171,60 +1286,154 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
 
           {/* Upcoming Festive Dates */}
           <div className="mb-6">
-            {/* Next Festive Date - Hero Card */}
+            {/* Next Festive Date - Hero Card - CLICKABLE */}
             {upcomingFestiveDates[0] && (
-              <Card className="mb-5 relative overflow-hidden">
-                {/* Animated gradient background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-pink-600 to-rose-500 opacity-90" />
-                <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-                <div className="absolute bottom-0 left-0 w-32 h-32 bg-yellow-500/20 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2" />
-                
-                {/* Floating emojis */}
-                <div className="absolute top-4 right-4 text-3xl opacity-40 animate-bounce">✨</div>
-                <div className="absolute bottom-4 right-12 text-2xl opacity-30 animate-bounce" style={{ animationDelay: '0.5s' }}>💫</div>
-                
-                <div className="relative p-6">
-                  <div className="flex items-center gap-5">
-                    <div className="w-24 h-24 rounded-3xl bg-white/20 flex items-center justify-center backdrop-blur-sm shadow-xl">
-                      <span className="text-6xl">{upcomingFestiveDates[0].emoji}</span>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className={`px-4 py-1.5 rounded-full text-sm font-black ${
-                          upcomingFestiveDates[0].daysUntil === 0 
-                            ? 'bg-yellow-400 text-yellow-900 animate-pulse' 
-                            : upcomingFestiveDates[0].daysUntil === 1 
-                            ? 'bg-orange-400 text-orange-900'
-                            : 'bg-white/20 text-white'
-                        }`}>
-                          {upcomingFestiveDates[0].daysUntil === 0 ? '🔥 TODAY!' : upcomingFestiveDates[0].daysUntil === 1 ? '⚡ TOMORROW!' : `📅 IN ${upcomingFestiveDates[0].daysUntil} DAYS`}
-                        </span>
+              <div className="mb-5">
+                <Card 
+                  className="relative overflow-hidden cursor-pointer transition-all hover:scale-[1.01] active:scale-[0.99]"
+                  onClick={() => handleFestiveDateClick(upcomingFestiveDates[0], 0)}
+                >
+                  {/* Animated gradient background */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-600 via-pink-600 to-rose-500 opacity-90" />
+                  <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+                  <div className="absolute bottom-0 left-0 w-32 h-32 bg-yellow-500/20 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2" />
+                  
+                  {/* Floating emojis */}
+                  <div className="absolute top-4 right-4 text-3xl opacity-40 animate-bounce">✨</div>
+                  <div className="absolute bottom-4 right-12 text-2xl opacity-30 animate-bounce" style={{ animationDelay: '0.5s' }}>💫</div>
+                  
+                  <div className="relative p-6">
+                    <div className="flex items-center gap-5">
+                      <div className="w-24 h-24 rounded-3xl bg-white/20 flex items-center justify-center backdrop-blur-sm shadow-xl">
+                        <span className="text-6xl">{upcomingFestiveDates[0].emoji}</span>
                       </div>
-                      <h3 className="text-2xl font-black text-white mb-1">{upcomingFestiveDates[0].name}</h3>
-                      <p className="text-white/80 font-medium">
-                        {upcomingFestiveDates[0].fullDate.toLocaleDateString(i18n.language, { 
-                          weekday: 'long',
-                          month: 'long', 
-                          day: 'numeric'
-                        })}
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className={`px-4 py-1.5 rounded-full text-sm font-black ${
+                            upcomingFestiveDates[0].daysUntil === 0 
+                              ? 'bg-yellow-400 text-yellow-900 animate-pulse' 
+                              : upcomingFestiveDates[0].daysUntil === 1 
+                              ? 'bg-orange-400 text-orange-900'
+                              : 'bg-white/20 text-white'
+                          }`}>
+                            {upcomingFestiveDates[0].daysUntil === 0 ? '🔥 TODAY!' : upcomingFestiveDates[0].daysUntil === 1 ? '⚡ TOMORROW!' : `📅 IN ${upcomingFestiveDates[0].daysUntil} DAYS`}
+                          </span>
+                        </div>
+                        <h3 className="text-2xl font-black text-white mb-1">{upcomingFestiveDates[0].name}</h3>
+                        <p className="text-white/80 font-medium">
+                          {upcomingFestiveDates[0].fullDate.toLocaleDateString(i18n.language, { 
+                            weekday: 'long',
+                            month: 'long', 
+                            day: 'numeric'
+                          })}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    {/* Date idea prompt */}
+                    <div className="mt-4 pt-4 border-t border-white/20">
+                      <p className="text-white/90 text-sm font-medium flex items-center gap-2">
+                        <span>💡</span>
+                        <span>Tap to get date ideas for this occasion!</span>
+                        <ChevronRight className={`w-4 h-4 transition-transform ${expandedFestiveId === `${upcomingFestiveDates[0].name}-0` ? 'rotate-90' : ''}`} />
                       </p>
                     </div>
                   </div>
-                  
-                  {/* Date idea prompt */}
-                  <div className="mt-4 pt-4 border-t border-white/20">
-                    <p className="text-white/90 text-sm font-medium flex items-center gap-2">
-                      <span>💡</span>
-                      <span>Perfect time to plan a special date!</span>
-                    </p>
+                </Card>
+                
+                {/* Expanded Content for Hero Card */}
+                {expandedFestiveId === `${upcomingFestiveDates[0].name}-0` && (
+                  <div className="mt-3 space-y-3 animate-in slide-in-from-top-2 duration-300">
+                    {loadingFestive ? (
+                      <div className="p-6 bg-slate-800/60 rounded-2xl border border-slate-700/50 text-center">
+                        <div className="w-8 h-8 border-3 border-purple-500/30 border-t-purple-500 rounded-full animate-spin mx-auto mb-3"></div>
+                        <p className="text-slate-300">Finding perfect spots for {upcomingFestiveDates[0].name}...</p>
+                      </div>
+                    ) : festiveSuggestions.ideas && (
+                      <>
+                        {/* Quick Ideas */}
+                        <div className="p-4 bg-gradient-to-r from-purple-900/40 to-pink-900/40 rounded-2xl border border-purple-500/30">
+                          <h4 className="text-white font-bold mb-3 flex items-center gap-2">
+                            <span>💡</span> Quick Date Ideas
+                          </h4>
+                          <div className="flex flex-wrap gap-2">
+                            {festiveSuggestions.ideas.map((idea, idx) => (
+                              <span key={idx} className="px-3 py-2 bg-white/10 rounded-xl text-sm text-white/90 hover:bg-white/20 transition-colors cursor-pointer">
+                                {idea}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        {/* Venue Suggestions */}
+                        {festiveSuggestions.places && festiveSuggestions.places.length > 0 && (
+                          <div className="p-4 bg-slate-800/60 rounded-2xl border border-slate-700/50">
+                            <h4 className="text-white font-bold mb-3 flex items-center gap-2">
+                              <MapPin className="w-4 h-4 text-purple-400" />
+                              Top Venues {selectedCity && `in ${selectedCity}`}
+                            </h4>
+                            <div className="space-y-3">
+                              {festiveSuggestions.places.map((place, idx) => (
+                                <div key={idx} className="p-3 bg-slate-700/50 rounded-xl hover:bg-slate-700/70 transition-colors">
+                                  <div className="flex items-start justify-between gap-3">
+                                    <div className="flex-1">
+                                      <h5 className="text-white font-semibold">{place.name}</h5>
+                                      <p className="text-slate-400 text-sm line-clamp-1">{place.description}</p>
+                                      {place.location && (
+                                        <p className="text-slate-500 text-xs mt-1 flex items-center gap-1">
+                                          <MapPin className="w-3 h-3" />
+                                          {place.location}
+                                        </p>
+                                      )}
+                                    </div>
+                                    <div className="flex flex-col items-end gap-2">
+                                      {place.rating && (
+                                        <span className="flex items-center gap-1 text-yellow-400 text-sm">
+                                          <Star className="w-3.5 h-3.5 fill-yellow-400" />
+                                          {place.rating}
+                                        </span>
+                                      )}
+                                      {place.googleMapsLink && (
+                                        <a
+                                          href={place.googleMapsLink}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          onClick={(e) => e.stopPropagation()}
+                                          className="px-3 py-1.5 bg-blue-500/20 text-blue-300 rounded-lg text-xs font-medium hover:bg-blue-500/30 transition-colors flex items-center gap-1"
+                                        >
+                                          <MapPin className="w-3 h-3" />
+                                          Maps
+                                        </a>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        
+                        {/* No venues message */}
+                        {(!festiveSuggestions.places || festiveSuggestions.places.length === 0) && (
+                          <div className="p-4 bg-slate-800/60 rounded-2xl border border-slate-700/50 text-center">
+                            <p className="text-slate-400 text-sm">
+                              {selectedCity ? `Select a different city to see venues` : `Select a city above to see venue suggestions`}
+                            </p>
+                          </div>
+                        )}
+                      </>
+                    )}
                   </div>
-                </div>
-              </Card>
+                )}
+              </div>
             )}
             
-            {/* More Upcoming Dates - Fun Cards */}
+            {/* More Upcoming Dates - Fun Cards - CLICKABLE */}
             <div className="grid gap-3">
               {upcomingFestiveDates.slice(1, showAllFestive ? upcomingFestiveDates.length : 6).map((festive, index) => {
+                const actualIndex = index + 1; // Since we're slicing from 1
+                const festiveId = `${festive.name}-${actualIndex}`;
+                const isExpanded = expandedFestiveId === festiveId;
                 const colors = [
                   'from-cyan-500/20 to-blue-500/20 border-cyan-500/30',
                   'from-green-500/20 to-emerald-500/20 border-green-500/30',
@@ -1233,39 +1442,104 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                   'from-violet-500/20 to-purple-500/20 border-violet-500/30',
                 ];
                 return (
-                  <Card 
-                    key={index}
-                    className={`bg-gradient-to-r ${colors[index % colors.length]} border backdrop-blur-sm transition-all hover:scale-[1.02] hover:shadow-lg`}
-                  >
-                    <div className="p-4">
-                      <div className="flex items-center gap-4">
-                        <div className="w-14 h-14 rounded-2xl bg-slate-900/40 flex items-center justify-center">
-                          <span className="text-3xl">{festive.emoji}</span>
-                        </div>
-                        <div className="flex-1">
-                          <h4 className="text-white font-bold text-lg">{festive.name}</h4>
-                          <p className="text-slate-300 text-sm">
-                            {festive.fullDate.toLocaleDateString(i18n.language, { 
-                              weekday: 'short',
-                              month: 'short', 
-                              day: 'numeric'
-                            })}
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <div className={`px-3 py-2 rounded-xl font-bold text-sm ${
-                            festive.daysUntil <= 7 
-                              ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white' 
-                              : festive.daysUntil <= 30
-                              ? 'bg-slate-800 text-white'
-                              : 'bg-slate-800/50 text-slate-300'
-                          }`}>
-                            {festive.daysUntil === 0 ? '🔥 Today' : festive.daysUntil === 1 ? 'Tomorrow' : `${festive.daysUntil} days`}
+                  <div key={index}>
+                    <Card 
+                      className={`bg-gradient-to-r ${colors[index % colors.length]} border backdrop-blur-sm transition-all hover:scale-[1.01] hover:shadow-lg cursor-pointer active:scale-[0.99] ${isExpanded ? 'ring-2 ring-purple-500/50' : ''}`}
+                      onClick={() => handleFestiveDateClick(festive, actualIndex)}
+                    >
+                      <div className="p-4">
+                        <div className="flex items-center gap-4">
+                          <div className="w-14 h-14 rounded-2xl bg-slate-900/40 flex items-center justify-center">
+                            <span className="text-3xl">{festive.emoji}</span>
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="text-white font-bold text-lg">{festive.name}</h4>
+                            <p className="text-slate-300 text-sm">
+                              {festive.fullDate.toLocaleDateString(i18n.language, { 
+                                weekday: 'short',
+                                month: 'short', 
+                                day: 'numeric'
+                              })}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className={`px-3 py-2 rounded-xl font-bold text-sm ${
+                              festive.daysUntil <= 7 
+                                ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white' 
+                                : festive.daysUntil <= 30
+                                ? 'bg-slate-800 text-white'
+                                : 'bg-slate-800/50 text-slate-300'
+                            }`}>
+                              {festive.daysUntil === 0 ? '🔥 Today' : festive.daysUntil === 1 ? 'Tomorrow' : `${festive.daysUntil} days`}
+                            </div>
+                            <ChevronRight className={`w-5 h-5 text-slate-400 transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </Card>
+                    </Card>
+                    
+                    {/* Expanded Content */}
+                    {isExpanded && (
+                      <div className="mt-2 space-y-3 animate-in slide-in-from-top-2 duration-300">
+                        {loadingFestive ? (
+                          <div className="p-4 bg-slate-800/60 rounded-2xl border border-slate-700/50 text-center">
+                            <div className="w-6 h-6 border-2 border-purple-500/30 border-t-purple-500 rounded-full animate-spin mx-auto mb-2"></div>
+                            <p className="text-slate-400 text-sm">Finding date ideas...</p>
+                          </div>
+                        ) : festiveSuggestions.ideas && (
+                          <>
+                            {/* Quick Ideas */}
+                            <div className="p-3 bg-gradient-to-r from-purple-900/30 to-pink-900/30 rounded-xl border border-purple-500/20">
+                              <h5 className="text-white font-semibold text-sm mb-2">💡 Date Ideas</h5>
+                              <div className="flex flex-wrap gap-2">
+                                {festiveSuggestions.ideas.map((idea, idx) => (
+                                  <span key={idx} className="px-2.5 py-1.5 bg-white/10 rounded-lg text-xs text-white/90">
+                                    {idea}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                            
+                            {/* Top 3 Venues */}
+                            {festiveSuggestions.places && festiveSuggestions.places.length > 0 && (
+                              <div className="p-3 bg-slate-800/50 rounded-xl border border-slate-700/50">
+                                <h5 className="text-white font-semibold text-sm mb-2 flex items-center gap-1">
+                                  <MapPin className="w-3.5 h-3.5 text-purple-400" />
+                                  Top Spots
+                                </h5>
+                                <div className="space-y-2">
+                                  {festiveSuggestions.places.slice(0, 3).map((place, idx) => (
+                                    <div key={idx} className="flex items-center justify-between gap-2 p-2 bg-slate-700/40 rounded-lg">
+                                      <div className="flex-1 min-w-0">
+                                        <p className="text-white text-sm font-medium truncate">{place.name}</p>
+                                        {place.rating && (
+                                          <span className="text-yellow-400 text-xs flex items-center gap-0.5">
+                                            <Star className="w-3 h-3 fill-yellow-400" />
+                                            {place.rating}
+                                          </span>
+                                        )}
+                                      </div>
+                                      {place.googleMapsLink && (
+                                        <a
+                                          href={place.googleMapsLink}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          onClick={(e) => e.stopPropagation()}
+                                          className="px-2 py-1 bg-blue-500/20 text-blue-300 rounded text-xs hover:bg-blue-500/30"
+                                        >
+                                          View
+                                        </a>
+                                      )}
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 );
               })}
             </div>
@@ -1294,9 +1568,43 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                 Make these celebrations memorable with perfect date planning!
               </p>
               <div className="flex flex-wrap justify-center gap-3">
-                <span className="px-3 py-2 bg-pink-500/20 rounded-full text-sm font-medium text-pink-300 border border-pink-500/30">💕 Valentine's Dinner</span>
-                <span className="px-3 py-2 bg-amber-500/20 rounded-full text-sm font-medium text-amber-300 border border-amber-500/30">🎄 Christmas Market</span>
-                <span className="px-3 py-2 bg-purple-500/20 rounded-full text-sm font-medium text-purple-300 border border-purple-500/30">🎆 New Year's Party</span>
+                <button 
+                  onClick={() => {
+                    // Find Valentine's Day and click it
+                    const valentines = upcomingFestiveDates.find(f => f.name.toLowerCase().includes('valentine') || f.name.toLowerCase().includes('dashuri'));
+                    if (valentines) {
+                      const idx = upcomingFestiveDates.indexOf(valentines);
+                      handleFestiveDateClick(valentines, idx);
+                    }
+                  }}
+                  className="px-3 py-2 bg-pink-500/20 rounded-full text-sm font-medium text-pink-300 border border-pink-500/30 hover:bg-pink-500/30 transition-colors cursor-pointer"
+                >
+                  💕 Valentine's Dinner
+                </button>
+                <button 
+                  onClick={() => {
+                    const christmas = upcomingFestiveDates.find(f => f.name.toLowerCase().includes('christmas') || f.name.toLowerCase().includes('krishtlindj'));
+                    if (christmas) {
+                      const idx = upcomingFestiveDates.indexOf(christmas);
+                      handleFestiveDateClick(christmas, idx);
+                    }
+                  }}
+                  className="px-3 py-2 bg-amber-500/20 rounded-full text-sm font-medium text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 transition-colors cursor-pointer"
+                >
+                  🎄 Christmas Market
+                </button>
+                <button 
+                  onClick={() => {
+                    const newYear = upcomingFestiveDates.find(f => f.name.toLowerCase().includes('new year') || f.name.toLowerCase().includes('vit'));
+                    if (newYear) {
+                      const idx = upcomingFestiveDates.indexOf(newYear);
+                      handleFestiveDateClick(newYear, idx);
+                    }
+                  }}
+                  className="px-3 py-2 bg-purple-500/20 rounded-full text-sm font-medium text-purple-300 border border-purple-500/30 hover:bg-purple-500/30 transition-colors cursor-pointer"
+                >
+                  🎆 New Year's Party
+                </button>
               </div>
             </div>
           </Card>
