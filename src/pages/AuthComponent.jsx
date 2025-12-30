@@ -573,7 +573,7 @@ export default function Auth({ onAuthSuccess }) {
                   className="absolute inset-0 flex items-center justify-center transition-all duration-500 ease-out"
                   key={currentBenefit}
                 >
-                  <div className="flex items-center gap-3 px-5 py-2.5 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-purple-500/20 rounded-full border border-purple-500/30 animate-benefit-slide">
+                  <div className="flex items-center gap-3 px-5 py-2.5 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-purple-500/20 rounded-full animate-benefit-slide">
                     <span className="text-2xl animate-bounce-slow">{benefits[currentBenefit].emoji}</span>
                     <span className="text-white font-medium text-sm">{benefits[currentBenefit].text}</span>
                   </div>
