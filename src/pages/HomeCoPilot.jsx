@@ -37,8 +37,8 @@ import {
 import { canPerformAction, useCredits, getSubscription, getTrialStatus } from '@/utils/credits';
 import SubscriptionModal from '@/components/SubscriptionModal';
 
-// Vibe Coach System Prompt
-const VIBE_COACH_SYSTEM_PROMPT = `You are an expert Intimacy and Relationship Coach. Your role is to provide supportive, educational, and empowering guidance on building deeper connections, enhancing romance, and improving communication in intimate relationships.
+// Ask Biseda System Prompt
+const VIBE_COACH_SYSTEM_PROMPT = `You are Biseda, an expert AI Dating Assistant. Your role is to provide supportive, educational, and empowering guidance on building deeper connections, enhancing romance, and improving communication in dating and relationships.
 
 YOUR VIBE:
 - Professional, warm, and approachable
@@ -81,7 +81,7 @@ export default function HomeCoPilot() {
   const [logoTapCount, setLogoTapCount] = useState(0);
   const tapTimeoutRef = useRef(null);
   
-  // Vibe Coach state
+  // Ask Biseda state
   const [showVibeCoach, setShowVibeCoach] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
   const [chatInput, setChatInput] = useState('');
@@ -150,7 +150,7 @@ export default function HomeCoPilot() {
     };
   }, []);
 
-  // Initialize chat when Vibe Coach opens
+  // Initialize chat when Ask Biseda opens
   useEffect(() => {
     if (showVibeCoach && chatMessages.length === 0) {
       const convId = startNewConversation(t('vibeCoach.title'));
@@ -167,7 +167,7 @@ export default function HomeCoPilot() {
     }
   }, [showVibeCoach, userName]);
   
-  // Vibe Coach functions
+  // Ask Biseda functions
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -225,7 +225,7 @@ export default function HomeCoPilot() {
         : '';
       
       const result = await base44.integrations.Core.InvokeLLM({
-        prompt: `${languageInstruction}\n\n${conversationContext}\nUser: ${userMessage.content}\n\nRespond as the Vibe Coach${isAlbanian ? ' in Albanian (Shqip)' : ''}:`,
+        prompt: `${languageInstruction}\n\n${conversationContext}\nUser: ${userMessage.content}\n\nRespond as Biseda${isAlbanian ? ' in Albanian (Shqip)' : ''}:`,
         system_prompt: VIBE_COACH_SYSTEM_PROMPT + (isAlbanian ? '\n\nCRITICAL: You MUST respond entirely in Albanian (Shqip). All text must be in Albanian language.' : '')
       });
       
@@ -387,7 +387,7 @@ export default function HomeCoPilot() {
     }
   };
   
-  // Open Vibe Coach and immediately trigger file upload
+  // Open Ask Biseda and immediately trigger file upload
   const openVibeCoachWithUpload = () => {
     setShowVibeCoach(true);
     // Use setTimeout to ensure the modal is rendered before triggering file input
@@ -396,7 +396,7 @@ export default function HomeCoPilot() {
     }, 100);
   };
 
-  // Full-screen Vibe Coach Modal
+  // Full-screen Ask Biseda Modal
   if (showVibeCoach) {
     return (
       <div className="fixed inset-0 z-50 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex flex-col pt-16">
@@ -691,7 +691,7 @@ export default function HomeCoPilot() {
           </p>
         </div>
 
-        {/* MAIN CTA - Vibe Coach (with Screenshot feature) */}
+        {/* MAIN CTA - Ask Biseda (with Screenshot feature) */}
         <div className="mb-8">
           <button
             onClick={() => setShowVibeCoach(true)}
