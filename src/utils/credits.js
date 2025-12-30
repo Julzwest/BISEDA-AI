@@ -1,18 +1,21 @@
-// Credits Management System
-import { CREDIT_COSTS, getTier, getTrialTimeRemaining } from '../config/subscriptions';
+// BULLETPROOF Credits Management System
+// Includes daily limits and rate limiting for guaranteed profitability
+import { CREDIT_COSTS, getTier, getTrialTimeRemaining, RATE_LIMIT_SECONDS, checkDailyLimit } from '../config/subscriptions';
 
 const CREDITS_STORAGE_KEY = 'user_credits';
 const SUBSCRIPTION_STORAGE_KEY = 'user_subscription';
 const TRIAL_START_KEY = 'trial_start_date';
+const LAST_REQUEST_KEY = 'last_request_time';
+const DAILY_USAGE_KEY = 'daily_usage';
 
 // Initialize user subscription data
 export const initializeUserSubscription = () => {
   const existing = localStorage.getItem(SUBSCRIPTION_STORAGE_KEY);
   if (!existing) {
-    // New user - start free trial
+    // New user - start free trial with LIMITED credits
     const subscription = {
       tier: 'free_trial',
-      credits: 999999, // Unlimited during trial
+      credits: 50, // Limited trial credits (prevents abuse)
       creditsUsedToday: 0,
       lastResetDate: new Date().toISOString().split('T')[0],
       trialStartDate: new Date().toISOString(),
@@ -43,10 +46,9 @@ export const getSubscription = () => {
     }
   }
   
-  // Reset credits if new day (for monthly subscribers)
+  // Reset daily usage if new day
   const today = new Date().toISOString().split('T')[0];
-  if (subscription.lastResetDate !== today && subscription.tier !== 'free_trial') {
-    // Don't reset monthly credits daily - they're monthly totals
+  if (subscription.lastResetDate !== today) {
     subscription.creditsUsedToday = 0;
     subscription.lastResetDate = today;
     localStorage.setItem(SUBSCRIPTION_STORAGE_KEY, JSON.stringify(subscription));
@@ -61,7 +63,29 @@ export const getCredits = () => {
   return subscription.credits;
 };
 
-// Check if user can perform action
+// Check rate limit (minimum 3 seconds between requests)
+export const checkRateLimit = () => {
+  const lastRequest = localStorage.getItem(LAST_REQUEST_KEY);
+  if (!lastRequest) return { allowed: true };
+  
+  const timeSince = (Date.now() - parseInt(lastRequest)) / 1000;
+  if (timeSince < RATE_LIMIT_SECONDS) {
+    return { 
+      allowed: false, 
+      reason: 'rate_limit',
+      waitSeconds: Math.ceil(RATE_LIMIT_SECONDS - timeSince)
+    };
+  }
+  
+  return { allowed: true };
+};
+
+// Update last request time
+export const updateLastRequest = () => {
+  localStorage.setItem(LAST_REQUEST_KEY, Date.now().toString());
+};
+
+// Check if user can perform action (with all safety checks)
 export const canPerformAction = (action) => {
   const subscription = getSubscription();
   
@@ -70,9 +94,24 @@ export const canPerformAction = (action) => {
     return { allowed: false, reason: 'trial_expired' };
   }
   
-  // Free trial - always allowed
-  if (subscription.tier === 'free_trial') {
-    return { allowed: true, reason: 'trial' };
+  // Check rate limit
+  const rateCheck = checkRateLimit();
+  if (!rateCheck.allowed) {
+    return rateCheck;
+  }
+  
+  // Get tier data for daily limit
+  const tier = getTier(subscription.tier);
+  const dailyLimit = tier.dailyLimit || 50;
+  
+  // Check daily limit
+  if (subscription.creditsUsedToday >= dailyLimit) {
+    return { 
+      allowed: false, 
+      reason: 'daily_limit',
+      dailyLimit: dailyLimit,
+      usedToday: subscription.creditsUsedToday
+    };
   }
   
   // Check credits
@@ -88,11 +127,6 @@ export const canPerformAction = (action) => {
 export const useCredits = (action) => {
   const subscription = getSubscription();
   
-  // Free trial doesn't consume credits
-  if (subscription.tier === 'free_trial') {
-    return { success: true, remaining: 999999 };
-  }
-  
   const cost = CREDIT_COSTS[action] || 1;
   
   if (subscription.credits < cost) {
@@ -103,7 +137,24 @@ export const useCredits = (action) => {
   subscription.creditsUsedToday += cost;
   localStorage.setItem(SUBSCRIPTION_STORAGE_KEY, JSON.stringify(subscription));
   
+  // Update rate limit
+  updateLastRequest();
+  
   return { success: true, remaining: subscription.credits };
+};
+
+// Get daily usage info
+export const getDailyUsage = () => {
+  const subscription = getSubscription();
+  const tier = getTier(subscription.tier);
+  const dailyLimit = tier.dailyLimit || 50;
+  
+  return {
+    used: subscription.creditsUsedToday || 0,
+    limit: dailyLimit,
+    remaining: Math.max(0, dailyLimit - (subscription.creditsUsedToday || 0)),
+    percentage: Math.round(((subscription.creditsUsedToday || 0) / dailyLimit) * 100)
+  };
 };
 
 // Upgrade subscription (called after successful Apple purchase)
@@ -174,5 +225,6 @@ export default {
   getTrialStatus,
   formatCredits,
   getUsagePercentage,
+  checkRateLimit,
+  getDailyUsage,
 };
-

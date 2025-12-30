@@ -10,7 +10,7 @@ import { getSubscription, getTrialStatus } from '@/utils/credits';
 
 export default function SubscriptionModal({ isOpen, onClose, onSuccess }) {
   const { t, i18n } = useTranslation();
-  const [selectedTier, setSelectedTier] = useState('plus');
+  const [selectedTier, setSelectedTier] = useState('pro');
   const [loading, setLoading] = useState(false);
   const [restoring, setRestoring] = useState(false);
   const [error, setError] = useState('');
