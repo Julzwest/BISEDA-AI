@@ -262,6 +262,23 @@ export default function Layout({ children, onLogout }) {
         </div>
       </main>
 
+      {/* Floating Events Button - Bottom Right Corner */}
+      <Link
+        to="/explore"
+        className="fixed z-[9998] flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 shadow-lg shadow-purple-500/30"
+        style={{
+          bottom: 'calc(80px + env(safe-area-inset-bottom, 0px))',
+          right: '16px',
+          width: '56px',
+          height: '56px',
+          borderRadius: '16px',
+          background: 'linear-gradient(135deg, #a855f7, #ec4899)',
+        }}
+      >
+        <Calendar className="w-6 h-6 text-white" />
+        <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-slate-900 animate-pulse" />
+      </Link>
+
       {/* Fixed Bottom Navigation - Modern Design */}
       <nav style={{ 
         position: 'fixed', 
