@@ -1125,6 +1125,11 @@
     }
   },
   "userProfile": {
+    "yourName": "Emri Yt",
+    "displayName": "Emri i Shfaqur",
+    "enterName": "Shkruaj emrin tënd",
+    "nameSaved": "Emri u ruajt!",
+    "yourLocation": "Vendndodhja Jote",
     "vipMember": "Anëtar VIP",
     "allUnlocked": "✨ Të Gjitha Veçoritë të Zhbllokuara!",
     "progress": "Progresi",

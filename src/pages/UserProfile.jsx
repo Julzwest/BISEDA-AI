@@ -38,6 +38,9 @@ export default function UserProfile({ onLogout }) {
   const [userCity, setUserCity] = useState(localStorage.getItem('userCity') || '');
   const [isEditingLocation, setIsEditingLocation] = useState(false);
   const [locationSaved, setLocationSaved] = useState(false);
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [editedName, setEditedName] = useState(localStorage.getItem('userName') || '');
+  const [nameSaved, setNameSaved] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [cancelReason, setCancelReason] = useState('');
   const [cancelFeedback, setCancelFeedback] = useState('');
@@ -698,11 +701,83 @@ export default function UserProfile({ onLogout }) {
       {/* SETTINGS SECTION */}
       {activeSection === 'settings' && (
         <div className="space-y-4">
+          {/* Name Settings */}
+          <Card className="bg-slate-800/50 border-slate-700 p-5">
+            <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+              <User className="w-5 h-5 text-purple-400" />
+              {t('userProfile.yourName', 'Your Name')}
+            </h3>
+            
+            {!isEditingName ? (
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <div className="text-white font-semibold text-lg">{userName}</div>
+                    <div className="text-slate-400 text-sm">{userEmail}</div>
+                  </div>
+                  <Button
+                    onClick={() => {
+                      setEditedName(userName);
+                      setIsEditingName(true);
+                    }}
+                    className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-sm"
+                  >
+                    {t('common.edit', 'Edit')}
+                  </Button>
+                </div>
+                {nameSaved && (
+                  <div className="flex items-center gap-2 px-3 py-2 bg-green-500/20 border border-green-500/30 rounded-lg">
+                    <Check className="w-4 h-4 text-green-400" />
+                    <span className="text-sm text-green-400">{t('userProfile.nameSaved', 'Name saved!')}</span>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <div>
+                  <label className="text-sm text-slate-400 mb-1 block">{t('userProfile.displayName', 'Display Name')}</label>
+                  <input
+                    type="text"
+                    value={editedName}
+                    onChange={(e) => setEditedName(e.target.value)}
+                    placeholder={t('userProfile.enterName', 'Enter your name')}
+                    className="w-full px-3 py-3 bg-slate-900 border border-slate-700 rounded-xl text-white placeholder-slate-500 text-lg"
+                    autoFocus
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => {
+                      if (editedName.trim()) {
+                        localStorage.setItem('userName', editedName.trim());
+                        setIsEditingName(false);
+                        setNameSaved(true);
+                        setTimeout(() => setNameSaved(false), 3000);
+                        // Force re-render
+                        window.location.reload();
+                      }
+                    }}
+                    className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-xl py-2.5"
+                  >
+                    <Check className="w-4 h-4 mr-1.5" />
+                    {t('common.save', 'Save')}
+                  </Button>
+                  <Button
+                    onClick={() => setIsEditingName(false)}
+                    className="px-4 bg-slate-700 hover:bg-slate-600 text-white rounded-xl"
+                  >
+                    {t('common.cancel', 'Cancel')}
+                  </Button>
+                </div>
+              </div>
+            )}
+          </Card>
+
           {/* Location Settings */}
           <Card className="bg-slate-800/50 border-slate-700 p-5">
             <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
               <MapPin className="w-5 h-5 text-cyan-400" />
-              Your Location
+              {t('userProfile.yourLocation', 'Your Location')}
             </h3>
             
             {!isEditingLocation ? (

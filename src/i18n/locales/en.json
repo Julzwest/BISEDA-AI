@@ -1126,6 +1126,11 @@
     }
   },
   "userProfile": {
+    "yourName": "Your Name",
+    "displayName": "Display Name",
+    "enterName": "Enter your name",
+    "nameSaved": "Name saved!",
+    "yourLocation": "Your Location",
     "vipMember": "VIP Member",
     "allUnlocked": "✨ All Features Unlocked!",
     "progress": "Progress",
