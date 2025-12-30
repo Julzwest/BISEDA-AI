@@ -14,6 +14,7 @@ import Admin from './pages/Admin.jsx';
 import Auth, { clearAllUserData } from '@/pages/AuthComponent';
 import UserProfile from './pages/UserProfile.jsx';
 import PrivacyPolicy from './pages/PrivacyPolicy.jsx';
+import TermsOfService from './pages/TermsOfService.jsx';
 import MoodCheck from './pages/MoodCheck.jsx';
 import DateRehearsal from './pages/DateRehearsal.jsx';
 // IntimacyCoach is now combined into LiveWingmanCoach
@@ -27,6 +28,9 @@ import ReplyResults from './pages/ReplyResults.jsx';
 import OnboardingTutorial from './components/OnboardingTutorial.jsx';
 import ScrollToTop from './components/ScrollToTop.jsx';
 import SubscriptionModal from './components/SubscriptionModal.jsx';
+import ErrorBoundary from './components/ErrorBoundary.jsx';
+import OfflineBanner from './components/OfflineBanner.jsx';
+import Onboarding from './components/Onboarding.jsx';
 
 // Demo component to show subscription modal
 function SubscriptionDemo() {
@@ -45,6 +49,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showNewUserOnboarding, setShowNewUserOnboarding] = useState(false);
   const [isGuest, setIsGuest] = useState(false);
 
   useEffect(() => {
@@ -59,9 +64,13 @@ function App() {
       setIsAuthenticated(true);
       setIsGuest(guestStatus === 'true');
       
-      // Check if should show onboarding
+      // Check if should show onboarding for new users
+      const onboardingComplete = localStorage.getItem('onboardingComplete');
       const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
-      if (!hasSeenOnboarding) {
+      
+      if (!onboardingComplete) {
+        setShowNewUserOnboarding(true);
+      } else if (!hasSeenOnboarding) {
         setShowOnboarding(true);
       }
     }
@@ -74,10 +83,16 @@ function App() {
     setIsAuthenticated(true);
     setIsGuest(user?.isGuest || false);
     
-    // Show onboarding for new users
-    const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
-    if (!hasSeenOnboarding) {
-      setShowOnboarding(true);
+    // Show new user onboarding
+    const onboardingComplete = localStorage.getItem('onboardingComplete');
+    if (!onboardingComplete) {
+      setShowNewUserOnboarding(true);
+    } else {
+      // Show tutorial for returning users who haven't seen it
+      const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
+      if (!hasSeenOnboarding) {
+        setShowOnboarding(true);
+      }
     }
   };
 
@@ -100,13 +115,14 @@ function App() {
     );
   }
 
-  // Check if current URL is privacy policy or admin (allow access without main app auth)
+  // Check if current URL is privacy policy, terms, or admin (allow access without main app auth)
   const isPrivacyPage = window.location.hash.includes('privacy');
+  const isTermsPage = window.location.hash.includes('terms');
   const isAdminPage = window.location.hash.includes('admin');
   const isSubscriptionDemo = window.location.hash.includes('subscription-demo');
   
-  // Show auth page if not authenticated (except for privacy policy, admin, and subscription demo)
-  if (!isAuthenticated && !isPrivacyPage && !isAdminPage && !isSubscriptionDemo) {
+  // Show auth page if not authenticated (except for privacy policy, terms, admin, and subscription demo)
+  if (!isAuthenticated && !isPrivacyPage && !isTermsPage && !isAdminPage && !isSubscriptionDemo) {
     return <Auth onAuthSuccess={handleAuthSuccess} />;
   }
   
@@ -145,23 +161,44 @@ function App() {
       </Router>
     );
   }
+  
+  // Show terms of service without auth
+  if (!isAuthenticated && isTermsPage) {
+    return (
+      <Router>
+        <Routes>
+          <Route path="/terms" element={<TermsOfService />} />
+          <Route path="*" element={<Navigate to="/terms" replace />} />
+        </Routes>
+      </Router>
+    );
+  }
 
   // Show main app if authenticated
   return (
-    <Router>
-      {/* Scroll to top on route change */}
-      <ScrollToTop />
+    <ErrorBoundary>
+      {/* Offline Banner - shows when no internet */}
+      <OfflineBanner />
       
-      {/* Onboarding Tutorial */}
-      {showOnboarding && (
-        <OnboardingTutorial 
-          onComplete={() => setShowOnboarding(false)} 
-          isGuest={isGuest}
-        />
+      {/* New User Onboarding - Full screen experience */}
+      {showNewUserOnboarding && (
+        <Onboarding onComplete={() => setShowNewUserOnboarding(false)} />
       )}
       
-      <Layout onLogout={handleLogout}>
-        <Routes>
+      <Router>
+        {/* Scroll to top on route change */}
+        <ScrollToTop />
+        
+        {/* Tutorial for returning users */}
+        {showOnboarding && !showNewUserOnboarding && (
+          <OnboardingTutorial 
+            onComplete={() => setShowOnboarding(false)} 
+            isGuest={isGuest}
+          />
+        )}
+        
+        <Layout onLogout={handleLogout}>
+          <Routes>
           <Route path="/" element={<Navigate to="/copilot" replace />} />
           <Route path="/copilot" element={<HomeCoPilot />} />
           <Route path="/copilot/upload" element={<ChatUpload />} />
@@ -197,10 +234,12 @@ function App() {
           <Route path="/subscription/cancel" element={<SubscriptionCancel />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsOfService />} />
           
         </Routes>
       </Layout>
     </Router>
+    </ErrorBoundary>
   );
 }
 

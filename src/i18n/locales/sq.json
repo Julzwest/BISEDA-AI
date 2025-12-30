@@ -69,9 +69,24 @@
     "skip": "Kalo",
     "back": "Prapa",
     "continue": "Vazhdo",
+    "next": "Tjetër",
+    "getStarted": "Fillo",
     "startNow": "Fillo Tani",
     "step": "Hapi {{current}} nga {{total}}",
     "guestNotice": "👋 Po eksploron si vizitor - regjistrohu për të ruajtur progresin",
+    "step1Title": "Mirësevini në Biseda",
+    "step1Desc": "Coach-i yt personal AI për dating që të ndihmon të kesh biseda më të mira dhe takime më të suksesshme.",
+    "step2Title": "Analiza e Fotove",
+    "step2Desc": "Ngarko foto të bisedave tuaja në aplikacionet e takimeve dhe merr menjëherë sugjerime të personalizuara.",
+    "step3Title": "Praktiko Skenarë",
+    "step3Desc": "Ndërto besimin me skenarë realistë - nga takimi i parë deri tek bisedat e vështira.",
+    "step4Title": "Wingman Live",
+    "step4Desc": "Merr këshilla në kohë reale gjatë takimeve tuaja. Wingman-i yt AI është gjithmonë gati të ndihmojë.",
+    "step5Title": "Je Gati!",
+    "step5Desc": "Fillo udhëtimin tënd drejt takimeve më të mira me 12 orë provë falas. Çdo funksion i zhbllokuar!",
+    "feature1": "Analiza Bisedash",
+    "feature2": "Wingman Live",
+    "feature3": "Mënyra Praktike",
     "steps": {
       "welcome": {
         "title": "Mirësevini në Biseda.ai! 👋",
@@ -1477,6 +1492,30 @@
     "allUsersActive": "Të gjithë përdoruesit janë aktivë!",
     "noInactiveUsers": "Asnjë përdorues i paaktivizuar për momentin.",
     "moreInactiveUsers": "përdorues të tjerë joaktivë"
+  },
+  "legal": {
+    "privacyPolicy": "Politika e Privatësisë",
+    "termsOfService": "Kushtet e Shërbimit",
+    "introduction": "Hyrje",
+    "dataCollection": "Informacionet që Mbledhim",
+    "howWeUse": "Si i Përdorim Informacionet Tuaja",
+    "dataSecurity": "Siguria e të Dhënave",
+    "yourRights": "Të Drejtat Tuaja",
+    "contact": "Na Kontaktoni",
+    "agreement": "Pranimi i Kushteve",
+    "serviceDesc": "Përshkrimi i Shërbimit",
+    "subscriptions": "Abonimet dhe Pagesat",
+    "prohibited": "Përdorimet e Ndaluara",
+    "disclaimer": "Mohim Përgjegjësie",
+    "liability": "Kufizimi i Përgjegjësisë",
+    "changes": "Ndryshimet në Kushte",
+    "questions": "Keni Pyetje?"
+  },
+  "offline": {
+    "title": "Jeni Jashtë Linje",
+    "message": "Kontrolloni lidhjen tuaj me internetin",
+    "retry": "Riprovo",
+    "retrying": "Duke riprovuar..."
   }
 }
 

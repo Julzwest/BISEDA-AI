@@ -73,9 +73,24 @@
     "skip": "Skip",
     "back": "Back",
     "continue": "Continue",
+    "next": "Next",
+    "getStarted": "Get Started",
     "startNow": "Start Now",
     "step": "Step {{current}} of {{total}}",
     "guestNotice": "👋 Exploring as a visitor - register to save your progress",
+    "step1Title": "Welcome to Biseda",
+    "step1Desc": "Your personal AI dating coach that helps you have better conversations and more successful dates.",
+    "step2Title": "Screenshot Analysis",
+    "step2Desc": "Upload screenshots of your dating app conversations and get instant, personalized reply suggestions.",
+    "step3Title": "Practice Scenarios",
+    "step3Desc": "Build confidence with realistic roleplay scenarios - from first dates to difficult conversations.",
+    "step4Title": "Live Wingman",
+    "step4Desc": "Get real-time advice during your dates. Your AI wingman is always ready to help.",
+    "step5Title": "You're All Set!",
+    "step5Desc": "Start your journey to better dating with 12 hours of free trial. Every feature unlocked!",
+    "feature1": "Chat Analysis",
+    "feature2": "Live Wingman",
+    "feature3": "Practice Mode",
     "steps": {
       "welcome": {
         "title": "Welcome to Biseda.ai! 👋",
@@ -1478,6 +1493,30 @@
     "allUsersActive": "All users are active!",
     "noInactiveUsers": "No inactive users at the moment.",
     "moreInactiveUsers": "more inactive users"
+  },
+  "legal": {
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "introduction": "Introduction",
+    "dataCollection": "Information We Collect",
+    "howWeUse": "How We Use Your Information",
+    "dataSecurity": "Data Security",
+    "yourRights": "Your Rights",
+    "contact": "Contact Us",
+    "agreement": "Agreement to Terms",
+    "serviceDesc": "Service Description",
+    "subscriptions": "Subscriptions & Payments",
+    "prohibited": "Prohibited Uses",
+    "disclaimer": "Disclaimer",
+    "liability": "Limitation of Liability",
+    "changes": "Changes to Terms",
+    "questions": "Questions?"
+  },
+  "offline": {
+    "title": "You're Offline",
+    "message": "Check your internet connection",
+    "retry": "Retry",
+    "retrying": "Retrying..."
   }
 }
 

@@ -1,5 +1,5 @@
 // BULLETPROOF Credits Management System
-// Includes daily limits and rate limiting for guaranteed profitability
+// Includes daily limits, rate limiting, and server-side validation for guaranteed profitability
 import { CREDIT_COSTS, getTier, getTrialTimeRemaining, RATE_LIMIT_SECONDS, checkDailyLimit } from '../config/subscriptions';
 
 const CREDITS_STORAGE_KEY = 'user_credits';
@@ -7,6 +7,51 @@ const SUBSCRIPTION_STORAGE_KEY = 'user_subscription';
 const TRIAL_START_KEY = 'trial_start_date';
 const LAST_REQUEST_KEY = 'last_request_time';
 const DAILY_USAGE_KEY = 'daily_usage';
+const USAGE_HASH_KEY = 'usage_verification_hash';
+
+// Generate a simple hash for credit verification (client-side tamper detection)
+const generateUsageHash = (credits, tier, date) => {
+  const data = `${credits}-${tier}-${date}-biseda2024`;
+  let hash = 0;
+  for (let i = 0; i < data.length; i++) {
+    const char = data.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return Math.abs(hash).toString(36);
+};
+
+// Verify usage data hasn't been tampered with
+export const verifyUsageIntegrity = () => {
+  const subscription = JSON.parse(localStorage.getItem(SUBSCRIPTION_STORAGE_KEY) || '{}');
+  const storedHash = localStorage.getItem(USAGE_HASH_KEY);
+  
+  if (!storedHash || !subscription.tier) return true; // First time user
+  
+  const expectedHash = generateUsageHash(
+    subscription.credits,
+    subscription.tier,
+    subscription.lastResetDate
+  );
+  
+  if (storedHash !== expectedHash) {
+    console.warn('Credit data integrity check failed - possible tampering detected');
+    // Reset to expired state on tampering
+    return false;
+  }
+  
+  return true;
+};
+
+// Update hash when credits change
+const updateUsageHash = (subscription) => {
+  const hash = generateUsageHash(
+    subscription.credits,
+    subscription.tier,
+    subscription.lastResetDate
+  );
+  localStorage.setItem(USAGE_HASH_KEY, hash);
+};
 
 // Initialize user subscription data
 export const initializeUserSubscription = () => {
@@ -33,6 +78,17 @@ export const getSubscription = () => {
   if (!data) return initializeUserSubscription();
   
   const subscription = JSON.parse(data);
+  
+  // Verify integrity (tamper detection)
+  if (!verifyUsageIntegrity()) {
+    // Tampering detected - reset to expired
+    subscription.tier = 'expired';
+    subscription.credits = 0;
+    subscription.tamperDetected = true;
+    localStorage.setItem(SUBSCRIPTION_STORAGE_KEY, JSON.stringify(subscription));
+    updateUsageHash(subscription);
+    return subscription;
+  }
   
   // Check if trial expired
   if (subscription.tier === 'free_trial') {
@@ -137,10 +193,44 @@ export const useCredits = (action) => {
   subscription.creditsUsedToday += cost;
   localStorage.setItem(SUBSCRIPTION_STORAGE_KEY, JSON.stringify(subscription));
   
+  // Update integrity hash
+  updateUsageHash(subscription);
+  
   // Update rate limit
   updateLastRequest();
   
+  // Sync to server (fire and forget)
+  syncCreditsToServer(subscription);
+  
   return { success: true, remaining: subscription.credits };
+};
+
+// Sync credits to server for validation
+const syncCreditsToServer = async (subscription) => {
+  const userId = localStorage.getItem('userId');
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+  
+  if (!userId) return;
+  
+  try {
+    await fetch(`${backendUrl}/api/credits/sync`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify({
+        userId,
+        credits: subscription.credits,
+        tier: subscription.tier,
+        creditsUsedToday: subscription.creditsUsedToday,
+        lastResetDate: subscription.lastResetDate
+      })
+    });
+  } catch (error) {
+    // Silent fail - local credits are primary, server is backup
+    console.debug('Credit sync failed:', error.message);
+  }
 };
 
 // Get daily usage info
@@ -170,6 +260,13 @@ export const upgradeSubscription = (tierName, credits) => {
   };
   localStorage.setItem(SUBSCRIPTION_STORAGE_KEY, JSON.stringify(subscription));
   localStorage.setItem('userSubscriptionTier', tierName);
+  
+  // Update integrity hash
+  updateUsageHash(subscription);
+  
+  // Sync to server
+  syncCreditsToServer(subscription);
+  
   return subscription;
 };
 

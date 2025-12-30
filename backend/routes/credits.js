@@ -157,5 +157,80 @@ router.post('/add', (req, res) => {
   }
 });
 
+// Sync credits from client (server-side validation backup)
+router.post('/sync', (req, res) => {
+  try {
+    const { userId, credits, tier, creditsUsedToday, lastResetDate } = req.body;
+    
+    if (!userId) {
+      return res.status(400).json({ error: 'userId required' });
+    }
+    
+    // Get or create user
+    const user = getUser(userId);
+    
+    // Store the sync data for validation
+    if (!user.syncData) {
+      user.syncData = {};
+    }
+    
+    user.syncData = {
+      lastSync: new Date().toISOString(),
+      clientCredits: credits,
+      tier: tier,
+      creditsUsedToday: creditsUsedToday,
+      lastResetDate: lastResetDate
+    };
+    
+    // Detect anomalies - credits should only decrease or stay same between syncs
+    if (user.syncData.previousCredits !== undefined) {
+      const creditsDiff = credits - user.syncData.previousCredits;
+      if (creditsDiff > 0 && tier === user.syncData.previousTier) {
+        // Credits increased without tier change - possible tampering
+        console.warn(`⚠️ Possible credit tampering detected for user ${userId}. Previous: ${user.syncData.previousCredits}, Current: ${credits}`);
+        user.syncData.anomalyDetected = true;
+        user.syncData.anomalyCount = (user.syncData.anomalyCount || 0) + 1;
+      }
+    }
+    
+    user.syncData.previousCredits = credits;
+    user.syncData.previousTier = tier;
+    
+    saveUser(user);
+    
+    res.json({
+      success: true,
+      message: 'Sync received',
+      serverTime: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Error syncing credits:', error);
+    res.status(500).json({ error: 'Failed to sync credits' });
+  }
+});
+
+// Get server-side credit status (for validation)
+router.get('/validate', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.query.userId;
+    
+    if (!userId) {
+      return res.status(400).json({ error: 'userId required' });
+    }
+    
+    const user = getUser(userId);
+    
+    res.json({
+      success: true,
+      syncData: user.syncData || {},
+      hasAnomalies: user.syncData?.anomalyDetected || false,
+      anomalyCount: user.syncData?.anomalyCount || 0
+    });
+  } catch (error) {
+    console.error('Error validating credits:', error);
+    res.status(500).json({ error: 'Failed to validate credits' });
+  }
+});
+
 export default router;
 

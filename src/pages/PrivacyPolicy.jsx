@@ -1,151 +1,166 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { ArrowLeft, Shield, Eye, Lock, Trash2, Mail } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
-const PrivacyPolicy = () => {
+export default function PrivacyPolicy() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: '#0f0f1a',
-      color: '#ffffff',
-      padding: '20px',
-      fontFamily: 'system-ui, -apple-system, sans-serif'
-    }}>
-      <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-        <button 
-          onClick={() => navigate(-1)}
-          style={{
-            background: 'transparent',
-            border: 'none',
-            color: '#a855f7',
-            fontSize: '16px',
-            cursor: 'pointer',
-            marginBottom: '20px'
-          }}
-        >
-          ← Kthehu
-        </button>
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950 pt-16 pb-24 px-4">
+      <div className="max-w-2xl mx-auto">
+        {/* Header */}
+        <div className="flex items-center gap-3 mb-6">
+          <Button
+            onClick={() => navigate(-1)}
+            variant="ghost"
+            className="p-2 hover:bg-slate-800 rounded-xl"
+          >
+            <ArrowLeft className="w-5 h-5 text-slate-400" />
+          </Button>
+          <div>
+            <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+              <Shield className="w-6 h-6 text-purple-400" />
+              {t('legal.privacyPolicy', 'Privacy Policy')}
+            </h1>
+            <p className="text-slate-400 text-sm">Last updated: December 2024</p>
+          </div>
+        </div>
 
-        <h1 style={{ color: '#a855f7', marginBottom: '30px' }}>Politika e Privatësisë</h1>
-        <p style={{ color: '#888', marginBottom: '30px' }}>Përditësuar më: 4 Dhjetor 2025</p>
+        {/* Content */}
+        <div className="space-y-6 text-slate-300">
+          {/* Introduction */}
+          <section className="bg-slate-800/50 rounded-2xl p-5 border border-slate-700/50">
+            <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+              <Eye className="w-5 h-5 text-cyan-400" />
+              {t('legal.introduction', 'Introduction')}
+            </h2>
+            <p className="text-sm leading-relaxed">
+              Biseda.ai ("we", "our", or "us") is committed to protecting your privacy. 
+              This Privacy Policy explains how we collect, use, disclose, and safeguard 
+              your information when you use our mobile application.
+            </p>
+          </section>
 
-        <section style={{ marginBottom: '30px' }}>
-          <h2 style={{ color: '#d946ef', marginBottom: '15px' }}>1. Informacioni që Mbledhim</h2>
-          <p style={{ lineHeight: '1.8', color: '#ccc' }}>
-            Biseda.ai mbledh informacionin e mëposhtëm për të ofruar shërbimet tona:
-          </p>
-          <ul style={{ lineHeight: '2', color: '#ccc', paddingLeft: '20px' }}>
-            <li>Adresa e email-it (kur krijoni llogari)</li>
-            <li>Informacioni i profilit që ju jepni</li>
-            <li>Bisedat dhe mesazhet me AI coach</li>
-            <li>Të dhënat e përdorimit të aplikacionit</li>
-          </ul>
-        </section>
+          {/* Data Collection */}
+          <section className="bg-slate-800/50 rounded-2xl p-5 border border-slate-700/50">
+            <h2 className="text-lg font-semibold text-white mb-3">
+              {t('legal.dataCollection', 'Information We Collect')}
+            </h2>
+            <ul className="space-y-2 text-sm">
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400 mt-1">•</span>
+                <span><strong>Account Information:</strong> Email address, name, and gender when you register.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400 mt-1">•</span>
+                <span><strong>Usage Data:</strong> How you interact with the app, features used, and preferences.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400 mt-1">•</span>
+                <span><strong>Chat Data:</strong> Conversations with our AI are processed to provide advice but not permanently stored.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400 mt-1">•</span>
+                <span><strong>Screenshots:</strong> Images you upload are analyzed and immediately deleted after processing.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400 mt-1">•</span>
+                <span><strong>Device Information:</strong> Device type, OS version, and app version for troubleshooting.</span>
+              </li>
+            </ul>
+          </section>
 
-        <section style={{ marginBottom: '30px' }}>
-          <h2 style={{ color: '#d946ef', marginBottom: '15px' }}>2. Si e Përdorim Informacionin</h2>
-          <p style={{ lineHeight: '1.8', color: '#ccc' }}>
-            Ne e përdorim informacionin tuaj për:
-          </p>
-          <ul style={{ lineHeight: '2', color: '#ccc', paddingLeft: '20px' }}>
-            <li>Të ofruar dhe përmirësuar shërbimet tona</li>
-            <li>Të personalizuar përvojën tuaj me AI coach</li>
-            <li>Të komunikuar me ju për përditësime</li>
-            <li>Të siguruar sigurinë dhe të parandaluar abuzimin</li>
-          </ul>
-        </section>
+          {/* How We Use Data */}
+          <section className="bg-slate-800/50 rounded-2xl p-5 border border-slate-700/50">
+            <h2 className="text-lg font-semibold text-white mb-3">
+              {t('legal.howWeUse', 'How We Use Your Information')}
+            </h2>
+            <ul className="space-y-2 text-sm">
+              <li className="flex items-start gap-2">
+                <span className="text-green-400 mt-1">✓</span>
+                <span>Provide personalized dating advice and coaching</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-400 mt-1">✓</span>
+                <span>Improve our AI models and service quality</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-400 mt-1">✓</span>
+                <span>Process payments and manage subscriptions</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-400 mt-1">✓</span>
+                <span>Send important updates about your account</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-red-400 mt-1">✗</span>
+                <span>We do NOT sell your personal data to third parties</span>
+              </li>
+            </ul>
+          </section>
 
-        <section style={{ marginBottom: '30px' }}>
-          <h2 style={{ color: '#d946ef', marginBottom: '15px' }}>3. Ruajtja e të Dhënave</h2>
-          <p style={{ lineHeight: '1.8', color: '#ccc' }}>
-            Të dhënat tuaja ruhen në serverë të sigurt. Bisedat me AI coach ruhen për të përmirësuar 
-            përvojën tuaj dhe mund të fshihen në çdo kohë nga cilësimet e llogarisë.
-          </p>
-        </section>
+          {/* Data Security */}
+          <section className="bg-slate-800/50 rounded-2xl p-5 border border-slate-700/50">
+            <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+              <Lock className="w-5 h-5 text-green-400" />
+              {t('legal.dataSecurity', 'Data Security')}
+            </h2>
+            <p className="text-sm leading-relaxed">
+              We implement industry-standard security measures including encryption, 
+              secure servers, and regular security audits. Your payment information 
+              is processed securely through Apple's payment system and is never stored 
+              on our servers.
+            </p>
+          </section>
 
-        <section style={{ marginBottom: '30px' }}>
-          <h2 style={{ color: '#d946ef', marginBottom: '15px' }}>4. Ndarja e të Dhënave</h2>
-          <p style={{ lineHeight: '1.8', color: '#ccc' }}>
-            Ne NUK i shesim të dhënat tuaja personale. Mund të ndajmë informacion me:
-          </p>
-          <ul style={{ lineHeight: '2', color: '#ccc', paddingLeft: '20px' }}>
-            <li>Ofruesit e shërbimeve (si OpenAI për AI chat)</li>
-            <li>Kur kërkohet me ligj</li>
-          </ul>
-        </section>
+          {/* Your Rights */}
+          <section className="bg-slate-800/50 rounded-2xl p-5 border border-slate-700/50">
+            <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+              <Trash2 className="w-5 h-5 text-rose-400" />
+              {t('legal.yourRights', 'Your Rights')}
+            </h2>
+            <ul className="space-y-2 text-sm">
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400 mt-1">•</span>
+                <span><strong>Access:</strong> Request a copy of your personal data</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400 mt-1">•</span>
+                <span><strong>Correction:</strong> Update or correct your information</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400 mt-1">•</span>
+                <span><strong>Deletion:</strong> Request deletion of your account and data</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400 mt-1">•</span>
+                <span><strong>Export:</strong> Download your data in a portable format</span>
+              </li>
+            </ul>
+          </section>
 
-        <section style={{ marginBottom: '30px' }}>
-          <h2 style={{ color: '#d946ef', marginBottom: '15px' }}>5. Të Drejtat Tuaja</h2>
-          <p style={{ lineHeight: '1.8', color: '#ccc' }}>
-            Ju keni të drejtë të:
-          </p>
-          <ul style={{ lineHeight: '2', color: '#ccc', paddingLeft: '20px' }}>
-            <li>Aksesoni të dhënat tuaja</li>
-            <li>Korrigjoni informacionin e pasaktë</li>
-            <li>Fshini llogarinë tuaj</li>
-            <li>Eksportoni të dhënat tuaja</li>
-          </ul>
-        </section>
-
-        <section style={{ marginBottom: '30px' }}>
-          <h2 style={{ color: '#d946ef', marginBottom: '15px' }}>6. Siguria</h2>
-          <p style={{ lineHeight: '1.8', color: '#ccc' }}>
-            Ne përdorim masa të rrepta sigurie për të mbrojtur të dhënat tuaja, 
-            përfshirë enkriptimin dhe autentifikimin e sigurt.
-          </p>
-        </section>
-
-        <section style={{ marginBottom: '30px' }}>
-          <h2 style={{ color: '#d946ef', marginBottom: '15px' }}>7. Kontakti</h2>
-          <p style={{ lineHeight: '1.8', color: '#ccc' }}>
-            Për pyetje rreth privatësisë, na kontaktoni në:
-            <br />
-            <a href="mailto:gxhuljon@gmail.com" style={{ color: '#a855f7' }}>gxhuljon@gmail.com</a>
-          </p>
-        </section>
-
-        <section style={{ marginBottom: '30px', borderTop: '1px solid #333', paddingTop: '30px' }}>
-          <h1 style={{ color: '#a855f7', marginBottom: '30px' }}>Privacy Policy (English)</h1>
-          
-          <h2 style={{ color: '#d946ef', marginBottom: '15px' }}>1. Information We Collect</h2>
-          <p style={{ lineHeight: '1.8', color: '#ccc' }}>
-            Biseda.ai collects the following information to provide our services:
-          </p>
-          <ul style={{ lineHeight: '2', color: '#ccc', paddingLeft: '20px' }}>
-            <li>Email address (when you create an account)</li>
-            <li>Profile information you provide</li>
-            <li>Conversations with the AI coach</li>
-            <li>App usage data</li>
-          </ul>
-
-          <h2 style={{ color: '#d946ef', marginBottom: '15px', marginTop: '25px' }}>2. How We Use Information</h2>
-          <p style={{ lineHeight: '1.8', color: '#ccc' }}>
-            We use your information to provide and improve our services, personalize your AI coach experience,
-            communicate updates, and ensure security.
-          </p>
-
-          <h2 style={{ color: '#d946ef', marginBottom: '15px', marginTop: '25px' }}>3. Data Sharing</h2>
-          <p style={{ lineHeight: '1.8', color: '#ccc' }}>
-            We do NOT sell your personal data. We may share information with service providers 
-            (like OpenAI for AI chat) and when required by law.
-          </p>
-
-          <h2 style={{ color: '#d946ef', marginBottom: '15px', marginTop: '25px' }}>4. Your Rights</h2>
-          <p style={{ lineHeight: '1.8', color: '#ccc' }}>
-            You have the right to access, correct, delete, and export your data.
-          </p>
-
-          <h2 style={{ color: '#d946ef', marginBottom: '15px', marginTop: '25px' }}>5. Contact</h2>
-          <p style={{ lineHeight: '1.8', color: '#ccc' }}>
-            For privacy questions, contact us at: 
-            <a href="mailto:gxhuljon@gmail.com" style={{ color: '#a855f7' }}> gxhuljon@gmail.com</a>
-          </p>
-        </section>
+          {/* Contact */}
+          <section className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl p-5 border border-purple-500/30">
+            <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+              <Mail className="w-5 h-5 text-purple-400" />
+              {t('legal.contact', 'Contact Us')}
+            </h2>
+            <p className="text-sm leading-relaxed mb-3">
+              If you have questions about this Privacy Policy or wish to exercise 
+              your rights, please contact us at:
+            </p>
+            <a 
+              href="mailto:privacy@biseda.ai" 
+              className="text-purple-400 hover:text-purple-300 font-medium"
+            >
+              privacy@biseda.ai
+            </a>
+          </section>
+        </div>
       </div>
     </div>
   );
-};
-
-export default PrivacyPolicy;
-
+}
