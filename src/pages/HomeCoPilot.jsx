@@ -752,7 +752,7 @@ export default function HomeCoPilot() {
               <div className="w-12 h-12 mx-auto mb-2 bg-gradient-to-br from-pink-500/20 to-rose-500/20 rounded-2xl flex items-center justify-center border border-pink-500/20">
                 <Heart className="w-6 h-6 text-pink-400" />
               </div>
-              <div className="text-2xl font-black text-white">10,000</div>
+              <div className="text-2xl font-black text-white">10,000+</div>
               <div className="text-xs text-slate-400">{t('homepage.stats.usersHelped')}</div>
             </div>
             <div className="text-center">
