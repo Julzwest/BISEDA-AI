@@ -113,13 +113,13 @@ export default function Layout({ children, onLogout }) {
     trackPageView(currentPageName);
   }, [currentPageName]);
 
-  // 5-tab navigation: Hub, Rizz, Practice, Tools, Profile
+  // 5-tab navigation: Home, Wingman, Rehearse, Explore, More (Profile moved to header)
   const navItems = [
     { name: t('nav.hub', 'Home'), icon: Home, page: 'Copilot' },
     { name: t('nav.wingman', 'Wingman'), icon: Zap, page: 'Wingman' },
     { name: t('nav.rehearse', 'Rehearse'), icon: Users, page: 'Rehearsal' },
-    { name: t('nav.more', 'More'), icon: Wrench, page: 'Tools' },
-    { name: t('nav.profile', 'Profile'), icon: User, page: 'Profile' }
+    { name: t('nav.explore', 'Explore'), icon: Calendar, page: 'Explore' },
+    { name: t('nav.more', 'More'), icon: Wrench, page: 'Tools' }
   ];
 
   return (
@@ -235,9 +235,19 @@ export default function Layout({ children, onLogout }) {
             )}
           </div>
           
-          {/* Right side - Region Switcher only (Profile is now in nav) */}
+          {/* Right side - Region Switcher + Profile */}
           <div className="flex items-center gap-2">
             <RegionSwitcher />
+            <Link 
+              to="/profile"
+              className={`p-2 rounded-xl transition-all ${
+                currentPageName === 'Profile' 
+                  ? 'bg-purple-500/20 text-purple-400' 
+                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
+              }`}
+            >
+              <User className="w-5 h-5" />
+            </Link>
           </div>
         </div>
       </header>
@@ -261,23 +271,6 @@ export default function Layout({ children, onLogout }) {
           {children}
         </div>
       </main>
-
-      {/* Floating Events Button - Bottom Right Corner */}
-      <Link
-        to="/explore"
-        className="fixed z-[9998] flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 shadow-lg shadow-purple-500/30"
-        style={{
-          bottom: 'calc(80px + env(safe-area-inset-bottom, 0px))',
-          right: '16px',
-          width: '56px',
-          height: '56px',
-          borderRadius: '16px',
-          background: 'linear-gradient(135deg, #a855f7, #ec4899)',
-        }}
-      >
-        <Calendar className="w-6 h-6 text-white" />
-        <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-slate-900 animate-pulse" />
-      </Link>
 
       {/* Fixed Bottom Navigation - Modern Design */}
       <nav style={{ 
