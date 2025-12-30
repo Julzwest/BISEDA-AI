@@ -453,46 +453,46 @@ export default function LiveWingmanCoach() {
   const getSituations = () => {
     if (dateStage === 'starting') {
       return [
-        { id: 'nervous', emoji: '😰', label: "I'm nervous" },
-        { id: 'awkward', emoji: '😬', label: "It's awkward" },
-        { id: 'topics', emoji: '💬', label: 'What to talk about?' },
-        { id: 'impress', emoji: '✨', label: 'How to impress?' }
+        { id: 'nervous', emoji: '😰', label: t('liveWingman.situations.nervous', "I'm nervous") },
+        { id: 'awkward', emoji: '😬', label: t('liveWingman.situations.awkward', "It's awkward") },
+        { id: 'topics', emoji: '💬', label: t('liveWingman.situations.topics', 'What to talk about?') },
+        { id: 'impress', emoji: '✨', label: t('liveWingman.situations.impress', 'How to impress?') }
       ];
     }
     
     if (dateStage === 'vibing') {
       return [
-        { id: 'silence', emoji: '😶', label: "It's gone quiet" },
-        { id: 'signals', emoji: '🤔', label: "Can't read them" },
-        { id: 'deeper', emoji: '💭', label: 'Want to connect more' },
-        { id: 'boring', emoji: '😴', label: "It's getting boring" }
+        { id: 'silence', emoji: '😶', label: t('liveWingman.situations.silence', "It's gone quiet") },
+        { id: 'signals', emoji: '🤔', label: t('liveWingman.situations.signals', "Can't read them") },
+        { id: 'deeper', emoji: '💭', label: t('liveWingman.situations.deeper', 'Want to connect more') },
+        { id: 'boring', emoji: '😴', label: t('liveWingman.situations.boring', "It's getting boring") }
       ];
     }
 
     if (dateStage === 'heating' || dateStage === 'heating_up') {
       return [
-        { id: 'move', emoji: '💋', label: 'Make a move?' },
-        { id: 'touch', emoji: '✋', label: 'Should I touch?' },
-        { id: 'closer', emoji: '💓', label: 'Feeling the vibe' },
-        { id: 'slow', emoji: '🐢', label: 'Too fast?' }
+        { id: 'move', emoji: '💋', label: t('liveWingman.situations.move', 'Make a move?') },
+        { id: 'touch', emoji: '✋', label: t('liveWingman.situations.touch', 'Should I touch?') },
+        { id: 'closer', emoji: '💓', label: t('liveWingman.situations.closer', 'Feeling the vibe') },
+        { id: 'slow', emoji: '🐢', label: t('liveWingman.situations.slow', 'Too fast?') }
       ];
     }
 
     if (dateStage === 'ending') {
       return [
-        { id: 'kiss', emoji: '💋', label: 'Go for the kiss?' },
-        { id: 'number', emoji: '📱', label: 'Get their number' },
-        { id: 'nextdate', emoji: '📅', label: 'Lock in date 2' },
-        { id: 'invite', emoji: '🏠', label: 'Invite them over' }
+        { id: 'kiss', emoji: '💋', label: t('liveWingman.situations.kiss', 'Go for the kiss?') },
+        { id: 'number', emoji: '📱', label: t('liveWingman.situations.number', 'Get their number') },
+        { id: 'nextdate', emoji: '📅', label: t('liveWingman.situations.nextdate', 'Lock in date 2') },
+        { id: 'invite', emoji: '🏠', label: t('liveWingman.situations.invite', 'Invite them over') }
       ];
     }
 
     // Fallback
     return [
-      { id: 'silence', emoji: '😶', label: "It's gone quiet" },
-      { id: 'signals', emoji: '🤔', label: "Can't read them" },
-      { id: 'move', emoji: '💋', label: 'Make a move?' },
-      { id: 'boring', emoji: '😴', label: "It's getting boring" }
+      { id: 'silence', emoji: '😶', label: t('liveWingman.situations.silence', "It's gone quiet") },
+      { id: 'signals', emoji: '🤔', label: t('liveWingman.situations.signals', "Can't read them") },
+      { id: 'move', emoji: '💋', label: t('liveWingman.situations.move', 'Make a move?') },
+      { id: 'boring', emoji: '😴', label: t('liveWingman.situations.boring', "It's getting boring") }
     ];
   };
 
@@ -500,66 +500,66 @@ export default function LiveWingmanCoach() {
   const getQuickActions = () => {
     if (dateStage === 'starting') {
       return [
-        { id: 'icebreaker', emoji: '🧊', label: 'Break ice', color: 'from-cyan-500 to-blue-500' },
-        { id: 'compliment', emoji: '🥰', label: 'Compliment', color: 'from-pink-500 to-rose-500' },
-        { id: 'funny', emoji: '😂', label: 'Be funny', color: 'from-amber-500 to-yellow-500' },
-        { id: 'confident', emoji: '💪', label: 'Confidence', color: 'from-purple-500 to-indigo-500' },
-        { id: 'curious', emoji: '🤔', label: 'Ask questions', color: 'from-blue-500 to-indigo-500' },
-        { id: 'relax', emoji: '😌', label: 'Stay relaxed', color: 'from-green-500 to-teal-500' },
-        { id: 'mystery', emoji: '🎭', label: 'Be mysterious', color: 'from-violet-500 to-purple-500' },
-        { id: 'connect', emoji: '🔗', label: 'Find common', color: 'from-orange-500 to-red-500' }
+        { id: 'icebreaker', emoji: '🧊', label: t('liveWingman.actions.icebreaker', 'Break ice'), color: 'from-cyan-500 to-blue-500' },
+        { id: 'compliment', emoji: '🥰', label: t('liveWingman.actions.compliment', 'Compliment'), color: 'from-pink-500 to-rose-500' },
+        { id: 'funny', emoji: '😂', label: t('liveWingman.actions.funny', 'Be funny'), color: 'from-amber-500 to-yellow-500' },
+        { id: 'confident', emoji: '💪', label: t('liveWingman.actions.confident', 'Confidence'), color: 'from-purple-500 to-indigo-500' },
+        { id: 'curious', emoji: '🤔', label: t('liveWingman.actions.curious', 'Ask questions'), color: 'from-blue-500 to-indigo-500' },
+        { id: 'relax', emoji: '😌', label: t('liveWingman.actions.relax', 'Stay relaxed'), color: 'from-green-500 to-teal-500' },
+        { id: 'mystery', emoji: '🎭', label: t('liveWingman.actions.mystery', 'Be mysterious'), color: 'from-violet-500 to-purple-500' },
+        { id: 'connect', emoji: '🔗', label: t('liveWingman.actions.connect', 'Find common'), color: 'from-orange-500 to-red-500' }
       ];
     }
 
     if (dateStage === 'vibing') {
       return [
-        { id: 'flirt', emoji: '😏', label: 'Flirt more', color: 'from-pink-500 to-rose-500' },
-        { id: 'tease', emoji: '😜', label: 'Tease them', color: 'from-amber-500 to-orange-500' },
-        { id: 'deep', emoji: '💭', label: 'Get personal', color: 'from-blue-500 to-cyan-500' },
-        { id: 'playful', emoji: '🎭', label: 'Be playful', color: 'from-violet-500 to-purple-500' },
-        { id: 'challenge', emoji: '🎯', label: 'Challenge', color: 'from-red-500 to-pink-500' },
-        { id: 'listen', emoji: '👂', label: 'Listen more', color: 'from-green-500 to-emerald-500' },
-        { id: 'vulnerable', emoji: '💝', label: 'Open up', color: 'from-rose-500 to-pink-500' },
-        { id: 'adventure', emoji: '🚀', label: 'Suggest fun', color: 'from-indigo-500 to-blue-500' }
+        { id: 'flirt', emoji: '😏', label: t('liveWingman.actions.flirt', 'Flirt more'), color: 'from-pink-500 to-rose-500' },
+        { id: 'tease', emoji: '😜', label: t('liveWingman.actions.tease', 'Tease them'), color: 'from-amber-500 to-orange-500' },
+        { id: 'deep', emoji: '💭', label: t('liveWingman.actions.deep', 'Get personal'), color: 'from-blue-500 to-cyan-500' },
+        { id: 'playful', emoji: '🎭', label: t('liveWingman.actions.playful', 'Be playful'), color: 'from-violet-500 to-purple-500' },
+        { id: 'challenge', emoji: '🎯', label: t('liveWingman.actions.challenge', 'Challenge'), color: 'from-red-500 to-pink-500' },
+        { id: 'listen', emoji: '👂', label: t('liveWingman.actions.listen', 'Listen more'), color: 'from-green-500 to-emerald-500' },
+        { id: 'vulnerable', emoji: '💝', label: t('liveWingman.actions.vulnerable', 'Open up'), color: 'from-rose-500 to-pink-500' },
+        { id: 'adventure', emoji: '🚀', label: t('liveWingman.actions.adventure', 'Suggest fun'), color: 'from-indigo-500 to-blue-500' }
       ];
     }
 
     if (dateStage === 'heating' || dateStage === 'heating_up') {
       return [
-        { id: 'escalate', emoji: '😏', label: 'Be bolder', color: 'from-red-500 to-orange-500' },
-        { id: 'touch', emoji: '✋', label: 'Touch more', color: 'from-pink-500 to-rose-500' },
-        { id: 'tension', emoji: '⚡', label: 'Build tension', color: 'from-amber-500 to-yellow-500' },
-        { id: 'bold', emoji: '💥', label: 'Be bold', color: 'from-purple-500 to-pink-500' },
-        { id: 'whisper', emoji: '✋', label: 'Touch them', color: 'from-rose-500 to-red-500' },
-        { id: 'eyecontact', emoji: '👀', label: 'Eye contact', color: 'from-blue-500 to-violet-500' },
-        { id: 'slow', emoji: '🐢', label: 'Slow down', color: 'from-green-500 to-teal-500' },
-        { id: 'tease_more', emoji: '😈', label: 'Tease hard', color: 'from-violet-500 to-purple-500' }
+        { id: 'escalate', emoji: '😏', label: t('liveWingman.actions.escalate', 'Be bolder'), color: 'from-red-500 to-orange-500' },
+        { id: 'touch', emoji: '✋', label: t('liveWingman.actions.touch', 'Touch more'), color: 'from-pink-500 to-rose-500' },
+        { id: 'tension', emoji: '⚡', label: t('liveWingman.actions.tension', 'Build tension'), color: 'from-amber-500 to-yellow-500' },
+        { id: 'bold', emoji: '💥', label: t('liveWingman.actions.bold', 'Be bold'), color: 'from-purple-500 to-pink-500' },
+        { id: 'whisper', emoji: '✋', label: t('liveWingman.actions.touch', 'Touch them'), color: 'from-rose-500 to-red-500' },
+        { id: 'eyecontact', emoji: '👀', label: t('liveWingman.actions.eyecontact', 'Eye contact'), color: 'from-blue-500 to-violet-500' },
+        { id: 'slow', emoji: '🐢', label: t('liveWingman.actions.slow', 'Slow down'), color: 'from-green-500 to-teal-500' },
+        { id: 'tease_more', emoji: '😈', label: t('liveWingman.actions.tease', 'Tease hard'), color: 'from-violet-500 to-purple-500' }
       ];
     }
 
     if (dateStage === 'ending') {
       return [
-        { id: 'kiss', emoji: '💋', label: 'Go for kiss', color: 'from-pink-500 to-rose-500' },
-        { id: 'number', emoji: '📱', label: 'Get number', color: 'from-green-500 to-emerald-500' },
-        { id: 'date2', emoji: '📅', label: 'Lock date 2', color: 'from-purple-500 to-violet-500' },
-        { id: 'memorable', emoji: '✨', label: 'End high', color: 'from-amber-500 to-yellow-500' },
-        { id: 'smooth', emoji: '😎', label: 'Play smooth', color: 'from-blue-500 to-indigo-500' },
-        { id: 'wanting', emoji: '🌙', label: 'Make them miss you', color: 'from-violet-500 to-purple-500' },
-        { id: 'invite', emoji: '🏠', label: 'Invite over', color: 'from-red-500 to-pink-500' },
-        { id: 'hug', emoji: '🤗', label: 'Perfect hug', color: 'from-rose-500 to-orange-500' }
+        { id: 'kiss', emoji: '💋', label: t('liveWingman.actions.kiss', 'Go for kiss'), color: 'from-pink-500 to-rose-500' },
+        { id: 'number', emoji: '📱', label: t('liveWingman.actions.number', 'Get number'), color: 'from-green-500 to-emerald-500' },
+        { id: 'date2', emoji: '📅', label: t('liveWingman.actions.date2', 'Lock date 2'), color: 'from-purple-500 to-violet-500' },
+        { id: 'memorable', emoji: '✨', label: t('liveWingman.actions.memorable', 'End high'), color: 'from-amber-500 to-yellow-500' },
+        { id: 'smooth', emoji: '😎', label: t('liveWingman.actions.smooth', 'Play smooth'), color: 'from-blue-500 to-indigo-500' },
+        { id: 'wanting', emoji: '🌙', label: t('liveWingman.actions.wanting', 'Make them miss you'), color: 'from-violet-500 to-purple-500' },
+        { id: 'invite', emoji: '🏠', label: t('liveWingman.actions.invite', 'Invite over'), color: 'from-red-500 to-pink-500' },
+        { id: 'hug', emoji: '🤗', label: t('liveWingman.actions.hug', 'Perfect hug'), color: 'from-rose-500 to-orange-500' }
       ];
     }
 
     // Fallback
     return [
-      { id: 'flirt', emoji: '😏', label: 'Flirt harder', color: 'from-pink-500 to-rose-500' },
-      { id: 'tease', emoji: '😜', label: 'Tease them', color: 'from-amber-500 to-orange-500' },
-      { id: 'deep', emoji: '💭', label: 'Get personal', color: 'from-blue-500 to-cyan-500' },
-      { id: 'escalate', emoji: '😏', label: 'Be bolder', color: 'from-red-500 to-orange-500' },
-      { id: 'playful', emoji: '🎭', label: 'Be playful', color: 'from-violet-500 to-purple-500' },
-      { id: 'bold', emoji: '💥', label: 'Be bold', color: 'from-purple-500 to-pink-500' },
-      { id: 'connect', emoji: '🔗', label: 'Connect', color: 'from-green-500 to-emerald-500' },
-      { id: 'smooth', emoji: '😎', label: 'Stay smooth', color: 'from-blue-500 to-indigo-500' }
+      { id: 'flirt', emoji: '😏', label: t('liveWingman.actions.flirt', 'Flirt harder'), color: 'from-pink-500 to-rose-500' },
+      { id: 'tease', emoji: '😜', label: t('liveWingman.actions.tease', 'Tease them'), color: 'from-amber-500 to-orange-500' },
+      { id: 'deep', emoji: '💭', label: t('liveWingman.actions.deep', 'Get personal'), color: 'from-blue-500 to-cyan-500' },
+      { id: 'escalate', emoji: '😏', label: t('liveWingman.actions.escalate', 'Be bolder'), color: 'from-red-500 to-orange-500' },
+      { id: 'playful', emoji: '🎭', label: t('liveWingman.actions.playful', 'Be playful'), color: 'from-violet-500 to-purple-500' },
+      { id: 'bold', emoji: '💥', label: t('liveWingman.actions.bold', 'Be bold'), color: 'from-purple-500 to-pink-500' },
+      { id: 'connect', emoji: '🔗', label: t('liveWingman.actions.connect', 'Connect'), color: 'from-green-500 to-emerald-500' },
+      { id: 'smooth', emoji: '😎', label: t('liveWingman.actions.smooth', 'Stay smooth'), color: 'from-blue-500 to-indigo-500' }
     ];
   };
 
@@ -1371,12 +1371,12 @@ Return JSON ONLY:
           </div>
           <div className="grid grid-cols-3 gap-2">
             {[
-              { id: 'compliment', emoji: '🥰', label: 'Compliment' },
-              { id: 'joke', emoji: '😂', label: 'Tell a joke' },
-              { id: 'story', emoji: '📖', label: 'Share story' },
-              { id: 'question', emoji: '❓', label: 'Ask them' },
-              { id: 'pullback', emoji: '↩️', label: 'Pull back' },
-              { id: 'rescue', emoji: '🆘', label: 'Save it' }
+              { id: 'compliment', emoji: '🥰', label: t('liveWingman.moreActions.compliment', 'Compliment') },
+              { id: 'joke', emoji: '😂', label: t('liveWingman.moreActions.joke', 'Tell a joke') },
+              { id: 'story', emoji: '📖', label: t('liveWingman.moreActions.story', 'Share story') },
+              { id: 'question', emoji: '❓', label: t('liveWingman.moreActions.question', 'Ask them') },
+              { id: 'pullback', emoji: '↩️', label: t('liveWingman.moreActions.pullback', 'Pull back') },
+              { id: 'rescue', emoji: '🆘', label: t('liveWingman.moreActions.rescue', 'Save it') }
             ].map((action) => (
               <button
                 key={action.id}
