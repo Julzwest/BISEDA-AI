@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { 
   Zap,
   MessageCircle,
@@ -354,6 +355,10 @@ NEVER: Cross arms, check phone, lean away, avoid eye contact, fidget
 
 export default function LiveWingmanCoach() {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+  const currentLang = i18n.language || 'en';
+  const isAlbanian = currentLang === 'sq' || currentLang.startsWith('sq');
+  
   const [profile, setProfile] = useState(null);
   const [response, setResponse] = useState(null);
   const [copied, setCopied] = useState(false);
@@ -372,9 +377,9 @@ export default function LiveWingmanCoach() {
   
   // Gender options
   const genderOptions = [
-    { id: 'woman', label: 'Woman', emoji: '👩' },
-    { id: 'man', label: 'Man', emoji: '👨' },
-    { id: 'nonbinary', label: 'Non-binary', emoji: '🧑' },
+    { id: 'woman', label: t('liveWingman.genders.woman', 'Woman'), emoji: '👩' },
+    { id: 'man', label: t('liveWingman.genders.man', 'Man'), emoji: '👨' },
+    { id: 'nonbinary', label: t('liveWingman.genders.nonbinary', 'Non-binary'), emoji: '🧑' },
   ];
   
   // Get orientation label for display and AI context
@@ -417,18 +422,18 @@ export default function LiveWingmanCoach() {
 
   // Date venue/location options
   const venueOptions = [
-    { id: 'drinks', emoji: '🍸', label: 'Drinks', hint: 'Bar, pub, cocktails' },
-    { id: 'dinner', emoji: '🍽️', label: 'Dinner', hint: 'Restaurant' },
-    { id: 'coffee', emoji: '☕', label: 'Coffee', hint: 'Cafe, casual' },
-    { id: 'walk', emoji: '🚶', label: 'Walk', hint: 'Park, city stroll' },
-    { id: 'drive', emoji: '🚗', label: 'Drive', hint: 'Car date' },
-    { id: 'cinema', emoji: '🎬', label: 'Cinema', hint: 'Movie theater' },
-    { id: 'club', emoji: '🪩', label: 'Club', hint: 'Dancing, nightlife' },
-    { id: 'home', emoji: '🏠', label: 'At home', hint: 'Their place or yours' },
-    { id: 'hotel', emoji: '🏨', label: 'Hotel', hint: 'Private setting' },
-    { id: 'activity', emoji: '🎳', label: 'Activity', hint: 'Bowling, mini golf' },
-    { id: 'outdoors', emoji: '🌳', label: 'Outdoors', hint: 'Hike, beach, picnic' },
-    { id: 'event', emoji: '🎉', label: 'Event', hint: 'Concert, party' }
+    { id: 'drinks', emoji: '🍸', label: t('liveWingman.venues.drinks', 'Drinks'), hint: 'Bar, pub, cocktails' },
+    { id: 'dinner', emoji: '🍽️', label: t('liveWingman.venues.dinner', 'Dinner'), hint: 'Restaurant' },
+    { id: 'coffee', emoji: '☕', label: t('liveWingman.venues.coffee', 'Coffee'), hint: 'Cafe, casual' },
+    { id: 'walk', emoji: '🚶', label: t('liveWingman.venues.walk', 'Walk'), hint: 'Park, city stroll' },
+    { id: 'drive', emoji: '🚗', label: t('liveWingman.venues.drive', 'Drive'), hint: 'Car date' },
+    { id: 'cinema', emoji: '🎬', label: t('liveWingman.venues.cinema', 'Cinema'), hint: 'Movie theater' },
+    { id: 'club', emoji: '🪩', label: t('liveWingman.venues.club', 'Club'), hint: 'Dancing, nightlife' },
+    { id: 'home', emoji: '🏠', label: t('liveWingman.venues.home', 'At home'), hint: 'Their place or yours' },
+    { id: 'hotel', emoji: '🏨', label: t('liveWingman.venues.hotel', 'Hotel'), hint: 'Private setting' },
+    { id: 'activity', emoji: '🎳', label: t('liveWingman.venues.activity', 'Activity'), hint: 'Bowling, mini golf' },
+    { id: 'outdoors', emoji: '🌳', label: t('liveWingman.venues.outdoors', 'Outdoors'), hint: 'Hike, beach, picnic' },
+    { id: 'event', emoji: '🎉', label: t('liveWingman.venues.event', 'Event'), hint: 'Concert, party' }
   ];
 
   useEffect(() => {
@@ -438,10 +443,10 @@ export default function LiveWingmanCoach() {
 
   // Simplified date stages - just 4 with emojis
   const dateStages = [
-    { id: 'starting', emoji: '👋', label: 'Just started' },
-    { id: 'vibing', emoji: '🔥', label: 'Vibing' },
-    { id: 'heating', emoji: '💫', label: 'Heating up' },
-    { id: 'ending', emoji: '🌙', label: 'Wrapping up' }
+    { id: 'starting', emoji: '👋', label: t('liveWingman.stages.starting', 'Just started') },
+    { id: 'vibing', emoji: '🔥', label: t('liveWingman.stages.vibing', 'Vibing') },
+    { id: 'heating', emoji: '💫', label: t('liveWingman.stages.heating', 'Heating up') },
+    { id: 'ending', emoji: '🌙', label: t('liveWingman.stages.ending', 'Wrapping up') }
   ];
 
   // Simplified situations - context aware based on stage
@@ -577,7 +582,14 @@ export default function LiveWingmanCoach() {
     const styleContext = styleOptions.find(s => s.id === selectedStyle);
     const orientationContext = getOrientation();
     
+    // Language instruction for AI
+    const languageInstruction = isAlbanian 
+      ? `IMPORTANT: You MUST respond entirely in Albanian (Shqip). All text in your response must be in Albanian language. Use Albanian slang and expressions naturally.`
+      : `Respond in English.`;
+
     const prompt = `I'M ON A DATE RIGHT NOW. Quick real-time help needed!
+
+${languageInstruction}
 
 DATE CONTEXT:
 - I am a: ${genderOptions.find(g => g.id === myGender)?.label || 'person'}
@@ -798,12 +810,12 @@ Return JSON ONLY:
 
   // Communication style options
   const styleOptions = [
-    { id: 'playful', label: 'Playful', emoji: '😊', description: 'Fun, teasing, lighthearted' },
-    { id: 'confident', label: 'Confident', emoji: '😎', description: 'Bold, direct, assertive' },
-    { id: 'smooth', label: 'Smooth', emoji: '🎩', description: 'Charming, suave, sophisticated' },
-    { id: 'mysterious', label: 'Mysterious', emoji: '🌙', description: 'Intriguing, leave them wanting more' },
-    { id: 'romantic', label: 'Romantic', emoji: '💕', description: 'Sweet, sincere, heartfelt' },
-    { id: 'witty', label: 'Witty', emoji: '🧠', description: 'Clever, quick, intellectual' },
+    { id: 'playful', label: t('liveWingman.styles.playful', 'Playful'), emoji: '😊', description: t('liveWingman.styles.playfulDesc', 'Fun, teasing, lighthearted') },
+    { id: 'confident', label: t('liveWingman.styles.confident', 'Confident'), emoji: '😎', description: t('liveWingman.styles.confidentDesc', 'Bold, direct, assertive') },
+    { id: 'smooth', label: t('liveWingman.styles.smooth', 'Smooth'), emoji: '🎩', description: t('liveWingman.styles.smoothDesc', 'Charming, suave, sophisticated') },
+    { id: 'mysterious', label: t('liveWingman.styles.mysterious', 'Mysterious'), emoji: '🌙', description: t('liveWingman.styles.mysteriousDesc', 'Intriguing, leave them wanting more') },
+    { id: 'romantic', label: t('liveWingman.styles.romantic', 'Romantic'), emoji: '💕', description: t('liveWingman.styles.romanticDesc', 'Sweet, sincere, heartfelt') },
+    { id: 'witty', label: t('liveWingman.styles.witty', 'Witty'), emoji: '🧠', description: t('liveWingman.styles.wittyDesc', 'Clever, quick, intellectual') },
   ];
   
   const [selectedStyle, setSelectedStyle] = useState('playful');
@@ -871,9 +883,9 @@ Return JSON ONLY:
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-                  Live Wingman <span className="text-xl">⚡</span>
+                  {t('liveWingman.title', 'Live Wingman')} <span className="text-xl">⚡</span>
                 </h1>
-                <p className="text-sm text-slate-400">Real-time dating tips</p>
+                <p className="text-sm text-slate-400">{t('liveWingman.subtitle', 'Real-time dating tips')}</p>
               </div>
             </div>
             <div className="text-3xl animate-pulse">💫</div>
@@ -896,7 +908,7 @@ Return JSON ONLY:
               >
                 <div className="flex items-center gap-2">
                   <span className="text-xl">{styleOptions.find(s => s.id === selectedStyle)?.emoji}</span>
-                  <span className="text-white text-sm">Style: <span className="font-semibold">{styleOptions.find(s => s.id === selectedStyle)?.label}</span></span>
+                  <span className="text-white text-sm">{t('liveWingman.style', 'Style')}: <span className="font-semibold">{styleOptions.find(s => s.id === selectedStyle)?.label}</span></span>
                 </div>
                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${showStylePicker ? 'rotate-180' : ''}`} />
               </button>
@@ -941,7 +953,7 @@ Return JSON ONLY:
               >
                 <div className="flex items-center gap-2">
                   <span className="text-xl">{genderOptions.find(g => g.id === myGender)?.emoji}</span>
-                  <span className="text-white text-sm">I am: <span className="font-semibold">{genderOptions.find(g => g.id === myGender)?.label}</span></span>
+                  <span className="text-white text-sm">{t('liveWingman.iAm', 'I am')}: <span className="font-semibold">{genderOptions.find(g => g.id === myGender)?.label}</span></span>
                 </div>
                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${showMyGenderPicker ? 'rotate-180' : ''}`} />
               </button>
@@ -980,7 +992,7 @@ Return JSON ONLY:
               >
                 <div className="flex items-center gap-2">
                   <span className="text-xl">{genderOptions.find(g => g.id === datingGender)?.emoji}</span>
-                  <span className="text-white text-sm">Dating: <span className="font-semibold">{genderOptions.find(g => g.id === datingGender)?.label}</span></span>
+                  <span className="text-white text-sm">{t('liveWingman.dating', 'Dating')}: <span className="font-semibold">{genderOptions.find(g => g.id === datingGender)?.label}</span></span>
                 </div>
                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${showDatingGenderPicker ? 'rotate-180' : ''}`} />
               </button>
@@ -1013,7 +1025,7 @@ Return JSON ONLY:
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <span className="text-lg">🎯</span>
-                <h3 className="text-base font-semibold text-white">Date stage</h3>
+                <h3 className="text-base font-semibold text-white">{t('liveWingman.dateStage', 'Date stage')}</h3>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-xs text-slate-400">{dateStages.findIndex(s => s.id === dateStage) + 1}/{dateStages.length}</span>
@@ -1055,10 +1067,10 @@ Return JSON ONLY:
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <span className="text-lg">📍</span>
-                <h3 className="text-base font-semibold text-white">Where are you right now?</h3>
+                <h3 className="text-base font-semibold text-white">{t('liveWingman.whereAreYou', 'Where are you right now?')}</h3>
               </div>
               <span className="text-xs text-slate-500 flex items-center gap-1">
-                SWIPE <ChevronRight className="w-3 h-3" />
+                {t('liveWingman.swipe', 'SWIPE')} <ChevronRight className="w-3 h-3" />
               </span>
             </div>
             
@@ -1152,7 +1164,7 @@ Return JSON ONLY:
           <div className="flex items-center justify-center gap-2 mb-4">
             <span className="text-2xl animate-pulse">🤔</span>
             <h3 className="text-xl font-black bg-gradient-to-r from-amber-400 via-orange-400 to-red-400 bg-clip-text text-transparent">
-              What's happening?
+              {t('liveWingman.whatsHappening', "What's happening?")}
             </h3>
           </div>
           <div className="grid grid-cols-2 gap-3">
@@ -1178,7 +1190,7 @@ Return JSON ONLY:
         <div className="px-5 mb-6">
           <div className="flex items-center justify-center gap-2 mb-4">
             <h3 className="text-xl font-black bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent">
-              Make your move
+              {t('liveWingman.makeYourMove', 'Make your move')}
             </h3>
             <span className="text-2xl animate-bounce">⚡</span>
           </div>
@@ -1207,8 +1219,8 @@ Return JSON ONLY:
                   <Loader2 className="w-6 h-6 text-purple-400 animate-spin absolute -bottom-1 -right-1" />
             </div>
           </div>
-              <p className="text-white font-semibold text-lg mb-1">Reading the room...</p>
-              <p className="text-purple-300 text-sm">Cooking up something smooth 🍳</p>
+              <p className="text-white font-semibold text-lg mb-1">{t('liveWingman.loading.readingRoom', 'Reading the room...')}</p>
+              <p className="text-purple-300 text-sm">{t('liveWingman.loading.cookingSomething', 'Cooking up something smooth 🍳')}</p>
         </div>
           </div>
         )}
@@ -1223,7 +1235,7 @@ Return JSON ONLY:
             <div className="flex items-center gap-3">
                     <span className="text-4xl">{response.vibe || '🔥'}</span>
                     <div>
-                      <p className="text-white font-bold text-lg">Here's the play</p>
+                      <p className="text-white font-bold text-lg">{t('liveWingman.response.hereIsThePlan', "Here's the play")}</p>
                       <p className="text-purple-300 text-sm">{response.actionType}</p>
             </div>
               </div>
@@ -1258,7 +1270,7 @@ Return JSON ONLY:
 
                 {/* What to say */}
                 <div>
-                  <p className="text-xs text-slate-400 mb-2 uppercase tracking-wide">💬 Say this:</p>
+                  <p className="text-xs text-slate-400 mb-2 uppercase tracking-wide">💬 {t('liveWingman.response.sayThis', 'Say this:')}</p>
                   <div className="flex items-start gap-2 p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl">
                     <p className="text-emerald-200 text-base flex-1 font-medium">"{response.trySaying}"</p>
                   <button
@@ -1273,7 +1285,7 @@ Return JSON ONLY:
                 {/* Body Language */}
                 {response.bodyLanguage && (
                   <div>
-                    <p className="text-xs text-slate-400 mb-2 uppercase tracking-wide">🎭 Body Language:</p>
+                    <p className="text-xs text-slate-400 mb-2 uppercase tracking-wide">🎭 {t('liveWingman.response.bodyLanguage', 'Body Language:')}</p>
                     <div className="p-4 bg-gradient-to-r from-rose-500/10 to-pink-500/10 border border-rose-500/30 rounded-2xl">
                       <p className="text-rose-200 text-sm leading-relaxed">{response.bodyLanguage}</p>
                     </div>
@@ -1283,7 +1295,7 @@ Return JSON ONLY:
                 {/* Backup */}
                 {response.backup && (
                   <div>
-                    <p className="text-xs text-slate-400 mb-2 uppercase tracking-wide">🔄 Or try:</p>
+                    <p className="text-xs text-slate-400 mb-2 uppercase tracking-wide">🔄 {t('liveWingman.response.orTry', 'Or try:')}</p>
                     <div className="p-3 bg-slate-700/30 border border-slate-600/30 rounded-xl">
                       <p className="text-slate-300 text-sm italic">"{response.backup}"</p>
               </div>
@@ -1309,12 +1321,12 @@ Return JSON ONLY:
                   }`}
                 >
                   <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
-                  {isLoading ? 'Getting AI suggestion...' : (response.isError || response.isOffline) ? '🔄 Retry - Get AI Suggestion' : 'Try another suggestion'}
+                  {isLoading ? t('liveWingman.response.gettingAI', 'Getting AI suggestion...') : (response.isError || response.isOffline) ? t('liveWingman.response.retry', '🔄 Retry - Get AI Suggestion') : t('liveWingman.response.tryAnother', 'Try another suggestion')}
                 </button>
 
                 {/* Consent Disclaimer */}
                 <p className="text-center text-slate-500 text-[10px] mt-3 leading-relaxed">
-                  💝 All suggestions assume mutual interest. Always respect boundaries and obtain consent.
+                  {t('liveWingman.response.consent', '💝 All suggestions assume mutual interest. Always respect boundaries and obtain consent.')}
                 </p>
           </div>
         </div>
@@ -1327,7 +1339,7 @@ Return JSON ONLY:
             <div className="flex items-center justify-center gap-2 mb-3">
               <span className="text-lg">💬</span>
               <p className="text-sm font-bold bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
-                Ask me anything
+                {t('liveWingman.askAnything', 'Ask me anything')}
               </p>
               <span className="text-lg animate-pulse">✨</span>
             </div>
@@ -1355,7 +1367,7 @@ Return JSON ONLY:
         <div className="px-5 mb-6">
           <div className="flex items-center justify-center gap-2 mb-4">
             <span className="text-lg">🎯</span>
-            <h3 className="text-base font-semibold text-white">More moves</h3>
+            <h3 className="text-base font-semibold text-white">{t('liveWingman.moreMoves', 'More moves')}</h3>
           </div>
           <div className="grid grid-cols-3 gap-2">
             {[
@@ -1382,7 +1394,7 @@ Return JSON ONLY:
         {/* Encouragement footer */}
         <div className="px-5 text-center mb-4">
           <p className="text-slate-500 text-sm">
-            You got this! 💪 Be confident, be yourself.
+            {t('liveWingman.encouragement', 'You got this! 💪 Be confident, be yourself.')}
           </p>
         </div>
         
@@ -1392,9 +1404,9 @@ Return JSON ONLY:
             <div className="flex items-start gap-3">
               <span className="text-2xl">💝</span>
               <div>
-                <h4 className="text-white font-medium text-sm mb-1">Remember: Consent is everything</h4>
+                <h4 className="text-white font-medium text-sm mb-1">{t('liveWingman.consentReminder', 'Remember: Consent is everything')}</h4>
                 <p className="text-slate-400 text-xs leading-relaxed">
-                  All suggestions assume mutual interest and attraction. Always read body language, respect boundaries, and ensure enthusiastic consent before physical escalation. If they seem uncomfortable, back off gracefully. A good connection is built on mutual respect.
+                  {t('liveWingman.consentText', 'All suggestions assume mutual interest and attraction. Always read body language, respect boundaries, and ensure enthusiastic consent before physical escalation. If they seem uncomfortable, back off gracefully. A good connection is built on mutual respect.')}
                 </p>
               </div>
             </div>

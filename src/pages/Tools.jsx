@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { 
   Wrench,
   MapPin,
@@ -14,6 +15,8 @@ import {
 } from 'lucide-react';
 
 export default function Tools() {
+  const { t } = useTranslation();
+  
   // Check if user has Pro or Elite subscription
   const hasProOrElite = () => {
     const tier = (localStorage.getItem('userSubscriptionTier') || '').toLowerCase();
@@ -24,8 +27,8 @@ export default function Tools() {
     {
       id: 'explore',
       icon: MapPin,
-      title: 'Date Ideas & Venues',
-      description: 'Find perfect spots for your dates',
+      title: t('tools.dateIdeas', 'Date Ideas & Venues'),
+      description: t('tools.dateIdeasDesc', 'Find perfect spots for your dates'),
       color: 'from-emerald-500 to-teal-500',
       route: '/explore',
       requiresPro: false,
@@ -34,8 +37,8 @@ export default function Tools() {
     {
       id: 'gifts',
       icon: Gift,
-      title: 'Gift Suggestions',
-      description: 'Find the perfect gift for any occasion',
+      title: t('tools.gifts', 'Gift Suggestions'),
+      description: t('tools.giftsDesc', 'Find the perfect gift for any occasion'),
       color: 'from-rose-500 to-red-600',
       route: '/gifts',
       requiresPro: true,
@@ -44,8 +47,8 @@ export default function Tools() {
     {
       id: 'confidence',
       icon: Smile,
-      title: 'Confidence Check',
-      description: 'Assess your dating readiness',
+      title: t('tools.confidence', 'Confidence Check'),
+      description: t('tools.confidenceDesc', 'Assess your dating readiness'),
       color: 'from-amber-500 to-orange-500',
       route: '/mood',
       requiresPro: false,
@@ -54,8 +57,8 @@ export default function Tools() {
     {
       id: 'bodylanguage',
       icon: Eye,
-      title: 'Body Language Guide',
-      description: 'Learn to read attraction signals',
+      title: t('tools.bodyLanguage', 'Body Language Guide'),
+      description: t('tools.bodyLanguageDesc', 'Learn to read attraction signals'),
       color: 'from-violet-500 to-purple-600',
       route: '/bodylanguage',
       requiresPro: false,
@@ -92,10 +95,10 @@ export default function Tools() {
             </div>
             <div>
               <h1 className="text-2xl font-black text-white flex items-center gap-2">
-                Tools
+                {t('tools.title', 'Tools')}
                 <span className="text-xl">🧰</span>
               </h1>
-              <p className="text-slate-400 text-sm">Extra dating resources</p>
+              <p className="text-slate-400 text-sm">{t('tools.subtitle', 'Extra dating resources')}</p>
             </div>
           </div>
         </div>
@@ -161,10 +164,10 @@ export default function Tools() {
                     </div>
                     <div className="flex-1">
                       <h3 className="font-bold text-white text-lg mb-0.5 flex items-center gap-2">
-                        Unlock All Tools
+                        {t('tools.unlockAll', 'Unlock All Tools')}
                         <Sparkles className="w-4 h-4 text-purple-400" />
                       </h3>
-                      <p className="text-slate-400 text-sm">Upgrade to Pro for full access</p>
+                      <p className="text-slate-400 text-sm">{t('tools.upgradeForAccess', 'Upgrade to Pro for full access')}</p>
                     </div>
                     <ArrowRight className="w-5 h-5 text-purple-400" />
                   </div>
@@ -176,7 +179,7 @@ export default function Tools() {
           {/* Bottom Quote */}
           <div className="mt-10 text-center">
             <p className="text-slate-500 text-sm italic">
-              "The right tools make all the difference" ✨
+              {t('tools.quote', '"The right tools make all the difference" ✨')}
             </p>
           </div>
         </div>

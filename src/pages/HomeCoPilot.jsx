@@ -205,9 +205,16 @@ export default function HomeCoPilot() {
         .map(m => `${m.role === 'user' ? 'User' : 'Coach'}: ${m.content}`)
         .join('\n');
       
+      // Add language instruction based on current language
+      const currentLang = i18n.language || 'en';
+      const isAlbanian = currentLang === 'sq' || currentLang.startsWith('sq');
+      const languageInstruction = isAlbanian 
+        ? `KRITIKE: Ti DUHET të përgjigjesh plotësisht në Shqip. GJITHÇKA në përgjigjen tënde duhet të jetë në gjuhën shqipe. Përdor shprehje shqipe dhe sleng natyrisht.`
+        : '';
+      
       const result = await base44.integrations.Core.InvokeLLM({
-        prompt: `${conversationContext}\nUser: ${userMessage.content}\n\nRespond as the Vibe Coach:`,
-        system_prompt: VIBE_COACH_SYSTEM_PROMPT
+        prompt: `${languageInstruction}\n\n${conversationContext}\nUser: ${userMessage.content}\n\nRespond as the Vibe Coach${isAlbanian ? ' in Albanian (Shqip)' : ''}:`,
+        system_prompt: VIBE_COACH_SYSTEM_PROMPT + (isAlbanian ? '\n\nCRITICAL: You MUST respond entirely in Albanian (Shqip). All text must be in Albanian language.' : '')
       });
       
       const aiMessage = {
@@ -316,11 +323,17 @@ export default function HomeCoPilot() {
       }
       
       // Send to AI for analysis
-      const aiPrompt = `The user uploaded a screenshot from a dating app conversation. Here's the extracted text from their chat:\n\n${extractedText}\n\nPlease analyze this conversation and help them with:\n1. What's the vibe/tone of the conversation?\n2. How interested does the other person seem?\n3. What should they say next?\n\nGive practical, specific advice.`;
+      const currentLang = i18n.language || 'en';
+      const isAlbanian = currentLang === 'sq' || currentLang.startsWith('sq');
+      const languageInstruction = isAlbanian 
+        ? `KRITIKE: Ti DUHET të përgjigjesh plotësisht në Shqip. GJITHÇKA në përgjigjen tënde duhet të jetë në gjuhën shqipe.\n\n`
+        : '';
+      
+      const aiPrompt = `${languageInstruction}The user uploaded a screenshot from a dating app conversation. Here's the extracted text from their chat:\n\n${extractedText}\n\nPlease analyze this conversation and help them with:\n1. What's the vibe/tone of the conversation?\n2. How interested does the other person seem?\n3. What should they say next?\n\nGive practical, specific advice.${isAlbanian ? ' Respond entirely in Albanian (Shqip).' : ''}`;
       
       const aiResult = await base44.integrations.Core.InvokeLLM({
         prompt: aiPrompt,
-        system_prompt: VIBE_COACH_SYSTEM_PROMPT
+        system_prompt: VIBE_COACH_SYSTEM_PROMPT + (isAlbanian ? '\n\nCRITICAL: You MUST respond entirely in Albanian (Shqip). All text must be in Albanian language.' : '')
       });
       
       const aiMessage = {
