@@ -861,6 +861,7 @@
     "stats": {
       "betterReplies": "Better replies",
       "datesLanded": "Dates landed",
+      "membersHelped": "Members helped",
       "aiResponse": "AI response"
     },
     "howItWorks": "How it works",

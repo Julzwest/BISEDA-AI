@@ -397,7 +397,7 @@ export default function Admin() {
                 </div>
                 <div>
                   <p className="text-slate-400 text-xs">{t('admin.appStatus')}</p>
-                  <p className="text-emerald-400 text-xl font-bold">🟢 {t('admin.free')}</p>
+                  <p className="text-emerald-400 text-xl font-bold">🟢 LIVE</p>
                 </div>
               </div>
             </Card>
@@ -482,7 +482,7 @@ export default function Admin() {
               </div>
               <div className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/30 p-4 rounded-xl">
                 <p className="text-slate-400 text-sm mb-1">🎉 {t('admin.appStatus')}</p>
-                <p className="text-emerald-400 text-xl font-bold">{t('admin.freeForAll')}</p>
+                <p className="text-emerald-400 text-xl font-bold">🟢 LIVE</p>
               </div>
             </div>
           </Card>
