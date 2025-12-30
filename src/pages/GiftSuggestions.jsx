@@ -865,95 +865,112 @@ Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
           </div>
 
           <div className="space-y-4">
-            {suggestions.map((gift) => (
-              <Card
+            {suggestions.map((gift, index) => (
+              <div
                 key={gift.id}
-                className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 border-2 border-pink-500/30 backdrop-blur-sm hover:scale-[1.01] transition-all"
+                className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-xl hover:scale-[1.02] transition-all duration-300 group"
               >
-                <div className="p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center shrink-0 shadow-lg">
-                      <Gift className="w-6 h-6 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-start justify-between mb-1">
-                        <h3 className="text-base font-bold text-white">{gift.name}</h3>
-                        {gift.price && (
-                          <span className="text-sm font-bold text-pink-400 shrink-0 ml-2">
-                            {gift.price}
-                          </span>
-                        )}
+                {/* Gradient accent border */}
+                <div className="absolute inset-0 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-rose-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                
+                <div className="relative p-5">
+                  {/* Header with price badge */}
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="relative">
+                      <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-pink-500 via-rose-500 to-purple-500 flex items-center justify-center shadow-lg shadow-pink-500/30">
+                        <Gift className="w-7 h-7 text-white" />
                       </div>
-                      <div className="flex items-center gap-2 mb-2">
+                      <div className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-r from-yellow-400 to-amber-500 rounded-full flex items-center justify-center">
+                        <Star className="w-3 h-3 text-white fill-white" />
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-lg font-bold text-white leading-tight mb-1 line-clamp-2">{gift.name}</h3>
+                      <div className="flex items-center gap-2 flex-wrap">
                         {gift.rating && (
-                          <div className="flex items-center gap-1">
+                          <div className="flex items-center gap-1 px-2 py-0.5 bg-yellow-500/20 rounded-full">
                             <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
-                            <span className="text-xs text-slate-400">{gift.rating}</span>
+                            <span className="text-xs font-semibold text-yellow-300">{gift.rating}</span>
                           </div>
                         )}
                         {gift.category && (
-                          <span className="px-2 py-0.5 bg-pink-500/20 text-pink-300 rounded text-xs">
+                          <span className="px-2.5 py-0.5 bg-gradient-to-r from-pink-500/30 to-purple-500/30 text-pink-200 rounded-full text-xs font-medium">
                             {gift.category}
                           </span>
                         )}
                       </div>
-                      <p className="text-slate-400 text-sm mb-3">{gift.description}</p>
-                      
-                      {/* Multiple Shopping Links */}
-                      <div className="space-y-2">
-                        <p className="text-xs text-slate-500 font-medium">{t('gifts.shopOn', 'Shop on')}:</p>
-                        <div className="grid grid-cols-2 gap-2">
-                          {gift.shoppingLinks?.amazon && (
-                            <a
-                              href={gift.shoppingLinks.amazon}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center justify-center gap-1.5 px-3 py-2 bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/50 rounded-lg text-xs font-semibold text-orange-300 transition-all"
-                            >
-                              🛒 Amazon
-                            </a>
-                          )}
-                          {gift.shoppingLinks?.etsy && (
-                            <a
-                              href={gift.shoppingLinks.etsy}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center justify-center gap-1.5 px-3 py-2 bg-orange-600/20 hover:bg-orange-600/30 border border-orange-600/50 rounded-lg text-xs font-semibold text-orange-200 transition-all"
-                            >
-                              🎨 Etsy
-                            </a>
-                          )}
-                          {gift.shoppingLinks?.ebay && (
-                            <a
-                              href={gift.shoppingLinks.ebay}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center justify-center gap-1.5 px-3 py-2 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/50 rounded-lg text-xs font-semibold text-blue-300 transition-all"
-                            >
-                              🏷️ eBay
-                            </a>
-                          )}
-                          {gift.shoppingLinks?.google && (
-                            <a
-                              href={gift.shoppingLinks.google}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center justify-center gap-1.5 px-3 py-2 bg-green-500/20 hover:bg-green-500/30 border border-green-500/50 rounded-lg text-xs font-semibold text-green-300 transition-all"
-                            >
-                              🔍 Google
-                            </a>
-                          )}
-                        </div>
-                        <SaveButton 
-                          item={gift} 
-                          type="gift"
-                          className="w-full mt-2"
-                        />
-                      </div>
                     </div>
+                    {gift.price && (
+                      <div className="shrink-0">
+                        <div className="px-3 py-1.5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl shadow-lg shadow-green-500/30">
+                          <span className="text-sm font-bold text-white">{gift.price}</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Description */}
+                  <p className="text-slate-300 text-sm mb-4 leading-relaxed">{gift.description}</p>
+                  
+                  {/* Shopping Links - Modern Compact Design */}
+                  <div className="space-y-3">
+                    <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">{t('gifts.shopOn', 'Shop on')}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {gift.shoppingLinks?.amazon && (
+                        <a
+                          href={gift.shoppingLinks.amazon}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 rounded-xl text-xs font-bold text-white shadow-lg shadow-orange-500/30 transition-all hover:scale-105"
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                          Amazon
+                        </a>
+                      )}
+                      {gift.shoppingLinks?.etsy && (
+                        <a
+                          href={gift.shoppingLinks.etsy}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 rounded-xl text-xs font-bold text-white shadow-lg shadow-rose-500/30 transition-all hover:scale-105"
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                          Etsy
+                        </a>
+                      )}
+                      {gift.shoppingLinks?.ebay && (
+                        <a
+                          href={gift.shoppingLinks.ebay}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 rounded-xl text-xs font-bold text-white shadow-lg shadow-blue-500/30 transition-all hover:scale-105"
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                          eBay
+                        </a>
+                      )}
+                      {gift.shoppingLinks?.google && (
+                        <a
+                          href={gift.shoppingLinks.google}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 rounded-xl text-xs font-bold text-white shadow-lg shadow-emerald-500/30 transition-all hover:scale-105"
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                          Google
+                        </a>
+                      )}
+                    </div>
+                    
+                    {/* Save Button */}
+                    <SaveButton 
+                      item={gift} 
+                      type="gift"
+                      className="w-full mt-1"
+                    />
                   </div>
                 </div>
-              </Card>
+              </div>
             ))}
           </div>
 

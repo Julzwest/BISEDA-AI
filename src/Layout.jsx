@@ -114,7 +114,7 @@ export default function Layout({ children, onLogout }) {
     { name: t('nav.hub', 'Home'), icon: Home, page: 'Copilot' },
     { name: t('nav.wingman', 'Wingman'), icon: Zap, page: 'Wingman' },
     { name: t('nav.rehearse', 'Rehearse'), icon: Users, page: 'Rehearsal' },
-    { name: t('nav.dateSpots', 'Date Spots'), icon: MapPin, page: 'Explore' },
+    { name: t('nav.dateEvents', 'Date & Events'), icon: MapPin, page: 'Explore' },
     { name: t('nav.more', 'More'), icon: Wrench, page: 'Tools' }
   ];
 
