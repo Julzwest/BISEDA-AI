@@ -169,16 +169,6 @@ export default function Auth({ onAuthSuccess }) {
     e.preventDefault();
     setError('');
 
-    if (!isLogin && !firstName.trim()) {
-      setError(t('authErrors.enterFirstName'));
-      return;
-    }
-    
-    if (!isLogin && !lastName.trim()) {
-      setError(t('authErrors.enterLastName'));
-      return;
-    }
-
     if (!email.trim()) {
       setError(t('authErrors.enterEmail'));
       return;
@@ -193,11 +183,13 @@ export default function Auth({ onAuthSuccess }) {
 
     try {
       const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
+      // For registration, derive name from email (can be updated later in profile)
+      const derivedName = email.split('@')[0];
       const payload = isLogin
         ? { email: email.trim(), password }
         : {
-            firstName: firstName.trim(),
-            lastName: lastName.trim(),
+            firstName: derivedName,
+            lastName: '',
             email: email.trim(),
             password,
             country: 'AL'
@@ -518,34 +510,18 @@ export default function Auth({ onAuthSuccess }) {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* First Name & Last Name */}
+            {/* Benefits - Only show on Register */}
             {!isLogin && (
-              <>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <input
-                      type="text"
-                      value={firstName}
-                      onChange={(e) => { setFirstName(e.target.value); setError(''); }}
-                      className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
-                      placeholder={t('auth.firstName') + " ✏️"}
-                      style={{ fontSize: '16px' }}
-                      required
-                    />
-                  </div>
-                  <div>
-                    <input
-                      type="text"
-                      value={lastName}
-                      onChange={(e) => { setLastName(e.target.value); setError(''); }}
-                      className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
-                      placeholder={t('auth.lastName') + " ✏️"}
-                      style={{ fontSize: '16px' }}
-                      required
-                    />
-                  </div>
+              <div className="flex items-center justify-center gap-4 py-2">
+                <div className="flex items-center gap-1.5 text-sm">
+                  <span className="text-green-400">✓</span>
+                  <span className="text-slate-300">{t('auth.benefit1', 'Free forever')}</span>
                 </div>
-              </>
+                <div className="flex items-center gap-1.5 text-sm">
+                  <span className="text-green-400">✓</span>
+                  <span className="text-slate-300">{t('auth.benefit2', 'AI powered')}</span>
+                </div>
+              </div>
             )}
 
             {/* Email */}
@@ -614,6 +590,20 @@ export default function Auth({ onAuthSuccess }) {
               </svg>
               {t('auth.continueWithApple')}
             </button>
+
+            {/* Social Proof */}
+            {!isLogin && (
+              <div className="text-center pt-2">
+                <p className="text-slate-400 text-sm flex items-center justify-center gap-2">
+                  <span className="flex -space-x-2">
+                    <span className="w-6 h-6 rounded-full bg-gradient-to-r from-pink-500 to-rose-500 flex items-center justify-center text-xs">💕</span>
+                    <span className="w-6 h-6 rounded-full bg-gradient-to-r from-purple-500 to-fuchsia-500 flex items-center justify-center text-xs">🔥</span>
+                    <span className="w-6 h-6 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center text-xs">✨</span>
+                  </span>
+                  <span>{t('auth.socialProof', '10,000+ users finding love')}</span>
+                </p>
+              </div>
+            )}
           </form>
 
           {/* Forgot Password Link */}
