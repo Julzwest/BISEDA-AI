@@ -930,14 +930,18 @@
       "usersHelped": "Përdorues të ndihmuar nga Biseda.ai",
       "aiResponse": "Përgjigje AI"
     },
-    "howItWorks": "Si funksionon",
+    "howItWorks": "Çfarë merr",
     "steps": {
-      "screenshot": "Fotografo chat-in tënd",
-      "screenshotDesc": "Funksionon me Tinder, Bumble, Hinge e më shumë",
-      "aiReads": "AI lexon vibin",
-      "aiReadsDesc": "Kupton kontekstin, tonin dhe qëllimin",
-      "sendReply": "Dërgo përgjigjen perfekte",
-      "sendReplyDesc": "Kopjo, ngjit, dhe shiko magjinë"
+      "screenshot": "Analizë e Mençur e Chat-it",
+      "screenshotDesc": "Ngarko çdo screenshot → Merr përgjigje perfekte në sekonda",
+      "aiReads": "AI Kupton Kontekstin",
+      "aiReadsDesc": "Lexon tonin, emocionet dhe qëllimin si ekspert dating",
+      "liveWingman": "Wingman Live",
+      "liveWingmanDesc": "Udhëzim në kohë reale gjatë takimit tënd",
+      "bodyLanguage": "Dekoder Gjuhe Trupi",
+      "bodyLanguageDesc": "Mëso çfarë do të thonë vërtet gjestet e tyre",
+      "dateRehearsals": "Praktiko Bisedat",
+      "dateRehearsalsDesc": "Provo skenarë para takimit të vërtetë"
     },
     "testimonial": "Ky app më shpëtoi jetën e dating. Mora 3 takime në një javë!",
     "testimonialAuthor": "Aleksi, 26",

@@ -769,7 +769,7 @@ export default function HomeCoPilot() {
           </div>
         </div>
 
-        {/* How It Works */}
+        {/* What You Get - Features List */}
         <div className="mb-8">
           <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-purple-400" />
@@ -777,6 +777,7 @@ export default function HomeCoPilot() {
           </h3>
           
           <div className="space-y-3">
+            {/* Smart Chat Analysis */}
             <div className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50 hover:border-purple-500/30 transition-colors">
               <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-purple-500/20">
                 <Camera className="w-5 h-5 text-white" />
@@ -788,7 +789,8 @@ export default function HomeCoPilot() {
               <span className="text-2xl">📸</span>
             </div>
             
-            <div className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50 hover:border-purple-500/30 transition-colors">
+            {/* AI Understands Context */}
+            <div className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50 hover:border-cyan-500/30 transition-colors">
               <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-cyan-500/20">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
@@ -799,15 +801,40 @@ export default function HomeCoPilot() {
               <span className="text-2xl">🧠</span>
             </div>
             
-            <div className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50 hover:border-purple-500/30 transition-colors">
-              <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
-                <Send className="w-5 h-5 text-white" />
+            {/* Live Wingman */}
+            <div className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50 hover:border-amber-500/30 transition-colors">
+              <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-amber-500/20">
+                <Zap className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1">
-                <h4 className="text-white font-semibold text-sm">{t('homepage.steps.sendReply')}</h4>
-                <p className="text-slate-400 text-xs">{t('homepage.steps.sendReplyDesc')}</p>
+                <h4 className="text-white font-semibold text-sm">{t('homepage.steps.liveWingman')}</h4>
+                <p className="text-slate-400 text-xs">{t('homepage.steps.liveWingmanDesc')}</p>
               </div>
-              <span className="text-2xl">🎯</span>
+              <span className="text-2xl">⚡</span>
+            </div>
+            
+            {/* Body Language Decoder */}
+            <div className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50 hover:border-rose-500/30 transition-colors">
+              <div className="w-10 h-10 bg-gradient-to-br from-rose-500 to-pink-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-rose-500/20">
+                <Heart className="w-5 h-5 text-white" />
+              </div>
+              <div className="flex-1">
+                <h4 className="text-white font-semibold text-sm">{t('homepage.steps.bodyLanguage')}</h4>
+                <p className="text-slate-400 text-xs">{t('homepage.steps.bodyLanguageDesc')}</p>
+              </div>
+              <span className="text-2xl">👀</span>
+            </div>
+            
+            {/* Practice Conversations */}
+            <div className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50 hover:border-emerald-500/30 transition-colors">
+              <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
+                <MessageSquare className="w-5 h-5 text-white" />
+              </div>
+              <div className="flex-1">
+                <h4 className="text-white font-semibold text-sm">{t('homepage.steps.dateRehearsals')}</h4>
+                <p className="text-slate-400 text-xs">{t('homepage.steps.dateRehearsalsDesc')}</p>
+              </div>
+              <span className="text-2xl">🎭</span>
             </div>
           </div>
         </div>

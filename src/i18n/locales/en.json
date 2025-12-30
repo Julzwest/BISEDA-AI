@@ -931,14 +931,18 @@
       "usersHelped": "Users helped by Biseda.ai",
       "aiResponse": "AI response"
     },
-    "howItWorks": "How it works",
+    "howItWorks": "What you get",
     "steps": {
-      "screenshot": "Screenshot your chat",
-      "screenshotDesc": "Works with Tinder, Bumble, Hinge & more",
-      "aiReads": "AI reads the vibe",
-      "aiReadsDesc": "Understands context, tone & intent",
-      "sendReply": "Send the perfect reply",
-      "sendReplyDesc": "Copy, paste, and watch the magic happen"
+      "screenshot": "Smart Chat Analysis",
+      "screenshotDesc": "Upload any screenshot → Get perfect replies in seconds",
+      "aiReads": "AI Understands Context",
+      "aiReadsDesc": "Reads tone, emotions & intent like a dating expert",
+      "liveWingman": "Live Wingman Mode",
+      "liveWingmanDesc": "Real-time coaching while you're on your date",
+      "bodyLanguage": "Body Language Decoder",
+      "bodyLanguageDesc": "Learn what their gestures & signals really mean",
+      "dateRehearsals": "Practice Conversations",
+      "dateRehearsalsDesc": "Rehearse scenarios before the real thing"
     },
     "testimonial": "This app literally saved my dating life. Got 3 dates in one week!",
     "testimonialAuthor": "Alex, 26",
