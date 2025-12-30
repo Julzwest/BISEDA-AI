@@ -426,7 +426,11 @@
     "manageSubscription": "Menaxho Abonimin",
     "lite": "Lite",
     "plus": "Plus", 
-    "vip": "VIP"
+    "vip": "VIP",
+    "expired": "Skaduar",
+    "restoring": "Duke rikthyer...",
+    "noSubscriptionsFound": "Nuk u gjetën abonime aktive.",
+    "restoreFailed": "Rikthimi dështoi. Provo përsëri."
   },
   "common": {
     "loading": "Duke ngarkuar...",

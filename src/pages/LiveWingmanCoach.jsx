@@ -18,6 +18,8 @@ import { Button } from '@/components/ui/button';
 import { base44 } from '@/api/base44Client';
 import { getProfile } from '@/utils/profileMemory';
 import { bodyLanguageDatabase, getRandomTip, getTipsForStage, getTipsForVenue } from '@/data/bodyLanguageDatabase';
+import { canPerformAction, useCredits } from '@/utils/credits';
+import SubscriptionModal from '@/components/SubscriptionModal';
 
 // Live Wingman AI System Prompt
 const WINGMAN_SYSTEM_PROMPT = `You're that one friend who ALWAYS knows what to say. You've been there, done that, got the stories. You're helping your bestie who's ON A DATE right now, secretly checking their phone for advice.
@@ -364,6 +366,7 @@ export default function LiveWingmanCoach() {
   const [copied, setCopied] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showMoreOptions, setShowMoreOptions] = useState(false);
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
   
   // Simplified state
   const [dateStage, setDateStage] = useState('starting');
@@ -567,6 +570,15 @@ export default function LiveWingmanCoach() {
 
   // Generate AI response
   const generateResponse = async (actionType, context = '') => {
+    // Check if user can perform action (credits/subscription)
+    const canProceed = canPerformAction('chat_message');
+    if (!canProceed.allowed) {
+      if (canProceed.reason === 'trial_expired' || canProceed.reason === 'no_credits') {
+        setShowSubscriptionModal(true);
+        return;
+      }
+    }
+    
     setIsLoading(true);
     
     const stageContext = dateStages.find(s => s.id === dateStage)?.label || 'on a date';
@@ -731,6 +743,9 @@ Return JSON only:
         actionType,
         isAI: true
       });
+      
+      // Consume credits after successful response
+      useCredits('chat_message');
 
     } catch (error) {
       console.error('❌ AI Error:', error);
@@ -1413,6 +1428,15 @@ Return JSON ONLY:
           </div>
         </div>
         </>
+      
+      {/* Subscription Modal */}
+      <SubscriptionModal 
+        isOpen={showSubscriptionModal}
+        onClose={() => setShowSubscriptionModal(false)}
+        onSuccess={() => {
+          setShowSubscriptionModal(false);
+        }}
+      />
       </div>
     </div>
   );

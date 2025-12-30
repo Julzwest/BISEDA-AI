@@ -34,6 +34,8 @@ import {
   extractTextFromImage, 
   formatExtractedMessagesAsText 
 } from '@/services/ocrService';
+import { canPerformAction, useCredits, getSubscription, getTrialStatus } from '@/utils/credits';
+import SubscriptionModal from '@/components/SubscriptionModal';
 
 // Vibe Coach System Prompt
 const VIBE_COACH_SYSTEM_PROMPT = `You are an expert Intimacy and Relationship Coach. Your role is to provide supportive, educational, and empowering guidance on building deeper connections, enhancing romance, and improving communication in intimate relationships.
@@ -87,6 +89,7 @@ export default function HomeCoPilot() {
   const [chatConversationHistory, setChatConversationHistory] = useState([]);
   const [currentChatConversationId, setCurrentChatConversationId] = useState(null);
   const [showChatHistory, setShowChatHistory] = useState(false);
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -185,6 +188,15 @@ export default function HomeCoPilot() {
   const handleChatSend = async () => {
     if (!chatInput.trim() || chatLoading) return;
     
+    // Check if user can perform action (credits/subscription)
+    const canProceed = canPerformAction('chat_message');
+    if (!canProceed.allowed) {
+      if (canProceed.reason === 'trial_expired' || canProceed.reason === 'no_credits') {
+        setShowSubscriptionModal(true);
+        return;
+      }
+    }
+    
     const userMessage = {
       role: 'user',
       content: chatInput.trim(),
@@ -224,6 +236,9 @@ export default function HomeCoPilot() {
       };
       
       setChatMessages(prev => [...prev, aiMessage]);
+      
+      // Consume credits after successful response
+      useCredits('chat_message');
       
       if (currentChatConversationId) {
         addMessageToConversation(currentChatConversationId, aiMessage);
@@ -848,6 +863,15 @@ export default function HomeCoPilot() {
           animation: gradient-x 3s ease infinite;
         }
       `}</style>
+      
+      {/* Subscription Modal */}
+      <SubscriptionModal 
+        isOpen={showSubscriptionModal}
+        onClose={() => setShowSubscriptionModal(false)}
+        onSuccess={() => {
+          setShowSubscriptionModal(false);
+        }}
+      />
     </div>
   );
 }

@@ -5,13 +5,14 @@ import { X, Check, Crown, Zap, Star, Sparkles, Shield } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { SUBSCRIPTION_TIERS, getPaidTiers } from '@/config/subscriptions';
-import { purchaseSubscription, isIOSDevice } from '@/utils/applePurchases';
+import { purchaseSubscription, restorePurchases, isIOSDevice } from '@/utils/applePurchases';
 import { getSubscription, getTrialStatus } from '@/utils/credits';
 
 export default function SubscriptionModal({ isOpen, onClose, onSuccess }) {
   const { t, i18n } = useTranslation();
   const [selectedTier, setSelectedTier] = useState('plus');
   const [loading, setLoading] = useState(false);
+  const [restoring, setRestoring] = useState(false);
   const [error, setError] = useState('');
   
   const paidTiers = getPaidTiers();
@@ -39,6 +40,28 @@ export default function SubscriptionModal({ isOpen, onClose, onSuccess }) {
       setError(err.message || t('subscription.purchaseFailed', 'Purchase failed. Please try again.'));
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleRestore = async () => {
+    setRestoring(true);
+    setError('');
+
+    try {
+      const result = await restorePurchases();
+
+      if (result.success && result.restored) {
+        onSuccess?.(result);
+        onClose();
+      } else if (result.success && !result.restored) {
+        setError(t('subscription.noSubscriptionsFound', 'No active subscriptions found.'));
+      } else {
+        setError(result.error || t('subscription.restoreFailed', 'Restore failed. Please try again.'));
+      }
+    } catch (err) {
+      setError(err.message || t('subscription.restoreFailed', 'Restore failed. Please try again.'));
+    } finally {
+      setRestoring(false);
     }
   };
 
@@ -202,10 +225,18 @@ export default function SubscriptionModal({ isOpen, onClose, onSuccess }) {
 
           {/* Restore Purchases */}
           <button
-            onClick={() => {/* TODO: Implement restore */}}
-            className="w-full text-center text-sm text-purple-400 hover:text-purple-300 mt-3 transition-colors"
+            onClick={handleRestore}
+            disabled={restoring}
+            className="w-full text-center text-sm text-purple-400 hover:text-purple-300 mt-3 transition-colors disabled:opacity-50"
           >
-            {t('subscription.restorePurchases', 'Restore Purchases')}
+            {restoring ? (
+              <span className="flex items-center justify-center gap-2">
+                <div className="w-4 h-4 border-2 border-purple-400/30 border-t-purple-400 rounded-full animate-spin"></div>
+                {t('subscription.restoring', 'Restoring...')}
+              </span>
+            ) : (
+              t('subscription.restorePurchases', 'Restore Purchases')
+            )}
           </button>
         </div>
       </Card>

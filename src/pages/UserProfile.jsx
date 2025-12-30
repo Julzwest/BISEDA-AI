@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 import { getLocalizedCountryName, getCountryByCode, countries } from '@/config/countries';
 import { getBackendUrl } from '@/utils/getBackendUrl';
 import { getFavorites, removeVenueFavorite, removeDateIdeaFavorite, removeTipFavorite, removeGiftFavorite } from '@/utils/favorites';
-import UpgradeModal from '@/components/UpgradeModal';
+import SubscriptionModal from '@/components/SubscriptionModal';
 import { getProfile, saveProfile, defaultProfile } from '@/utils/profileMemory';
 
 export default function UserProfile({ onLogout }) {
@@ -1361,10 +1361,15 @@ export default function UserProfile({ onLogout }) {
         </div>
       )}
 
-      {/* Upgrade Modal */}
-      {showUpgradeModal && (
-        <UpgradeModal onClose={() => setShowUpgradeModal(false)} />
-      )}
+      {/* Subscription Modal */}
+      <SubscriptionModal 
+        isOpen={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        onSuccess={(result) => {
+          console.log('Subscription upgraded:', result);
+          fetchData(); // Refresh usage data
+        }}
+      />
     </div>
   );
 }

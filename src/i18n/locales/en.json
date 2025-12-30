@@ -426,7 +426,11 @@
     "manageSubscription": "Manage Subscription",
     "lite": "Lite",
     "plus": "Plus",
-    "vip": "VIP"
+    "vip": "VIP",
+    "expired": "Expired",
+    "restoring": "Restoring...",
+    "noSubscriptionsFound": "No active subscriptions found.",
+    "restoreFailed": "Restore failed. Please try again."
   },
   "common": {
     "loading": "Loading...",

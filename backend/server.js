@@ -1204,55 +1204,80 @@ app.post('/api/auth/reset-password', async (req, res) => {
 // Apple Sign In endpoint
 app.post('/api/auth/apple', async (req, res) => {
   try {
-    const { identityToken, email, givenName, familyName } = req.body;
+    const { identityToken, email, fullName, user: appleUser } = req.body;
     
     if (!identityToken) {
       return res.status(400).json({ error: 'Identity token is required' });
     }
     
-    // For now, we'll trust the token from Apple
-    // In production, you should verify the token with Apple's servers
+    // Generate a unique Apple user ID from the token
+    const appleUserId = appleUser || `apple_${Buffer.from(identityToken.substring(0, 50)).toString('base64').substring(0, 20)}`;
     
-    // Generate a unique Apple user ID from the token (simplified)
-    const appleUserId = `apple_${Buffer.from(identityToken.substring(0, 50)).toString('base64').substring(0, 20)}`;
-    
-    // Check if user already exists with this Apple ID
-    let userAccount = Array.from(userAccounts.values()).find(u => u.appleId === appleUserId);
+    // Check if user already exists with this Apple ID in MongoDB
+    let userAccount = await UserAccountModel.findOne({ appleId: appleUserId });
     
     if (userAccount) {
       // Existing user - update last login
-      userAccount.lastLogin = new Date().toISOString();
-      console.log(`✅ Apple user logged in: ${userAccount.userId}`);
+      await UserAccountModel.updateOne(
+        { _id: userAccount._id },
+        { lastLogin: new Date() }
+      );
+      console.log(`✅ Apple user logged in: ${userAccount.odId}`);
     } else {
-      // New user - create account
-      const userId = generateUserId();
-      const username = givenName ? `${givenName}${familyName || ''}`.replace(/\s/g, '') : `AppleUser_${Date.now()}`;
-      const userEmail = email || `${appleUserId}@privaterelay.appleid.com`;
+      // Check if email exists (link accounts)
+      if (email) {
+        userAccount = await UserAccountModel.findOne({ email: email.toLowerCase() });
+        if (userAccount) {
+          // Link Apple ID to existing account
+          await UserAccountModel.updateOne(
+            { _id: userAccount._id },
+            { appleId: appleUserId, lastLogin: new Date() }
+          );
+          console.log(`✅ Linked Apple ID to existing user: ${userAccount.odId}`);
+        }
+      }
       
-      userAccount = {
-        userId,
-        username,
-        email: userEmail,
-        appleId: appleUserId,
-        phoneNumber: null,
-        passwordHash: null, // No password for Apple users
-        createdAt: new Date().toISOString(),
-        lastLogin: new Date().toISOString(),
-        subscriptionTier: 'free_trial', // 3-day free trial
-        savedItems: { dates: [], gifts: [], tips: [] }
-      };
-      
-      userAccounts.set(userId, userAccount);
-      initializeUserData(userId);
-      console.log(`✅ New Apple user created: ${userId}`);
+      // If still no account, create new one
+      if (!userAccount) {
+        const odId = `user-${Date.now()}-${Math.random().toString(36).substring(7)}`;
+        const username = fullName?.givenName 
+          ? `${fullName.givenName}${fullName.familyName || ''}`.replace(/\s/g, '') 
+          : `AppleUser_${Date.now()}`;
+        const userEmail = email || `${appleUserId}@privaterelay.appleid.com`;
+        
+        userAccount = new UserAccountModel({
+          odId,
+          username,
+          firstName: fullName?.givenName || null,
+          lastName: fullName?.familyName || null,
+          email: userEmail.toLowerCase(),
+          appleId: appleUserId,
+          country: 'AL',
+          isVerified: true, // Apple verifies email
+          createdAt: new Date(),
+          lastLogin: new Date()
+        });
+        
+        await userAccount.save();
+        
+        // Initialize subscription profile
+        const user = getUser(odId);
+        saveUser(user);
+        
+        console.log(`✅ New Apple user created: ${odId}`);
+      }
     }
     
     res.json({
+      success: true,
       message: 'Apple Sign In successful',
       user: {
-        userId: userAccount.userId,
+        odId: userAccount.odId,
+        userId: userAccount.odId,
         username: userAccount.username,
+        firstName: userAccount.firstName,
         email: userAccount.email,
+        country: userAccount.country,
         isAppleUser: true
       }
     });
