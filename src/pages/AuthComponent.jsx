@@ -60,6 +60,25 @@ export default function Auth({ onAuthSuccess }) {
   // Welcome modal state
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
   const [pendingAuthData, setPendingAuthData] = useState(null);
+  
+  // Animated benefits carousel
+  const [currentBenefit, setCurrentBenefit] = useState(0);
+  const benefits = [
+    { emoji: '💬', text: t('auth.benefitChat', 'Perfect conversation starters') },
+    { emoji: '🎯', text: t('auth.benefitPractice', 'Practice before real dates') },
+    { emoji: '📍', text: t('auth.benefitPlaces', 'Discover amazing date spots') },
+    { emoji: '🔥', text: t('auth.benefitConfidence', 'Build dating confidence') },
+    { emoji: '✨', text: t('auth.benefitAI', 'AI-powered dating coach') },
+  ];
+  
+  useEffect(() => {
+    if (!isLogin) {
+      const interval = setInterval(() => {
+        setCurrentBenefit((prev) => (prev + 1) % benefits.length);
+      }, 2500);
+      return () => clearInterval(interval);
+    }
+  }, [isLogin, benefits.length]);
 
   const backendUrl = getBackendUrl();
 
@@ -547,16 +566,28 @@ export default function Auth({ onAuthSuccess }) {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Benefits - Only show on Register */}
+            {/* Animated Benefits Carousel - Only show on Register */}
             {!isLogin && (
-              <div className="flex items-center justify-center gap-4 py-2">
-                <div className="flex items-center gap-1.5 text-sm">
-                  <span className="text-green-400">✓</span>
-                  <span className="text-slate-300">{t('auth.benefit1', 'Free forever')}</span>
+              <div className="relative h-12 overflow-hidden">
+                <div 
+                  className="absolute inset-0 flex items-center justify-center transition-all duration-500 ease-out"
+                  key={currentBenefit}
+                >
+                  <div className="flex items-center gap-3 px-5 py-2.5 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-purple-500/20 rounded-full border border-purple-500/30 animate-benefit-slide">
+                    <span className="text-2xl animate-bounce-slow">{benefits[currentBenefit].emoji}</span>
+                    <span className="text-white font-medium text-sm">{benefits[currentBenefit].text}</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-1.5 text-sm">
-                  <span className="text-green-400">✓</span>
-                  <span className="text-slate-300">{t('auth.benefit2', 'AI powered')}</span>
+                {/* Progress dots */}
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-1.5">
+                  {benefits.map((_, idx) => (
+                    <div 
+                      key={idx}
+                      className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                        idx === currentBenefit ? 'bg-pink-500 w-4' : 'bg-slate-600'
+                      }`}
+                    />
+                  ))}
                 </div>
               </div>
             )}
@@ -819,10 +850,31 @@ export default function Auth({ onAuthSuccess }) {
       <style>{`
         @keyframes bounce-slow {
           0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
+          50% { transform: translateY(-5px); }
         }
         .animate-bounce-slow {
-          animation: bounce-slow 3s ease-in-out infinite;
+          animation: bounce-slow 2s ease-in-out infinite;
+        }
+        @keyframes benefit-slide {
+          0% { 
+            opacity: 0; 
+            transform: translateY(20px) scale(0.9);
+          }
+          15% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+          85% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+          100% { 
+            opacity: 0; 
+            transform: translateY(-20px) scale(0.9);
+          }
+        }
+        .animate-benefit-slide {
+          animation: benefit-slide 2.5s ease-in-out;
         }
         @keyframes fade-in {
           from { opacity: 0; transform: translateY(-10px); }
