@@ -146,104 +146,104 @@ export default function Explore() {
     setLoadingFestive(true);
     setFestiveSuggestions([]);
     
-    // Get occasion-specific configuration
+    // Get occasion-specific configuration with UNIQUE venue types
     const getOccasionConfig = (name) => {
       const lowerName = name.toLowerCase();
       
       if (lowerName.includes('valentine') || lowerName.includes('dashuri')) {
         return {
-          searchQuery: 'romantic candlelit restaurants fine dining',
-          placeTypes: ['romantic restaurant', 'fine dining', 'rooftop restaurant'],
+          category: 'romantic',
+          searchQueries: ['romantic dinner restaurant', 'wine bar', 'rooftop restaurant with view'],
           ideas: ['💕 Romantic Candlelit Dinner', '🌹 Flower Delivery', '💆 Couples Spa', '🍫 Chocolate Tasting', '🥂 Wine Bar', '🎻 Live Jazz'],
-          aiPrompt: `romantic Valentine's Day date ideas - candlelit dinners, couples experiences, romantic venues`
+          aiPrompt: `Valentine's Day romantic venues - candlelit restaurants, wine bars, rooftop dining, spa couples packages`
         };
       }
       if (lowerName.includes('christmas') || lowerName.includes('krishtlindj')) {
         return {
-          searchQuery: 'christmas market festive restaurant',
-          placeTypes: ['christmas market', 'festive restaurant', 'winter wonderland'],
+          category: 'christmas',
+          searchQueries: ['christmas market', 'ice skating rink', 'winter wonderland'],
           ideas: ['🎄 Christmas Market Visit', '☕ Hot Chocolate Cafe', '⛸️ Ice Skating Rink', '🎁 Gift Shopping', '🍖 Festive Dinner', '🎭 Christmas Show'],
-          aiPrompt: `Christmas and holiday date ideas - christmas markets, festive dining, winter activities`
+          aiPrompt: `Christmas activities - christmas markets, ice skating rinks, festive light displays, winter attractions`
         };
       }
       if (lowerName.includes('new year') && lowerName.includes('eve')) {
         return {
-          searchQuery: 'rooftop bar new years party nightclub',
-          placeTypes: ['rooftop bar', 'nightclub', 'party venue'],
+          category: 'nightlife',
+          searchQueries: ['rooftop bar', 'nightclub', 'cocktail lounge'],
           ideas: ['🎆 Rooftop Fireworks Party', '🍾 Champagne Bar', '🪩 NYE Club Night', '🎇 Fireworks Viewpoint', '🥂 Countdown Dinner', '🎤 Live DJ Event'],
-          aiPrompt: `New Year's Eve party venues - rooftop bars with fireworks views, nightclubs, NYE events, countdown parties`
+          aiPrompt: `New Year's Eve party venues - rooftop bars, nightclubs, cocktail lounges, party venues with fireworks views`
         };
       }
-      if (lowerName.includes('new year') && lowerName.includes('day')) {
+      if ((lowerName.includes('new year') && lowerName.includes('day')) || lowerName.includes('vit')) {
         return {
-          searchQuery: 'brunch restaurant spa recovery',
-          placeTypes: ['brunch spot', 'spa', 'cozy cafe'],
+          category: 'brunch',
+          searchQueries: ['brunch restaurant', 'spa wellness', 'cafe'],
           ideas: ['🍳 New Year Brunch', '💆 Recovery Spa Day', '☕ Cozy Cafe', '🚶 New Year Walk', '🎬 Movie Marathon', '🍜 Comfort Food'],
-          aiPrompt: `New Year's Day recovery activities - relaxed brunch spots, spas, cozy cafes, peaceful walks`
+          aiPrompt: `New Year's Day relaxation - brunch spots, day spas, cozy cafes, wellness centers`
         };
       }
       if (lowerName.includes('halloween')) {
         return {
-          searchQuery: 'halloween party themed bar haunted',
-          placeTypes: ['themed bar', 'nightclub', 'escape room'],
+          category: 'entertainment',
+          searchQueries: ['escape room', 'haunted attraction', 'themed bar'],
           ideas: ['🎃 Halloween Costume Party', '👻 Haunted House', '🍸 Themed Cocktail Bar', '🎭 Horror Movie Night', '🧟 Zombie Walk', '🔮 Escape Room'],
-          aiPrompt: `Halloween date ideas - costume parties, haunted houses, horror experiences, themed bars`
+          aiPrompt: `Halloween activities - escape rooms, haunted houses, themed bars, horror attractions, costume party venues`
         };
       }
       if (lowerName.includes('mother') || lowerName.includes('nën') || lowerName.includes('grua')) {
         return {
-          searchQuery: 'brunch afternoon tea spa flowers',
-          placeTypes: ['brunch restaurant', 'afternoon tea', 'spa'],
+          category: 'brunch',
+          searchQueries: ['afternoon tea', 'spa day', 'flower shop'],
           ideas: ['🌸 Elegant Brunch', '💐 Flower Arranging Class', '💆‍♀️ Mother-Daughter Spa', '🍰 Afternoon Tea', '🎨 Art Class Together', '📸 Photoshoot'],
-          aiPrompt: `Mother's Day or Women's Day date ideas - elegant brunch, afternoon tea, spa treatments, flower shops`
+          aiPrompt: `Mother's Day treats - afternoon tea rooms, day spas, flower shops, elegant brunch spots`
         };
       }
       if (lowerName.includes('father') || lowerName.includes('baba')) {
         return {
-          searchQuery: 'steakhouse sports bar golf brewery',
-          placeTypes: ['steakhouse', 'sports bar', 'brewery'],
+          category: 'activities',
+          searchQueries: ['steakhouse', 'brewery', 'golf course'],
           ideas: ['🥩 Premium Steakhouse', '⛳ Golf Day', '🍺 Craft Brewery Tour', '🏎️ Go-Karting', '🎳 Bowling Night', '🏈 Sports Bar'],
-          aiPrompt: `Father's Day date ideas - steakhouses, sports activities, breweries, golf, outdoor adventures`
+          aiPrompt: `Father's Day activities - steakhouses, breweries, golf courses, go-karting, sports bars`
         };
       }
       if (lowerName.includes('patrick')) {
         return {
-          searchQuery: 'irish pub green beer st patricks',
-          placeTypes: ['irish pub', 'bar', 'beer garden'],
+          category: 'bars',
+          searchQueries: ['irish pub', 'beer garden', 'live music bar'],
           ideas: ['☘️ Authentic Irish Pub', '🍺 Green Beer Festival', '🎵 Irish Live Music', '🥳 St Patrick Parade', '🍀 Pub Crawl', '💚 Themed Party'],
-          aiPrompt: `St Patrick's Day celebration - Irish pubs, green beer, live Celtic music, parades, themed parties`
+          aiPrompt: `St Patrick's Day celebration - Irish pubs, beer gardens, live music venues, traditional Irish bars`
         };
       }
       if (lowerName.includes('thanksgiving') || lowerName.includes('falënderim')) {
         return {
-          searchQuery: 'thanksgiving dinner family restaurant',
-          placeTypes: ['american restaurant', 'family restaurant'],
+          category: 'restaurants',
+          searchQueries: ['american restaurant', 'family restaurant', 'buffet'],
           ideas: ['🦃 Thanksgiving Feast', '🥧 Pumpkin Pie Cafe', '🍂 Autumn Walk', '🏈 Watch Football', '🍷 Wine Tasting', '👨‍👩‍👧‍👦 Family Dinner'],
-          aiPrompt: `Thanksgiving date ideas - traditional thanksgiving dinners, cozy restaurants, autumn activities`
+          aiPrompt: `Thanksgiving dining - American restaurants, family-style dining, buffet restaurants`
         };
       }
       if (lowerName.includes('independence') || lowerName.includes('flamur') || lowerName.includes('july')) {
         return {
-          searchQuery: 'rooftop bar fireworks outdoor party',
-          placeTypes: ['rooftop bar', 'outdoor venue', 'bbq restaurant'],
+          category: 'outdoor',
+          searchQueries: ['rooftop bar', 'bbq restaurant', 'outdoor venue'],
           ideas: ['🎆 Fireworks Viewing', '🍔 BBQ Cookout', '🎵 Outdoor Concert', '🏊 Pool Party', '🍺 Rooftop Drinks', '🎉 Street Festival'],
-          aiPrompt: `Independence Day or National Day celebration - fireworks viewing spots, outdoor parties, patriotic events`
+          aiPrompt: `Independence Day celebration - rooftop bars, BBQ restaurants, outdoor venues with views`
         };
       }
       if (lowerName.includes('bonfire') || lowerName.includes('guy fawkes')) {
         return {
-          searchQuery: 'bonfire fireworks outdoor event',
-          placeTypes: ['outdoor venue', 'park', 'pub'],
+          category: 'outdoor',
+          searchQueries: ['pub with garden', 'outdoor event space', 'park'],
           ideas: ['🔥 Bonfire Event', '🎆 Fireworks Display', '🍵 Mulled Wine', '🌭 Outdoor Food Stalls', '✨ Sparklers Night', '🎪 Funfair'],
-          aiPrompt: `Bonfire Night date ideas - bonfire events, fireworks displays, mulled wine, outdoor festivities`
+          aiPrompt: `Bonfire Night venues - pubs with beer gardens, outdoor event spaces, venues with firework views`
         };
       }
       // Default for other celebrations
       return {
-        searchQuery: 'special occasion restaurant celebration venue',
-        placeTypes: ['restaurant', 'bar', 'event venue'],
+        category: 'restaurants',
+        searchQueries: ['upscale restaurant', 'cocktail bar', 'event venue'],
         ideas: ['🍽️ Special Celebration Dinner', '🍸 Cocktail Lounge', '🎵 Live Entertainment', '🎭 Show or Performance', '🎉 Event Venue', '✨ Rooftop Experience'],
-        aiPrompt: `special occasion celebration venues - upscale restaurants, entertainment venues, memorable date spots`
+        aiPrompt: `special occasion venues - upscale restaurants, cocktail bars, entertainment venues`
       };
     };
     
@@ -256,116 +256,85 @@ export default function Explore() {
       const countryNameEn = currentCountry?.nameEn || 'Albania';
       
       console.log(`🔍 Searching for ${festive.name} venues in ${cityNameEn}...`);
-      console.log(`📝 Query: ${config.searchQuery}`);
+      console.log(`📝 Category: ${config.category}, Queries: ${config.searchQueries.join(', ')}`);
       
-      // Try multiple specific searches for better results
-      let allPlaces = [];
+      // Use AI to get occasion-specific venue recommendations
+      // This ensures unique results for each occasion
+      console.log('📝 Using AI for occasion-specific suggestions...');
       
-      for (const placeType of config.placeTypes.slice(0, 2)) {
-        try {
-          const placesResponse = await fetch(`${backendUrl}/api/places/search`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              query: `${placeType} in ${cityNameEn}`,
-              location: `${cityNameEn}, ${countryNameEn}`,
-              category: 'restaurants',
-              strictLocation: true,
-              cityName: cityNameEn,
-              countryName: countryNameEn
-            })
-          });
-          
-          if (placesResponse.ok) {
-            const data = await placesResponse.json();
-            if (data.places && data.places.length > 0) {
-              allPlaces.push(...data.places);
-            }
-          }
-        } catch (e) {
-          console.log(`Search for ${placeType} failed`);
-        }
-      }
+      const languageInstruction = i18n.language === 'sq' 
+        ? 'Përgjigju në shqip.' 
+        : 'Respond in English.';
       
-      // Remove duplicates based on name
-      const uniquePlaces = allPlaces.reduce((acc, place) => {
-        if (!acc.find(p => p.name.toLowerCase() === place.name.toLowerCase())) {
-          acc.push(place);
-        }
-        return acc;
-      }, []);
-      
-      // If we got Google Places results, use them
-      if (uniquePlaces.length > 0) {
-        console.log(`✅ Got ${uniquePlaces.length} unique results for ${festive.name}`);
-        
-        setFestiveSuggestions({
-          occasionName: festive.name,
-          ideas: config.ideas,
-          places: uniquePlaces.slice(0, 6).map(place => ({
-            name: place.name,
-            description: place.description || `Perfect for ${festive.name}`,
-            location: place.location,
-            rating: place.rating,
-            price: place.price,
-            googleMapsLink: place.googleMapsLink,
-            isOpen: place.isOpen
-          }))
-        });
-      } else {
-        // Fallback: Use AI to generate relevant suggestions
-        console.log('📝 Using AI fallback for suggestions...');
-        
-        try {
-          const aiResponse = await base44.integrations.Core.InvokeLLM({
-            prompt: `List 5 real venues/places in ${cityNameEn}, ${countryNameEn} that would be perfect for ${config.aiPrompt}.
+      const aiResponse = await base44.integrations.Core.InvokeLLM({
+        prompt: `I need 5 REAL and SPECIFIC venue recommendations in ${cityNameEn}, ${countryNameEn} for ${festive.name}.
 
-Return ONLY a JSON array with this format:
-[{"name":"Real Venue Name","description":"Why it's perfect for this occasion","type":"restaurant/bar/venue"}]
+The venues should be specifically suited for: ${config.aiPrompt}
 
-Focus on REAL places that actually exist. No generic suggestions.`,
-            conversationHistory: [],
-            systemPrompt: `You are a local expert in ${cityNameEn}. You know real venues and places. Return only valid JSON.`
-          });
+For each venue, provide:
+- The actual real name of a venue that exists
+- A description explaining why it's perfect for ${festive.name}
+- The type of venue it is
+
+${languageInstruction}
+
+Return ONLY a valid JSON array in this exact format:
+[
+  {"name": "Real Venue Name", "description": "Why this is perfect for ${festive.name}", "type": "bar/restaurant/venue/attraction"},
+  ...
+]
+
+IMPORTANT: 
+- Use REAL venue names that actually exist in ${cityNameEn}
+- Make descriptions specific to ${festive.name}
+- Each venue should be relevant to the occasion
+- No generic restaurant suggestions`,
+        conversationHistory: [],
+        systemPrompt: `You are a local expert in ${cityNameEn}, ${countryNameEn}. You know all the best venues for different occasions. For ${festive.name}, focus on ${config.category} type venues. Return ONLY valid JSON, no other text.`
+      });
+      
+      try {
+        const jsonMatch = aiResponse.match(/\[[\s\S]*\]/);
+        if (jsonMatch) {
+          const aiPlaces = JSON.parse(jsonMatch[0]);
           
-          try {
-            const jsonMatch = aiResponse.match(/\[[\s\S]*\]/);
-            if (jsonMatch) {
-              const aiPlaces = JSON.parse(jsonMatch[0]);
-              setFestiveSuggestions({
-                occasionName: festive.name,
-                ideas: config.ideas,
-                places: aiPlaces.slice(0, 5).map(place => ({
-                  name: place.name,
-                  description: place.description,
-                  location: cityNameEn,
-                  rating: null,
-                  price: null,
-                  googleMapsLink: `https://maps.google.com/?q=${encodeURIComponent(place.name)},${encodeURIComponent(cityNameEn)},${encodeURIComponent(countryNameEn)}`,
-                  isAI: true
-                }))
-              });
-            } else {
-              setFestiveSuggestions({
-                occasionName: festive.name,
-                ideas: config.ideas,
-                places: []
-              });
-            }
-          } catch (parseError) {
+          if (aiPlaces && aiPlaces.length > 0) {
+            setFestiveSuggestions({
+              occasionName: festive.name,
+              ideas: config.ideas,
+              places: aiPlaces.slice(0, 5).map(place => ({
+                name: place.name,
+                description: place.description,
+                location: cityNameEn,
+                type: place.type,
+                rating: null,
+                price: null,
+                googleMapsLink: `https://maps.google.com/?q=${encodeURIComponent(place.name + ' ' + cityNameEn + ' ' + countryNameEn)}`,
+                isAI: true
+              }))
+            });
+          } else {
+            // Fallback to just showing ideas without venues
             setFestiveSuggestions({
               occasionName: festive.name,
               ideas: config.ideas,
               places: []
             });
           }
-        } catch (aiError) {
+        } else {
           setFestiveSuggestions({
             occasionName: festive.name,
             ideas: config.ideas,
             places: []
           });
         }
+      } catch (parseError) {
+        console.error('JSON parse error:', parseError);
+        setFestiveSuggestions({
+          occasionName: festive.name,
+          ideas: config.ideas,
+          places: []
+        });
       }
     } catch (error) {
       console.error('Error fetching festive suggestions:', error);
