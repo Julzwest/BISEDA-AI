@@ -315,12 +315,44 @@ export default function UserProfile({ onLogout }) {
   };
 
   const getTierBadge = (tier) => {
-    // Everything is FREE now! Show VIP badge to make users feel special
-    return { 
-      label: `🎉 ${t('userProfile.vipMember', 'VIP Member')}`, 
-      color: 'bg-gradient-to-r from-emerald-500/20 to-teal-500/20 text-emerald-300 border-emerald-500/30', 
-      icon: Sparkles 
-    };
+    switch(tier) {
+      case 'free_trial':
+        return { 
+          label: t('subscription.freeTrial', 'Free Trial'), 
+          color: 'bg-green-500/20 text-green-300 border-green-500/30', 
+          icon: Sparkles 
+        };
+      case 'lite':
+        return { 
+          label: t('subscription.lite', 'Lite'), 
+          color: 'bg-blue-500/20 text-blue-300 border-blue-500/30', 
+          icon: Star 
+        };
+      case 'plus':
+        return { 
+          label: t('subscription.plus', 'Plus'), 
+          color: 'bg-orange-500/20 text-orange-300 border-orange-500/30', 
+          icon: Zap 
+        };
+      case 'vip':
+        return { 
+          label: t('subscription.vip', 'VIP'), 
+          color: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30', 
+          icon: Crown 
+        };
+      case 'expired':
+        return { 
+          label: t('subscription.expired', 'Expired'), 
+          color: 'bg-red-500/20 text-red-300 border-red-500/30', 
+          icon: XCircle 
+        };
+      default:
+        return { 
+          label: t('subscription.freeTrial', 'Free Trial'), 
+          color: 'bg-green-500/20 text-green-300 border-green-500/30', 
+          icon: Sparkles 
+        };
+    }
   };
 
   const currentTier = usage?.tier || localStorage.getItem('userSubscriptionTier') || 'free';
@@ -960,31 +992,32 @@ export default function UserProfile({ onLogout }) {
               </div>
 
               <div className="flex gap-2">
-                {currentTier === 'free' ? (
+                {(currentTier === 'free' || currentTier === 'free_trial' || currentTier === 'expired') ? (
                   <Button
                     onClick={() => setShowUpgradeModal(true)}
                     className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-2.5 rounded-xl text-sm font-semibold"
                   >
                     <Crown className="w-4 h-4 mr-1.5" />
-                    Upgrade Now
+                    {t('subscription.upgradeNow', 'Upgrade Now')}
                   </Button>
                 ) : (
                   <>
-                    <a
-                      href="https://billing.stripe.com/p/login/test_7sI9Df4Mp8M48zm000"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-sm font-semibold text-center"
+                    <Button
+                      onClick={() => {
+                        // Open Apple subscription management
+                        window.location.href = 'itms-apps://apps.apple.com/account/subscriptions';
+                      }}
+                      className="flex-1 px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-sm font-semibold"
                     >
-                      Manage Billing
-                    </a>
+                      {t('subscription.manageSubscription', 'Manage Subscription')}
+                    </Button>
                     <Button
                       onClick={() => setShowCancelModal(true)}
                       variant="outline"
                       className="px-4 py-2.5 bg-slate-700/50 border-slate-600 hover:bg-slate-600/50 text-slate-300 rounded-xl text-sm"
                     >
                       <XCircle className="w-4 h-4 mr-1.5" />
-                      Cancel
+                      {t('common.cancel', 'Cancel')}
                     </Button>
                   </>
                 )}
