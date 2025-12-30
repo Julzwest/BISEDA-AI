@@ -378,6 +378,7 @@ export default function LiveWingmanCoach() {
   const [datingGender, setDatingGender] = useState('woman');
   const [showMyGenderPicker, setShowMyGenderPicker] = useState(false);
   const [showDatingGenderPicker, setShowDatingGenderPicker] = useState(false);
+  const [showExitStrategy, setShowExitStrategy] = useState(false);
   
   // Gender options
   const genderOptions = [
@@ -565,6 +566,27 @@ export default function LiveWingmanCoach() {
       { id: 'connect', emoji: '🔗', label: t('liveWingman.actions.connect', 'Connect'), color: 'from-green-500 to-emerald-500' },
       { id: 'smooth', emoji: '😎', label: t('liveWingman.actions.smooth', 'Stay smooth'), color: 'from-blue-500 to-indigo-500' }
     ];
+  };
+
+  // Exit Strategy - Smooth excuses to leave the date gracefully
+  const getExitExcuses = () => {
+    return [
+      { id: 'emergency_call', emoji: '📱', label: t('liveWingman.excuses.emergencyCall', 'Emergency call'), color: 'from-red-500 to-orange-500' },
+      { id: 'early_morning', emoji: '⏰', label: t('liveWingman.excuses.earlyMorning', 'Early morning'), color: 'from-blue-500 to-indigo-500' },
+      { id: 'friend_crisis', emoji: '🆘', label: t('liveWingman.excuses.friendCrisis', 'Friend needs me'), color: 'from-pink-500 to-rose-500' },
+      { id: 'not_feeling_well', emoji: '🤒', label: t('liveWingman.excuses.notFeelingWell', 'Feeling unwell'), color: 'from-amber-500 to-yellow-500' },
+      { id: 'work_urgent', emoji: '💼', label: t('liveWingman.excuses.workUrgent', 'Work emergency'), color: 'from-slate-500 to-gray-500' },
+      { id: 'pet_situation', emoji: '🐕', label: t('liveWingman.excuses.petSituation', 'Pet emergency'), color: 'from-green-500 to-emerald-500' },
+      { id: 'family_call', emoji: '👨‍👩‍👧', label: t('liveWingman.excuses.familyCall', 'Family matter'), color: 'from-purple-500 to-violet-500' },
+      { id: 'parking_meter', emoji: '🚗', label: t('liveWingman.excuses.parkingMeter', 'Car/Parking'), color: 'from-cyan-500 to-blue-500' }
+    ];
+  };
+
+  // Handle exit excuse selection
+  const handleExcuseSelect = async (excuse) => {
+    const excuseContext = `I need to leave this date smoothly. My excuse will be: "${excuse.label}". Give me EXACTLY what to say and do to exit gracefully without being rude or making it awkward. Include: 1) The exact words to say 2) Body language tips 3) How to end on good terms (even if I don't want to see them again). Make it believable and smooth.`;
+    await generateResponse(`Exit Strategy: ${excuse.label}`, excuseContext);
+    setShowExitStrategy(false);
   };
 
   // NO FALLBACKS - 100% REAL-TIME AI ONLY
@@ -1225,6 +1247,40 @@ Return JSON ONLY:
             ))}
               </div>
               </div>
+
+        {/* Exit Strategy Section */}
+        <div className="px-5 mb-6">
+          <button
+            onClick={() => setShowExitStrategy(!showExitStrategy)}
+            className="w-full py-3 px-4 bg-gradient-to-r from-slate-800/80 to-slate-700/80 hover:from-red-900/40 hover:to-orange-900/40 border border-slate-600/50 hover:border-red-500/50 rounded-2xl transition-all flex items-center justify-between"
+          >
+            <div className="flex items-center gap-3">
+              <span className="text-xl">🚪</span>
+              <div className="text-left">
+                <span className="text-white font-semibold text-sm">{t('liveWingman.exitStrategy.title', 'Exit Strategy')}</span>
+                <p className="text-slate-400 text-xs">{t('liveWingman.exitStrategy.subtitle', 'Need to leave? Get smooth excuses')}</p>
+              </div>
+            </div>
+            <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform ${showExitStrategy ? 'rotate-180' : ''}`} />
+          </button>
+          
+          {/* Exit Excuses Grid */}
+          {showExitStrategy && (
+            <div className="mt-4 grid grid-cols-4 gap-2 animate-fadeIn">
+              {getExitExcuses().map((excuse) => (
+                <button
+                  key={excuse.id}
+                  onClick={() => handleExcuseSelect(excuse)}
+                  disabled={isLoading}
+                  className={`px-2 py-2.5 bg-gradient-to-r ${excuse.color} rounded-xl font-medium text-white text-xs shadow-lg transition-all active:scale-95 disabled:opacity-50 hover:shadow-xl hover:scale-105 flex flex-col items-center gap-1`}
+                >
+                  <span className="text-lg">{excuse.emoji}</span>
+                  <span className="truncate w-full text-center">{excuse.label}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* Loading State */}
         {isLoading && (

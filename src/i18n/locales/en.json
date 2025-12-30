@@ -1091,6 +1091,20 @@
       "pullback": "Pull back",
       "rescue": "Save it"
     },
+    "exitStrategy": {
+      "title": "Exit Strategy",
+      "subtitle": "Need to leave? Get smooth excuses"
+    },
+    "excuses": {
+      "emergencyCall": "Emergency call",
+      "earlyMorning": "Early morning",
+      "friendCrisis": "Friend needs me",
+      "notFeelingWell": "Feeling unwell",
+      "workUrgent": "Work emergency",
+      "petSituation": "Pet emergency",
+      "familyCall": "Family matter",
+      "parkingMeter": "Car/Parking"
+    },
     "styles": {
       "playful": "Playful",
       "playfulDesc": "Fun, teasing, lighthearted",

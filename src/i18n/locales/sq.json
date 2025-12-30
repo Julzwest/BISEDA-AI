@@ -1090,6 +1090,20 @@
       "pullback": "Tërhiqu pak",
       "rescue": "Shpëtoje"
     },
+    "exitStrategy": {
+      "title": "Strategjia e Daljes",
+      "subtitle": "Duhet të largohesh? Merr justifikime të shkathëta"
+    },
+    "excuses": {
+      "emergencyCall": "Thirrje urgjente",
+      "earlyMorning": "Mëngjes herët",
+      "friendCrisis": "Shoku më ka nevojë",
+      "notFeelingWell": "Nuk ndihem mirë",
+      "workUrgent": "Urgjencë pune",
+      "petSituation": "Urgjencë kafshësh",
+      "familyCall": "Çështje familjare",
+      "parkingMeter": "Makina/Parkimi"
+    },
     "styles": {
       "playful": "Lojtar",
       "playfulDesc": "Argëtues, ngacmues, i lehtë",
