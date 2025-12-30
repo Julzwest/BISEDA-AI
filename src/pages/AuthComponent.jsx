@@ -568,26 +568,15 @@ export default function Auth({ onAuthSuccess }) {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Animated Benefits Carousel - Only show on Register */}
             {!isLogin && (
-              <div className="relative h-12 overflow-hidden">
+              <div className="flex items-center justify-center py-3">
                 <div 
-                  className="absolute inset-0 flex items-center justify-center transition-all duration-500 ease-out"
+                  className="flex items-center justify-center"
                   key={currentBenefit}
                 >
-                  <div className="flex items-center gap-3 px-5 py-2.5 animate-benefit-slide">
+                  <div className="flex items-center gap-3 animate-benefit-slide">
                     <span className="text-2xl animate-bounce-slow">{benefits[currentBenefit].emoji}</span>
                     <span className="text-white font-medium text-sm">{benefits[currentBenefit].text}</span>
                   </div>
-                </div>
-                {/* Progress dots */}
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-1.5">
-                  {benefits.map((_, idx) => (
-                    <div 
-                      key={idx}
-                      className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                        idx === currentBenefit ? 'bg-pink-500 w-4' : 'bg-slate-600'
-                      }`}
-                    />
-                  ))}
                 </div>
               </div>
             )}
