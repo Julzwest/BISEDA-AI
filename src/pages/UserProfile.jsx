@@ -465,28 +465,35 @@ export default function UserProfile({ onLogout }) {
             </Button>
           )}
           
-          {/* Subscription Status Card */}
-          <div className={`p-3 rounded-xl border bg-gradient-to-r ${tierConfig?.color || 'from-slate-700 to-slate-600'} border-white/20`}>
-            <div className="flex items-center justify-between mb-2">
+          {/* Subscription Status Card - Vibrant Design */}
+          <div className="p-4 rounded-2xl border-2 border-purple-500/40 bg-gradient-to-br from-purple-600/30 via-pink-500/20 to-purple-600/30 backdrop-blur-sm shadow-lg shadow-purple-500/20">
+            <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <TierIcon className="w-5 h-5 text-white" />
-                <span className="text-white font-bold">{tierBadge.label}</span>
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-md">
+                  <TierIcon className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <span className="text-white font-bold text-lg">{tierBadge.label}</span>
+                  {currentTier === 'trial' && (
+                    <span className="ml-2 text-xs text-green-400 animate-pulse">● Active</span>
+                  )}
+                </div>
               </div>
               <button
                 onClick={() => setShowSubscriptionManager(true)}
-                className="text-white/80 hover:text-white text-sm underline"
+                className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-sm font-medium rounded-lg border border-white/20 transition-all hover:scale-105"
               >
                 {t('subscription.manage', 'Manage')}
               </button>
             </div>
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="bg-black/20 rounded-lg p-2">
-                <p className="text-white/60">{t('subscription.creditsLeft', 'Credits Left')}</p>
-                <p className="text-white font-bold">{getRemainingCredits()} / {tierConfig?.credits || 50}</p>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-gradient-to-br from-purple-500/30 to-pink-500/30 rounded-xl p-3 border border-purple-400/20">
+                <p className="text-purple-200 text-xs font-medium">{t('subscription.creditsLeft', 'Credits Left')}</p>
+                <p className="text-white font-bold text-xl">{getRemainingCredits()} <span className="text-purple-300 text-sm font-normal">/ {tierConfig?.credits || 50}</span></p>
               </div>
-              <div className="bg-black/20 rounded-lg p-2">
-                <p className="text-white/60">{t('subscription.dailyLeft', 'Today')}</p>
-                <p className="text-white font-bold">{getDailyRemainingCredits()} / {tierConfig?.dailyLimit || 20}</p>
+              <div className="bg-gradient-to-br from-pink-500/30 to-purple-500/30 rounded-xl p-3 border border-pink-400/20">
+                <p className="text-pink-200 text-xs font-medium">{t('subscription.dailyLeft', 'Today')}</p>
+                <p className="text-white font-bold text-xl">{getDailyRemainingCredits()} <span className="text-pink-300 text-sm font-normal">/ {tierConfig?.dailyLimit || 20}</span></p>
               </div>
             </div>
           </div>
