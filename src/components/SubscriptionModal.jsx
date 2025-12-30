@@ -118,59 +118,60 @@ export default function SubscriptionModal({ isOpen, onClose, onSuccess }) {
         </div>
 
         {/* Tier Options */}
-        <div className="p-6 space-y-3">
+        <div className="p-6 space-y-4">
           {paidTiers.map((tier) => {
             const TierIcon = getTierIcon(tier.id);
             const isSelected = selectedTier === tier.id;
             const isPopular = tier.popular;
 
             return (
-              <button
-                key={tier.id}
-                onClick={() => setSelectedTier(tier.id)}
-                className={`w-full p-4 rounded-2xl border-2 transition-all duration-300 text-left relative ${
-                  isSelected
-                    ? 'border-purple-500 bg-purple-500/10'
-                    : 'border-slate-700/50 bg-slate-800/30 hover:border-slate-600'
-                }`}
-              >
+              <div key={tier.id} className={isPopular ? 'mt-2' : ''}>
                 {isPopular && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full">
-                    <span className="text-xs font-bold text-white">
+                  <div className="flex justify-center mb-1">
+                    <span className="px-3 py-1 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full text-xs font-bold text-white">
                       {t('subscription.mostPopular', 'MOST POPULAR')}
                     </span>
                   </div>
                 )}
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${tier.badge.color}`}>
-                      <span className="text-2xl">{tier.badge.icon}</span>
+                <button
+                  onClick={() => setSelectedTier(tier.id)}
+                  className={`w-full p-4 rounded-2xl border-2 transition-all duration-300 text-left ${
+                    isSelected
+                      ? 'border-purple-500 bg-purple-500/10'
+                      : 'border-slate-700/50 bg-slate-800/30 hover:border-slate-600'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${tier.badge.color}`}>
+                        <span className="text-2xl">{tier.badge.icon}</span>
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-white">{tier.name}</h3>
+                        <p className="text-slate-400 text-sm">
+                          {tier.credits.toLocaleString()} {t('subscription.creditsMonth', 'credits/month')}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-white">{tier.name}</h3>
-                      <p className="text-slate-400 text-sm">
-                        {tier.credits.toLocaleString()} {t('subscription.creditsMonth', 'credits/month')}
-                      </p>
+                    <div className="flex items-center gap-3">
+                      <div className="text-right">
+                        <div className="text-2xl font-bold text-white">
+                          {isAlbanian ? tier.priceDisplayAlbanian : tier.priceDisplay}
+                        </div>
+                        {!isAlbanian && (
+                          <div className="text-xs text-slate-500">/month</div>
+                        )}
+                      </div>
+                      {/* Selection indicator */}
+                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all flex-shrink-0 ${
+                        isSelected ? 'border-purple-500 bg-purple-500' : 'border-slate-600'
+                      }`}>
+                        {isSelected && <Check className="w-4 h-4 text-white" />}
+                      </div>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-white">
-                      {isAlbanian ? tier.priceDisplayAlbanian : tier.priceDisplay}
-                    </div>
-                    {!isAlbanian && (
-                      <div className="text-xs text-slate-500">/month</div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Selection indicator */}
-                <div className={`absolute top-4 right-4 w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
-                  isSelected ? 'border-purple-500 bg-purple-500' : 'border-slate-600'
-                }`}>
-                  {isSelected && <Check className="w-4 h-4 text-white" />}
-                </div>
-              </button>
+                </button>
+              </div>
             );
           })}
         </div>
