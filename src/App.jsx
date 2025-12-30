@@ -7,6 +7,7 @@ import Tips from './pages/Tips.jsx';
 import Chat from './pages/Chat.jsx';
 import Explore from './pages/Explore.jsx';
 import GiftSuggestions from './pages/GiftSuggestions.jsx';
+import Journal from './pages/Journal.jsx';
 import SubscriptionSuccess from './pages/SubscriptionSuccess.jsx';
 import SubscriptionCancel from './pages/SubscriptionCancel.jsx';
 import Admin from './pages/Admin.jsx';
@@ -147,6 +148,7 @@ function App() {
           <Route path="/dates" element={<Navigate to="/explore" replace />} />
           <Route path="/events" element={<Navigate to="/explore" replace />} />
           <Route path="/gifts" element={<GiftSuggestions />} />
+          <Route path="/journal" element={<Journal />} />
           <Route path="/chat" element={<Navigate to="/wingman" replace />} />
           
           {/* Redirects */}

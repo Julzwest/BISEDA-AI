@@ -11,7 +11,8 @@ import {
   Lock,
   ArrowRight,
   Sparkles,
-  Eye
+  Eye,
+  BookOpen
 } from 'lucide-react';
 
 export default function Tools() {
@@ -24,6 +25,16 @@ export default function Tools() {
   };
 
   const tools = [
+    {
+      id: 'journal',
+      icon: BookOpen,
+      title: t('tools.journal', 'My Journal'),
+      description: t('tools.journalDesc', 'Save dates, places, gifts & notes'),
+      color: 'from-purple-500 to-pink-500',
+      route: '/journal',
+      requiresPro: false,
+      emoji: '📔'
+    },
     {
       id: 'explore',
       icon: MapPin,
