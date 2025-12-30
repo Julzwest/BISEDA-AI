@@ -38,6 +38,7 @@ export default function Auth({ onAuthSuccess }) {
   const [isLogin, setIsLogin] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [gender, setGender] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -234,6 +235,7 @@ export default function Auth({ onAuthSuccess }) {
         : {
             firstName: firstName.trim(),
             lastName: '',
+            gender: gender,
             email: email.trim(),
             password,
             country: 'AL'
@@ -581,9 +583,9 @@ export default function Auth({ onAuthSuccess }) {
               </div>
             )}
 
-            {/* Name - Only show on Register */}
+            {/* Name & Gender - Only show on Register */}
             {!isLogin && (
-              <div>
+              <div className="grid grid-cols-2 gap-3">
                 <input
                   type="text"
                   value={firstName}
@@ -593,6 +595,18 @@ export default function Auth({ onAuthSuccess }) {
                   style={{ fontSize: '16px' }}
                   required
                 />
+                <select
+                  value={gender}
+                  onChange={(e) => { setGender(e.target.value); setError(''); }}
+                  className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white focus:outline-none focus:border-pink-500/50 transition-all text-base appearance-none cursor-pointer"
+                  style={{ fontSize: '16px' }}
+                  required
+                >
+                  <option value="" disabled className="text-slate-500">{t('auth.selectGender', 'Gender')} 🚻</option>
+                  <option value="male" className="bg-slate-800">{t('auth.male', 'Male')} 👨</option>
+                  <option value="female" className="bg-slate-800">{t('auth.female', 'Female')} 👩</option>
+                  <option value="other" className="bg-slate-800">{t('auth.other', 'Other')} 🌈</option>
+                </select>
               </div>
             )}
 
