@@ -131,7 +131,7 @@ export default function Explore() {
   
   const upcomingFestiveDates = getUpcomingFestiveDates();
 
-  // Handle festive date click - fetch venue suggestions
+  // Handle festive date click - fetch AI-powered suggestions specific to the occasion
   const handleFestiveDateClick = async (festive, index) => {
     const festiveId = `${festive.name}-${index}`;
     
@@ -146,35 +146,108 @@ export default function Explore() {
     setLoadingFestive(true);
     setFestiveSuggestions([]);
     
-    // Determine what type of venues to search for based on the occasion
-    const getSearchQuery = (name) => {
+    // Get occasion-specific configuration
+    const getOccasionConfig = (name) => {
       const lowerName = name.toLowerCase();
+      
       if (lowerName.includes('valentine') || lowerName.includes('dashuri')) {
-        return { query: 'romantic restaurants', ideas: ['💕 Romantic Dinner', '🌹 Flowers Shop', '💆 Spa Experience', '🍫 Chocolate Shop'] };
+        return {
+          searchQuery: 'romantic candlelit restaurants fine dining',
+          placeTypes: ['romantic restaurant', 'fine dining', 'rooftop restaurant'],
+          ideas: ['💕 Romantic Candlelit Dinner', '🌹 Flower Delivery', '💆 Couples Spa', '🍫 Chocolate Tasting', '🥂 Wine Bar', '🎻 Live Jazz'],
+          aiPrompt: `romantic Valentine's Day date ideas - candlelit dinners, couples experiences, romantic venues`
+        };
       }
       if (lowerName.includes('christmas') || lowerName.includes('krishtlindj')) {
-        return { query: 'christmas events restaurants', ideas: ['🎄 Christmas Dinner', '☕ Cozy Cafe', '🎁 Shopping', '⛸️ Ice Skating'] };
+        return {
+          searchQuery: 'christmas market festive restaurant',
+          placeTypes: ['christmas market', 'festive restaurant', 'winter wonderland'],
+          ideas: ['🎄 Christmas Market Visit', '☕ Hot Chocolate Cafe', '⛸️ Ice Skating Rink', '🎁 Gift Shopping', '🍖 Festive Dinner', '🎭 Christmas Show'],
+          aiPrompt: `Christmas and holiday date ideas - christmas markets, festive dining, winter activities`
+        };
       }
-      if (lowerName.includes('new year') || lowerName.includes('vit') || lowerName.includes('year')) {
-        return { query: 'nightclubs rooftop bars party', ideas: ['🎆 Rooftop Party', '🍾 Fine Dining', '🪩 Nightclub', '🎇 Fireworks Spot'] };
+      if (lowerName.includes('new year') && lowerName.includes('eve')) {
+        return {
+          searchQuery: 'rooftop bar new years party nightclub',
+          placeTypes: ['rooftop bar', 'nightclub', 'party venue'],
+          ideas: ['🎆 Rooftop Fireworks Party', '🍾 Champagne Bar', '🪩 NYE Club Night', '🎇 Fireworks Viewpoint', '🥂 Countdown Dinner', '🎤 Live DJ Event'],
+          aiPrompt: `New Year's Eve party venues - rooftop bars with fireworks views, nightclubs, NYE events, countdown parties`
+        };
+      }
+      if (lowerName.includes('new year') && lowerName.includes('day')) {
+        return {
+          searchQuery: 'brunch restaurant spa recovery',
+          placeTypes: ['brunch spot', 'spa', 'cozy cafe'],
+          ideas: ['🍳 New Year Brunch', '💆 Recovery Spa Day', '☕ Cozy Cafe', '🚶 New Year Walk', '🎬 Movie Marathon', '🍜 Comfort Food'],
+          aiPrompt: `New Year's Day recovery activities - relaxed brunch spots, spas, cozy cafes, peaceful walks`
+        };
       }
       if (lowerName.includes('halloween')) {
-        return { query: 'bars nightclubs', ideas: ['🎃 Costume Party', '👻 Haunted House', '🍸 Themed Bar', '🎭 Horror Movie'] };
+        return {
+          searchQuery: 'halloween party themed bar haunted',
+          placeTypes: ['themed bar', 'nightclub', 'escape room'],
+          ideas: ['🎃 Halloween Costume Party', '👻 Haunted House', '🍸 Themed Cocktail Bar', '🎭 Horror Movie Night', '🧟 Zombie Walk', '🔮 Escape Room'],
+          aiPrompt: `Halloween date ideas - costume parties, haunted houses, horror experiences, themed bars`
+        };
       }
-      if (lowerName.includes('mother') || lowerName.includes('nën')) {
-        return { query: 'brunch restaurants spa', ideas: ['🌸 Brunch Date', '💐 Flower Delivery', '💆‍♀️ Spa Day', '🍰 Afternoon Tea'] };
+      if (lowerName.includes('mother') || lowerName.includes('nën') || lowerName.includes('grua')) {
+        return {
+          searchQuery: 'brunch afternoon tea spa flowers',
+          placeTypes: ['brunch restaurant', 'afternoon tea', 'spa'],
+          ideas: ['🌸 Elegant Brunch', '💐 Flower Arranging Class', '💆‍♀️ Mother-Daughter Spa', '🍰 Afternoon Tea', '🎨 Art Class Together', '📸 Photoshoot'],
+          aiPrompt: `Mother's Day or Women's Day date ideas - elegant brunch, afternoon tea, spa treatments, flower shops`
+        };
       }
       if (lowerName.includes('father') || lowerName.includes('baba')) {
-        return { query: 'steakhouse sports bar', ideas: ['🥩 Steakhouse', '⛳ Golf Course', '🍺 Sports Bar', '🎳 Bowling'] };
+        return {
+          searchQuery: 'steakhouse sports bar golf brewery',
+          placeTypes: ['steakhouse', 'sports bar', 'brewery'],
+          ideas: ['🥩 Premium Steakhouse', '⛳ Golf Day', '🍺 Craft Brewery Tour', '🏎️ Go-Karting', '🎳 Bowling Night', '🏈 Sports Bar'],
+          aiPrompt: `Father's Day date ideas - steakhouses, sports activities, breweries, golf, outdoor adventures`
+        };
       }
       if (lowerName.includes('patrick')) {
-        return { query: 'irish pub bar', ideas: ['☘️ Irish Pub', '🍺 Beer Garden', '🎵 Live Music', '🥳 Street Party'] };
+        return {
+          searchQuery: 'irish pub green beer st patricks',
+          placeTypes: ['irish pub', 'bar', 'beer garden'],
+          ideas: ['☘️ Authentic Irish Pub', '🍺 Green Beer Festival', '🎵 Irish Live Music', '🥳 St Patrick Parade', '🍀 Pub Crawl', '💚 Themed Party'],
+          aiPrompt: `St Patrick's Day celebration - Irish pubs, green beer, live Celtic music, parades, themed parties`
+        };
+      }
+      if (lowerName.includes('thanksgiving') || lowerName.includes('falënderim')) {
+        return {
+          searchQuery: 'thanksgiving dinner family restaurant',
+          placeTypes: ['american restaurant', 'family restaurant'],
+          ideas: ['🦃 Thanksgiving Feast', '🥧 Pumpkin Pie Cafe', '🍂 Autumn Walk', '🏈 Watch Football', '🍷 Wine Tasting', '👨‍👩‍👧‍👦 Family Dinner'],
+          aiPrompt: `Thanksgiving date ideas - traditional thanksgiving dinners, cozy restaurants, autumn activities`
+        };
+      }
+      if (lowerName.includes('independence') || lowerName.includes('flamur') || lowerName.includes('july')) {
+        return {
+          searchQuery: 'rooftop bar fireworks outdoor party',
+          placeTypes: ['rooftop bar', 'outdoor venue', 'bbq restaurant'],
+          ideas: ['🎆 Fireworks Viewing', '🍔 BBQ Cookout', '🎵 Outdoor Concert', '🏊 Pool Party', '🍺 Rooftop Drinks', '🎉 Street Festival'],
+          aiPrompt: `Independence Day or National Day celebration - fireworks viewing spots, outdoor parties, patriotic events`
+        };
+      }
+      if (lowerName.includes('bonfire') || lowerName.includes('guy fawkes')) {
+        return {
+          searchQuery: 'bonfire fireworks outdoor event',
+          placeTypes: ['outdoor venue', 'park', 'pub'],
+          ideas: ['🔥 Bonfire Event', '🎆 Fireworks Display', '🍵 Mulled Wine', '🌭 Outdoor Food Stalls', '✨ Sparklers Night', '🎪 Funfair'],
+          aiPrompt: `Bonfire Night date ideas - bonfire events, fireworks displays, mulled wine, outdoor festivities`
+        };
       }
       // Default for other celebrations
-      return { query: 'restaurants bars events', ideas: ['🍽️ Special Dinner', '🍸 Cocktail Bar', '🎵 Live Music', '🎭 Local Event'] };
+      return {
+        searchQuery: 'special occasion restaurant celebration venue',
+        placeTypes: ['restaurant', 'bar', 'event venue'],
+        ideas: ['🍽️ Special Celebration Dinner', '🍸 Cocktail Lounge', '🎵 Live Entertainment', '🎭 Show or Performance', '🎉 Event Venue', '✨ Rooftop Experience'],
+        aiPrompt: `special occasion celebration venues - upscale restaurants, entertainment venues, memorable date spots`
+      };
     };
     
-    const { query, ideas } = getSearchQuery(festive.name);
+    const config = getOccasionConfig(festive.name);
     
     try {
       // Use the selected city or default to first city
@@ -182,58 +255,123 @@ export default function Explore() {
       const cityNameEn = getCityNameEn(userCountry, searchCity) || searchCity;
       const countryNameEn = currentCountry?.nameEn || 'Albania';
       
-      console.log(`🔍 Searching ${query} for ${festive.name} in ${cityNameEn}...`);
+      console.log(`🔍 Searching for ${festive.name} venues in ${cityNameEn}...`);
+      console.log(`📝 Query: ${config.searchQuery}`);
       
-      const placesResponse = await fetch(`${backendUrl}/api/places/search`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query: `${query} in ${cityNameEn}`,
-          location: `${cityNameEn}, ${countryNameEn}`,
-          category: 'restaurants',
-          strictLocation: true,
-          cityName: cityNameEn,
-          countryName: countryNameEn
-        })
-      });
+      // Try multiple specific searches for better results
+      let allPlaces = [];
       
-      if (placesResponse.ok) {
-        const data = await placesResponse.json();
-        
-        if (data.places && data.places.length > 0) {
-          console.log(`✅ Got ${data.places.length} results for ${festive.name}`);
-          
-          setFestiveSuggestions({
-            ideas: ideas,
-            places: data.places.slice(0, 6).map(place => ({
-              name: place.name,
-              description: place.description,
-              location: place.location,
-              rating: place.rating,
-              price: place.price,
-              googleMapsLink: place.googleMapsLink,
-              isOpen: place.isOpen
-            }))
+      for (const placeType of config.placeTypes.slice(0, 2)) {
+        try {
+          const placesResponse = await fetch(`${backendUrl}/api/places/search`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              query: `${placeType} in ${cityNameEn}`,
+              location: `${cityNameEn}, ${countryNameEn}`,
+              category: 'restaurants',
+              strictLocation: true,
+              cityName: cityNameEn,
+              countryName: countryNameEn
+            })
           });
-        } else {
-          // Fallback to just ideas
+          
+          if (placesResponse.ok) {
+            const data = await placesResponse.json();
+            if (data.places && data.places.length > 0) {
+              allPlaces.push(...data.places);
+            }
+          }
+        } catch (e) {
+          console.log(`Search for ${placeType} failed`);
+        }
+      }
+      
+      // Remove duplicates based on name
+      const uniquePlaces = allPlaces.reduce((acc, place) => {
+        if (!acc.find(p => p.name.toLowerCase() === place.name.toLowerCase())) {
+          acc.push(place);
+        }
+        return acc;
+      }, []);
+      
+      // If we got Google Places results, use them
+      if (uniquePlaces.length > 0) {
+        console.log(`✅ Got ${uniquePlaces.length} unique results for ${festive.name}`);
+        
+        setFestiveSuggestions({
+          occasionName: festive.name,
+          ideas: config.ideas,
+          places: uniquePlaces.slice(0, 6).map(place => ({
+            name: place.name,
+            description: place.description || `Perfect for ${festive.name}`,
+            location: place.location,
+            rating: place.rating,
+            price: place.price,
+            googleMapsLink: place.googleMapsLink,
+            isOpen: place.isOpen
+          }))
+        });
+      } else {
+        // Fallback: Use AI to generate relevant suggestions
+        console.log('📝 Using AI fallback for suggestions...');
+        
+        try {
+          const aiResponse = await base44.integrations.Core.InvokeLLM({
+            prompt: `List 5 real venues/places in ${cityNameEn}, ${countryNameEn} that would be perfect for ${config.aiPrompt}.
+
+Return ONLY a JSON array with this format:
+[{"name":"Real Venue Name","description":"Why it's perfect for this occasion","type":"restaurant/bar/venue"}]
+
+Focus on REAL places that actually exist. No generic suggestions.`,
+            conversationHistory: [],
+            systemPrompt: `You are a local expert in ${cityNameEn}. You know real venues and places. Return only valid JSON.`
+          });
+          
+          try {
+            const jsonMatch = aiResponse.match(/\[[\s\S]*\]/);
+            if (jsonMatch) {
+              const aiPlaces = JSON.parse(jsonMatch[0]);
+              setFestiveSuggestions({
+                occasionName: festive.name,
+                ideas: config.ideas,
+                places: aiPlaces.slice(0, 5).map(place => ({
+                  name: place.name,
+                  description: place.description,
+                  location: cityNameEn,
+                  rating: null,
+                  price: null,
+                  googleMapsLink: `https://maps.google.com/?q=${encodeURIComponent(place.name)},${encodeURIComponent(cityNameEn)},${encodeURIComponent(countryNameEn)}`,
+                  isAI: true
+                }))
+              });
+            } else {
+              setFestiveSuggestions({
+                occasionName: festive.name,
+                ideas: config.ideas,
+                places: []
+              });
+            }
+          } catch (parseError) {
+            setFestiveSuggestions({
+              occasionName: festive.name,
+              ideas: config.ideas,
+              places: []
+            });
+          }
+        } catch (aiError) {
           setFestiveSuggestions({
-            ideas: ideas,
+            occasionName: festive.name,
+            ideas: config.ideas,
             places: []
           });
         }
-      } else {
-        setFestiveSuggestions({
-          ideas: ideas,
-          places: []
-        });
       }
     } catch (error) {
       console.error('Error fetching festive suggestions:', error);
       setFestiveSuggestions({
-        ideas: ideas,
+        occasionName: festive.name,
+        ideas: config.ideas,
         places: []
       });
     } finally {
@@ -1347,14 +1485,21 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                     {loadingFestive ? (
                       <div className="p-6 bg-slate-800/60 rounded-2xl border border-slate-700/50 text-center">
                         <div className="w-8 h-8 border-3 border-purple-500/30 border-t-purple-500 rounded-full animate-spin mx-auto mb-3"></div>
-                        <p className="text-slate-300">Finding perfect spots for {upcomingFestiveDates[0].name}...</p>
+                        <p className="text-slate-300">Finding {upcomingFestiveDates[0].name} experiences...</p>
                       </div>
                     ) : festiveSuggestions.ideas && (
                       <>
+                        {/* Occasion-specific header */}
+                        <div className="p-3 bg-gradient-to-r from-pink-500/20 to-purple-500/20 rounded-xl border border-pink-500/30 text-center">
+                          <p className="text-pink-300 text-sm font-medium">
+                            ✨ Perfect ideas for <span className="font-bold text-white">{festiveSuggestions.occasionName || upcomingFestiveDates[0].name}</span>
+                          </p>
+                        </div>
+                        
                         {/* Quick Ideas */}
                         <div className="p-4 bg-gradient-to-r from-purple-900/40 to-pink-900/40 rounded-2xl border border-purple-500/30">
                           <h4 className="text-white font-bold mb-3 flex items-center gap-2">
-                            <span>💡</span> Quick Date Ideas
+                            <span>💡</span> Date Ideas for This Day
                           </h4>
                           <div className="flex flex-wrap gap-2">
                             {festiveSuggestions.ideas.map((idea, idx) => (
@@ -1370,15 +1515,20 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                           <div className="p-4 bg-slate-800/60 rounded-2xl border border-slate-700/50">
                             <h4 className="text-white font-bold mb-3 flex items-center gap-2">
                               <MapPin className="w-4 h-4 text-purple-400" />
-                              Top Venues {selectedCity && `in ${selectedCity}`}
+                              Best Spots for {festiveSuggestions.occasionName || 'This Occasion'} {selectedCity && `in ${selectedCity}`}
                             </h4>
                             <div className="space-y-3">
                               {festiveSuggestions.places.map((place, idx) => (
                                 <div key={idx} className="p-3 bg-slate-700/50 rounded-xl hover:bg-slate-700/70 transition-colors">
                                   <div className="flex items-start justify-between gap-3">
                                     <div className="flex-1">
-                                      <h5 className="text-white font-semibold">{place.name}</h5>
-                                      <p className="text-slate-400 text-sm line-clamp-1">{place.description}</p>
+                                      <div className="flex items-center gap-2">
+                                        <h5 className="text-white font-semibold">{place.name}</h5>
+                                        {place.isAI && (
+                                          <span className="px-1.5 py-0.5 bg-purple-500/20 text-purple-300 rounded text-xs">AI</span>
+                                        )}
+                                      </div>
+                                      <p className="text-slate-400 text-sm line-clamp-2">{place.description}</p>
                                       {place.location && (
                                         <p className="text-slate-500 text-xs mt-1 flex items-center gap-1">
                                           <MapPin className="w-3 h-3" />
@@ -1402,7 +1552,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                                           className="px-3 py-1.5 bg-blue-500/20 text-blue-300 rounded-lg text-xs font-medium hover:bg-blue-500/30 transition-colors flex items-center gap-1"
                                         >
                                           <MapPin className="w-3 h-3" />
-                                          Maps
+                                          View
                                         </a>
                                       )}
                                     </div>
@@ -1417,7 +1567,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                         {(!festiveSuggestions.places || festiveSuggestions.places.length === 0) && (
                           <div className="p-4 bg-slate-800/60 rounded-2xl border border-slate-700/50 text-center">
                             <p className="text-slate-400 text-sm">
-                              {selectedCity ? `Select a different city to see venues` : `Select a city above to see venue suggestions`}
+                              {selectedCity ? `No specific venues found - try exploring the date ideas above!` : `Select a city above to discover venues`}
                             </p>
                           </div>
                         )}
@@ -1484,13 +1634,20 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                         {loadingFestive ? (
                           <div className="p-4 bg-slate-800/60 rounded-2xl border border-slate-700/50 text-center">
                             <div className="w-6 h-6 border-2 border-purple-500/30 border-t-purple-500 rounded-full animate-spin mx-auto mb-2"></div>
-                            <p className="text-slate-400 text-sm">Finding date ideas...</p>
+                            <p className="text-slate-400 text-sm">Finding {festive.name} experiences...</p>
                           </div>
                         ) : festiveSuggestions.ideas && (
                           <>
+                            {/* Occasion-specific header */}
+                            <div className="p-2 bg-gradient-to-r from-pink-500/10 to-purple-500/10 rounded-lg border border-pink-500/20 text-center">
+                              <p className="text-pink-300 text-xs">
+                                ✨ Ideas for <span className="font-bold">{festiveSuggestions.occasionName || festive.name}</span>
+                              </p>
+                            </div>
+                            
                             {/* Quick Ideas */}
                             <div className="p-3 bg-gradient-to-r from-purple-900/30 to-pink-900/30 rounded-xl border border-purple-500/20">
-                              <h5 className="text-white font-semibold text-sm mb-2">💡 Date Ideas</h5>
+                              <h5 className="text-white font-semibold text-sm mb-2">💡 Perfect Activities</h5>
                               <div className="flex flex-wrap gap-2">
                                 {festiveSuggestions.ideas.map((idea, idx) => (
                                   <span key={idx} className="px-2.5 py-1.5 bg-white/10 rounded-lg text-xs text-white/90">
@@ -1505,13 +1662,17 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                               <div className="p-3 bg-slate-800/50 rounded-xl border border-slate-700/50">
                                 <h5 className="text-white font-semibold text-sm mb-2 flex items-center gap-1">
                                   <MapPin className="w-3.5 h-3.5 text-purple-400" />
-                                  Top Spots
+                                  Best for {festiveSuggestions.occasionName || festive.name}
                                 </h5>
                                 <div className="space-y-2">
                                   {festiveSuggestions.places.slice(0, 3).map((place, idx) => (
                                     <div key={idx} className="flex items-center justify-between gap-2 p-2 bg-slate-700/40 rounded-lg">
                                       <div className="flex-1 min-w-0">
-                                        <p className="text-white text-sm font-medium truncate">{place.name}</p>
+                                        <div className="flex items-center gap-1">
+                                          <p className="text-white text-sm font-medium truncate">{place.name}</p>
+                                          {place.isAI && <span className="text-purple-400 text-xs">✨</span>}
+                                        </div>
+                                        <p className="text-slate-400 text-xs line-clamp-1">{place.description}</p>
                                         {place.rating && (
                                           <span className="text-yellow-400 text-xs flex items-center gap-0.5">
                                             <Star className="w-3 h-3 fill-yellow-400" />
