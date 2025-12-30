@@ -9,7 +9,7 @@ export const SUBSCRIPTION_TIERS = {
     price: 0,
     priceDisplay: '€0',
     credits: 999999, // Unlimited during trial
-    durationDays: 3,
+    durationHours: 24, // 24-hour trial
     features: {
       chat: true,
       screenshots: true,
@@ -120,22 +120,23 @@ export const deductCredits = (userCredits, action) => {
   return Math.max(0, userCredits - cost);
 };
 
-// Calculate remaining trial time
+// Calculate remaining trial time (24 hours)
 export const getTrialTimeRemaining = (trialStartDate) => {
   if (!trialStartDate) return null;
   
   const trialEnd = new Date(trialStartDate);
-  trialEnd.setDate(trialEnd.getDate() + 3); // 3 days trial
+  trialEnd.setHours(trialEnd.getHours() + 24); // 24-hour trial
   
   const now = new Date();
   const remaining = trialEnd - now;
   
-  if (remaining <= 0) return { expired: true, hours: 0, days: 0 };
+  if (remaining <= 0) return { expired: true, hours: 0, minutes: 0 };
   
-  const hours = Math.floor(remaining / (1000 * 60 * 60));
-  const days = Math.floor(hours / 24);
+  const totalMinutes = Math.floor(remaining / (1000 * 60));
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
   
-  return { expired: false, hours: hours % 24, days };
+  return { expired: false, hours, minutes };
 };
 
 export default SUBSCRIPTION_TIERS;

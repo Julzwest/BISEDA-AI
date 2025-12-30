@@ -79,7 +79,7 @@ export default function SubscriptionModal({ isOpen, onClose, onSuccess }) {
           {trialStatus && !trialStatus.expired && (
             <div className="mt-4 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-xl">
               <p className="text-yellow-400 text-sm text-center">
-                ⏰ {t('subscription.trialEnding', 'Trial ends in')} {trialStatus.days}d {trialStatus.hours}h
+                ⏰ {t('subscription.trialEnding', 'Trial ends in')} {trialStatus.hours}h {trialStatus.minutes}m
               </p>
             </div>
           )}
