@@ -26,6 +26,20 @@ import ChatAnalysis from './pages/ChatAnalysis.jsx';
 import ReplyResults from './pages/ReplyResults.jsx';
 import OnboardingTutorial from './components/OnboardingTutorial.jsx';
 import ScrollToTop from './components/ScrollToTop.jsx';
+import SubscriptionModal from './components/SubscriptionModal.jsx';
+
+// Demo component to show subscription modal
+function SubscriptionDemo() {
+  return (
+    <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+      <SubscriptionModal 
+        isOpen={true} 
+        onClose={() => window.history.back()}
+        onSuccess={() => alert('Purchase simulated!')}
+      />
+    </div>
+  );
+}
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -89,9 +103,10 @@ function App() {
   // Check if current URL is privacy policy or admin (allow access without main app auth)
   const isPrivacyPage = window.location.hash.includes('privacy');
   const isAdminPage = window.location.hash.includes('admin');
+  const isSubscriptionDemo = window.location.hash.includes('subscription-demo');
   
-  // Show auth page if not authenticated (except for privacy policy and admin)
-  if (!isAuthenticated && !isPrivacyPage && !isAdminPage) {
+  // Show auth page if not authenticated (except for privacy policy, admin, and subscription demo)
+  if (!isAuthenticated && !isPrivacyPage && !isAdminPage && !isSubscriptionDemo) {
     return <Auth onAuthSuccess={handleAuthSuccess} />;
   }
   
@@ -102,6 +117,18 @@ function App() {
         <Routes>
           <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<Navigate to="/admin" replace />} />
+        </Routes>
+      </Router>
+    );
+  }
+  
+  // Show subscription demo without auth
+  if (!isAuthenticated && isSubscriptionDemo) {
+    return (
+      <Router>
+        <Routes>
+          <Route path="/subscription-demo" element={<SubscriptionDemo />} />
+          <Route path="*" element={<Navigate to="/subscription-demo" replace />} />
         </Routes>
       </Router>
     );
@@ -163,6 +190,7 @@ function App() {
           <Route path="/breakupcoach" element={<BreakupCoach />} />
           <Route path="/bodylanguage" element={<BodyLanguageGuide />} />
           <Route path="/profile" element={<UserProfile onLogout={handleLogout} />} />
+          <Route path="/subscription-demo" element={<SubscriptionDemo />} />
           
           {/* System */}
           <Route path="/subscription/success" element={<SubscriptionSuccess />} />

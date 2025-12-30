@@ -1,5 +1,5 @@
 // Subscription Modal - Shows tier options for upgrade
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { X, Check, Crown, Zap, Star, Sparkles, Shield } from 'lucide-react';
 import { Card } from '@/components/ui/card';
@@ -14,11 +14,19 @@ export default function SubscriptionModal({ isOpen, onClose, onSuccess }) {
   const [loading, setLoading] = useState(false);
   const [restoring, setRestoring] = useState(false);
   const [error, setError] = useState('');
+  const modalRef = useRef(null);
   
   const paidTiers = getPaidTiers();
   const subscription = getSubscription();
   const trialStatus = getTrialStatus();
   const isAlbanian = i18n.language === 'sq';
+
+  // Scroll to top when modal opens
+  useEffect(() => {
+    if (isOpen && modalRef.current) {
+      modalRef.current.scrollTop = 0;
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -76,16 +84,17 @@ export default function SubscriptionModal({ isOpen, onClose, onSuccess }) {
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
-      <Card className="bg-slate-900/95 border-purple-500/30 backdrop-blur-xl rounded-3xl shadow-2xl shadow-purple-500/20 max-w-lg w-full max-h-[90vh] overflow-y-auto">
+      <Card ref={modalRef} className="bg-slate-900 border-purple-500/30 backdrop-blur-xl rounded-3xl shadow-2xl shadow-purple-500/20 max-w-lg w-full max-h-[95vh] overflow-y-auto relative">
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white transition-colors z-10"
+        >
+          <X className="w-6 h-6" />
+        </button>
+        
         {/* Header */}
-        <div className="sticky top-0 bg-slate-900/95 p-6 pb-4 border-b border-slate-700/50">
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white transition-colors"
-          >
-            <X className="w-6 h-6" />
-          </button>
-          
+        <div className="p-6 pb-4 border-b border-slate-700/50">
           <div className="text-center">
             <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Sparkles className="w-8 h-8 text-white" />
@@ -201,7 +210,7 @@ export default function SubscriptionModal({ isOpen, onClose, onSuccess }) {
         )}
 
         {/* Purchase Button */}
-        <div className="sticky bottom-0 bg-slate-900/95 p-6 pt-4 border-t border-slate-700/50">
+        <div className="p-6 pt-4 border-t border-slate-700/50">
           <Button
             onClick={handlePurchase}
             disabled={loading}
