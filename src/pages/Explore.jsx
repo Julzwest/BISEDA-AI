@@ -338,11 +338,11 @@ export default function Explore() {
   }, []);
 
   const timeOfDayOptions = [
-    { id: 'morning', label: 'Morning', emoji: '🌅', color: 'from-yellow-400 to-orange-400' },
-    { id: 'afternoon', label: 'Afternoon', emoji: '☀️', color: 'from-orange-400 to-amber-500' },
-    { id: 'evening', label: 'Evening', emoji: '🌆', color: 'from-purple-500 to-pink-500' },
-    { id: 'night', label: 'Night', emoji: '🌙', color: 'from-indigo-600 to-purple-600' },
-    { id: 'anytime', label: 'Any Time', emoji: '⏰', color: 'from-slate-600 to-slate-700' }
+    { id: 'morning', label: t('explore.timeOfDay.morning', 'Morning'), emoji: '🌅', color: 'from-yellow-400 to-orange-400' },
+    { id: 'afternoon', label: t('explore.timeOfDay.afternoon', 'Afternoon'), emoji: '☀️', color: 'from-orange-400 to-amber-500' },
+    { id: 'evening', label: t('explore.timeOfDay.evening', 'Evening'), emoji: '🌆', color: 'from-purple-500 to-pink-500' },
+    { id: 'night', label: t('explore.timeOfDay.night', 'Night'), emoji: '🌙', color: 'from-indigo-600 to-purple-600' },
+    { id: 'anytime', label: t('explore.timeOfDay.anytime', 'Any Time'), emoji: '⏰', color: 'from-slate-600 to-slate-700' }
   ];
 
   const categories = [
@@ -776,17 +776,11 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
         </div>
         <h1 className="text-3xl font-black mb-2">
           <span className="bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-            Find Your Perfect
-          </span>
-          <br />
-          <span className="bg-gradient-to-r from-rose-400 via-pink-400 to-purple-400 bg-clip-text text-transparent">
-            Date Spot! 🎯
+            {t('explore.findDateSpot', 'Find Your Perfect Date Spot! 💕')}
           </span>
         </h1>
         <p className="text-slate-400 text-sm flex items-center justify-center gap-2">
-          <span>Discover amazing venues</span>
-          <span className="text-pink-400">•</span>
-          <span>Plan unforgettable dates</span>
+          <span>{t('explore.discoverVenues', 'Discover amazing venues • Plan unforgettable dates')}</span>
         </p>
       </div>
       
@@ -803,7 +797,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
           >
             <span className="flex items-center justify-center gap-2">
               <span className="text-xl">🍽️</span>
-              <span>Date Spots</span>
+              <span>{t('explore.dateSpots', 'Date Spots')}</span>
               {activeTab === 'venues' && <span className="animate-pulse">✨</span>}
             </span>
           </button>
@@ -817,7 +811,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
           >
             <span className="flex items-center justify-center gap-2">
               <span className="text-xl">🎉</span>
-              <span>Events</span>
+              <span>{t('explore.events', 'Events')}</span>
               {activeTab === 'events' && <span className="animate-pulse">🎊</span>}
             </span>
           </button>
@@ -830,8 +824,8 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
             <span className="text-xl">📍</span>
           </div>
           <div className="flex-1">
-            <h2 className="text-lg font-bold text-white">{t('dates.selectCity')}</h2>
-            <p className="text-xs text-slate-400">Where's the magic happening? ✨</p>
+            <h2 className="text-lg font-bold text-white">{t('explore.selectCity', 'Select City')}</h2>
+            <p className="text-xs text-slate-400">{t('explore.wheresMagic', "Where's the magic happening?")} ✨</p>
           </div>
           <span className="px-3 py-1.5 bg-slate-800/70 rounded-full text-sm text-slate-300 border border-slate-700/50">
             {currentCountry?.flag} {localizedCountryName}
@@ -901,8 +895,8 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                 <span className="text-xl">⏰</span>
               </div>
               <div>
-                <h2 className="text-lg font-bold text-white">When's the date?</h2>
-                <p className="text-xs text-slate-400">Set the mood 🌙</p>
+                <h2 className="text-lg font-bold text-white">{t('explore.whensDate', "When's the date?")}</h2>
+                <p className="text-xs text-slate-400">{t('explore.setMood', 'Set the mood')} 🌙</p>
               </div>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -1354,10 +1348,10 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
           <div className="text-center mb-6">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full border border-purple-500/30 mb-3">
               <span className="text-2xl animate-bounce">🎊</span>
-              <span className="text-purple-300 font-bold">Special Occasions</span>
+              <span className="text-purple-300 font-bold">{t('explore.specialOccasions', 'Special Occasions')}</span>
               <span className="text-2xl animate-bounce" style={{ animationDelay: '0.2s' }}>🎊</span>
             </div>
-            <p className="text-slate-400 text-sm">Plan something special for these dates!</p>
+            <p className="text-slate-400 text-sm">{t('explore.makeMemorableDates', 'Plan something special for these dates!')}</p>
           </div>
 
           {/* Upcoming Festive Dates */}
@@ -1410,7 +1404,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                     <div className="mt-4 pt-4 border-t border-white/20">
                       <p className="text-white/90 text-sm font-medium flex items-center gap-2">
                         <span>💡</span>
-                        <span>Tap to get date ideas for this occasion!</span>
+                        <span>{t('explore.tapForDateIdeas', 'Tap to get date ideas for this occasion!')}</span>
                         <ChevronRight className={`w-4 h-4 transition-transform ${expandedFestiveId === `${upcomingFestiveDates[0].name}-0` ? 'rotate-90' : ''}`} />
                       </p>
                     </div>
@@ -1435,7 +1429,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                               LIVE DATA
                             </span>
                             <p className="text-white text-sm font-medium">
-                              Best spots for <span className="font-bold">{festiveSuggestions.occasionName || upcomingFestiveDates[0].name}</span>
+                              {t('explore.bestFor', 'Best for')} <span className="font-bold">{festiveSuggestions.occasionName || upcomingFestiveDates[0].name}</span>
                             </p>
                           </div>
                         </div>
@@ -1443,7 +1437,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                         {/* Quick Ideas */}
                         <div className="p-4 bg-gradient-to-r from-purple-900/40 to-pink-900/40 rounded-2xl border border-purple-500/30">
                           <h4 className="text-white font-bold mb-3 flex items-center gap-2">
-                            <span>💡</span> Date Ideas for This Day
+                            <span>💡</span> {t('explore.dateIdeasThisDay', 'Date Ideas for This Day')}
                           </h4>
                           <div className="flex flex-wrap gap-2">
                             {festiveSuggestions.ideas.map((idea, idx) => (
@@ -1621,7 +1615,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                               <div className="p-3 bg-slate-800/50 rounded-xl border border-slate-700/50">
                                 <h5 className="text-white font-semibold text-sm mb-2 flex items-center gap-1">
                                   <MapPin className="w-3.5 h-3.5 text-purple-400" />
-                                  Best for {festiveSuggestions.occasionName || festive.name}
+                                  {t('explore.bestFor', 'Best for')} {festiveSuggestions.occasionName || festive.name}
                                 </h5>
                                 <div className="space-y-2">
                                   {festiveSuggestions.places.slice(0, 3).map((place, idx) => (
@@ -1671,7 +1665,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                 className="w-full mt-4 py-4 bg-gradient-to-r from-slate-800 to-slate-700 hover:from-slate-700 hover:to-slate-600 text-white font-bold border border-slate-600 rounded-2xl transition-all hover:scale-[1.01]"
               >
                 <span className="flex items-center justify-center gap-2">
-                  {showAllFestive ? '🔼 Show Less' : `🎉 View All ${upcomingFestiveDates.length} Celebrations`}
+                  {showAllFestive ? `🔼 ${t('common.less', 'Show Less')}` : `🎉 ${t('explore.viewAllCelebrations', 'View All {{count}} Celebrations', { count: upcomingFestiveDates.length })}`}
                 </span>
               </Button>
             )}
@@ -1683,9 +1677,9 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-400 to-orange-500 mb-4 shadow-lg shadow-orange-500/30">
                 <span className="text-3xl">💡</span>
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">Date Ideas for Special Occasions</h3>
+              <h3 className="text-xl font-bold text-white mb-2">{t('explore.dateIdeasSpecial', 'Date Ideas for Special Occasions')}</h3>
               <p className="text-slate-300 text-sm mb-4">
-                Make these celebrations memorable with perfect date planning!
+                {t('explore.makeMemorableDates', 'Make these celebrations memorable with perfect date planning!')}
               </p>
               <div className="flex flex-wrap justify-center gap-3">
                 <button 
@@ -1699,7 +1693,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                   }}
                   className="px-3 py-2 bg-pink-500/20 rounded-full text-sm font-medium text-pink-300 border border-pink-500/30 hover:bg-pink-500/30 transition-colors cursor-pointer"
                 >
-                  💕 Valentine's Dinner
+                  💕 {t('explore.valentinesDinner', "Valentine's Dinner")}
                 </button>
                 <button 
                   onClick={() => {
@@ -1711,7 +1705,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                   }}
                   className="px-3 py-2 bg-amber-500/20 rounded-full text-sm font-medium text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 transition-colors cursor-pointer"
                 >
-                  🎄 Christmas Market
+                  🎄 {t('explore.christmasMarket', 'Christmas Market')}
                 </button>
                 <button 
                   onClick={() => {
@@ -1723,7 +1717,7 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                   }}
                   className="px-3 py-2 bg-purple-500/20 rounded-full text-sm font-medium text-purple-300 border border-purple-500/30 hover:bg-purple-500/30 transition-colors cursor-pointer"
                 >
-                  🎆 New Year's Party
+                  🎆 {t('explore.newYearsParty', "New Year's Party")}
                 </button>
               </div>
             </div>
@@ -1735,15 +1729,15 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
               <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-purple-500/5 to-pink-500/5" />
               <div className="relative">
                 <div className="text-6xl mb-4 animate-pulse">🎭</div>
-                <h3 className="text-xl font-bold text-white mb-2">Local Events Coming Soon!</h3>
+                <h3 className="text-xl font-bold text-white mb-2">{t('explore.localEventsSoon', 'Local Events Coming Soon!')}</h3>
                 <p className="text-slate-400 text-sm mb-4">
-                  We're working on bringing you live concerts, festivals, and events near you.
+                  {t('explore.workingOnEvents', "We're working on bringing you live concerts, festivals, and events near you.")}
                 </p>
                 <div className="flex flex-wrap justify-center gap-3 text-slate-400 text-sm">
-                  <span className="px-3 py-1.5 bg-slate-800/50 rounded-full">🎵 Concerts</span>
-                  <span className="px-3 py-1.5 bg-slate-800/50 rounded-full">🎪 Festivals</span>
-                  <span className="px-3 py-1.5 bg-slate-800/50 rounded-full">⚽ Sports</span>
-                  <span className="px-3 py-1.5 bg-slate-800/50 rounded-full">🎨 Art Shows</span>
+                  <span className="px-3 py-1.5 bg-slate-800/50 rounded-full">🎵 {t('explore.concerts', 'Concerts')}</span>
+                  <span className="px-3 py-1.5 bg-slate-800/50 rounded-full">🎪 {t('explore.festivals', 'Festivals')}</span>
+                  <span className="px-3 py-1.5 bg-slate-800/50 rounded-full">⚽ {t('explore.sports', 'Sports')}</span>
+                  <span className="px-3 py-1.5 bg-slate-800/50 rounded-full">🎨 {t('explore.artShows', 'Art Shows')}</span>
                 </div>
               </div>
             </div>
