@@ -763,8 +763,8 @@ export default function HomeCoPilot() {
               <div className="w-12 h-12 mx-auto mb-2 bg-gradient-to-br from-amber-500/20 to-yellow-500/20 rounded-2xl flex items-center justify-center border border-amber-500/20">
                 <Zap className="w-6 h-6 text-amber-400" />
               </div>
-              <div className="text-2xl font-black text-white">&lt;3s</div>
-              <div className="text-xs text-slate-400">{t('homepage.stats.aiResponse')}</div>
+              <div className="text-2xl font-black text-white">24/7</div>
+              <div className="text-xs text-slate-400">{t('homepage.stats.alwaysReady')}</div>
             </div>
           </div>
         </div>
