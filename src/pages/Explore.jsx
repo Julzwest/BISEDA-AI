@@ -752,67 +752,55 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
 
   return (
     <div className="px-4 pt-6 pb-32 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950 w-full max-w-full overflow-x-hidden">
-      {/* Header - Fun & Playful */}
+      {/* Header - Professional Style matching Rehearsal */}
       <div className="mb-6 text-center relative">
-        {/* Floating decorative elements */}
-        <div className="absolute -top-4 left-4 text-3xl animate-bounce opacity-60" style={{ animationDelay: '0s' }}>💕</div>
-        <div className="absolute -top-2 right-8 text-2xl animate-bounce opacity-50" style={{ animationDelay: '0.3s' }}>✨</div>
-        <div className="absolute top-12 left-8 text-xl animate-bounce opacity-40" style={{ animationDelay: '0.6s' }}>🌟</div>
-        
         <div className="inline-block mb-4">
           <div className="relative">
-            {/* Glowing ring effect */}
-            <div className="absolute inset-0 w-24 h-24 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 rounded-3xl blur-xl opacity-60 animate-pulse" />
-            <div className="relative w-24 h-24 bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-600 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/50 transform hover:rotate-6 transition-transform">
-              <span className="text-5xl">💖</span>
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl blur-xl opacity-50 animate-pulse"></div>
+            <div className="relative w-20 h-20 bg-gradient-to-br from-purple-500 via-pink-500 to-rose-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/50 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
+              <MapPin className="w-10 h-10 text-white relative z-10" />
             </div>
-            <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center animate-bounce shadow-lg shadow-yellow-500/50">
-              <span className="text-lg">🔥</span>
-            </div>
-            <div className="absolute -bottom-1 -left-1 w-6 h-6 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full flex items-center justify-center animate-pulse">
-              <span className="text-sm">💫</span>
+            <div className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-lg">
+              <Heart className="w-3.5 h-3.5 text-white" />
             </div>
           </div>
         </div>
-        <h1 className="text-3xl font-black mb-2">
-          <span className="bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-            {t('explore.findDateSpot', 'Find Your Perfect Date Spot! 💕')}
-          </span>
+        <h1 className="text-2xl font-black text-white mb-2">
+          {t('explore.findDateSpot', 'Find Your Perfect Date Spot')}
         </h1>
-        <p className="text-slate-400 text-sm flex items-center justify-center gap-2">
-          <span>{t('explore.discoverVenues', 'Discover amazing venues • Plan unforgettable dates')}</span>
+        <p className="text-slate-400 text-sm">
+          {t('explore.discoverVenues', 'Discover venues • Plan unforgettable dates')}
         </p>
       </div>
       
-      {/* TAB NAVIGATION - Fun Pills */}
-      <div className="mb-6 relative">
-        <div className="flex gap-3 p-2 bg-slate-900/70 rounded-2xl border border-slate-700/50 backdrop-blur-sm">
+      {/* TAB NAVIGATION - Clean Professional Style */}
+      <div className="mb-6">
+        <div className="flex gap-2 p-1.5 bg-slate-800/50 rounded-xl border border-slate-700/50">
           <button
             onClick={() => setActiveTab('venues')}
-            className={`flex-1 py-4 px-4 rounded-xl font-bold text-sm transition-all transform ${
+            className={`flex-1 py-3 px-4 rounded-lg font-semibold text-sm transition-all ${
               activeTab === 'venues'
-                ? 'bg-gradient-to-r from-pink-500 via-rose-500 to-orange-500 text-white shadow-lg shadow-pink-500/50 scale-[1.02]'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800/50 hover:scale-[1.01]'
+                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+                : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
             }`}
           >
             <span className="flex items-center justify-center gap-2">
-              <span className="text-xl">🍽️</span>
+              <MapPin className="w-4 h-4" />
               <span>{t('explore.dateSpots', 'Date Spots')}</span>
-              {activeTab === 'venues' && <span className="animate-pulse">✨</span>}
             </span>
           </button>
           <button
             onClick={() => setActiveTab('events')}
-            className={`flex-1 py-4 px-4 rounded-xl font-bold text-sm transition-all transform ${
+            className={`flex-1 py-3 px-4 rounded-lg font-semibold text-sm transition-all ${
               activeTab === 'events'
-                ? 'bg-gradient-to-r from-purple-500 via-indigo-500 to-cyan-500 text-white shadow-lg shadow-purple-500/50 scale-[1.02]'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800/50 hover:scale-[1.01]'
+                ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
+                : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
             }`}
           >
             <span className="flex items-center justify-center gap-2">
-              <span className="text-xl">🎉</span>
+              <Calendar className="w-4 h-4" />
               <span>{t('explore.events', 'Events')}</span>
-              {activeTab === 'events' && <span className="animate-pulse">🎊</span>}
             </span>
           </button>
         </div>
