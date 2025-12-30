@@ -89,6 +89,7 @@ export default function Explore() {
   
   // Get user's country from localStorage
   const [userCountry, setUserCountry] = useState(localStorage.getItem('userCountry') || 'AL');
+  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const currentCountry = getCountryByCode(userCountry);
   
   // Get localized cities - depends on i18n.language for reactivity
@@ -805,19 +806,49 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
           </button>
         </div>
       </div>
-      {/* SHARED: City Selection - Fun & Engaging */}
+      {/* SHARED: City Selection - Professional Style */}
       <div className="mb-6">
-        <div className="flex items-center gap-2 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
-            <span className="text-xl">📍</span>
-          </div>
+        <div className="flex items-center gap-3 mb-4">
           <div className="flex-1">
             <h2 className="text-lg font-bold text-white">{t('explore.selectCity', 'Select City')}</h2>
-            <p className="text-xs text-slate-400">{t('explore.wheresMagic', "Where's the magic happening?")} ✨</p>
+            <p className="text-xs text-slate-400">{t('explore.wheresMagic', "Where's the magic happening?")}</p>
           </div>
-          <span className="px-3 py-1.5 bg-slate-800/70 rounded-full text-sm text-slate-300 border border-slate-700/50">
-            {currentCountry?.flag} {localizedCountryName}
-          </span>
+          {/* Country Dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setShowCountryDropdown(!showCountryDropdown)}
+              className="px-3 py-2 bg-slate-800/80 hover:bg-slate-700/80 rounded-xl text-sm text-slate-300 border border-slate-700/50 hover:border-purple-500/50 transition-all flex items-center gap-2"
+            >
+              <span>{currentCountry?.flag}</span>
+              <span>{localizedCountryName}</span>
+              <ChevronRight className={`w-4 h-4 transition-transform ${showCountryDropdown ? 'rotate-90' : ''}`} />
+            </button>
+            
+            {/* Dropdown Menu */}
+            {showCountryDropdown && (
+              <div className="absolute right-0 top-full mt-2 bg-slate-800 border border-slate-700 rounded-xl shadow-xl z-50 min-w-[180px] overflow-hidden">
+                {countries.map((country) => (
+                  <button
+                    key={country.code}
+                    onClick={() => {
+                      setUserCountry(country.code);
+                      localStorage.setItem('userCountry', country.code);
+                      setSelectedCity('');
+                      setShowCountryDropdown(false);
+                    }}
+                    className={`w-full px-4 py-3 text-left text-sm flex items-center gap-2 transition-colors ${
+                      userCountry === country.code
+                        ? 'bg-purple-600 text-white'
+                        : 'text-slate-300 hover:bg-slate-700'
+                    }`}
+                  >
+                    <span>{country.flag}</span>
+                    <span>{i18n.language === 'sq' ? country.nameAl : country.nameEn}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
         <div className="flex flex-wrap gap-2">
           {/* Show first 12 cities, or all if showMoreCities */}

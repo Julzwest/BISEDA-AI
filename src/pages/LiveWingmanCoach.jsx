@@ -1181,8 +1181,7 @@ Return JSON ONLY:
         {/* What's happening? - Situations/Problems */}
         <div className="px-5 mb-6">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <span className="text-2xl animate-pulse">🤔</span>
-            <h3 className="text-xl font-black bg-gradient-to-r from-amber-400 via-orange-400 to-red-400 bg-clip-text text-transparent">
+            <h3 className="text-lg font-bold text-white">
               {t('liveWingman.whatsHappening', "What's happening?")}
             </h3>
           </div>
@@ -1208,10 +1207,9 @@ Return JSON ONLY:
         {/* What do you want to do? - Actions */}
         <div className="px-5 mb-6">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <h3 className="text-xl font-black bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent">
+            <h3 className="text-lg font-bold text-white">
               {t('liveWingman.makeYourMove', 'Make your move')}
             </h3>
-            <span className="text-2xl animate-bounce">⚡</span>
           </div>
           <div className="grid grid-cols-4 gap-2">
             {getQuickActions().map((action) => (
