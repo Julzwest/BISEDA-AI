@@ -1002,22 +1002,24 @@ export default function UserProfile({ onLogout }) {
                   </Button>
                 ) : (
                   <>
+                    {/* Show upgrade button if not on Elite (top tier) */}
+                    {currentTier !== 'elite' && (
+                      <Button
+                        onClick={() => setShowUpgradeModal(true)}
+                        className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-2.5 rounded-xl text-sm font-semibold"
+                      >
+                        <Crown className="w-4 h-4 mr-1.5" />
+                        {t('subscription.upgrade', 'Upgrade')}
+                      </Button>
+                    )}
                     <Button
                       onClick={() => {
                         // Open Apple subscription management
                         window.location.href = 'itms-apps://apps.apple.com/account/subscriptions';
                       }}
-                      className="flex-1 px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-sm font-semibold"
+                      className={`${currentTier === 'elite' ? 'flex-1' : ''} px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-sm font-semibold`}
                     >
-                      {t('subscription.manageSubscription', 'Manage Subscription')}
-                    </Button>
-                    <Button
-                      onClick={() => setShowCancelModal(true)}
-                      variant="outline"
-                      className="px-4 py-2.5 bg-slate-700/50 border-slate-600 hover:bg-slate-600/50 text-slate-300 rounded-xl text-sm"
-                    >
-                      <XCircle className="w-4 h-4 mr-1.5" />
-                      {t('common.cancel', 'Cancel')}
+                      {t('subscription.manageSubscription', 'Manage')}
                     </Button>
                   </>
                 )}
