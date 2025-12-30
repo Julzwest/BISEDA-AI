@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { 
@@ -15,6 +16,7 @@ import {
 import { getBackendUrl } from '@/utils/getBackendUrl';
 
 export default function Admin() {
+  const { t } = useTranslation();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -82,11 +84,11 @@ export default function Admin() {
         setIsAuthenticated(true);
         fetchData();
       } else {
-        setAuthError('Emër përdoruesi ose fjalëkalim i gabuar');
+        setAuthError(t('admin.invalidCredentials'));
       }
     } catch (error) {
       console.error('Login error:', error);
-      setAuthError('Gabim lidhje me serverin');
+      setAuthError(t('admin.connectionError'));
     } finally {
       setLoading(false);
     }
@@ -227,7 +229,7 @@ export default function Admin() {
       setConversations(userConvs);
       setActiveTab('conversations');
     } else {
-      alert('Ky përdorues nuk ka biseda ende.');
+      alert(t('admin.noUserConversations'));
     }
   };
 
@@ -264,32 +266,32 @@ export default function Admin() {
             <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-purple-500/30">
               <Shield className="w-10 h-10 text-white" />
             </div>
-            <h1 className="text-3xl font-bold text-white mb-2">Admin Dashboard</h1>
-            <p className="text-slate-400">Biseda.ai Management Portal</p>
+            <h1 className="text-3xl font-bold text-white mb-2">{t('admin.title')}</h1>
+            <p className="text-slate-400">{t('admin.managementPortal')}</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">👤 Username</label>
+              <label className="block text-sm font-medium text-slate-300 mb-2">👤 {t('admin.username')}</label>
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-purple-500/50 transition-all"
-                placeholder="Shkruaj username"
+                placeholder={t('admin.enterUsername')}
                 autoFocus
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">🔐 Password</label>
+              <label className="block text-sm font-medium text-slate-300 mb-2">🔐 {t('admin.password')}</label>
               <div className="relative">
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-purple-500/50 transition-all"
-                  placeholder="Shkruaj password"
+                  placeholder={t('admin.enterPassword')}
                 />
                 <button
                   type="button"
@@ -314,7 +316,7 @@ export default function Admin() {
               disabled={loading || !username || !password}
               className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold h-14 rounded-xl text-base shadow-lg shadow-purple-500/20 transition-all"
             >
-              {loading ? <RefreshCw className="w-5 h-5 animate-spin" /> : '🚀 Hyr në Dashboard'}
+              {loading ? <RefreshCw className="w-5 h-5 animate-spin" /> : `🚀 ${t('admin.login')}`}
             </Button>
           </form>
         </Card>
@@ -331,15 +333,15 @@ export default function Admin() {
             <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
               <Shield className="w-5 h-5 text-white" />
             </div>
-            Biseda.ai Admin
+            {t('admin.title')}
           </h1>
-          <p className="text-slate-400 text-sm">Menaxho aplikacionin dhe përdoruesit</p>
+          <p className="text-slate-400 text-sm">{t('admin.subtitle')}</p>
         </div>
         <div className="flex gap-2">
           <Button onClick={fetchData} disabled={refreshing} className="bg-slate-700 hover:bg-slate-600 text-white">
-            <RefreshCw className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} /> Rifresko
+            <RefreshCw className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} /> {t('admin.refresh')}
           </Button>
-          <Button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 text-white">Dil</Button>
+          <Button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 text-white">{t('admin.logout')}</Button>
         </div>
       </div>
 
@@ -356,7 +358,7 @@ export default function Admin() {
                     <Users className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <p className="text-slate-400 text-xs">Total Users</p>
+                    <p className="text-slate-400 text-xs">{t('admin.totalUsers')}</p>
                     <p className="text-white text-2xl font-bold">{registeredUsers.length || stats?.overview?.totalUsers || 0}</p>
                   </div>
                 </div>
@@ -370,7 +372,7 @@ export default function Admin() {
                   <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-slate-900 animate-pulse"></span>
                 </div>
                 <div>
-                  <p className="text-slate-400 text-xs">Online Now</p>
+                  <p className="text-slate-400 text-xs">{t('admin.onlineNow')}</p>
                   <p className="text-white text-2xl font-bold">{registeredUsers.filter(u => u.onlineStatus === 'online').length}</p>
                 </div>
               </div>
@@ -382,7 +384,7 @@ export default function Admin() {
                   <MessageSquare className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-slate-400 text-xs">Total Messages</p>
+                  <p className="text-slate-400 text-xs">{t('admin.totalMessages')}</p>
                   <p className="text-white text-2xl font-bold">{stats?.overview?.totalMessages || 0}</p>
                 </div>
               </div>
@@ -394,8 +396,8 @@ export default function Admin() {
                   <Zap className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <p className="text-slate-400 text-xs">App Status</p>
-                  <p className="text-emerald-400 text-xl font-bold">🟢 FREE</p>
+                  <p className="text-slate-400 text-xs">{t('admin.appStatus')}</p>
+                  <p className="text-emerald-400 text-xl font-bold">🟢 {t('admin.free')}</p>
                 </div>
               </div>
             </Card>
@@ -410,8 +412,8 @@ export default function Admin() {
                     <UserPlus className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <p className="text-slate-400 text-xs">Create</p>
-                    <p className="text-white text-lg font-bold">New User</p>
+                    <p className="text-slate-400 text-xs">{t('admin.create')}</p>
+                    <p className="text-white text-lg font-bold">{t('admin.newUser')}</p>
                   </div>
                 </div>
               </Card>
@@ -424,8 +426,8 @@ export default function Admin() {
                     <MessageSquare className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <p className="text-slate-400 text-xs">View</p>
-                    <p className="text-white text-lg font-bold">Chats</p>
+                    <p className="text-slate-400 text-xs">{t('admin.view')}</p>
+                    <p className="text-white text-lg font-bold">{t('admin.chats')}</p>
                   </div>
                 </div>
               </Card>
@@ -438,8 +440,8 @@ export default function Admin() {
                     <Heart className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <p className="text-slate-400 text-xs">Manage</p>
-                    <p className="text-white text-lg font-bold">Users</p>
+                    <p className="text-slate-400 text-xs">{t('admin.manage')}</p>
+                    <p className="text-white text-lg font-bold">{t('admin.users')}</p>
                   </div>
                 </div>
               </Card>
@@ -452,8 +454,8 @@ export default function Admin() {
                     <TrendingUp className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <p className="text-slate-400 text-xs">View</p>
-                    <p className="text-white text-lg font-bold">Activity</p>
+                    <p className="text-slate-400 text-xs">{t('admin.view')}</p>
+                    <p className="text-white text-lg font-bold">{t('admin.activity')}</p>
                   </div>
                 </div>
               </Card>
@@ -463,24 +465,24 @@ export default function Admin() {
           {/* App Engagement Stats */}
           <Card className="bg-slate-800/50 border-slate-700/50 p-5 mb-6">
             <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-green-400" /> 📊 App Engagement
+              <TrendingUp className="w-5 h-5 text-green-400" /> 📊 {t('admin.appEngagement')}
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/30 p-4 rounded-xl">
-                <p className="text-slate-400 text-sm mb-1">👥 Total Users</p>
+                <p className="text-slate-400 text-sm mb-1">👥 {t('admin.totalUsers')}</p>
                 <p className="text-white text-xl font-bold">{registeredUsers.length || 0}</p>
               </div>
               <div className="bg-gradient-to-br from-green-500/10 to-emerald-500/10 border border-green-500/30 p-4 rounded-xl">
-                <p className="text-slate-400 text-sm mb-1">🟢 Active Today</p>
+                <p className="text-slate-400 text-sm mb-1">🟢 {t('admin.activeToday')}</p>
                 <p className="text-emerald-400 text-xl font-bold">{registeredUsers.filter(u => u.onlineStatus === 'online' || u.onlineStatus === 'away').length}</p>
               </div>
               <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/30 p-4 rounded-xl">
-                <p className="text-slate-400 text-sm mb-1">💬 Total Chats</p>
+                <p className="text-slate-400 text-sm mb-1">💬 {t('admin.totalChats')}</p>
                 <p className="text-purple-400 text-xl font-bold">{stats?.overview?.totalMessages || 0}</p>
               </div>
               <div className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-500/30 p-4 rounded-xl">
-                <p className="text-slate-400 text-sm mb-1">🎉 App Status</p>
-                <p className="text-emerald-400 text-xl font-bold">FREE 4 ALL</p>
+                <p className="text-slate-400 text-sm mb-1">🎉 {t('admin.appStatus')}</p>
+                <p className="text-emerald-400 text-xl font-bold">{t('admin.freeForAll')}</p>
               </div>
             </div>
           </Card>
@@ -488,32 +490,32 @@ export default function Admin() {
           {/* App Features - Updated */}
           <Card className="bg-slate-800/50 border-slate-700/50 p-5 mb-6">
             <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <Zap className="w-5 h-5 text-yellow-400" /> 🚀 App Features (All FREE!)
+              <Zap className="w-5 h-5 text-yellow-400" /> 🚀 {t('admin.appFeatures')}
             </h2>
             <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
               <div className="bg-purple-500/10 border border-purple-500/30 p-3 rounded-xl text-center">
                 <span className="text-2xl mb-1 block">🤖</span>
-                <p className="text-white font-semibold text-xs">Biseda AI</p>
+                <p className="text-white font-semibold text-xs">{t('admin.bisedaAi')}</p>
               </div>
               <div className="bg-orange-500/10 border border-orange-500/30 p-3 rounded-xl text-center">
                 <span className="text-2xl mb-1 block">⚡</span>
-                <p className="text-white font-semibold text-xs">Rizz Master</p>
+                <p className="text-white font-semibold text-xs">{t('admin.rizzMaster')}</p>
               </div>
               <div className="bg-pink-500/10 border border-pink-500/30 p-3 rounded-xl text-center">
                 <span className="text-2xl mb-1 block">💕</span>
-                <p className="text-white font-semibold text-xs">Vibe Coach</p>
+                <p className="text-white font-semibold text-xs">{t('admin.vibeCoach')}</p>
               </div>
               <div className="bg-cyan-500/10 border border-cyan-500/30 p-3 rounded-xl text-center">
                 <span className="text-2xl mb-1 block">👀</span>
-                <p className="text-white font-semibold text-xs">Body Lang</p>
+                <p className="text-white font-semibold text-xs">{t('admin.bodyLang')}</p>
               </div>
               <div className="bg-emerald-500/10 border border-emerald-500/30 p-3 rounded-xl text-center">
                 <span className="text-2xl mb-1 block">📍</span>
-                <p className="text-white font-semibold text-xs">Date Ideas</p>
+                <p className="text-white font-semibold text-xs">{t('admin.dateIdeas')}</p>
               </div>
               <div className="bg-rose-500/10 border border-rose-500/30 p-3 rounded-xl text-center">
                 <span className="text-2xl mb-1 block">🎁</span>
-                <p className="text-white font-semibold text-xs">Gift Ideas</p>
+                <p className="text-white font-semibold text-xs">{t('admin.giftIdeas')}</p>
               </div>
             </div>
           </Card>
@@ -521,7 +523,7 @@ export default function Admin() {
           {/* Recent Signups */}
           <Card className="bg-slate-800/50 border-slate-700/50 p-5">
             <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <UserPlus className="w-5 h-5 text-blue-400" /> Regjistrimet e Fundit
+              <UserPlus className="w-5 h-5 text-blue-400" /> {t('admin.recentSignups')}
             </h2>
             <div className="space-y-2">
               {registeredUsers.slice(0, 5).map((user, i) => (
@@ -553,7 +555,7 @@ export default function Admin() {
                       user.subscriptionTier === 'starter' ? 'bg-blue-500/20 text-blue-300' :
                       'bg-emerald-500/20 text-emerald-300'
                     }`}>
-                      {user.subscriptionTier === 'free_trial' ? 'Provë' : user.subscriptionTier || 'Free'}
+                      {user.subscriptionTier === 'free_trial' ? t('admin.trial') : user.subscriptionTier || 'Free'}
                     </span>
                     <p className="text-slate-500 text-xs mt-1">
                       {user.createdAt ? new Date(user.createdAt).toLocaleDateString('sq-AL') : 'N/A'}
@@ -575,7 +577,7 @@ export default function Admin() {
               <Search className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="Kërko përdorues..."
+                placeholder={t('admin.searchUsers')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-purple-500/50"
@@ -586,24 +588,24 @@ export default function Admin() {
               onChange={(e) => setFilterTier(e.target.value)}
               className="px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white focus:outline-none focus:border-purple-500/50"
             >
-              <option value="all">Të gjitha planet</option>
-              <option value="free_trial">Provë Falas</option>
-              <option value="free">Falas</option>
-              <option value="starter">Starter</option>
-              <option value="pro">Pro</option>
-              <option value="elite">Elite</option>
+              <option value="all">{t('admin.allPlans')}</option>
+              <option value="free_trial">{t('admin.freeTrial')}</option>
+              <option value="free">Free</option>
+              <option value="starter">{t('admin.starter')}</option>
+              <option value="pro">{t('admin.pro')}</option>
+              <option value="elite">{t('admin.elite')}</option>
             </select>
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
               className="px-4 py-3 bg-slate-700/50 border border-slate-600/50 rounded-xl text-white focus:outline-none focus:border-purple-500/50"
             >
-              <option value="all">Të gjithë</option>
-              <option value="online">🟢 Online tani</option>
-              <option value="away">🟡 Larg</option>
-              <option value="offline">⚫ Offline</option>
-              <option value="active">✅ Jo të bllokuar</option>
-              <option value="blocked">🚫 Të bllokuar</option>
+              <option value="all">{t('admin.allStatus')}</option>
+              <option value="online">🟢 {t('admin.onlineStatus')}</option>
+              <option value="away">🟡 {t('admin.away')}</option>
+              <option value="offline">⚫ {t('admin.offline')}</option>
+              <option value="active">✅ {t('admin.notBlocked')}</option>
+              <option value="blocked">🚫 {t('admin.blocked')}</option>
             </select>
           </div>
 
@@ -612,27 +614,27 @@ export default function Admin() {
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
               <span className="text-green-400 font-semibold">{onlineCount}</span>
-              <span className="text-slate-400 text-sm">Online</span>
+              <span className="text-slate-400 text-sm">{t('admin.online')}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 bg-yellow-500 rounded-full"></span>
               <span className="text-yellow-400 font-semibold">{awayCount}</span>
-              <span className="text-slate-400 text-sm">Larg</span>
+              <span className="text-slate-400 text-sm">{t('admin.away')}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 bg-slate-500 rounded-full"></span>
               <span className="text-slate-400 font-semibold">{registeredUsers.length - onlineCount - awayCount}</span>
-              <span className="text-slate-400 text-sm">Offline</span>
+              <span className="text-slate-400 text-sm">{t('admin.offline')}</span>
             </div>
             <div className="ml-auto text-slate-500 text-xs">
-              Total: {registeredUsers.length} përdorues
+              {t('admin.total')}: {registeredUsers.length} {t('admin.users').toLowerCase()}
             </div>
           </div>
 
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-white flex items-center gap-2">
               <Users className="w-5 h-5 text-blue-400" /> 
-              Përdoruesit ({filteredUsers.length})
+              {t('admin.users')} ({filteredUsers.length})
             </h2>
           </div>
           
@@ -703,9 +705,9 @@ export default function Admin() {
                         <span className="flex items-center gap-1"><Mail className="w-3 h-3" /> {user.email}</span>
                         <span className="flex items-center gap-1"><Globe className="w-3 h-3" /> {user.country || 'AL'}</span>
                         <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {user.createdAt ? new Date(user.createdAt).toLocaleDateString('sq-AL') : 'N/A'}</span>
-                        <span className="flex items-center gap-1"><MessageSquare className="w-3 h-3" /> {user.monthlyUsage?.totalMessages || 0} mesazhe</span>
+                        <span className="flex items-center gap-1"><MessageSquare className="w-3 h-3" /> {user.monthlyUsage?.totalMessages || 0} {t('admin.messages')}</span>
                         <span className="flex items-center gap-1 text-green-400"><DollarSign className="w-3 h-3" /> ${user.costTracking?.totalSpent?.toFixed(4) || '0.00'}</span>
-                        <span className="flex items-center gap-1 text-purple-400"><Zap className="w-3 h-3" /> {user.credits || 0} kredite</span>
+                        <span className="flex items-center gap-1 text-purple-400"><Zap className="w-3 h-3" /> {user.credits || 0} {t('admin.credits')}</span>
                       </div>
                     </div>
                     
@@ -715,32 +717,32 @@ export default function Admin() {
                         onClick={() => { setSelectedUser(user); setShowUserModal(true); }}
                         className="bg-slate-600 hover:bg-slate-500 text-white text-xs h-9 px-3"
                       >
-                        <Eye className="w-3 h-3 mr-1" /> Shiko
+                        <Eye className="w-3 h-3 mr-1" /> {t('admin.viewDetails')}
                       </Button>
                       <Button
                         onClick={() => viewUserConversations(user)}
                         className="bg-cyan-600 hover:bg-cyan-500 text-white text-xs h-9 px-3"
                       >
-                        <MessageSquare className="w-3 h-3 mr-1" /> Bisedat
+                        <MessageSquare className="w-3 h-3 mr-1" /> {t('admin.conversations')}
                       </Button>
                       <Button
                         onClick={() => { setGiftCreditsUser(user); setShowGiftCredits(true); }}
                         className="bg-purple-600 hover:bg-purple-500 text-white text-xs h-9 px-3"
                       >
-                        <Gift className="w-3 h-3 mr-1" /> Kredite
+                        <Gift className="w-3 h-3 mr-1" /> {t('admin.giftCredits')}
                       </Button>
                       <Button
                         onClick={() => handleBlockUser(user.odId, !user.isBlocked)}
                         className={`${user.isBlocked ? 'bg-green-600 hover:bg-green-500' : 'bg-orange-600 hover:bg-orange-500'} text-white text-xs h-9 px-3`}
                       >
                         {user.isBlocked ? <Unlock className="w-3 h-3 mr-1" /> : <Lock className="w-3 h-3 mr-1" />}
-                        {user.isBlocked ? 'Zhblloko' : 'Blloko'}
+                        {user.isBlocked ? t('admin.unblock') : t('admin.block')}
                       </Button>
                       <Button
                         onClick={() => { setUserToDelete(user); setShowDeleteConfirm(true); }}
                         className="bg-red-600 hover:bg-red-500 text-white text-xs h-9 px-3"
                       >
-                        <Trash2 className="w-3 h-3 mr-1" /> Fshi
+                        <Trash2 className="w-3 h-3 mr-1" /> {t('admin.delete')}
                       </Button>
                     </div>
                   </div>
@@ -750,7 +752,7 @@ export default function Admin() {
           ) : (
             <div className="text-center py-12">
               <Users className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-              <p className="text-slate-400 text-lg">Asnjë përdorues u gjet</p>
+              <p className="text-slate-400 text-lg">{t('admin.noUsersFound')}</p>
             </div>
           )}
         </Card>
@@ -761,15 +763,15 @@ export default function Admin() {
         <>
           <Card className="bg-slate-800/50 border-slate-700/50 p-5 mb-6">
             <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <Crown className="w-5 h-5 text-yellow-400" /> Shpërndarja e Abonesave
+              <Crown className="w-5 h-5 text-yellow-400" /> {t('admin.subscriptionDistribution')}
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
               {[
-                { name: '🎁 Provë Falas', key: 'free_trial', color: 'emerald', price: '3 ditë' },
-                { name: 'Falas', key: 'free', color: 'slate', price: '€0/muaj' },
-                { name: '⭐ Starter', key: 'starter', color: 'blue', price: '€6.99/muaj' },
-                { name: '💎 Pro', key: 'pro', color: 'purple', price: '€12.99/muaj' },
-                { name: '👑 Elite', key: 'elite', color: 'amber', price: '€19.99/muaj' },
+                { name: `🎁 ${t('admin.freeTrial')}`, key: 'free_trial', color: 'emerald', price: `24h` },
+                { name: 'Free', key: 'free', color: 'slate', price: `€0${t('admin.perMonth')}` },
+                { name: `⭐ ${t('admin.starter')}`, key: 'starter', color: 'blue', price: `€6.99${t('admin.perMonth')}` },
+                { name: `💎 ${t('admin.pro')}`, key: 'pro', color: 'purple', price: `€12.99${t('admin.perMonth')}` },
+                { name: `👑 ${t('admin.elite')}`, key: 'elite', color: 'amber', price: `€19.99${t('admin.perMonth')}` },
               ].map((tier, i) => (
                 <div key={i} className={`bg-${tier.color}-500/10 border border-${tier.color}-500/30 p-4 rounded-xl text-center`}>
                   <p className={`text-${tier.color}-300 text-sm mb-1`}>{tier.name}</p>
@@ -782,19 +784,19 @@ export default function Admin() {
 
           <Card className="bg-slate-800/50 border-slate-700/50 p-5">
             <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <DollarSign className="w-5 h-5 text-green-400" /> Të Ardhura nga Abonime
+              <DollarSign className="w-5 h-5 text-green-400" /> {t('admin.revenueFromSubscriptions')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-gradient-to-br from-green-900/30 to-emerald-900/30 border border-green-500/30 p-5 rounded-xl">
-                <p className="text-green-300 text-sm mb-2">Të Ardhura Mujore</p>
+                <p className="text-green-300 text-sm mb-2">{t('admin.monthlyRevenue')}</p>
                 <p className="text-white text-3xl font-bold">€{stats?.overview?.monthlyRevenue || '0.00'}</p>
               </div>
               <div className="bg-gradient-to-br from-blue-900/30 to-cyan-900/30 border border-blue-500/30 p-5 rounded-xl">
-                <p className="text-blue-300 text-sm mb-2">Të Ardhura Vjetore (Est.)</p>
+                <p className="text-blue-300 text-sm mb-2">{t('admin.yearlyRevenueEst')}</p>
                 <p className="text-white text-3xl font-bold">€{((parseFloat(stats?.overview?.monthlyRevenue) || 0) * 12).toFixed(2)}</p>
               </div>
               <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 border border-purple-500/30 p-5 rounded-xl">
-                <p className="text-purple-300 text-sm mb-2">Fitimi Neto/Muaj</p>
+                <p className="text-purple-300 text-sm mb-2">{t('admin.netProfitMonth')}</p>
                 <p className="text-white text-3xl font-bold">€{stats?.overview?.profit || '0.00'}</p>
               </div>
             </div>
@@ -808,11 +810,11 @@ export default function Admin() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-white flex items-center gap-2">
               <MessagesSquare className="w-5 h-5 text-cyan-400" />
-              {selectedUser ? `Bisedat e ${selectedUser.firstName || selectedUser.email}` : 'Të Gjitha Bisedat'}
+              {selectedUser ? t('admin.conversationsOf', { name: selectedUser.firstName || selectedUser.email }) : t('admin.allConversations')}
             </h2>
             {selectedUser && (
               <Button onClick={() => { setSelectedUser(null); fetchConversations(); }} className="bg-slate-600 hover:bg-slate-500 text-white text-xs">
-                <X className="w-4 h-4 mr-1" /> Pastro filtrin
+                <X className="w-4 h-4 mr-1" /> {t('admin.clearFilter')}
               </Button>
             )}
           </div>
@@ -820,7 +822,7 @@ export default function Admin() {
           {loadingConversations ? (
             <div className="text-center py-12">
               <RefreshCw className="w-8 h-8 text-purple-400 mx-auto mb-4 animate-spin" />
-              <p className="text-slate-400">Duke ngarkuar bisedat...</p>
+              <p className="text-slate-400">{t('admin.loadingConversations')}</p>
             </div>
           ) : conversations.length > 0 ? (
             <div className="space-y-3 max-h-[600px] overflow-y-auto">
@@ -860,7 +862,7 @@ export default function Admin() {
                       
                       <div className="flex items-center gap-4 text-xs text-slate-500">
                         <span className="flex items-center gap-1">
-                          <MessageSquare className="w-3 h-3" /> {conv.messageCount || conv.messages?.length || 0} mesazhe
+                          <MessageSquare className="w-3 h-3" /> {conv.messageCount || conv.messages?.length || 0} {t('admin.messages')}
                         </span>
                         <span className="flex items-center gap-1">
                           <Clock className="w-3 h-3" /> {conv.lastMessageAt ? new Date(conv.lastMessageAt).toLocaleString('sq-AL') : 'N/A'}
@@ -875,8 +877,8 @@ export default function Admin() {
           ) : (
             <div className="text-center py-12">
               <MessagesSquare className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-              <p className="text-slate-400 text-lg mb-2">Asnjë bisedë ende</p>
-              <p className="text-slate-500 text-sm">Bisedat e përdoruesve do të shfaqen këtu</p>
+              <p className="text-slate-400 text-lg mb-2">{t('admin.noConversationsYet')}</p>
+              <p className="text-slate-500 text-sm">{t('admin.conversationsWillAppear')}</p>
             </div>
           )}
         </Card>
@@ -886,7 +888,7 @@ export default function Admin() {
       {activeTab === 'activity' && (
         <Card className="bg-slate-800/50 border-slate-700/50 p-5">
           <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-            <Activity className="w-5 h-5 text-green-400" /> Aktiviteti i Fundit
+            <Activity className="w-5 h-5 text-green-400" /> {t('admin.recentActivity')}
           </h2>
           <div className="space-y-3">
             {stats?.topUsers?.map((user, i) => (
@@ -901,17 +903,17 @@ export default function Admin() {
                 </div>
                 <div className="flex-1">
                   <p className="text-white font-medium">{user.odId?.substring(0, 20)}...</p>
-                  <p className="text-slate-400 text-sm">{user.messages} mesazhe • ${user.cost?.toFixed(4)} kosto</p>
+                  <p className="text-slate-400 text-sm">{user.messages} {t('admin.messages')} • ${user.cost?.toFixed(4)} {t('admin.cost')}</p>
                 </div>
                 <span className={`px-2 py-1 rounded-lg text-xs font-semibold ${
                   user.tier === 'pro' ? 'bg-purple-500/20 text-purple-300' :
                   user.tier === 'starter' ? 'bg-blue-500/20 text-blue-300' :
                   'bg-emerald-500/20 text-emerald-300'
                 }`}>
-                  {user.tier === 'free_trial' ? 'Provë' : user.tier}
+                  {user.tier === 'free_trial' ? t('admin.trial') : user.tier}
                 </span>
               </div>
-            )) || <p className="text-slate-400 text-center py-8">Asnjë aktivitet ende</p>}
+            )) || <p className="text-slate-400 text-center py-8">{t('admin.noActivityYet')}</p>}
           </div>
         </Card>
       )}
@@ -922,7 +924,7 @@ export default function Admin() {
           <Card className="bg-slate-900 border-slate-700 p-6 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                <Eye className="w-5 h-5 text-purple-400" /> Detajet e Përdoruesit
+                <Eye className="w-5 h-5 text-purple-400" /> {t('admin.userDetails')}
               </h2>
               <button onClick={() => setShowUserModal(false)} className="text-slate-400 hover:text-white">
                 <X className="w-6 h-6" />
@@ -952,14 +954,14 @@ export default function Admin() {
                   </div>
                   <p className="text-slate-400">{selectedUser.email}</p>
                   {selectedUser.lastSeenText && selectedUser.onlineStatus !== 'online' && (
-                    <p className="text-slate-500 text-xs mt-1">Parë: {selectedUser.lastSeenText}</p>
+                    <p className="text-slate-500 text-xs mt-1">{t('admin.lastSeen')}: {selectedUser.lastSeenText}</p>
                   )}
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 bg-slate-800/50 rounded-xl">
-                  <p className="text-slate-400 text-sm mb-1">Plan</p>
+                  <p className="text-slate-400 text-sm mb-1">{t('admin.plan')}</p>
                   <div className="flex items-center gap-2">
                     <select
                       value={selectedUser.subscriptionTier || 'free'}
@@ -1005,25 +1007,25 @@ export default function Admin() {
                   </div>
                 </div>
                 <div className="p-4 bg-slate-800/50 rounded-xl">
-                  <p className="text-slate-400 text-sm mb-1">Status</p>
+                  <p className="text-slate-400 text-sm mb-1">{t('admin.status')}</p>
                   <p className={`font-semibold ${selectedUser.isBlocked ? 'text-red-400' : 'text-green-400'}`}>
-                    {selectedUser.isBlocked ? 'Bllokuar' : 'Aktiv'}
+                    {selectedUser.isBlocked ? t('admin.blocked') : t('admin.active')}
                   </p>
                 </div>
                 <div className="p-4 bg-slate-800/50 rounded-xl">
-                  <p className="text-slate-400 text-sm mb-1">Mesazhe Total</p>
+                  <p className="text-slate-400 text-sm mb-1">{t('admin.totalMessagesLabel')}</p>
                   <p className="text-white font-semibold">{selectedUser.monthlyUsage?.totalMessages || 0}</p>
                 </div>
                 <div className="p-4 bg-slate-800/50 rounded-xl">
-                  <p className="text-slate-400 text-sm mb-1">Kredite</p>
+                  <p className="text-slate-400 text-sm mb-1">{t('admin.creditsLabel')}</p>
                   <p className="text-purple-400 font-semibold">{selectedUser.credits || 0}</p>
                 </div>
                 <div className="p-4 bg-slate-800/50 rounded-xl">
-                  <p className="text-slate-400 text-sm mb-1">Kosto API</p>
+                  <p className="text-slate-400 text-sm mb-1">{t('admin.apiCost')}</p>
                   <p className="text-green-400 font-semibold">${selectedUser.costTracking?.totalSpent?.toFixed(4) || '0.00'}</p>
                 </div>
                 <div className="p-4 bg-slate-800/50 rounded-xl">
-                  <p className="text-slate-400 text-sm mb-1">Regjistruar</p>
+                  <p className="text-slate-400 text-sm mb-1">{t('admin.registered')}</p>
                   <p className="text-white font-semibold">{selectedUser.createdAt ? new Date(selectedUser.createdAt).toLocaleDateString('sq-AL') : 'N/A'}</p>
                 </div>
               </div>
@@ -1063,7 +1065,7 @@ export default function Admin() {
                     localStorage.setItem('isAuthenticated', 'true');
                     
                     // Show success message
-                    alert(`🎭 Now viewing as: ${displayName}\n\nYou can see exactly what they see!\n\nClick "Exit Impersonation" in your profile to return to admin.`);
+                    alert(t('admin.nowViewingAs', { name: displayName }));
                     
                     // Redirect to home
                     window.location.hash = '#/';
@@ -1071,22 +1073,22 @@ export default function Admin() {
                   }}
                   className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold"
                 >
-                  <User className="w-4 h-4 mr-2" /> 🎭 Impersonate User (View as Them)
+                  <User className="w-4 h-4 mr-2" /> 🎭 {t('admin.impersonateUser')} ({t('admin.viewAsUser')})
                 </Button>
 
                 <div className="flex gap-2">
                   <Button onClick={() => { setGiftCreditsUser(selectedUser); setShowGiftCredits(true); setShowUserModal(false); }}
                     className="flex-1 bg-purple-600 hover:bg-purple-500 text-white">
-                    <Gift className="w-4 h-4 mr-2" /> Dhuro Kredite
+                    <Gift className="w-4 h-4 mr-2" /> {t('admin.gift')} {t('admin.creditsLabel')}
                   </Button>
                   <Button onClick={() => { handleBlockUser(selectedUser.odId, !selectedUser.isBlocked); setShowUserModal(false); }}
                     className={`flex-1 ${selectedUser.isBlocked ? 'bg-green-600 hover:bg-green-500' : 'bg-orange-600 hover:bg-orange-500'} text-white`}>
                     {selectedUser.isBlocked ? <Unlock className="w-4 h-4 mr-2" /> : <Lock className="w-4 h-4 mr-2" />}
-                    {selectedUser.isBlocked ? 'Zhblloko' : 'Blloko'}
+                    {selectedUser.isBlocked ? t('admin.unblock') : t('admin.block')}
                   </Button>
                   <Button onClick={() => { setUserToDelete(selectedUser); setShowDeleteConfirm(true); setShowUserModal(false); }}
                     className="flex-1 bg-red-600 hover:bg-red-500 text-white">
-                    <Trash2 className="w-4 h-4 mr-2" /> Fshi
+                    <Trash2 className="w-4 h-4 mr-2" /> {t('admin.delete')}
                   </Button>
                 </div>
               </div>
@@ -1103,20 +1105,19 @@ export default function Admin() {
               <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <AlertTriangle className="w-8 h-8 text-red-400" />
               </div>
-              <h2 className="text-xl font-bold text-white mb-2">Fshi Llogarinë?</h2>
+              <h2 className="text-xl font-bold text-white mb-2">{t('admin.deleteAccount')}</h2>
               <p className="text-slate-400">
-                Je i sigurt që dëshiron të fshish llogarinë e <span className="text-white font-semibold">{userToDelete.email}</span>?
-                Ky veprim nuk mund të kthehet!
+                {t('admin.deleteConfirmation', { email: userToDelete.email })}
               </p>
             </div>
             <div className="flex gap-3">
               <Button onClick={() => { setShowDeleteConfirm(false); setUserToDelete(null); }}
                 className="flex-1 bg-slate-700 hover:bg-slate-600 text-white">
-                Anulo
+                {t('admin.cancel')}
               </Button>
               <Button onClick={handleDeleteUser} disabled={deleteLoading}
                 className="flex-1 bg-red-600 hover:bg-red-500 text-white">
-                {deleteLoading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <><Trash2 className="w-4 h-4 mr-2" /> Fshi Përgjithmonë</>}
+                {deleteLoading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <><Trash2 className="w-4 h-4 mr-2" /> {t('admin.deleteForever')}</>}
               </Button>
             </div>
           </Card>
@@ -1131,14 +1132,14 @@ export default function Admin() {
               <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Gift className="w-8 h-8 text-purple-400" />
               </div>
-              <h2 className="text-xl font-bold text-white mb-2">Dhuro Kredite</h2>
+              <h2 className="text-xl font-bold text-white mb-2">{t('admin.gift')} {t('admin.creditsLabel')}</h2>
               <p className="text-slate-400">
-                Dhuro kredite për <span className="text-white font-semibold">{giftCreditsUser.email}</span>
+                {t('admin.giftCreditsTo', { email: giftCreditsUser.email })}
               </p>
             </div>
             
             <div className="mb-6">
-              <label className="block text-sm font-medium text-slate-300 mb-2">Sasia e Krediteve</label>
+              <label className="block text-sm font-medium text-slate-300 mb-2">{t('admin.creditAmount')}</label>
               <input
                 type="number"
                 value={giftCreditsAmount}
@@ -1162,11 +1163,11 @@ export default function Admin() {
             <div className="flex gap-3">
               <Button onClick={() => { setShowGiftCredits(false); setGiftCreditsUser(null); }}
                 className="flex-1 bg-slate-700 hover:bg-slate-600 text-white">
-                Anulo
+                {t('admin.cancel')}
               </Button>
               <Button onClick={handleGiftCredits}
                 className="flex-1 bg-purple-600 hover:bg-purple-500 text-white">
-                <Gift className="w-4 h-4 mr-2" /> Dhuro {giftCreditsAmount} Kredite
+                <Gift className="w-4 h-4 mr-2" /> {t('admin.gift')} {giftCreditsAmount} {t('admin.creditsLabel')}
               </Button>
             </div>
           </Card>
@@ -1209,7 +1210,7 @@ export default function Admin() {
                         <Bot className="w-4 h-4" />
                       )}
                       <span className="text-xs opacity-75">
-                        {msg.role === 'user' ? 'Përdoruesi' : 'AI Coach'}
+                        {msg.role === 'user' ? t('admin.user') : t('admin.aiCoach')}
                       </span>
                       {msg.hasImages && <Image className="w-3 h-3" />}
                     </div>
@@ -1225,8 +1226,8 @@ export default function Admin() {
             {/* Footer */}
             <div className="p-4 border-t border-slate-700 bg-slate-800/50">
               <div className="flex items-center justify-between text-xs text-slate-400">
-                <span>{selectedConversation.messages?.length || 0} mesazhe total</span>
-                <span>Filloi: {selectedConversation.startedAt ? new Date(selectedConversation.startedAt).toLocaleString('sq-AL') : 'N/A'}</span>
+                <span>{selectedConversation.messages?.length || 0} {t('admin.messagesTotal')}</span>
+                <span>{t('admin.started')}: {selectedConversation.startedAt ? new Date(selectedConversation.startedAt).toLocaleString('sq-AL') : 'N/A'}</span>
               </div>
             </div>
           </Card>
@@ -1236,7 +1237,7 @@ export default function Admin() {
       {/* Footer */}
       <div className="mt-6 text-center">
         <p className="text-slate-500 text-xs">
-          Përditësuar: {stats?.timestamp ? new Date(stats.timestamp).toLocaleString('sq-AL') : 'N/A'}
+          {t('admin.updated')}: {stats?.timestamp ? new Date(stats.timestamp).toLocaleString('sq-AL') : 'N/A'}
         </p>
       </div>
     </div>
