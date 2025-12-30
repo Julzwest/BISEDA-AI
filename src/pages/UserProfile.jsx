@@ -354,17 +354,31 @@ export default function UserProfile({ onLogout }) {
   const currentCountry = getCountryByCode(userCountry);
 
   // Fun achievements to unlock!
+  // Realistic, attainable achievements based on actual tracked activity
   const achievements = [
-    { id: 'first_message', title: 'Hello World 👋', desc: 'Started your first chat', icon: '🎯', unlocked: stats.totalMessages > 0 },
-    { id: 'conversationalist', title: 'Chatterbox', desc: 'Sent 50+ messages', icon: '💬', unlocked: stats.totalMessages >= 50 },
-    { id: 'chat_master', title: 'Chat Master', desc: 'Sent 200+ messages', icon: '🏆', unlocked: stats.totalMessages >= 200 },
-    { id: 'date_planner', title: 'Date Planner', desc: 'Planned 5+ dates', icon: '📅', unlocked: stats.datesPlanned >= 5 },
-    { id: 'rehearsal_pro', title: 'Practice Makes Perfect', desc: 'Did 3+ rehearsals', icon: '🎭', unlocked: stats.rehearsalsSessions >= 3 },
-    { id: 'smooth_talker', title: 'Smooth Operator 😎', desc: 'Used 10 convo starters', icon: '✨', unlocked: stats.conversationStartersUsed >= 10 },
-    { id: 'wisdom_seeker', title: 'Knowledge Seeker', desc: 'Read 20+ tips', icon: '📚', unlocked: stats.tipsViewed >= 20 },
-    { id: 'on_fire', title: 'On Fire! 🔥', desc: 'Used app 7 days straight', icon: '🔥', unlocked: stats.currentStreak >= 7 },
-    { id: 'dedicated', title: 'Dedicated Dater', desc: 'Used app 30 days', icon: '💪', unlocked: stats.currentStreak >= 30 },
-    { id: 'vip', title: 'VIP Status', desc: 'You have full access!', icon: '👑', unlocked: true }
+    // Easy entry points (unlock quickly to hook users)
+    { id: 'first_chat', title: t('achievements.firstChat', 'First Steps 💬'), desc: t('achievements.firstChatDesc', 'Sent your first message'), icon: '💬', unlocked: stats.totalMessages >= 1 },
+    { id: 'first_rehearsal', title: t('achievements.firstRehearsal', 'Stage Ready 🎭'), desc: t('achievements.firstRehearsalDesc', 'Completed first rehearsal'), icon: '🎭', unlocked: stats.rehearsalsSessions >= 1 },
+    
+    // Early progression (achievable in first week)
+    { id: 'getting_started', title: t('achievements.gettingStarted', 'Getting Started ⚡'), desc: t('achievements.gettingStartedDesc', 'Sent 5 messages'), icon: '⚡', unlocked: stats.totalMessages >= 5 },
+    { id: 'active_learner', title: t('achievements.activeLearner', 'Active Learner 📖'), desc: t('achievements.activeLearnerDesc', 'Sent 15 messages'), icon: '📖', unlocked: stats.totalMessages >= 15 },
+    { id: 'practice_mode', title: t('achievements.practiceMode', 'Practice Mode 🎯'), desc: t('achievements.practiceModeDesc', 'Did 3 rehearsals'), icon: '🎯', unlocked: stats.rehearsalsSessions >= 3 },
+    
+    // Mid-tier achievements (regular users)
+    { id: 'confident', title: t('achievements.confident', 'Confident 💪'), desc: t('achievements.confidentDesc', 'Sent 30 messages'), icon: '💪', unlocked: stats.totalMessages >= 30 },
+    { id: 'rehearsal_pro', title: t('achievements.rehearsalPro', 'Rehearsal Pro 🌟'), desc: t('achievements.rehearsalProDesc', 'Did 10 rehearsals'), icon: '🌟', unlocked: stats.rehearsalsSessions >= 10 },
+    
+    // Streak achievements (engagement)
+    { id: 'streak_3', title: t('achievements.streak3', 'On a Roll 🔥'), desc: t('achievements.streak3Desc', '3 day streak'), icon: '🔥', unlocked: stats.currentStreak >= 3 },
+    { id: 'streak_7', title: t('achievements.streak7', 'Week Warrior 💎'), desc: t('achievements.streak7Desc', '7 day streak'), icon: '💎', unlocked: stats.currentStreak >= 7 },
+    
+    // High-tier achievements (dedicated users)
+    { id: 'dating_expert', title: t('achievements.datingExpert', 'Dating Expert 🏆'), desc: t('achievements.datingExpertDesc', 'Sent 50+ messages'), icon: '🏆', unlocked: stats.totalMessages >= 50 },
+    { id: 'saved_places', title: t('achievements.savedPlaces', 'Explorer 🗺️'), desc: t('achievements.savedPlacesDesc', 'Saved 3+ places'), icon: '🗺️', unlocked: totalFavorites >= 3 },
+    
+    // Elite achievements (power users)
+    { id: 'master', title: t('achievements.master', 'Biseda Master 👑'), desc: t('achievements.masterDesc', '100+ messages & 20 rehearsals'), icon: '👑', unlocked: stats.totalMessages >= 100 && stats.rehearsalsSessions >= 20 }
   ];
 
   const unlockedCount = achievements.filter(a => a.unlocked).length;
