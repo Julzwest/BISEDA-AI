@@ -415,8 +415,8 @@ export default function HomeCoPilot() {
           </button>
         </div>
         
-        {/* SCROLLABLE CONTENT - Everything scrolls together */}
-        <div className="flex-1 overflow-y-auto pb-32">
+        {/* SCROLLABLE CONTENT - Messages scroll here */}
+        <div className="flex-1 overflow-y-auto pb-4">
           {/* Header */}
           <div className="px-4 py-4">
             <div className="flex items-center justify-between">
@@ -547,9 +547,10 @@ export default function HomeCoPilot() {
           
           <div ref={messagesEndRef} />
           </div>
-          
-          {/* Input Area - Inside scrollable content */}
-          <div className="px-4 py-4 mt-4 border-t border-slate-800/50 bg-slate-900/50 mb-20">
+        </div>
+        
+        {/* Fixed Input Area at Bottom */}
+        <div className="sticky bottom-0 left-0 right-0 px-4 py-3 border-t border-slate-800/50 bg-slate-950/98 backdrop-blur-lg pb-20">
           {/* Hidden file input */}
           <input
             type="file"
@@ -626,7 +627,6 @@ export default function HomeCoPilot() {
             >
               {chatLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
             </Button>
-          </div>
           </div>
         </div>
       </div>
