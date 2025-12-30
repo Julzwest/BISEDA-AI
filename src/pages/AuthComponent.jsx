@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { MessageSquare, Mail, Lock, Eye, EyeOff, Sparkles, ArrowRight, Heart, Zap, Star, Crown, ArrowLeft, KeyRound } from 'lucide-react';
+import { MessageSquare, Mail, Lock, Eye, EyeOff, Sparkles, ArrowRight, Heart, Zap, Star, Crown, ArrowLeft, KeyRound, User, Users } from 'lucide-react';
 import { getBackendUrl } from '@/utils/getBackendUrl';
 import { Capacitor } from '@capacitor/core';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
@@ -586,38 +586,45 @@ export default function Auth({ onAuthSuccess }) {
             {/* Name & Gender - Only show on Register */}
             {!isLogin && (
               <div className="grid grid-cols-2 gap-3">
-                <input
-                  type="text"
-                  value={firstName}
-                  onChange={(e) => { setFirstName(e.target.value); setError(''); }}
-                  className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
-                  placeholder={t('auth.yourName', 'Your Name') + " 👤"}
-                  style={{ fontSize: '16px' }}
-                  required
-                />
-                <select
-                  value={gender}
-                  onChange={(e) => { setGender(e.target.value); setError(''); }}
-                  className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white focus:outline-none focus:border-pink-500/50 transition-all text-base appearance-none cursor-pointer"
-                  style={{ fontSize: '16px' }}
-                  required
-                >
-                  <option value="" disabled className="text-slate-500">{t('auth.selectGender', 'Gender')} 🚻</option>
-                  <option value="male" className="bg-slate-800">{t('auth.male', 'Male')} 👨</option>
-                  <option value="female" className="bg-slate-800">{t('auth.female', 'Female')} 👩</option>
-                  <option value="other" className="bg-slate-800">{t('auth.other', 'Other')} 🌈</option>
-                </select>
+                <div className="relative">
+                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <input
+                    type="text"
+                    value={firstName}
+                    onChange={(e) => { setFirstName(e.target.value); setError(''); }}
+                    className="w-full pl-12 pr-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
+                    placeholder={t('auth.yourName', 'Your Name')}
+                    style={{ fontSize: '16px' }}
+                    required
+                  />
+                </div>
+                <div className="relative">
+                  <Users className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none z-10" />
+                  <select
+                    value={gender}
+                    onChange={(e) => { setGender(e.target.value); setError(''); }}
+                    className="w-full pl-12 pr-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white focus:outline-none focus:border-pink-500/50 transition-all text-base appearance-none cursor-pointer"
+                    style={{ fontSize: '16px' }}
+                    required
+                  >
+                    <option value="" disabled className="text-slate-500">{t('auth.selectGender', 'Gender')}</option>
+                    <option value="male" className="bg-slate-800">{t('auth.male', 'Male')}</option>
+                    <option value="female" className="bg-slate-800">{t('auth.female', 'Female')}</option>
+                    <option value="other" className="bg-slate-800">{t('auth.other', 'Other')}</option>
+                  </select>
+                </div>
               </div>
             )}
 
             {/* Email */}
-            <div>
+            <div className="relative">
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
               <input
                 type="email"
                 value={email}
                 onChange={(e) => { setEmail(e.target.value); setError(''); }}
-                className="w-full px-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
-                placeholder={t('auth.email') + " 📧"}
+                className="w-full pl-12 pr-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
+                placeholder={t('auth.email', 'Email')}
                 style={{ fontSize: '16px' }}
                 required
               />
@@ -625,12 +632,13 @@ export default function Auth({ onAuthSuccess }) {
 
             {/* Password */}
             <div className="relative">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); setError(''); }}
-                className="w-full px-4 py-4 pr-12 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
-                placeholder={isLogin ? t('auth.password') + " 🔐" : t('auth.createPassword') + " 🔐"}
+                className="w-full pl-12 pr-12 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
+                placeholder={isLogin ? t('auth.password', 'Password') : t('auth.createPassword', 'Create Password')}
                 style={{ fontSize: '16px' }}
                 required
               />
