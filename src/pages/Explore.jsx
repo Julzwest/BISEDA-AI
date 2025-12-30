@@ -1048,8 +1048,8 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
             <span className="text-xl">🎯</span>
           </div>
           <div>
-            <h2 className="text-lg font-bold text-white">{t('dates.selectCategory')}</h2>
-            <p className="text-xs text-slate-400">What kind of vibe are you after? 💫</p>
+            <h2 className="text-lg font-bold text-white">{t('explore.selectCategory', 'Select Category')}</h2>
+            <p className="text-xs text-slate-400">{t('explore.whatMood', 'What kind of vibe are you after?')} 💫</p>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4">
