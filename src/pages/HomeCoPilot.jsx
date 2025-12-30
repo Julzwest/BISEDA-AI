@@ -546,12 +546,10 @@ export default function HomeCoPilot() {
           )}
           
           <div ref={messagesEndRef} />
-        </div>
-        {/* End of scrollable content */}
-        </div>
-        
-        {/* Sticky Input Area at Bottom */}
-        <div className="fixed bottom-0 left-0 right-0 p-4 border-t border-slate-800/50 bg-slate-950/95 backdrop-blur-lg pb-24 z-20">
+          </div>
+          
+          {/* Input Area - Inside scrollable content */}
+          <div className="px-4 py-4 mt-4 border-t border-slate-800/50 bg-slate-900/50 mb-20">
           {/* Hidden file input */}
           <input
             type="file"
@@ -628,6 +626,7 @@ export default function HomeCoPilot() {
             >
               {chatLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
             </Button>
+          </div>
           </div>
         </div>
       </div>
