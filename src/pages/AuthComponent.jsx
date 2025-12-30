@@ -603,15 +603,6 @@ export default function Auth({ onAuthSuccess }) {
                   <span>{isLogin ? ('🚀 ' + t('auth.login')) : ('✨ ' + t('auth.createAccount'))}</span>
                 )}
               </Button>
-
-              <button
-                type="button"
-                onClick={handleGuestButtonClick}
-                disabled={loading}
-                className="w-full bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600 text-white font-bold h-14 rounded-xl text-base shadow-lg shadow-slate-500/20 transition-all duration-300 inline-flex items-center justify-center disabled:opacity-50"
-              >
-                👤 {t('auth.guest')}
-              </button>
             </div>
 
             {/* Apple Sign In Button */}
