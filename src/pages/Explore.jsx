@@ -814,19 +814,21 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
             <p className="text-xs text-slate-400">{t('explore.wheresMagic', "Where's the magic happening?")}</p>
           </div>
           {/* Country Dropdown */}
-          <div className="relative">
+          <div className="relative min-w-[140px]">
             <button
               onClick={() => setShowCountryDropdown(!showCountryDropdown)}
-              className="px-3 py-2 bg-slate-800/80 hover:bg-slate-700/80 rounded-xl text-sm text-slate-300 border border-slate-700/50 hover:border-purple-500/50 transition-all flex items-center gap-2"
+              className="w-full px-3 py-2 bg-slate-800/80 hover:bg-slate-700/80 rounded-xl text-sm text-slate-300 border border-slate-700/50 hover:border-purple-500/50 transition-all flex items-center justify-between gap-2"
             >
-              <span>{currentCountry?.flag}</span>
-              <span>{localizedCountryName}</span>
+              <span className="flex items-center gap-2">
+                <span>{currentCountry?.flag}</span>
+                <span>{localizedCountryName}</span>
+              </span>
               <ChevronRight className={`w-4 h-4 transition-transform ${showCountryDropdown ? 'rotate-90' : ''}`} />
             </button>
             
             {/* Dropdown Menu */}
             {showCountryDropdown && (
-              <div className="absolute right-0 top-full mt-2 bg-slate-800 border border-slate-700 rounded-xl shadow-xl z-50 min-w-[180px] overflow-hidden">
+              <div className="absolute right-0 top-full mt-1 bg-slate-800 border border-slate-700 rounded-xl shadow-xl z-50 w-full overflow-hidden">
                 {countries.map((country) => (
                   <button
                     key={country.code}
@@ -836,14 +838,14 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
                       setSelectedCity('');
                       setShowCountryDropdown(false);
                     }}
-                    className={`w-full px-4 py-3 text-left text-sm flex items-center gap-2 transition-colors ${
+                    className={`w-full px-3 py-2.5 text-left text-sm flex items-center gap-2 transition-colors ${
                       userCountry === country.code
                         ? 'bg-purple-600 text-white'
                         : 'text-slate-300 hover:bg-slate-700'
                     }`}
                   >
                     <span>{country.flag}</span>
-                    <span>{i18n.language === 'sq' ? country.nameAl : country.nameEn}</span>
+                    <span className="truncate">{i18n.language === 'sq' ? country.nameAl : country.nameEn}</span>
                   </button>
                 ))}
               </div>
