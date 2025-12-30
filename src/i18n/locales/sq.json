@@ -6,7 +6,11 @@
     "freeTrialEnds": "Prova falas mbaron për",
     "trialActive": "Prova Aktive",
     "disposableEmail": "Ju lutem përdorni një email të vlefshëm. Email-et e përkohshme nuk lejohen.",
-    "deviceAlreadyUsed": "Një provë falas është përdorur tashmë në këtë pajisje."
+    "deviceAlreadyUsed": "Një provë falas është përdorur tashmë në këtë pajisje.",
+    "alreadyUsed": "Kjo pajisje ka përdorur tashmë provën falas. Ju lutem zgjidhni një plan abonimi për të vazhduar.",
+    "oneTimeOnly": "Prova falas është vetëm një herë për pajisje",
+    "creditsRemaining": "kredite të mbetura",
+    "dailyLimitReached": "Limiti ditor u arrit. Përmirëso për më shumë!"
   },
   "trialExpired": {
     "title": "Prova Jote Falas ka Mbaruar",

@@ -228,6 +228,15 @@ export default function Auth({ onAuthSuccess }) {
       return;
     }
     
+    // 🛡️ BULLETPROOF: Check if device already used trial (ONE-TIME ONLY)
+    if (!isLogin) {
+      const trialUsedForever = localStorage.getItem('trial_used_forever');
+      if (trialUsedForever) {
+        setError(t('trial.alreadyUsed', 'This device has already used the free trial. Please choose a subscription plan to continue.'));
+        return;
+      }
+    }
+    
     if (!password || password.length < 6) {
       setError(t('authErrors.passwordLength'));
       return;

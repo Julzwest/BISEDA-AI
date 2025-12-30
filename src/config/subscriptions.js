@@ -10,9 +10,10 @@ export const SUBSCRIPTION_TIERS = {
     price: 0,
     priceDisplay: '€0',
     priceDisplayAlbanian: '€0',
-    credits: 50, // Limited trial credits (not unlimited - prevents abuse)
-    dailyLimit: 20, // Max 20 messages per day during trial
+    credits: 30, // REDUCED: 30 credits max (prevents any possible abuse)
+    dailyLimit: 15, // REDUCED: Max 15 messages per day during trial
     durationHours: 12, // 12-hour trial
+    maxCost: 0.0105, // Max €0.01 cost per trial user (30 × €0.00035)
     features: {
       chat: true,
       screenshots: true,

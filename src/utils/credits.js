@@ -57,16 +57,35 @@ const updateUsageHash = (subscription) => {
 export const initializeUserSubscription = () => {
   const existing = localStorage.getItem(SUBSCRIPTION_STORAGE_KEY);
   if (!existing) {
-    // New user - start free trial with LIMITED credits
+    // Check if device already used trial (one-time only!)
+    const trialUsed = localStorage.getItem('trial_used_forever');
+    if (trialUsed) {
+      // Device already used trial - go straight to expired
+      const subscription = {
+        tier: 'expired',
+        credits: 0,
+        creditsUsedToday: 0,
+        lastResetDate: new Date().toISOString().split('T')[0],
+        trialAlreadyUsed: true,
+      };
+      localStorage.setItem(SUBSCRIPTION_STORAGE_KEY, JSON.stringify(subscription));
+      return subscription;
+    }
+    
+    // New user - start free trial with VERY LIMITED credits
     const subscription = {
       tier: 'free_trial',
-      credits: 50, // Limited trial credits (prevents abuse)
+      credits: 30, // REDUCED: Only 30 credits max (€0.01 max cost)
       creditsUsedToday: 0,
       lastResetDate: new Date().toISOString().split('T')[0],
       trialStartDate: new Date().toISOString(),
     };
     localStorage.setItem(SUBSCRIPTION_STORAGE_KEY, JSON.stringify(subscription));
     localStorage.setItem(TRIAL_START_KEY, new Date().toISOString());
+    
+    // Mark device as having used trial (PERMANENT - cannot be undone)
+    localStorage.setItem('trial_used_forever', new Date().toISOString());
+    
     return subscription;
   }
   return JSON.parse(existing);
@@ -95,16 +114,28 @@ export const getSubscription = () => {
     const trialStart = localStorage.getItem(TRIAL_START_KEY);
     const remaining = getTrialTimeRemaining(trialStart);
     if (remaining?.expired) {
-      // Trial expired - downgrade to no access
+      // Trial expired - downgrade to no access PERMANENTLY
       subscription.tier = 'expired';
       subscription.credits = 0;
+      subscription.trialExpiredAt = new Date().toISOString();
       localStorage.setItem(SUBSCRIPTION_STORAGE_KEY, JSON.stringify(subscription));
+      
+      // Mark trial as permanently used
+      localStorage.setItem('trial_used_forever', new Date().toISOString());
+    }
+    
+    // Also check if credits depleted before time expires
+    if (subscription.credits <= 0) {
+      subscription.tier = 'expired';
+      subscription.creditsDepletedAt = new Date().toISOString();
+      localStorage.setItem(SUBSCRIPTION_STORAGE_KEY, JSON.stringify(subscription));
+      localStorage.setItem('trial_used_forever', new Date().toISOString());
     }
   }
   
-  // Reset daily usage if new day
+  // Reset daily usage if new day (but NOT for trial - they only get one shot)
   const today = new Date().toISOString().split('T')[0];
-  if (subscription.lastResetDate !== today) {
+  if (subscription.lastResetDate !== today && subscription.tier !== 'free_trial' && subscription.tier !== 'expired') {
     subscription.creditsUsedToday = 0;
     subscription.lastResetDate = today;
     localStorage.setItem(SUBSCRIPTION_STORAGE_KEY, JSON.stringify(subscription));
