@@ -746,11 +746,11 @@ export default function HomeCoPilot() {
         <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/60 rounded-3xl p-5 mb-8 border border-slate-700/50 backdrop-blur-sm">
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center">
-              <div className="w-12 h-12 mx-auto mb-2 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-2xl flex items-center justify-center border border-purple-500/20">
-                <Flame className="w-6 h-6 text-orange-400" />
+              <div className="w-12 h-12 mx-auto mb-2 bg-gradient-to-br from-yellow-500/20 to-amber-500/20 rounded-2xl flex items-center justify-center border border-yellow-500/20">
+                <Star className="w-6 h-6 text-yellow-400" fill="currentColor" />
               </div>
-              <div className="text-2xl font-black text-white">10x</div>
-              <div className="text-xs text-slate-400">{t('homepage.stats.betterReplies')}</div>
+              <div className="text-2xl font-black text-white">4.9</div>
+              <div className="text-xs text-slate-400">{t('homepage.stats.userRating')}</div>
             </div>
             <div className="text-center">
               <div className="w-12 h-12 mx-auto mb-2 bg-gradient-to-br from-pink-500/20 to-rose-500/20 rounded-2xl flex items-center justify-center border border-pink-500/20">

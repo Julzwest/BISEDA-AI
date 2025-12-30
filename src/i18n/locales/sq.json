@@ -955,7 +955,9 @@
       "membersHelped": "Anëtarë të ndihmuar",
       "usersHelped": "Përdorues të ndihmuar nga Biseda.ai",
       "aiResponse": "Përgjigje AI",
-      "alwaysReady": "Gjithmonë Gati"
+      "alwaysReady": "Gjithmonë Gati",
+      "betterReplies": "Përgjigje më të mira",
+      "userRating": "Vlerësim"
     },
     "howItWorks": "Çfarë merr",
     "steps": {

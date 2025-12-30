@@ -956,7 +956,9 @@
       "membersHelped": "Members helped",
       "usersHelped": "Users helped by Biseda.ai",
       "aiResponse": "AI response",
-      "alwaysReady": "Always Ready"
+      "alwaysReady": "Always Ready",
+      "betterReplies": "Better replies",
+      "userRating": "User Rating"
     },
     "howItWorks": "What you get",
     "steps": {
