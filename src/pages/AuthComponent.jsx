@@ -6,6 +6,7 @@ import { MessageSquare, Mail, Lock, Eye, EyeOff, Sparkles, ArrowRight, Heart, Za
 import { getBackendUrl } from '@/utils/getBackendUrl';
 import { Capacitor } from '@capacitor/core';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { isDisposableEmail, getDeviceId, registerDeviceTrial } from '@/utils/deviceFingerprint';
 
 // Free trial constants (exported for use elsewhere)
 export const FREE_TRIAL_DAYS = 3;
@@ -221,6 +222,12 @@ export default function Auth({ onAuthSuccess }) {
       return;
     }
     
+    // 🛡️ Block disposable emails for new registrations
+    if (!isLogin && isDisposableEmail(email.trim())) {
+      setError(t('trial.disposableEmail', 'Please use a valid email address. Temporary emails are not allowed.'));
+      return;
+    }
+    
     if (!password || password.length < 6) {
       setError(t('authErrors.passwordLength'));
       return;
@@ -273,8 +280,18 @@ export default function Auth({ onAuthSuccess }) {
 
         console.log('✅ Auth successful:', { userId, userName, email: data.user.email });
 
-        // For new registrations, show welcome modal first
+        // For new registrations, set trial start time and register device
         if (!isLogin) {
+          // 🕐 Start 24-hour trial countdown
+          localStorage.setItem('trialStartTime', Date.now().toString());
+          localStorage.setItem('subscriptionTier', 'trial');
+          
+          // 🛡️ Register device to prevent trial abuse
+          const deviceId = getDeviceId();
+          const backendUrl = getBackendUrl();
+          registerDeviceTrial(backendUrl).catch(err => console.log('Device registration failed:', err));
+          
+          console.log('⏱️ Trial started for device:', deviceId);
           setPendingAuthData({
             userId,
             email: data.user.email,

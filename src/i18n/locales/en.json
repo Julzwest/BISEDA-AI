@@ -3,6 +3,15 @@
     "name": "Biseda.ai",
     "tagline": "Learn how to talk to guys/girls, improve your chats on WhatsApp, Instagram, Facebook Messenger, Tinder and other dating apps"
   },
+  "trial": {
+    "remaining": "left",
+    "expired": "Trial Ended",
+    "upgradeNow": "Upgrade Now",
+    "freeTrialEnds": "Free trial ends in",
+    "trialActive": "Trial Active",
+    "disposableEmail": "Please use a valid email address. Temporary emails are not allowed.",
+    "deviceAlreadyUsed": "A free trial has already been used on this device."
+  },
   "onboarding": {
     "skip": "Skip",
     "back": "Back",

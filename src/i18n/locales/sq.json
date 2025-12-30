@@ -1,4 +1,13 @@
 {
+  "trial": {
+    "remaining": "mbetur",
+    "expired": "Prova Mbaroi",
+    "upgradeNow": "Përmirëso Tani",
+    "freeTrialEnds": "Prova falas mbaron për",
+    "trialActive": "Prova Aktive",
+    "disposableEmail": "Ju lutem përdorni një email të vlefshëm. Email-et e përkohshme nuk lejohen.",
+    "deviceAlreadyUsed": "Një provë falas është përdorur tashmë në këtë pajisje."
+  },
   "onboarding": {
     "skip": "Kalo",
     "back": "Prapa",

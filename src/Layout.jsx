@@ -5,6 +5,7 @@ import { createPageUrl } from './utils';
 import { Lightbulb, Home, Calendar, Bot, Flag, User, PartyPopper, Sparkles, MessageCircle, Heart, MapPin, Zap, Users, Wrench } from 'lucide-react';
 import RegionSwitcher from '@/components/RegionSwitcher';
 import GuestBanner from '@/components/GuestBanner';
+import TrialCountdown from '@/components/TrialCountdown';
 import { clearGuestSession } from '@/pages/AuthComponent';
 import { trackPageView } from '@/utils/analytics';
 
@@ -133,23 +134,27 @@ export default function Layout({ children, onLogout }) {
               <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
-              <span className="font-bold text-white text-lg">Biseda<span className="text-purple-400">.ai</span></span>
+              <span className="font-bold text-white text-lg hidden sm:inline">Biseda<span className="text-purple-400">.ai</span></span>
             </Link>
           </div>
           
-          {/* Center - Guest Banner (if guest) */}
-          {isGuest && (
-            <GuestBanner 
-              onExpired={() => {
-                clearGuestSession();
-                if (onLogout) onLogout();
-              }}
-              onSignUp={() => {
-                clearGuestSession();
-                if (onLogout) onLogout();
-              }}
-            />
-          )}
+          {/* Center - Trial Countdown Timer */}
+          <div className="absolute left-1/2 transform -translate-x-1/2">
+            {isGuest ? (
+              <GuestBanner 
+                onExpired={() => {
+                  clearGuestSession();
+                  if (onLogout) onLogout();
+                }}
+                onSignUp={() => {
+                  clearGuestSession();
+                  if (onLogout) onLogout();
+                }}
+              />
+            ) : (
+              <TrialCountdown />
+            )}
+          </div>
           
           {/* Right side - Region Switcher only (Profile is now in nav) */}
           <div className="flex items-center gap-2">
