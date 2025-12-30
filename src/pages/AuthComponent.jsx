@@ -568,13 +568,13 @@ export default function Auth({ onAuthSuccess }) {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Animated Benefits Carousel - Only show on Register */}
             {!isLogin && (
-              <div className="flex items-center justify-center py-3">
+              <div className="flex items-center justify-center -mt-1 mb-1">
                 <div 
                   className="flex items-center justify-center"
                   key={currentBenefit}
                 >
-                  <div className="flex items-center gap-3 animate-benefit-slide">
-                    <span className="text-2xl animate-bounce-slow">{benefits[currentBenefit].emoji}</span>
+                  <div className="flex items-center gap-2 animate-benefit-slide">
+                    <span className="text-xl animate-bounce-slow">{benefits[currentBenefit].emoji}</span>
                     <span className="text-white font-medium text-sm">{benefits[currentBenefit].text}</span>
                   </div>
                 </div>
