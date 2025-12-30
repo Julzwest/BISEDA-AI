@@ -76,7 +76,12 @@
     "aiCoach": "AI Coach",
     "dates": "Takime",
     "events": "Evente",
-    "tips": "Këshilla"
+    "tips": "Këshilla",
+    "hub": "Kryefaqja",
+    "wingman": "Wingman",
+    "rehearse": "Praktiko",
+    "more": "Më shumë",
+    "profile": "Profili"
   },
   "home": {
     "getStarted": "Fillo tani",
@@ -488,6 +493,12 @@
     "difficultConvoDesc": "Praktiko trajtimin e temave të vështira",
     "reconnecting": "Ri-lidhje",
     "reconnectingDesc": "Praktiko ri-kontaktimin me një ish ose dikë nga e kaluara",
+    "comingOut": "Dalja Hapur",
+    "comingOutDesc": "Praktiko daljen hapur me miqtë ose familjen",
+    "cheating": "Përballja me Tradhtinë",
+    "cheatingDesc": "Praktiko adresimin e pabeiësisë ose dyshimeve",
+    "friendzone": "Dalja nga Zona e Miqve",
+    "friendzoneDesc": "Praktiko shprehjen e interesit romantik me një mik",
     "friendly": "Miqësor & i Hapur",
     "shy": "I Turpshëm & i Rezervuar",
     "confident": "I Sigurt & Flirtues",

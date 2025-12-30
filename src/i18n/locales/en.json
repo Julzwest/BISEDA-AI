@@ -76,7 +76,12 @@
     "aiCoach": "AI Coach",
     "dates": "Dates",
     "events": "Events",
-    "tips": "Tips"
+    "tips": "Tips",
+    "hub": "Hub",
+    "wingman": "Wingman",
+    "rehearse": "Rehearse",
+    "more": "More",
+    "profile": "Profile"
   },
   "home": {
     "getStarted": "Get Started",
@@ -488,6 +493,12 @@
     "difficultConvoDesc": "Practice handling tough topics",
     "reconnecting": "Reconnecting",
     "reconnectingDesc": "Practice reaching out to an ex or old flame",
+    "comingOut": "Coming Out",
+    "comingOutDesc": "Practice coming out to friends or family",
+    "cheating": "Cheating Confrontation",
+    "cheatingDesc": "Practice addressing infidelity or suspicions",
+    "friendzone": "Escaping the Friend Zone",
+    "friendzoneDesc": "Practice expressing romantic interest to a friend",
     "friendly": "Friendly & Open",
     "shy": "Shy & Reserved",
     "confident": "Confident & Flirty",

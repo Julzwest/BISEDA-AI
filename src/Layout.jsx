@@ -43,11 +43,11 @@ export default function Layout({ children, onLogout }) {
 
   // 5-tab navigation: Hub, Rizz, Practice, Tools, Profile
   const navItems = [
-    { name: 'Hub', icon: Home, page: 'Copilot' },
-    { name: 'Wingman', icon: Zap, page: 'Wingman' },
-    { name: 'Rehearse', icon: Users, page: 'Rehearsal' },
-    { name: 'More', icon: Wrench, page: 'Tools' },
-    { name: 'Profile', icon: User, page: 'Profile' }
+    { name: t('nav.hub', 'Hub'), icon: Home, page: 'Copilot' },
+    { name: t('nav.wingman', 'Wingman'), icon: Zap, page: 'Wingman' },
+    { name: t('nav.rehearse', 'Rehearse'), icon: Users, page: 'Rehearsal' },
+    { name: t('nav.more', 'More'), icon: Wrench, page: 'Tools' },
+    { name: t('nav.profile', 'Profile'), icon: User, page: 'Profile' }
   ];
 
   return (
