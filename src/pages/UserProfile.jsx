@@ -12,6 +12,11 @@ import { getLocalizedCountryName, getCountryByCode, countries } from '@/config/c
 import { getBackendUrl } from '@/utils/getBackendUrl';
 import { getFavorites, removeVenueFavorite, removeDateIdeaFavorite, removeTipFavorite, removeGiftFavorite } from '@/utils/favorites';
 import SubscriptionModal from '@/components/SubscriptionModal';
+import SubscriptionManager, { 
+  SUBSCRIPTION_TIERS, 
+  getRemainingCredits, 
+  getDailyRemainingCredits 
+} from '@/components/SubscriptionManager';
 import { getProfile, saveProfile, defaultProfile } from '@/utils/profileMemory';
 
 export default function UserProfile({ onLogout }) {
@@ -33,6 +38,8 @@ export default function UserProfile({ onLogout }) {
   const [localFavorites, setLocalFavorites] = useState(getFavorites());
   const [loading, setLoading] = useState(true);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [showSubscriptionManager, setShowSubscriptionManager] = useState(false);
+  const [currentSubscriptionTier, setCurrentSubscriptionTier] = useState(localStorage.getItem('subscriptionTier') || 'trial');
   const [activeSection, setActiveSection] = useState('progress'); // 'progress', 'saved', 'settings'
   const [userCountry, setUserCountry] = useState(localStorage.getItem('userCountry') || 'AL');
   const [userCity, setUserCity] = useState(localStorage.getItem('userCity') || '');
@@ -316,28 +323,30 @@ export default function UserProfile({ onLogout }) {
 
   const getTierBadge = (tier) => {
     switch(tier) {
+      case 'trial':
       case 'free_trial':
+      case 'free':
         return { 
           label: t('subscription.freeTrial', 'Free Trial'), 
           color: 'bg-green-500/20 text-green-300 border-green-500/30', 
           icon: Sparkles 
         };
-      case 'lite':
+      case 'starter':
         return { 
-          label: t('subscription.lite', 'Lite'), 
+          label: t('subscription.starter', 'Starter'), 
           color: 'bg-blue-500/20 text-blue-300 border-blue-500/30', 
-          icon: Star 
-        };
-      case 'plus':
-        return { 
-          label: t('subscription.plus', 'Plus'), 
-          color: 'bg-orange-500/20 text-orange-300 border-orange-500/30', 
           icon: Zap 
         };
-      case 'vip':
+      case 'pro':
         return { 
-          label: t('subscription.vip', 'VIP'), 
-          color: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30', 
+          label: t('subscription.pro', 'Pro'), 
+          color: 'bg-purple-500/20 text-purple-300 border-purple-500/30', 
+          icon: Star 
+        };
+      case 'elite':
+        return { 
+          label: t('subscription.elite', 'Elite'), 
+          color: 'bg-amber-500/20 text-amber-300 border-amber-500/30', 
           icon: Crown 
         };
       case 'expired':
@@ -355,8 +364,9 @@ export default function UserProfile({ onLogout }) {
     }
   };
 
-  const currentTier = usage?.tier || localStorage.getItem('userSubscriptionTier') || 'free';
+  const currentTier = currentSubscriptionTier || usage?.tier || localStorage.getItem('subscriptionTier') || 'trial';
   const tierBadge = getTierBadge(currentTier);
+  const tierConfig = SUBSCRIPTION_TIERS[currentTier] || SUBSCRIPTION_TIERS.trial;
   const TierIcon = tierBadge.icon;
   const currentCountry = getCountryByCode(userCountry);
 
@@ -458,12 +468,48 @@ export default function UserProfile({ onLogout }) {
             </Button>
           )}
           
-          <div className="flex gap-2">
-            {/* FREE VIP Status Badge */}
-            <div className="flex-1 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 py-2 px-4 rounded-xl text-sm font-semibold text-center text-emerald-300 flex items-center justify-center gap-2">
-              <Sparkles className="w-4 h-4" />
-              {t('userProfile.allUnlocked', '✨ All Features Unlocked!')}
+          {/* Subscription Status Card */}
+          <div className={`p-3 rounded-xl border bg-gradient-to-r ${tierConfig?.color || 'from-slate-700 to-slate-600'} border-white/20`}>
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <TierIcon className="w-5 h-5 text-white" />
+                <span className="text-white font-bold">{tierBadge.label}</span>
+              </div>
+              <button
+                onClick={() => setShowSubscriptionManager(true)}
+                className="text-white/80 hover:text-white text-sm underline"
+              >
+                {t('subscription.manage', 'Manage')}
+              </button>
             </div>
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className="bg-black/20 rounded-lg p-2">
+                <p className="text-white/60">{t('subscription.creditsLeft', 'Credits Left')}</p>
+                <p className="text-white font-bold">{getRemainingCredits()} / {tierConfig?.credits || 50}</p>
+              </div>
+              <div className="bg-black/20 rounded-lg p-2">
+                <p className="text-white/60">{t('subscription.dailyLeft', 'Today')}</p>
+                <p className="text-white font-bold">{getDailyRemainingCredits()} / {tierConfig?.dailyLimit || 20}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="flex gap-2">
+            {/* Upgrade/Manage Button */}
+            <Button
+              onClick={() => setShowSubscriptionManager(true)}
+              className={`flex-1 font-semibold py-3 rounded-xl text-sm ${
+                currentTier === 'elite' 
+                  ? 'bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 text-amber-300'
+                  : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white'
+              }`}
+            >
+              <CreditCard className="w-4 h-4 mr-1.5" />
+              {currentTier === 'elite' 
+                ? t('subscription.manageSubscription', 'Manage Subscription')
+                : t('subscription.upgradePlan', 'Upgrade Plan')
+              }
+            </Button>
             <Button
               onClick={onLogout}
               variant="outline"
@@ -1363,12 +1409,23 @@ export default function UserProfile({ onLogout }) {
         </div>
       )}
 
-      {/* Subscription Modal */}
+      {/* Subscription Modal (old) */}
       <SubscriptionModal 
         isOpen={showUpgradeModal}
         onClose={() => setShowUpgradeModal(false)}
         onSuccess={(result) => {
           console.log('Subscription upgraded:', result);
+          fetchData(); // Refresh usage data
+        }}
+      />
+      
+      {/* Subscription Manager (new - full management) */}
+      <SubscriptionManager
+        isOpen={showSubscriptionManager}
+        onClose={() => setShowSubscriptionManager(false)}
+        currentTier={currentTier}
+        onTierChange={(newTier) => {
+          setCurrentSubscriptionTier(newTier);
           fetchData(); // Refresh usage data
         }}
       />
