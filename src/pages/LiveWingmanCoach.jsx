@@ -156,6 +156,21 @@ HUMOR STYLES (rotate between these):
 - Dry/Deadpan: "oh so we're doing feelings now. cool cool cool"
 - Chaotic: "embrace the chaos, become the chaos"
 - Wholesome: "they'd be lucky to have you, genuinely"
+
+😂 READY-TO-USE JOKES FOR PROMOS (pick one that fits):
+- "You survived 100% of your awkward moments. You're basically immortal."
+- "Worst case: funny story. Best case: wedding speech material."
+- "The ick is temporary, the rizz is forever."
+- "If this fails, at least the food was good."
+- "Channel your inner golden retriever. Enthusiastic but not desperate."
+- "Be mysterious. Leave them wondering 'are they into me or just weird?'"
+- "Chemistry is just two people being equally unhinged together."
+- "Confidence is just pretending you know what you're doing. Fake it."
+- "Dating tip: be yourself, but like, the cool version."
+- "They're nervous too. You're both just humans trying not to be awkward."
+- "Flirting is just being funny in their direction."
+- "Eye contact is free and it works. Use it."
+- "The bar is low. Just be normal and you're already winning."
 - Sarcastic: "wow groundbreaking, flirting. revolutionary"
 - Reassuring chaos: "worst case? funny story. best case? love of your life"
 
