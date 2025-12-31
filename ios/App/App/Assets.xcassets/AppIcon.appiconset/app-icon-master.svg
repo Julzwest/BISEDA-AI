@@ -49,10 +49,9 @@
   <!-- Shine overlay -->
   <rect x="0" y="0" width="1024" height="1024" rx="224" fill="url(#shine)"/>
   
-  <!-- Decorative circles in background -->
-  <circle cx="180" cy="180" r="80" fill="white" opacity="0.1"/>
-  <circle cx="850" cy="750" r="60" fill="white" opacity="0.08"/>
-  <circle cx="900" cy="300" r="40" fill="white" opacity="0.1"/>
+  <!-- Subtle background glow -->
+  <circle cx="180" cy="180" r="60" fill="white" opacity="0.08"/>
+  <circle cx="850" cy="800" r="50" fill="white" opacity="0.06"/>
   
   <!-- Chat bubble behind B - Purple gradient with black outline -->
   <g filter="url(#shadow)">
@@ -82,15 +81,26 @@
       C 280 680, 220 640, 220 580
       Z
     " fill="url(#bubbleGradient)"/>
-    <!-- Shine on bubble -->
+    <!-- Subtle shine on bubble top -->
     <path d="
-      M 240 220 
-      C 240 160, 320 120, 512 120
-      C 650 120, 720 140, 750 180
-      L 400 180
-      C 320 180, 260 200, 240 220
+      M 280 180 
+      C 300 140, 400 120, 512 120
+      C 620 120, 700 135, 740 160
+      L 700 180
+      C 650 165, 580 155, 512 155
+      C 420 155, 340 165, 280 180
       Z
-    " fill="white" opacity="0.3"/>
+    " fill="white" opacity="0.2"/>
+  </g>
+  
+  <!-- Small chat icon on bubble (top left of bubble) -->
+  <g transform="translate(300, 220)">
+    <path d="M-20,-16 L20,-16 C26,-16 30,-12 30,-6 L30,10 C30,16 26,20 20,20 L-5,20 L-18,35 L-14,20 L-20,20 C-26,20 -30,16 -30,10 L-30,-6 C-30,-12 -26,-16 -20,-16 Z" 
+          fill="white" opacity="0.9"/>
+    <!-- Dots inside -->
+    <circle cx="-10" cy="4" r="4" fill="url(#bubbleGradient)"/>
+    <circle cx="0" cy="4" r="4" fill="url(#bubbleGradient)"/>
+    <circle cx="10" cy="4" r="4" fill="url(#bubbleGradient)"/>
   </g>
   
   <!-- Bold WHITE B - BIGGER -->
@@ -104,24 +114,19 @@
     text-anchor="middle"
   >B</text>
   
-  <!-- Chat bubble icon (top right) -->
-  <g transform="translate(860, 140)" filter="url(#glow)">
-    <!-- Chat bubble background -->
-    <circle cx="0" cy="0" r="50" fill="white" opacity="0.95"/>
-    <!-- Mini chat bubble -->
-    <path d="M-18,-15 L18,-15 C22,-15 25,-12 25,-8 L25,8 C25,12 22,15 18,15 L-5,15 L-15,25 L-12,15 L-18,15 C-22,15 -25,12 -25,8 L-25,-8 C-25,-12 -22,-15 -18,-15 Z" 
+  <!-- AI Sparkle indicator (top right) -->
+  <g transform="translate(880, 130)" filter="url(#glow)">
+    <circle cx="0" cy="0" r="45" fill="white" opacity="0.95"/>
+    <!-- AI star/sparkle -->
+    <path d="M0,-28 L5,-8 L25,-8 L9,5 L15,25 L0,12 L-15,25 L-9,5 L-25,-8 L-5,-8 Z" 
           fill="url(#accentGradient)"/>
-    <!-- Dots inside chat -->
-    <circle cx="-10" cy="0" r="3" fill="white"/>
-    <circle cx="0" cy="0" r="3" fill="white"/>
-    <circle cx="10" cy="0" r="3" fill="white"/>
   </g>
   
-  <!-- Small chat bubble (top left) -->
-  <g transform="translate(150, 250)" filter="url(#glow)">
-    <circle cx="0" cy="0" r="32" fill="white" opacity="0.9"/>
-    <!-- Tiny chat icon -->
-    <path d="M-12,-10 L12,-10 C15,-10 17,-8 17,-5 L17,5 C17,8 15,10 12,10 L-3,10 L-10,17 L-8,10 L-12,10 C-15,10 -17,8 -17,5 L-17,-5 C-17,-8 -15,-10 -12,-10 Z" 
+  <!-- Heart icon (top left) - dating touch -->
+  <g transform="translate(140, 220)" filter="url(#glow)">
+    <circle cx="0" cy="0" r="35" fill="white" opacity="0.9"/>
+    <!-- Heart -->
+    <path d="M0,-8 C-6,-18 -20,-10 -20,2 C-20,14 0,24 0,24 C0,24 20,14 20,2 C20,-10 6,-18 0,-8 Z" 
           fill="url(#accentGradient)"/>
   </g>
   
