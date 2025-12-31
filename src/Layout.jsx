@@ -211,7 +211,7 @@ export default function Layout({ children, onLogout }) {
                 <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent"></div>
                 {/* Chat bubble with B - Purple/Pink bubble, White B */}
                 <div className="relative w-7 h-6 bg-gradient-to-br from-violet-500 to-pink-500 rounded-md flex items-center justify-center shadow-inner">
-                  <span className="text-white font-black text-sm drop-shadow-sm">B</span>
+                  <span className="text-white font-black text-base drop-shadow-sm">B</span>
                   {/* Bubble tail */}
                   <div className="absolute -bottom-1 left-1 w-2 h-2 bg-gradient-to-br from-fuchsia-500 to-pink-500 transform rotate-45"></div>
                   {/* Shine */}
