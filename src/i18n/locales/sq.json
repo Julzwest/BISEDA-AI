@@ -243,6 +243,12 @@
     "passwordWeak": "I dobët",
     "passwordMedium": "Mesatar",
     "passwordStrong": "I fortë",
+    "verifyEmail": "Verifiko Email-in Tënd",
+    "codeSentTo": "Kemi dërguar një kod 6-shifror në:",
+    "verifyCode": "Verifiko Kodin",
+    "resendCode": "Nuk e more kodin? Ridërgo",
+    "resendIn": "Ridërgo kodin në {{seconds}}s",
+    "checkSpam": "Nuk e gjen? Kontrollo dosjen spam",
     "welcomeTitle": "Mirësevjen!",
     "welcomeMessage": "Le të përmirësojmë lojën tënde të takimeve! 💕",
     "feature1": "Këshilla bisede me AI",
@@ -305,7 +311,9 @@
     "userNotFound": "Përdoruesi nuk u gjet",
     "codeExpired": "Kodi ka skaduar. Kërkoni një kod të ri.",
     "invalidCode": "Kodi i gabuar ❌",
-    "serverError": "Gabim në server. Provo përsëri."
+    "serverError": "Gabim në server. Provo përsëri.",
+    "invalidEmailFormat": "Shkruaj një email të vlefshëm (p.sh., emri@gmail.com)",
+    "invalidEmailProvider": "Përdor një ofrues emaili të vlefshëm (Gmail, Outlook, Yahoo, iCloud, etj.)"
   },
   "chat": {
     "placeholder": "Shkruaj mesazhin tënd këtu...",

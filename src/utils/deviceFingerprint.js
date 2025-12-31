@@ -3,6 +3,96 @@
  * Prevents users from creating multiple accounts for free trials
  */
 
+// List of ALLOWED legitimate email providers
+const ALLOWED_EMAIL_PROVIDERS = [
+  // Major global providers
+  'gmail.com', 'googlemail.com',
+  'outlook.com', 'hotmail.com', 'live.com', 'msn.com', 'hotmail.co.uk', 'outlook.co.uk',
+  'yahoo.com', 'yahoo.co.uk', 'yahoo.fr', 'yahoo.de', 'yahoo.it', 'yahoo.es', 'yahoo.ca', 'yahoo.com.au',
+  'icloud.com', 'me.com', 'mac.com',
+  'aol.com', 'aim.com',
+  'protonmail.com', 'proton.me', 'pm.me',
+  'zoho.com', 'zohomail.com',
+  'mail.com', 'email.com',
+  'gmx.com', 'gmx.net', 'gmx.de', 'gmx.at', 'gmx.ch',
+  'yandex.com', 'yandex.ru',
+  'fastmail.com', 'fastmail.fm',
+  'tutanota.com', 'tutanota.de', 'tutamail.com',
+  'hey.com',
+  
+  // Regional providers - UK
+  'btinternet.com', 'btopenworld.com',
+  'sky.com', 'sky.co.uk',
+  'virginmedia.com', 'virgin.net',
+  'talktalk.net', 'talktalk.co.uk',
+  'ntlworld.com',
+  'blueyonder.co.uk',
+  'plusnet.com',
+  
+  // Regional providers - Europe
+  'orange.fr', 'wanadoo.fr', 'free.fr', 'sfr.fr', 'laposte.net',
+  'web.de', 't-online.de', 'freenet.de', 'arcor.de', '1und1.de',
+  'libero.it', 'virgilio.it', 'tim.it', 'alice.it', 'tiscali.it',
+  'bluewin.ch',
+  'upc.ch',
+  
+  // Regional providers - Albania/Kosovo/Balkans (COMPREHENSIVE LIST)
+  // Albania ISPs & Telecom
+  'albaniaonline.net', 'abcom.al', 'abissnet.al', 'abissnet.com',
+  'albtelecom.al', 'albtelekom.al', 'telecom.al',
+  'one.al', 'vodafone.al', 'telekom.al',
+  'aku.al', 'icc-al.org', 'tirana.al',
+  'infoalba.net', 'sanxhaku.net', 'fastnet.al',
+  'digicom.al', 'adanet.al', 'eurogjici.com',
+  
+  // Kosovo ISPs & Telecom
+  'ipko.net', 'ipko.com', 'kujtesa.com', 
+  'vfrr-ks.org', 'telekomi.com', 'kosovotelekom.com',
+  'dardafon.com', 'mtpt-ks.org',
+  
+  // Balkans regional
+  'yahoo.al', 'hotmail.al', 'live.al', 'outlook.al',
+  'yahoo.mk', 'yahoo.rs', 'yahoo.ba', 'yahoo.hr', 'yahoo.si',
+  't-home.mk', 'on.net.mk', 'mt.net.mk',
+  'sbb.rs', 'mts.rs', 'telenor.rs', 'open.telekom.rs',
+  'bih.net.ba', 'tel.net.ba', 'telemach.ba',
+  't-com.hr', 'optinet.hr', 'iskon.hr', 'vip.hr',
+  'siol.net', 'telemach.si', 'amis.net',
+  
+  // North Macedonia
+  'gmail.mk', 'yahoo.mk', 'hotmail.mk', 'live.mk',
+  
+  // Montenegro
+  'cg.yu', 't-com.me', 'telenor.me', 'm-tel.me',
+  
+  // Bulgaria
+  'abv.bg', 'mail.bg', 'dir.bg', 'gbg.bg',
+  
+  // Romania  
+  'yahoo.ro', 'gmail.ro', 'mail.ro',
+  
+  // Greece
+  'otenet.gr', 'gmail.gr', 'yahoo.gr', 'forthnet.gr', 'hol.gr',
+  
+  // Regional providers - US/Canada
+  'comcast.net', 'xfinity.com',
+  'verizon.net', 'att.net',
+  'charter.net', 'spectrum.net',
+  'cox.net', 'sbcglobal.net',
+  'rogers.com', 'shaw.ca', 'bell.net', 'telus.net',
+  
+  // Regional providers - Australia/NZ
+  'bigpond.com', 'bigpond.net.au',
+  'optusnet.com.au', 'iinet.net.au',
+  'xtra.co.nz',
+  
+  // Business/Work domains (we allow these)
+  // Note: We can't list all business domains, so we have a fallback check
+  
+  // Educational (common patterns)
+  // Handled by regex in the validation function
+];
+
 // List of known disposable email domains
 const DISPOSABLE_EMAIL_DOMAINS = [
   'tempmail.com', 'temp-mail.org', 'guerrillamail.com', 'guerrillamail.org',
@@ -54,6 +144,61 @@ export function isDisposableEmail(email) {
   }
   
   return false;
+}
+
+/**
+ * Check if an email is from an allowed/legitimate provider
+ * Returns { valid: boolean, reason: string }
+ */
+export function isValidEmailProvider(email) {
+  if (!email) return { valid: false, reason: 'empty' };
+  
+  // Basic email format check
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return { valid: false, reason: 'format' };
+  }
+  
+  const domain = email.toLowerCase().split('@')[1];
+  if (!domain) return { valid: false, reason: 'no_domain' };
+  
+  // First, reject disposable emails
+  if (isDisposableEmail(email)) {
+    return { valid: false, reason: 'disposable' };
+  }
+  
+  // Check if domain is in allowed list
+  if (ALLOWED_EMAIL_PROVIDERS.includes(domain)) {
+    return { valid: true, reason: 'allowed' };
+  }
+  
+  // Allow educational domains (.edu, .ac.uk, etc.)
+  const eduPatterns = [/\.edu$/, /\.ac\.[a-z]{2}$/, /\.edu\.[a-z]{2}$/];
+  for (const pattern of eduPatterns) {
+    if (pattern.test(domain)) {
+      return { valid: true, reason: 'educational' };
+    }
+  }
+  
+  // Allow government domains
+  if (/\.gov$|\.gov\.[a-z]{2}$/.test(domain)) {
+    return { valid: true, reason: 'government' };
+  }
+  
+  // Allow business/corporate domains (has at least one dot and reasonable length)
+  // This allows custom company domains like company.com
+  const domainParts = domain.split('.');
+  const tld = domainParts[domainParts.length - 1];
+  const validTLDs = ['com', 'net', 'org', 'io', 'co', 'uk', 'de', 'fr', 'it', 'es', 'nl', 'be', 'ch', 'at', 'au', 'ca', 'us', 'info', 'biz', 'me', 'al', 'xk', 'mk', 'rs', 'hr', 'ba', 'si', 'bg', 'ro', 'gr', 'tr', 'pl', 'cz', 'sk', 'hu', 'se', 'no', 'dk', 'fi', 'ie', 'pt', 'ru', 'ua', 'by', 'kz', 'in', 'jp', 'cn', 'kr', 'sg', 'my', 'th', 'ph', 'id', 'vn', 'nz', 'za', 'ng', 'eg', 'ae', 'sa', 'br', 'mx', 'ar', 'cl', 'co', 'pe'];
+  
+  if (validTLDs.includes(tld) && domain.length >= 4 && domainParts[0].length >= 2) {
+    // It's a valid TLD and the domain looks reasonable
+    // We'll allow it but could add additional checks in the future
+    return { valid: true, reason: 'custom_domain' };
+  }
+  
+  // Reject unknown/suspicious domains
+  return { valid: false, reason: 'unknown' };
 }
 
 /**

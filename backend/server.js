@@ -86,6 +86,51 @@ const rateLimitMap = new Map();
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
 const RATE_LIMIT_MAX_REQUESTS = 30; // 30 requests per minute
 
+// 📧 Email Verification Codes Storage (in-memory with 10 min expiry)
+const verificationCodes = new Map();
+const VERIFICATION_CODE_EXPIRY = 10 * 60 * 1000; // 10 minutes
+
+// Generate 6-digit verification code
+const generateVerificationCode = () => {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+};
+
+// Clean up expired codes every 5 minutes
+setInterval(() => {
+  const now = Date.now();
+  for (const [email, data] of verificationCodes.entries()) {
+    if (now > data.expiresAt) {
+      verificationCodes.delete(email);
+    }
+  }
+}, 5 * 60 * 1000);
+
+// Email transporter setup (moved here for early access)
+// Supports Gmail, 123-reg, or any SMTP server
+const createEmailTransporter = () => {
+  const emailUser = process.env.EMAIL_USER;
+  const emailPass = process.env.EMAIL_PASSWORD || process.env.EMAIL_APP_PASSWORD;
+  const emailHost = process.env.EMAIL_HOST || 'smtp.gmail.com';
+  const emailPort = parseInt(process.env.EMAIL_PORT) || 587;
+  
+  if (!emailUser || !emailPass) {
+    return null;
+  }
+  
+  return nodemailer.createTransport({
+    host: emailHost,
+    port: emailPort,
+    secure: emailPort === 465,
+    auth: {
+      user: emailUser,
+      pass: emailPass
+    },
+    tls: {
+      rejectUnauthorized: false
+    }
+  });
+};
+
 const rateLimit = (req, res, next) => {
   const ip = req.ip || req.connection.remoteAddress;
   const now = Date.now();
@@ -810,6 +855,122 @@ async function findUserByEmailOrUsername(email, username) {
   }
 }
 
+// 📧 SEND VERIFICATION CODE - Send 6-digit code to email
+app.post('/api/auth/send-verification', async (req, res) => {
+  try {
+    const { email } = req.body;
+    
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+    
+    const normalizedEmail = email.toLowerCase().trim();
+    
+    // Check if email already registered
+    const existingUser = await UserAccountModel.findOne({ email: normalizedEmail });
+    if (existingUser) {
+      return res.status(400).json({ error: 'Email already registered. Please login instead.' });
+    }
+    
+    // Generate verification code
+    const code = generateVerificationCode();
+    const expiresAt = Date.now() + VERIFICATION_CODE_EXPIRY;
+    
+    // Store code
+    verificationCodes.set(normalizedEmail, { code, expiresAt, attempts: 0 });
+    
+    console.log(`📧 Verification code for ${normalizedEmail}: ${code}`);
+    
+    // Try to send email
+    const transporter = createEmailTransporter();
+    
+    if (transporter) {
+      try {
+        const mailOptions = {
+          from: `"Biseda.ai" <${process.env.EMAIL_USER}>`,
+          to: normalizedEmail,
+          subject: '🔐 Your Verification Code - Biseda.ai',
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); border-radius: 16px;">
+              <div style="text-align: center; padding: 20px;">
+                <h1 style="color: white; margin-bottom: 10px;">Welcome to Biseda.ai! 💕</h1>
+                <p style="color: #c4b5fd; font-size: 16px;">Your verification code is:</p>
+                <div style="background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%); padding: 20px 40px; border-radius: 12px; margin: 20px 0; display: inline-block;">
+                  <span style="font-size: 36px; font-weight: bold; color: white; letter-spacing: 8px;">${code}</span>
+                </div>
+                <p style="color: #a5b4fc; font-size: 14px;">This code expires in 10 minutes.</p>
+                <p style="color: #6b7280; font-size: 12px; margin-top: 20px;">If you didn't request this, please ignore this email.</p>
+              </div>
+            </div>
+          `
+        };
+        
+        await transporter.sendMail(mailOptions);
+        console.log(`✅ Verification email sent to ${normalizedEmail}`);
+      } catch (emailError) {
+        console.error('❌ Failed to send verification email:', emailError.message);
+        // Still return success - code is logged for development
+      }
+    } else {
+      console.log(`⚠️ Email not configured - Code logged above for testing`);
+    }
+    
+    res.json({ success: true, message: 'Verification code sent' });
+    
+  } catch (error) {
+    console.error('Send verification error:', error);
+    res.status(500).json({ error: 'Failed to send verification code' });
+  }
+});
+
+// ✅ VERIFY CODE - Check if the entered code is correct
+app.post('/api/auth/verify-code', async (req, res) => {
+  try {
+    const { email, code } = req.body;
+    
+    if (!email || !code) {
+      return res.status(400).json({ error: 'Email and code are required', verified: false });
+    }
+    
+    const normalizedEmail = email.toLowerCase().trim();
+    const storedData = verificationCodes.get(normalizedEmail);
+    
+    if (!storedData) {
+      return res.status(400).json({ error: 'No verification code found. Please request a new one.', verified: false });
+    }
+    
+    // Check if expired
+    if (Date.now() > storedData.expiresAt) {
+      verificationCodes.delete(normalizedEmail);
+      return res.status(400).json({ error: 'Code expired. Please request a new one.', verified: false });
+    }
+    
+    // Check attempts (max 5)
+    if (storedData.attempts >= 5) {
+      verificationCodes.delete(normalizedEmail);
+      return res.status(400).json({ error: 'Too many attempts. Please request a new code.', verified: false });
+    }
+    
+    // Increment attempts
+    storedData.attempts++;
+    verificationCodes.set(normalizedEmail, storedData);
+    
+    // Check code
+    if (code === storedData.code) {
+      // Success! Delete the code
+      verificationCodes.delete(normalizedEmail);
+      console.log(`✅ Email verified: ${normalizedEmail}`);
+      return res.json({ verified: true, message: 'Email verified successfully' });
+    } else {
+      return res.status(400).json({ error: 'Invalid code', verified: false });
+    }
+    
+  } catch (error) {
+    console.error('Verify code error:', error);
+    res.status(500).json({ error: 'Verification failed', verified: false });
+  }
+});
+
 // User registration endpoint
 app.post('/api/auth/register', async (req, res) => {
   try {
@@ -976,36 +1137,7 @@ app.post('/api/auth/login', async (req, res) => {
 // Password reset codes storage (in-memory for MVP)
 const passwordResetCodes = new Map();
 
-// Email transporter setup
-// Supports Gmail, 123-reg, or any SMTP server
-// For 123-reg: Set EMAIL_HOST=smtp.123-reg.co.uk, EMAIL_PORT=587
-// For Gmail: Set EMAIL_HOST=smtp.gmail.com, EMAIL_PORT=587
-const createEmailTransporter = () => {
-  const emailUser = process.env.EMAIL_USER;
-  const emailPass = process.env.EMAIL_PASSWORD || process.env.EMAIL_APP_PASSWORD;
-  const emailHost = process.env.EMAIL_HOST || 'smtp.gmail.com';
-  const emailPort = parseInt(process.env.EMAIL_PORT) || 587;
-  
-  if (!emailUser || !emailPass) {
-    console.log('⚠️  Email not configured. Set EMAIL_USER and EMAIL_PASSWORD in .env');
-    return null;
-  }
-  
-  console.log(`📧 Email configured: ${emailUser} via ${emailHost}:${emailPort}`);
-  
-  return nodemailer.createTransport({
-    host: emailHost,
-    port: emailPort,
-    secure: emailPort === 465, // true for 465, false for other ports
-    auth: {
-      user: emailUser,
-      pass: emailPass
-    },
-    tls: {
-      rejectUnauthorized: false // Allow self-signed certs (some hosts need this)
-    }
-  });
-};
+// Note: createEmailTransporter is defined earlier in the file
 
 // Send password reset email
 const sendResetEmail = async (toEmail, resetCode) => {
