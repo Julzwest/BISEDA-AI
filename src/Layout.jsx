@@ -206,13 +206,21 @@ export default function Layout({ children, onLogout }) {
           {/* Left side - Logo/Brand */}
           <div className="flex items-center">
             <Link to="/copilot" className="flex items-center gap-2">
-              <div className="relative w-9 h-9 bg-gradient-to-br from-violet-600 via-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/30">
-                {/* Bold white B */}
-                <span className="text-white font-black text-lg drop-shadow-md">B</span>
-                {/* Sparkle accent */}
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-br from-yellow-300 to-amber-400 rounded-full flex items-center justify-center shadow-sm">
-                  <span className="text-[6px]">✦</span>
+              <div className="relative w-10 h-10 bg-gradient-to-br from-violet-500 via-fuchsia-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/40 overflow-hidden">
+                {/* Shine effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent"></div>
+                {/* Chat bubble with B */}
+                <div className="relative w-7 h-6 bg-white/95 rounded-md flex items-center justify-center">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-br from-violet-600 to-pink-500 font-black text-sm">B</span>
+                  {/* Bubble tail */}
+                  <div className="absolute -bottom-1 left-1 w-2 h-2 bg-white/95 transform rotate-45"></div>
                 </div>
+                {/* Sparkle */}
+                <div className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-gradient-to-br from-yellow-200 to-amber-400 rounded-full flex items-center justify-center shadow-sm animate-pulse">
+                  <span className="text-[5px] text-white">✦</span>
+                </div>
+                {/* Heart accent */}
+                <div className="absolute top-0 right-2 text-[8px] text-pink-300">♥</div>
               </div>
               <span className="font-bold text-white text-lg hidden sm:inline">Biseda<span className="text-purple-400">.ai</span></span>
             </Link>
