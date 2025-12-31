@@ -104,37 +104,47 @@
     text-anchor="middle"
   >B</text>
   
-  <!-- Sparkle 1 - Large (top right) - White/Silver -->
-  <g transform="translate(880, 160)" filter="url(#glow)">
-    <circle cx="0" cy="0" r="40" fill="white" opacity="0.95"/>
-    <!-- 4-pointed star -->
-    <path d="M0,-32 L6,0 L0,32 L-6,0 Z M-32,0 L0,6 L32,0 L0,-6 Z" fill="url(#accentGradient)"/>
+  <!-- Chat bubble icon (top right) -->
+  <g transform="translate(860, 140)" filter="url(#glow)">
+    <!-- Chat bubble background -->
+    <circle cx="0" cy="0" r="50" fill="white" opacity="0.95"/>
+    <!-- Mini chat bubble -->
+    <path d="M-18,-15 L18,-15 C22,-15 25,-12 25,-8 L25,8 C25,12 22,15 18,15 L-5,15 L-15,25 L-12,15 L-18,15 C-22,15 -25,12 -25,8 L-25,-8 C-25,-12 -22,-15 -18,-15 Z" 
+          fill="url(#accentGradient)"/>
+    <!-- Dots inside chat -->
+    <circle cx="-10" cy="0" r="3" fill="white"/>
+    <circle cx="0" cy="0" r="3" fill="white"/>
+    <circle cx="10" cy="0" r="3" fill="white"/>
   </g>
   
-  <!-- Sparkle 2 - Medium (top left) -->
-  <g transform="translate(150, 260)" filter="url(#glow)">
-    <circle cx="0" cy="0" r="25" fill="white" opacity="0.85"/>
-    <path d="M0,-20 L4,0 L0,20 L-4,0 Z M-20,0 L0,4 L20,0 L0,-4 Z" fill="url(#accentGradient)"/>
+  <!-- Small chat bubble (top left) -->
+  <g transform="translate(150, 250)" filter="url(#glow)">
+    <circle cx="0" cy="0" r="32" fill="white" opacity="0.9"/>
+    <!-- Tiny chat icon -->
+    <path d="M-12,-10 L12,-10 C15,-10 17,-8 17,-5 L17,5 C17,8 15,10 12,10 L-3,10 L-10,17 L-8,10 L-12,10 C-15,10 -17,8 -17,5 L-17,-5 C-17,-8 -15,-10 -12,-10 Z" 
+          fill="url(#accentGradient)"/>
   </g>
   
-  <!-- Sparkle 3 - Small (bottom right) -->
-  <g transform="translate(900, 680)">
-    <circle cx="0" cy="0" r="18" fill="white" opacity="0.75"/>
+  <!-- Sparkle dot (bottom right) -->
+  <g transform="translate(900, 700)">
+    <circle cx="0" cy="0" r="16" fill="white" opacity="0.75"/>
   </g>
   
-  <!-- Sparkle 4 - Tiny (mid left) -->
-  <g transform="translate(110, 580)">
+  <!-- Sparkle dot (mid left) -->
+  <g transform="translate(110, 600)">
     <circle cx="0" cy="0" r="12" fill="white" opacity="0.6"/>
   </g>
   
-  <!-- Sparkle 5 - Bottom left -->
-  <g transform="translate(160, 820)">
-    <circle cx="0" cy="0" r="15" fill="white" opacity="0.7"/>
+  <!-- Heart (bottom left) - dating app touch -->
+  <g transform="translate(140, 840)">
+    <path d="M0,-10 C-8,-20 -22,-10 -22,5 C-22,20 0,32 0,32 C0,32 22,20 22,5 C22,-10 8,-20 0,-10 Z" 
+          fill="white" opacity="0.8"/>
   </g>
   
-  <!-- Sparkle 6 - Bottom right corner -->
-  <g transform="translate(870, 860)">
-    <circle cx="0" cy="0" r="14" fill="white" opacity="0.65"/>
+  <!-- Small star (bottom right corner) -->
+  <g transform="translate(880, 880)">
+    <path d="M0,-14 L3,-5 L12,-5 L5,1 L8,10 L0,5 L-8,10 L-5,1 L-12,-5 L-3,-5 Z" 
+          fill="white" opacity="0.7"/>
   </g>
   
   <!-- AI dots indicator -->

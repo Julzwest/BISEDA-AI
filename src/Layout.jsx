@@ -217,9 +217,9 @@ export default function Layout({ children, onLogout }) {
                   {/* Shine */}
                   <div className="absolute top-0 left-0 right-0 h-2 bg-white/25 rounded-t-md"></div>
                 </div>
-                {/* Sparkle - White */}
-                <div className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-white rounded-full flex items-center justify-center shadow-sm">
-                  <span className="text-[6px] text-violet-600">✦</span>
+                {/* Mini chat icon - White */}
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-sm">
+                  <span className="text-[8px]">💬</span>
                 </div>
               </div>
               <span className="font-bold text-white text-lg hidden sm:inline">Biseda<span className="text-purple-400">.ai</span></span>
