@@ -54,8 +54,22 @@
   <circle cx="850" cy="750" r="60" fill="white" opacity="0.08"/>
   <circle cx="900" cy="300" r="40" fill="white" opacity="0.1"/>
   
-  <!-- Chat bubble behind B - Purple gradient -->
+  <!-- Chat bubble behind B - Purple gradient with black outline -->
   <g filter="url(#shadow)">
+    <!-- Black outline/border -->
+    <path d="
+      M 220 200 
+      C 220 140, 300 100, 512 100
+      C 724 100, 804 140, 804 200
+      L 804 580
+      C 804 640, 724 680, 600 680
+      L 450 680
+      L 320 820
+      L 360 680
+      C 280 680, 220 640, 220 580
+      Z
+    " fill="none" stroke="#1a1a2e" stroke-width="12"/>
+    <!-- Purple bubble fill -->
     <path d="
       M 220 200 
       C 220 140, 300 100, 512 100

@@ -209,11 +209,11 @@ export default function Layout({ children, onLogout }) {
               <div className="relative w-10 h-10 bg-gradient-to-br from-violet-600 via-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/40 overflow-hidden">
                 {/* Shine effect */}
                 <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent"></div>
-                {/* Chat bubble with B - Purple bubble, White B */}
-                <div className="relative w-7 h-6 bg-gradient-to-br from-violet-600 to-purple-500 rounded-md flex items-center justify-center shadow-inner">
+                {/* Chat bubble with B - Purple bubble, White B, Dark outline */}
+                <div className="relative w-7 h-6 bg-gradient-to-br from-violet-600 to-purple-500 rounded-md flex items-center justify-center shadow-inner ring-1 ring-slate-900/50">
                   <span className="text-white font-black text-base drop-shadow-sm">B</span>
                   {/* Bubble tail */}
-                  <div className="absolute -bottom-1 left-1 w-2 h-2 bg-gradient-to-br from-violet-500 to-purple-500 transform rotate-45"></div>
+                  <div className="absolute -bottom-1 left-1 w-2 h-2 bg-gradient-to-br from-violet-500 to-purple-500 transform rotate-45 ring-1 ring-slate-900/30"></div>
                   {/* Shine */}
                   <div className="absolute top-0 left-0 right-0 h-2 bg-white/25 rounded-t-md"></div>
                 </div>
