@@ -207,12 +207,10 @@ export default function Layout({ children, onLogout }) {
           <div className="flex items-center">
             <Link to="/copilot" className="flex items-center gap-2">
               <div className="relative w-9 h-9 bg-gradient-to-br from-violet-600 via-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/30">
-                {/* Chat bubble with B */}
-                <div className="absolute inset-1 bg-white/90 rounded-lg flex items-center justify-center">
-                  <span className="text-transparent bg-clip-text bg-gradient-to-br from-violet-600 to-pink-500 font-black text-sm">B</span>
-                </div>
+                {/* Bold white B */}
+                <span className="text-white font-black text-lg drop-shadow-md">B</span>
                 {/* Sparkle accent */}
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-br from-yellow-300 to-amber-400 rounded-full flex items-center justify-center">
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-br from-yellow-300 to-amber-400 rounded-full flex items-center justify-center shadow-sm">
                   <span className="text-[6px]">✦</span>
                 </div>
               </div>
