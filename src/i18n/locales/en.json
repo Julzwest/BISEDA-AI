@@ -304,6 +304,7 @@
     "connectionError": "Connection error. Try again! 🔄",
     "enterCode": "Enter the 6-digit code 🔢",
     "wrongCode": "Wrong code ❌",
+    "verificationUnavailable": "Email verification service unavailable. Please try again later.",
     "appleFailed": "Apple Sign In failed. Try again.",
     "appleIOSOnly": "Apple Sign In is only available on iOS.",
     "invalidCredentials": "Invalid email/username or password ❌",

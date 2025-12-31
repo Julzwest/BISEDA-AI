@@ -304,6 +304,7 @@
     "connectionError": "Gabim lidhje. Provo përsëri! 🔄",
     "enterCode": "Shkruaj kodin 6-shifror 🔢",
     "wrongCode": "Kodi është i gabuar ❌",
+    "verificationUnavailable": "Shërbimi i verifikimit të email-it nuk është i disponueshëm. Provo më vonë.",
     "appleFailed": "Apple Sign In dështoi. Provo përsëri.",
     "appleIOSOnly": "Apple Sign In është i disponueshëm vetëm në iOS.",
     "invalidCredentials": "Email/username ose fjalëkalimi i gabuar ❌",

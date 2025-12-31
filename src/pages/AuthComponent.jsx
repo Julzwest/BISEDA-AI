@@ -225,10 +225,10 @@ export default function Auth({ onAuthSuccess }) {
         body: JSON.stringify({ email: emailAddress }),
       });
       
-      // If endpoint doesn't exist (404), skip verification and proceed
+      // If endpoint doesn't exist (404), show error - verification is REQUIRED
       if (response.status === 404) {
-        console.log('📧 Verification endpoint not available - skipping verification');
-        return { success: true, skip: true };
+        console.error('📧 Verification endpoint not available');
+        return { success: false, error: t('authErrors.verificationUnavailable', 'Email verification service unavailable. Please try again later.') };
       }
       
       const data = await response.json();
@@ -242,9 +242,8 @@ export default function Auth({ onAuthSuccess }) {
       }
     } catch (error) {
       console.error('Send verification error:', error);
-      // If connection fails, skip verification and proceed with registration
-      console.log('📧 Verification service unavailable - proceeding with registration');
-      return { success: true, skip: true };
+      // Connection failed - verification is REQUIRED, cannot proceed
+      return { success: false, error: t('authErrors.connectionError', 'Connection error. Please check your internet and try again.') };
     }
   };
 
@@ -417,16 +416,11 @@ export default function Auth({ onAuthSuccess }) {
           country: 'AL'
         };
         
-        // Send verification code to email
+        // Send verification code to email - REQUIRED for all users
         const result = await sendVerificationCode(email.trim());
         
         if (result.success) {
-          // If skip flag is set, proceed directly to registration (backend not ready)
-          if (result.skip) {
-            await completeRegistration(signupData);
-            return;
-          }
-          // Show verification modal
+          // Show verification modal - user MUST verify email
           setPendingSignupData(signupData);
           setShowEmailVerification(true);
           setLoading(false);
