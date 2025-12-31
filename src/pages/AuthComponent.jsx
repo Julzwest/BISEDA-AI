@@ -520,13 +520,13 @@ export default function Auth({ onAuthSuccess }) {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen flex items-start justify-center p-4 pt-16 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
       {/* Language Switcher - Fixed position */}
       <div className="fixed top-4 right-4 z-50">
         <LanguageSwitcher />
       </div>
       
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-md mt-4">
         {/* Logo & Header - Same as Homepage */}
         <div className="text-center mb-8">
           {/* Logo - Speech bubbles representing conversation */}
