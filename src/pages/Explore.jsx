@@ -7,6 +7,8 @@ import { SaveButton } from '@/components/SaveButton';
 import { getBackendUrl } from '@/utils/getBackendUrl';
 import { base44 } from '@/api/base44Client';
 import { countries, getLocalizedCitiesForCountry, getCountryByCode, getCityNameEn, getLocalizedCountryName } from '@/config/countries';
+import { canPerformAction, useCredits } from '@/utils/credits';
+import SubscriptionModal from '@/components/SubscriptionModal';
 
 const backendUrl = getBackendUrl();
 
@@ -86,6 +88,9 @@ export default function Explore() {
   const [expandedFestiveId, setExpandedFestiveId] = useState(null);
   const [festiveSuggestions, setFestiveSuggestions] = useState([]);
   const [loadingFestive, setLoadingFestive] = useState(false);
+  
+  // Subscription modal state
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   
   // Get user's country from localStorage
   const [userCountry, setUserCountry] = useState(localStorage.getItem('userCountry') || 'AL');
@@ -557,6 +562,23 @@ export default function Explore() {
   };
 
   const generateAISuggestions = async (city, category, isLoadMore = false) => {
+    // BULLETPROOF: Check credits before any AI/API call
+    const canProceed = canPerformAction('explore_search');
+    if (!canProceed.allowed) {
+      if (canProceed.reason === 'trial_expired' || canProceed.reason === 'no_credits') {
+        setShowUpgradeModal(true);
+      } else if (canProceed.reason === 'rate_limit') {
+        alert(`Please wait ${canProceed.waitSeconds} seconds.`);
+      } else if (canProceed.reason === 'daily_limit') {
+        alert(`Daily limit reached. Upgrade for more!`);
+        setShowUpgradeModal(true);
+      }
+      return;
+    }
+    
+    // Deduct credits
+    useCredits('explore_search');
+    
     if (isLoadMore) {
       setLoadingMore(true);
     } else {
@@ -1764,6 +1786,14 @@ Mos shtoni tekst tjetër, VETËM JSON.`;
             </div>
           </Card>
         </div>
+      )}
+      
+      {/* Subscription Modal */}
+      {showUpgradeModal && (
+        <SubscriptionModal 
+          isOpen={showUpgradeModal}
+          onClose={() => setShowUpgradeModal(false)}
+        />
       )}
     </div>
   );

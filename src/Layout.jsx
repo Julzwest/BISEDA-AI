@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { createPageUrl } from './utils';
-import { Lightbulb, Home, Calendar, Bot, Flag, User, PartyPopper, Sparkles, MessageCircle, Heart, MapPin, Zap, Users, Wrench } from 'lucide-react';
+import { Lightbulb, Home, Calendar, Bot, Flag, User, PartyPopper, Sparkles, MessageCircle, MessageSquare, Heart, MapPin, Zap, Users, Wrench } from 'lucide-react';
 import RegionSwitcher from '@/components/RegionSwitcher';
 // GuestBanner removed - guest sessions no longer supported
 import TrialCountdown from '@/components/TrialCountdown';
@@ -22,36 +22,75 @@ export default function Layout({ children, onLogout }) {
   
   // All users are now registered - no guest sessions
   
-  // Check trial expiration status
+  // Check trial expiration status - BULLETPROOF VERSION
   useEffect(() => {
     const checkTrialExpiration = () => {
-      const subscriptionTier = localStorage.getItem('subscriptionTier');
-      const trialStartTime = localStorage.getItem('trialStartTime');
+      // Check multiple sources for subscription status
+      const subscriptionTier = localStorage.getItem('subscriptionTier') || localStorage.getItem('userSubscriptionTier');
+      const subscriptionData = localStorage.getItem('user_subscription');
+      const trialStartTime = localStorage.getItem('trialStartTime') || localStorage.getItem('trial_start_date');
       
-      // Paid users - no modal needed
-      if (subscriptionTier && !['free', 'trial'].includes(subscriptionTier)) {
+      // Parse subscription data if exists
+      let parsedSub = null;
+      if (subscriptionData) {
+        try {
+          parsedSub = JSON.parse(subscriptionData);
+        } catch (e) {}
+      }
+      
+      // Check if user has valid paid subscription
+      const paidTiers = ['starter', 'pro', 'elite'];
+      const hasPaidSubscription = paidTiers.includes(subscriptionTier) || 
+                                   (parsedSub && paidTiers.includes(parsedSub.tier));
+      
+      if (hasPaidSubscription) {
         setShowTrialExpiredModal(false);
         return;
       }
       
-      // Check if trial has expired
+      // Check if subscription is expired
+      if (parsedSub && parsedSub.tier === 'expired') {
+        setShowTrialExpiredModal(true);
+        return;
+      }
+      
+      // Check if trial has expired (from any source)
       if (trialStartTime) {
-        const startTime = parseInt(trialStartTime);
+        const startTime = typeof trialStartTime === 'string' && trialStartTime.includes('T') 
+          ? new Date(trialStartTime).getTime() 
+          : parseInt(trialStartTime);
         const trialDuration = 12 * 60 * 60 * 1000; // 12 hours
         const endTime = startTime + trialDuration;
         
         if (Date.now() >= endTime) {
+          // Mark as expired in all storage locations
+          localStorage.setItem('trialExpired', 'true');
+          if (parsedSub) {
+            parsedSub.tier = 'expired';
+            parsedSub.credits = 0;
+            localStorage.setItem('user_subscription', JSON.stringify(parsedSub));
+          }
           setShowTrialExpiredModal(true);
+          return;
         }
+      }
+      
+      // Check credits - if 0 credits, show modal
+      if (parsedSub && parsedSub.credits <= 0 && parsedSub.tier === 'free_trial') {
+        parsedSub.tier = 'expired';
+        localStorage.setItem('user_subscription', JSON.stringify(parsedSub));
+        setShowTrialExpiredModal(true);
+        return;
       }
     };
     
+    // Check immediately on mount
     checkTrialExpiration();
     
-    // Check every 10 seconds
-    const interval = setInterval(checkTrialExpiration, 10000);
+    // Check every 3 seconds (more aggressive)
+    const interval = setInterval(checkTrialExpiration, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [location.pathname]); // Also check on route change
   
   // Handle subscription purchase
   const handlePurchase = async (tierId) => {
@@ -206,13 +245,13 @@ export default function Layout({ children, onLogout }) {
           {/* Left side - Logo/Brand */}
           <div className="flex items-center">
             <Link to="/copilot" className="flex items-center gap-2">
-              <div className="relative w-10 h-10 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/40 overflow-hidden">
-                {/* Animated background effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
-                {/* Speech bubble icon */}
-                <MessageCircle className="w-6 h-6 text-white relative z-10" fill="currentColor" strokeWidth={1.5} />
-                {/* Small sparkle effect */}
-                <Sparkles className="w-3 h-3 text-yellow-300 absolute top-1 right-1 animate-pulse" />
+              <div className="relative w-10 h-10 bg-gradient-to-br from-purple-500 via-fuchsia-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/40 overflow-hidden">
+                {/* Speech bubble icon - matching app icon */}
+                <MessageSquare className="w-5 h-5 text-white relative z-10" fill="white" strokeWidth={0} />
+                {/* Sparkle stars in top right - matching app icon */}
+                <div className="absolute -top-0.5 -right-0.5">
+                  <Sparkles className="w-4 h-4 text-yellow-300 animate-pulse" />
+                </div>
               </div>
               <span className="font-bold text-white text-base">Biseda<span className="text-purple-400">.ai</span></span>
             </Link>

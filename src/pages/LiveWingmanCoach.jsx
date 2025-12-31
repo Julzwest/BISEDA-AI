@@ -616,13 +616,19 @@ export default function LiveWingmanCoach() {
 
   // Generate AI response
   const generateResponse = async (actionType, context = '') => {
-    // Check if user can perform action (credits/subscription)
+    // Check if user can perform action (credits/subscription) - BULLETPROOF
     const canProceed = canPerformAction('chat_message');
     if (!canProceed.allowed) {
+      // Block ALL cases when not allowed
       if (canProceed.reason === 'trial_expired' || canProceed.reason === 'no_credits') {
         setShowSubscriptionModal(true);
-        return;
+      } else if (canProceed.reason === 'rate_limit') {
+        alert(`Please wait ${canProceed.waitSeconds} seconds.`);
+      } else if (canProceed.reason === 'daily_limit') {
+        alert(`Daily limit reached. Upgrade for more!`);
+        setShowSubscriptionModal(true);
       }
+      return; // ALWAYS return when not allowed
     }
     
     setIsLoading(true);

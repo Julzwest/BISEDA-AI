@@ -7,6 +7,7 @@ import { SaveButton } from '@/components/SaveButton';
 import { base44 } from '@/api/base44Client';
 import { countries, getLocalizedCitiesForCountry, getCountryByCode, getCityNameEn, getCurrencySymbol, getLocalizedCountryName } from '@/config/countries';
 import UpgradeModal from '@/components/UpgradeModal';
+import { canPerformAction, useCredits } from '@/utils/credits';
 
 export default function GiftSuggestions() {
   const { t, i18n } = useTranslation();
@@ -121,6 +122,23 @@ export default function GiftSuggestions() {
       alert(t('gifts.enterInterests'));
       return;
     }
+
+    // BULLETPROOF: Check credits before AI call
+    const canProceed = canPerformAction('gift_suggestion');
+    if (!canProceed.allowed) {
+      if (canProceed.reason === 'trial_expired' || canProceed.reason === 'no_credits') {
+        setShowUpgradeModal(true);
+      } else if (canProceed.reason === 'rate_limit') {
+        alert(`Please wait ${canProceed.waitSeconds} seconds.`);
+      } else if (canProceed.reason === 'daily_limit') {
+        alert(`Daily limit reached. Upgrade for more!`);
+        setShowUpgradeModal(true);
+      }
+      return;
+    }
+    
+    // Deduct credits
+    useCredits('gift_suggestion');
 
     if (isLoadMore) {
       setIsLoadingMore(true);

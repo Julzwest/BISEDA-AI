@@ -12,6 +12,8 @@ import {
 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { trackRehearsal, trackMessage } from '@/utils/activityTracker';
+import { canPerformAction, useCredits } from '@/utils/credits';
+import SubscriptionModal from '@/components/SubscriptionModal';
 
 // ============================================================
 // 🔒 HARDCODED: Robust API call with retry logic
@@ -391,11 +393,28 @@ Then naturally transition - offer a drink, invite them to sit, maybe compliment 
   const startScenario = async (selectedScenario) => {
     if (!dateName.trim()) return;
     
+    // BULLETPROOF: Check credits before starting scenario
+    const canProceed = canPerformAction('rehearsal_exchange');
+    if (!canProceed.allowed) {
+      if (canProceed.reason === 'trial_expired' || canProceed.reason === 'no_credits') {
+        setShowUpgradeModal(true);
+      } else if (canProceed.reason === 'rate_limit') {
+        alert(`Please wait ${canProceed.waitSeconds} seconds.`);
+      } else if (canProceed.reason === 'daily_limit') {
+        alert(`Daily limit reached. Upgrade for more!`);
+        setShowUpgradeModal(true);
+      }
+      return;
+    }
+    
     setScenario(selectedScenario);
     setMessages([]);
     setFeedback(null);
     setShowFeedback(false);
     setIsLoading(true);
+    
+    // Deduct credits
+    useCredits('rehearsal_exchange');
 
     try {
       const langInstruction = isAlbanian ? 'Përgjigju në shqip.' : `Respond in ${currentLang === 'en' ? 'English' : currentLang}.`;
@@ -533,6 +552,20 @@ ${safeDateName} (speaking naturally, 1-3 sentences):`;
   const sendMessage = async () => {
     if (!inputText.trim() || isLoading) return;
 
+    // BULLETPROOF: Check credits before ANY AI action
+    const canProceed = canPerformAction('rehearsal_exchange');
+    if (!canProceed.allowed) {
+      if (canProceed.reason === 'trial_expired' || canProceed.reason === 'no_credits') {
+        setShowUpgradeModal(true);
+      } else if (canProceed.reason === 'rate_limit') {
+        alert(`Please wait ${canProceed.waitSeconds} seconds.`);
+      } else if (canProceed.reason === 'daily_limit') {
+        alert(`Daily limit reached. Upgrade for more!`);
+        setShowUpgradeModal(true);
+      }
+      return;
+    }
+
     const userMessage = inputText.trim();
     setInputText('');
     
@@ -548,6 +581,9 @@ ${safeDateName} (speaking naturally, 1-3 sentences):`;
     const updatedMessages = [...messages, newUserMessage];
     setMessages(updatedMessages);
     setIsLoading(true);
+    
+    // Deduct credits after successful action start
+    useCredits('rehearsal_exchange');
 
     try {
       const langInstruction = isAlbanian ? 'Përgjigju në shqip.' : `Respond in ${currentLang === 'en' ? 'English' : currentLang}.`;
