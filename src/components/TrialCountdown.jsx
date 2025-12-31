@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Clock, Crown } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import SubscriptionModal from './SubscriptionModal';
 
 export default function TrialCountdown() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const [timeLeft, setTimeLeft] = useState(null);
   const [isTrialUser, setIsTrialUser] = useState(false);
+  const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
 
   useEffect(() => {
     // Check if user is on trial
@@ -88,13 +88,22 @@ export default function TrialCountdown() {
   // Trial expired - show upgrade prompt
   if (time.expired) {
     return (
-      <button
-        onClick={() => navigate('/profile')}
-        className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full text-white text-xs font-bold animate-pulse shadow-lg"
-      >
-        <Crown className="w-3.5 h-3.5" />
-        <span>{t('trial.expired', 'Trial Ended')}</span>
-      </button>
+      <>
+        <button
+          onClick={() => setShowSubscriptionModal(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full text-white text-xs font-bold animate-pulse shadow-lg"
+        >
+          <Crown className="w-3.5 h-3.5" />
+          <span>{t('trial.expired', 'Trial Ended')}</span>
+        </button>
+        
+        {showSubscriptionModal && (
+          <SubscriptionModal 
+            isOpen={showSubscriptionModal}
+            onClose={() => setShowSubscriptionModal(false)}
+          />
+        )}
+      </>
     );
   }
 
@@ -103,26 +112,35 @@ export default function TrialCountdown() {
   const isWarning = time.hours < 6;
 
   return (
-    <button
-      onClick={() => navigate('/profile')}
-      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
-        isUrgent 
-          ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white animate-pulse' 
-          : isWarning
-            ? 'bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-400 border border-amber-500/30'
-            : 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 border border-purple-500/30'
-      }`}
-    >
-      <Clock className={`w-3.5 h-3.5 ${isUrgent ? 'animate-pulse' : ''}`} />
-      <span className="font-mono">
-        {String(time.hours).padStart(2, '0')}:
-        {String(time.minutes).padStart(2, '0')}:
-        {String(time.seconds).padStart(2, '0')}
-      </span>
-      <span className="hidden sm:inline ml-1 opacity-75">
-        {t('trial.remaining', 'left')}
-      </span>
-    </button>
+    <>
+      <button
+        onClick={() => setShowSubscriptionModal(true)}
+        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
+          isUrgent 
+            ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white animate-pulse' 
+            : isWarning
+              ? 'bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-400 border border-amber-500/30'
+              : 'bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 border border-purple-500/30'
+        }`}
+      >
+        <Clock className={`w-3.5 h-3.5 ${isUrgent ? 'animate-pulse' : ''}`} />
+        <span className="font-mono">
+          {String(time.hours).padStart(2, '0')}:
+          {String(time.minutes).padStart(2, '0')}:
+          {String(time.seconds).padStart(2, '0')}
+        </span>
+        <span className="hidden sm:inline ml-1 opacity-75">
+          {t('trial.remaining', 'left')}
+        </span>
+      </button>
+      
+      {showSubscriptionModal && (
+        <SubscriptionModal 
+          isOpen={showSubscriptionModal}
+          onClose={() => setShowSubscriptionModal(false)}
+        />
+      )}
+    </>
   );
 }
 
