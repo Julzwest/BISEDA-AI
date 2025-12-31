@@ -451,9 +451,9 @@ export default function HomeCoPilot() {
   // Full-screen Ask Biseda Modal
   if (showVibeCoach) {
     return (
-      <div className="fixed inset-0 z-50 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex flex-col pt-16">
-        {/* Sticky Back Button at Top */}
-        <div className="sticky top-0 z-10 px-4 py-2 bg-slate-950/95 backdrop-blur-lg border-b border-slate-800/50">
+      <div className="fixed top-0 left-0 right-0 bottom-24 z-50 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 flex flex-col pt-16">
+        {/* Fixed Back Button at Top */}
+        <div className="flex-shrink-0 px-4 py-2 bg-slate-950 border-b border-slate-800/50">
           <button
             onClick={() => setShowVibeCoach(false)}
             className="flex items-center gap-2 text-white px-3 py-2 bg-slate-800/80 rounded-xl hover:bg-slate-700 transition-all w-fit"
@@ -464,7 +464,7 @@ export default function HomeCoPilot() {
         </div>
         
         {/* SCROLLABLE CONTENT - Messages scroll here */}
-        <div className="flex-1 overflow-y-auto pb-4">
+        <div className="flex-1 overflow-y-auto">
           {/* Header */}
           <div className="px-4 py-4">
             <div className="flex items-center justify-between">
@@ -502,7 +502,7 @@ export default function HomeCoPilot() {
           
           {/* Chat History Panel */}
           {showChatHistory && (
-            <div className="mx-4 mb-4 bg-slate-900/90 backdrop-blur-xl border border-slate-700/50 rounded-2xl overflow-hidden">
+            <div className="mx-4 mb-4 bg-slate-900 border border-slate-700/50 rounded-2xl overflow-hidden">
               <div className="p-3 border-b border-slate-700/50">
                 <h3 className="text-white font-semibold text-sm">{t('vibeCoach.recentChats')}</h3>
               </div>
@@ -597,7 +597,7 @@ export default function HomeCoPilot() {
         </div>
         
         {/* Fixed Input Area at Bottom */}
-        <div className="sticky bottom-0 left-0 right-0 px-4 py-3 border-t border-slate-800/50 bg-slate-950/98 backdrop-blur-lg pb-20">
+        <div className="flex-shrink-0 px-4 py-3 border-t border-slate-800/50 bg-slate-950">
           {/* Hidden file input */}
           <input
             type="file"
