@@ -209,11 +209,13 @@ export default function Layout({ children, onLogout }) {
               <div className="relative w-10 h-10 bg-gradient-to-br from-violet-500 via-fuchsia-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/40 overflow-hidden">
                 {/* Shine effect */}
                 <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent"></div>
-                {/* Chat bubble with B */}
-                <div className="relative w-7 h-6 bg-white/95 rounded-md flex items-center justify-center">
-                  <span className="text-transparent bg-clip-text bg-gradient-to-br from-violet-600 to-pink-500 font-black text-sm">B</span>
+                {/* Chat bubble with B - Purple/Pink bubble, White B */}
+                <div className="relative w-7 h-6 bg-gradient-to-br from-violet-500 to-pink-500 rounded-md flex items-center justify-center shadow-inner">
+                  <span className="text-white font-black text-sm drop-shadow-sm">B</span>
                   {/* Bubble tail */}
-                  <div className="absolute -bottom-1 left-1 w-2 h-2 bg-white/95 transform rotate-45"></div>
+                  <div className="absolute -bottom-1 left-1 w-2 h-2 bg-gradient-to-br from-fuchsia-500 to-pink-500 transform rotate-45"></div>
+                  {/* Shine */}
+                  <div className="absolute top-0 left-0 right-0 h-2 bg-white/20 rounded-t-md"></div>
                 </div>
                 {/* Sparkle */}
                 <div className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-gradient-to-br from-yellow-200 to-amber-400 rounded-full flex items-center justify-center shadow-sm animate-pulse">

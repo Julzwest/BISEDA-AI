@@ -48,7 +48,7 @@
   <circle cx="850" cy="750" r="60" fill="white" opacity="0.08"/>
   <circle cx="900" cy="300" r="40" fill="white" opacity="0.1"/>
   
-  <!-- Chat bubble behind B -->
+  <!-- Chat bubble behind B - Purple/Pink gradient -->
   <g filter="url(#shadow)">
     <path d="
       M 220 200 
@@ -61,17 +61,26 @@
       L 360 680
       C 280 680, 220 640, 220 580
       Z
-    " fill="white" opacity="0.95"/>
+    " fill="url(#mainGradient)"/>
+    <!-- Shine on bubble -->
+    <path d="
+      M 240 220 
+      C 240 160, 320 120, 512 120
+      C 650 120, 720 140, 750 180
+      L 400 180
+      C 320 180, 260 200, 240 220
+      Z
+    " fill="white" opacity="0.25"/>
   </g>
   
-  <!-- Bold B with gradient -->
+  <!-- Bold WHITE B -->
   <text 
     x="512" 
     y="560" 
     font-family="SF Pro Display, -apple-system, BlinkMacSystemFont, Helvetica Neue, Arial, sans-serif" 
     font-size="420" 
     font-weight="900" 
-    fill="url(#mainGradient)" 
+    fill="white" 
     text-anchor="middle"
   >B</text>
   
