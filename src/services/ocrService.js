@@ -50,20 +50,20 @@ export async function extractTextFromImage(imageFile, options = {}) {
     
     // Parse the AI response to extract structured messages
     const parsedResult = parseAIResponse(aiResponse);
-    
-    return {
-      success: true,
+  
+  return {
+    success: true,
       rawText: parsedResult.rawText,
       messages: parsedResult.messages,
-      metadata: {
-        extractedAt: new Date().toISOString(),
+    metadata: {
+      extractedAt: new Date().toISOString(),
         processingTimeMs: 0,
         confidence: parsedResult.confidence,
-        detectedPlatform: detectPlatformFromFilename(imageFile?.name),
+      detectedPlatform: detectPlatformFromFilename(imageFile?.name),
         ocrEngine: 'openai_vision',
-        imageSize: imageFile?.size || 0
-      }
-    };
+      imageSize: imageFile?.size || 0
+    }
+  };
     
   } catch (error) {
     console.error('OCR extraction error:', error);

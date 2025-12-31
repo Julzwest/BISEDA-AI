@@ -1103,10 +1103,14 @@
       "earlyMorning": "Early morning",
       "friendCrisis": "Friend needs me",
       "notFeelingWell": "Feeling unwell",
-      "workUrgent": "Work emergency",
-      "petSituation": "Pet emergency",
+      "workEmergency": "Work emergency",
+      "petSitter": "Pet sitter issue",
       "familyCall": "Family matter",
-      "parkingMeter": "Car/Parking"
+      "carParking": "Car/Parking",
+      "roommateLocked": "Roommate locked out",
+      "migraine": "Migraine coming",
+      "babysitter": "Babysitter issue",
+      "uberWaiting": "Uber waiting"
     },
     "styles": {
       "playful": "Playful",

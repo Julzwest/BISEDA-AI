@@ -62,6 +62,7 @@ const defaultFestiveDates = festiveDatesByCountry.GB;
 
 export default function Explore() {
   const { t, i18n } = useTranslation();
+  const isAlbanian = i18n.language?.startsWith('sq');
   
   // TAB STATE - 'venues' or 'events'
   const [activeTab, setActiveTab] = useState('venues');
@@ -702,21 +703,43 @@ export default function Explore() {
       
       // Build list of already shown businesses to avoid duplicates
       const alreadyShown = isLoadMore ? suggestions.map(s => s.name).join(', ') : '';
-      const excludeText = alreadyShown ? `\n\nMOS përfshi këto biznese që u treguan më parë: ${alreadyShown}\n\nGjej biznese të REJA dhe të ndryshme!` : '';
       
-      const prompt = `Biznese REALE në ${cityNameEn}, ${countryNameEn} për takime të para: ${categoryNames[category.id] || category.name}${excludeText}
+      // Language-specific prompts
+      const excludeText = alreadyShown 
+        ? isAlbanian 
+          ? `\n\nMOS përfshi këto biznese që u treguan më parë: ${alreadyShown}\n\nGjej biznese të REJA dhe të ndryshme!`
+          : `\n\nDo NOT include these businesses already shown: ${alreadyShown}\n\nFind NEW and different businesses!`
+        : '';
+      
+      const prompt = isAlbanian 
+        ? `Biznese REALE në ${cityNameEn}, ${countryNameEn} për takime të para: ${categoryNames[category.id] || category.name}${excludeText}
 
 Listoni 5-7 vende që ekzistojnë realisht. Ktheni VETËM JSON array:
 [{"name":"Emri","description":"Përshkrim","location":"Adresa","rating":"4.5","price":"$$"}]
 
-Mos shtoni tekst tjetër, VETËM JSON.`;
+Mos shtoni tekst tjetër, VETËM JSON.`
+        : `REAL businesses in ${cityNameEn}, ${countryNameEn} for first dates: ${categoryNames[category.id] || category.name}${excludeText}
+
+List 5-7 places that actually exist. Return ONLY JSON array:
+[{"name":"Name","description":"Description","location":"Address","rating":"4.5","price":"$$"}]
+
+No other text, ONLY JSON.`;
 
       // Call the AI API
-      const systemPromptExtra = isLoadMore ? ' Generate DIFFERENT businesses than before. Do NOT repeat any business names that were already mentioned.' : '';
+      const systemPromptExtra = isLoadMore 
+        ? isAlbanian 
+          ? ' Gjenero biznese të NDRYSHME nga më parë. MOS përsërit asnjë emër biznesi që u përmend tashmë.'
+          : ' Generate DIFFERENT businesses than before. Do NOT repeat any business names that were already mentioned.'
+        : '';
+      
+      const systemPrompt = isAlbanian
+        ? `Ti njeh ${cityNameEn}, ${countryNameEn} shumë mirë. Kthe VETËM JSON array me biznese REALE që ekzistojnë në ${cityNameEn}. Pa shpjegime, pa markdown, vetëm JSON array.${systemPromptExtra}`
+        : `You know ${cityNameEn}, ${countryNameEn} very well. Return ONLY a JSON array of REAL businesses that exist in ${cityNameEn}. No explanations, no markdown, just the JSON array.${systemPromptExtra}`;
+      
       const response = await base44.integrations.Core.InvokeLLM({ 
         prompt,
         conversationHistory: [],
-        systemPrompt: `Ti njeh ${cityNameEn}, ${countryNameEn} shumë mirë. Return ONLY a JSON array of REAL businesses that exist in ${cityNameEn}. No explanations, no markdown, just the JSON array.${systemPromptExtra}`
+        systemPrompt
       });
 
       // Parse the response

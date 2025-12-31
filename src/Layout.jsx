@@ -42,7 +42,7 @@ export default function Layout({ children, onLogout }) {
       const startTime = typeof trialStartTime === 'string' && trialStartTime.includes('T') 
         ? new Date(trialStartTime).getTime() 
         : parseInt(trialStartTime);
-      const trialDuration = 12 * 60 * 60 * 1000;
+      const trialDuration = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
       if (Date.now() >= startTime + trialDuration) return true;
     }
     
@@ -90,7 +90,7 @@ export default function Layout({ children, onLogout }) {
         const startTime = typeof trialStartTime === 'string' && trialStartTime.includes('T') 
           ? new Date(trialStartTime).getTime() 
           : parseInt(trialStartTime);
-        const trialDuration = 12 * 60 * 60 * 1000; // 12 hours
+        const trialDuration = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
         const endTime = startTime + trialDuration;
         
         if (Date.now() >= endTime) {
@@ -129,10 +129,39 @@ export default function Layout({ children, onLogout }) {
     
     // TODO: Integrate with Apple In-App Purchases
     // For now, simulate successful purchase
+    
+    // Get tier credits based on selection
+    const tierCredits = {
+      'starter': 200,
+      'pro': 500,
+      'elite': 1000
+    };
+    
+    // Update ALL localStorage keys that the credit system checks
     localStorage.setItem('subscriptionTier', tierId);
+    localStorage.setItem('userSubscriptionTier', tierId);
     localStorage.removeItem('trialStartTime');
+    localStorage.removeItem('trial_start_date');
     localStorage.removeItem('trialExpired');
+    localStorage.removeItem('trial_used_forever');
+    
+    // Update the user_subscription object (this is what credits.js checks!)
+    const newSubscription = {
+      tier: tierId,
+      credits: tierCredits[tierId] || 500,
+      creditsUsedToday: 0,
+      lastResetDate: new Date().toISOString().split('T')[0],
+      purchaseDate: new Date().toISOString()
+    };
+    localStorage.setItem('user_subscription', JSON.stringify(newSubscription));
+    
+    console.log('✅ Subscription updated:', newSubscription);
+    
+    // Hide the modal
     setShowTrialExpiredModal(false);
+    
+    // Force page reload to reset all states
+    window.location.reload();
     
     // Update backend
     try {

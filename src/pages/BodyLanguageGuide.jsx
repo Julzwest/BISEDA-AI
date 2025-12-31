@@ -727,13 +727,13 @@ const BodyLanguageGuide = () => {
         <div className="absolute top-6 left-4 text-xl animate-pulse opacity-40">💫</div>
         
         {/* Back button */}
-        <button 
-          onClick={() => navigate(-1)}
+          <button 
+            onClick={() => navigate(-1)}
           className="p-2 -ml-2 mb-4 hover:bg-slate-800/50 rounded-xl transition-colors inline-flex items-center gap-2 text-slate-400"
-        >
+          >
           <ArrowLeft className="w-5 h-5" />
           <span className="text-sm">Back</span>
-        </button>
+          </button>
 
         {/* Main header */}
         <div className="text-center mb-6">
@@ -756,7 +756,7 @@ const BodyLanguageGuide = () => {
             <span className="bg-gradient-to-r from-pink-400 via-rose-400 to-red-400 bg-clip-text text-transparent">
               Body Language! 🎯
             </span>
-          </h1>
+            </h1>
           <p className="text-slate-400 text-sm">
             Master the art of non-verbal communication ✨
           </p>
@@ -766,8 +766,8 @@ const BodyLanguageGuide = () => {
             <Sparkles className="w-4 h-4 text-purple-400" />
             <span className="text-purple-300 text-sm font-bold">3,000+ Tips & Techniques</span>
           </div>
+          </div>
         </div>
-      </div>
 
       {/* Quick Tips Section from Database */}
       <div className="px-5 mb-6">
@@ -1023,13 +1023,13 @@ const BodyLanguageGuide = () => {
                   selectedCategory === 'positive' ? 'text-emerald-400' :
                   selectedCategory === 'neutral' ? 'text-amber-400' :
                   selectedCategory === 'deception' ? 'text-cyan-400' : 'text-red-400'
-                }`}>
+              }`}>
                   <Heart className="w-4 h-4" />
                   What It Means
-                </h3>
+              </h3>
                 <p className="text-slate-300 leading-relaxed">
-                  {selectedSignal.meaning}
-                </p>
+                {selectedSignal.meaning}
+              </p>
               </div>
             </div>
 
@@ -1038,10 +1038,10 @@ const BodyLanguageGuide = () => {
               <div className="p-4 rounded-2xl bg-gradient-to-r from-violet-500/10 to-purple-500/10 border border-violet-500/30">
                 <h3 className="text-sm font-bold text-violet-400 mb-2 flex items-center gap-2">
                   ⚡ What To Do
-                </h3>
+              </h3>
                 <p className="text-slate-300 leading-relaxed">
-                  {selectedSignal.whatToDo}
-                </p>
+                {selectedSignal.whatToDo}
+              </p>
               </div>
             </div>
 

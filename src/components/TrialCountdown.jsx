@@ -31,7 +31,7 @@ export default function TrialCountdown() {
       }
 
       const startTime = parseInt(trialStartTime);
-      const trialDuration = 12 * 60 * 60 * 1000; // 12 hours in ms
+      const trialDuration = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
       const endTime = startTime + trialDuration;
       const remaining = endTime - Date.now();
 
@@ -53,7 +53,7 @@ export default function TrialCountdown() {
       const trialStartTime = localStorage.getItem('trialStartTime');
       if (trialStartTime) {
         const startTime = parseInt(trialStartTime);
-        const trialDuration = 12 * 60 * 60 * 1000;
+        const trialDuration = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
         const endTime = startTime + trialDuration;
         const remaining = endTime - Date.now();
         

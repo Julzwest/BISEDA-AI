@@ -417,7 +417,9 @@ Then naturally transition - offer a drink, invite them to sit, maybe compliment 
     useCredits('rehearsal_exchange');
 
     try {
-      const langInstruction = isAlbanian ? 'Përgjigju në shqip.' : `Respond in ${currentLang === 'en' ? 'English' : currentLang}.`;
+      const langInstruction = isAlbanian 
+        ? 'KRITIKE: Përgjigju VETËM në Shqip. MOS përdor asnjë fjalë angleze. Përdor slang shqiptar: "ore", "plako", "çmendje", "e fortë".' 
+        : 'CRITICAL: Respond ONLY in English. Do NOT use any Albanian or other language words.';
       const personality = personalities.find(p => p.id === datePersonality);
       const intention = intentions.find(i => i.id === selectedIntention);
       const roleDescription = getRoleDescription(selectedScenario, personality);
@@ -586,7 +588,9 @@ ${safeDateName} (speaking naturally, 1-3 sentences):`;
     useCredits('rehearsal_exchange');
 
     try {
-      const langInstruction = isAlbanian ? 'Përgjigju në shqip.' : `Respond in ${currentLang === 'en' ? 'English' : currentLang}.`;
+      const langInstruction = isAlbanian 
+        ? 'KRITIKE: Përgjigju VETËM në Shqip. MOS përdor asnjë fjalë angleze. Përdor slang shqiptar: "ore", "plako", "çmendje", "e fortë".' 
+        : 'CRITICAL: Respond ONLY in English. Do NOT use any Albanian or other language words.';
       const personality = personalities.find(p => p.id === datePersonality);
       const intention = intentions.find(i => i.id === selectedIntention);
       const roleDescription = getRoleDescription(scenario, personality);
@@ -1260,7 +1264,9 @@ ${safeDateName} responds naturally (1-3 sentences, NO AI phrases, GENUINE reacti
     
     setIsLoading(true);
     try {
-      const langInstruction = isAlbanian ? 'Përgjigju në shqip.' : `Respond in ${currentLang === 'en' ? 'English' : currentLang}.`;
+      const langInstruction = isAlbanian 
+        ? 'KRITIKE: Përgjigju VETËM në Shqip. MOS përdor asnjë fjalë angleze. Përdor slang shqiptar: "ore", "plako", "çmendje", "e fortë".' 
+        : 'CRITICAL: Respond ONLY in English. Do NOT use any Albanian or other language words.';
       const intention = intentions.find(i => i.id === selectedIntention);
       
       const conversationHistory = messages.map(m => 

@@ -1102,10 +1102,14 @@
       "earlyMorning": "Mëngjes herët",
       "friendCrisis": "Shoku më ka nevojë",
       "notFeelingWell": "Nuk ndihem mirë",
-      "workUrgent": "Urgjencë pune",
-      "petSituation": "Urgjencë kafshësh",
+      "workEmergency": "Urgjencë pune",
+      "petSitter": "Problem me kujdestarin e kafshës",
       "familyCall": "Çështje familjare",
-      "parkingMeter": "Makina/Parkimi"
+      "carParking": "Makina/Parkimi",
+      "roommateLocked": "Shoku i dhomës s'ka çelës",
+      "migraine": "Po më vjen migrenë",
+      "babysitter": "Problem me dadën",
+      "uberWaiting": "Uber-i po pret"
     },
     "styles": {
       "playful": "Lojtar",

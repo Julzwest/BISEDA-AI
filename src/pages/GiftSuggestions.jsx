@@ -11,6 +11,7 @@ import { canPerformAction, useCredits } from '@/utils/credits';
 
 export default function GiftSuggestions() {
   const { t, i18n } = useTranslation();
+  const isAlbanian = i18n.language?.startsWith('sq');
   const backendUrl = import.meta.env.VITE_BACKEND_URL || 'https://biseda-ai.onrender.com';
   
   // Check if user has Pro or Elite subscription
@@ -160,14 +161,39 @@ export default function GiftSuggestions() {
         high: currencySymbol === '£' ? '£100-250' : currencySymbol === '$' ? '$120-350' : '€100-300',
         premium: currencySymbol === '£' ? '£250+' : currencySymbol === '$' ? '$350+' : '€300+'
       };
-      const budgetText = budgetRanges[budget] || 'any budget';
-      const occasionText = occasions.find(o => o.id === occasion)?.name || 'any occasion';
-      const genderText = partnerGender === 'female' ? 'a woman/girlfriend/wife' : 
-                         partnerGender === 'male' ? 'a man/boyfriend/husband' : 
-                         'a person (gender-neutral)';
+      const budgetText = budgetRanges[budget] || (isAlbanian ? 'çdo buxhet' : 'any budget');
+      const occasionText = occasions.find(o => o.id === occasion)?.name || (isAlbanian ? 'çdo rast' : 'any occasion');
+      const genderText = isAlbanian
+        ? (partnerGender === 'female' ? 'një grua/të dashur/bashkëshorte' : 
+           partnerGender === 'male' ? 'një burrë/të dashur/bashkëshort' : 
+           'një person (gjini neutrale)')
+        : (partnerGender === 'female' ? 'a woman/girlfriend/wife' : 
+           partnerGender === 'male' ? 'a man/boyfriend/husband' : 
+           'a person (gender-neutral)');
       
-      // Improved prompt focused on REAL PURCHASABLE PRODUCTS with gender context
-      const prompt = `You are a gift recommendation expert. Suggest 6 SPECIFIC, REAL products that can be purchased ONLINE.
+      // Language-specific prompts
+      const prompt = isAlbanian
+        ? `Je ekspert i rekomandimeve të dhuratave. Sugjero 6 produkte SPECIFIKE, REALE që mund të blihen ONLINE.
+
+MARRËSI: ${genderText} që i pëlqen: "${partnerInterests}"
+Rasti: ${occasionText}
+Buxheti: ${budgetText}
+
+RREGULLA TË RËNDËSISHME:
+1. Sugjero produkte REALE që ekzistojnë dhe mund të blihen online
+2. Ji SPECIFIK - përfshi emra markash, modele, ose tipe produktesh specifike
+3. Përputh interesat SAKTËSISHT - nëse i pëlqen muzika, sugjero dhurata muzikore
+4. PËRSHTAT dhuratat sipas gjinisë së marrësit kur është e përshtatshme
+5. Përfshi një përzierje: produkte fizike, përvoja, abonime, artikuj të personalizuar
+6. Çmimet duhet të jenë realiste dhe brenda buxhetit
+
+Kthe VETËM një JSON array me këtë format SAKTË:
+[
+{"name":"Emri Specifik i Produktit","description":"Përshkrim i shkurtër pse është perfekt për ta","price":"${currencySymbol}XX","category":"Kategoria","searchTerm":"termi i saktë i kërkimit për ta gjetur online"}
+]
+
+Gjenero 6 ide dhuratash për ${genderText} që i pëlqen: "${partnerInterests}"`
+        : `You are a gift recommendation expert. Suggest 6 SPECIFIC, REAL products that can be purchased ONLINE.
 
 RECIPIENT: ${genderText} who likes: "${partnerInterests}"
 Occasion: ${occasionText}
@@ -186,19 +212,18 @@ Return ONLY a JSON array with this EXACT format:
 {"name":"Specific Product Name","description":"Brief description of why this is perfect for them","price":"${currencySymbol}XX","category":"Category","searchTerm":"exact search term for finding this online"}
 ]
 
-Example for "music lover" (woman):
-[
-{"name":"Rose Gold Wireless Headphones","description":"Stylish Bluetooth headphones with premium sound quality","price":"£89","category":"Electronics","searchTerm":"rose gold wireless headphones women"},
-{"name":"Spotify Premium 12-Month Subscription","description":"Ad-free music streaming with offline downloads","price":"£120","category":"Subscription","searchTerm":"spotify premium gift card 12 months"}
-]
-
 Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
+
+      // Language-specific system prompt
+      const systemPrompt = isAlbanian
+        ? "Je ekspert i rekomandimeve të dhuratave. Kthe VETËM një JSON array valid me produkte reale të blershme. Pa markdown, pa shpjegime. Ji specifik me emrat e produkteve dhe përfshi çmime realiste."
+        : "You are a gift recommendation expert. Return ONLY a valid JSON array with real, purchasable products. No markdown, no explanations. Be specific with product names and include realistic prices.";
 
       // Call the AI API
       const response = await base44.integrations.Core.InvokeLLM({ 
         prompt,
         conversationHistory: [],
-        systemPrompt: "You are a gift recommendation expert. Return ONLY a valid JSON array with real, purchasable products. No markdown, no explanations. Be specific with product names and include realistic prices."
+        systemPrompt
       });
 
       console.log('🎁 AI Raw Response:', response);

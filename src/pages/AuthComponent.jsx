@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { MessageSquare, Mail, Lock, Eye, EyeOff, Sparkles, ArrowRight, Heart, Zap, Star, Crown, ArrowLeft, KeyRound, User, Users } from 'lucide-react';
+import { MessageSquare, Mail, Lock, Eye, EyeOff, Sparkles, ArrowRight, Heart, Zap, Star, Crown, ArrowLeft, KeyRound, User, Users, X } from 'lucide-react';
 import { getBackendUrl } from '@/utils/getBackendUrl';
 import { Capacitor } from '@capacitor/core';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
@@ -611,27 +611,27 @@ export default function Auth({ onAuthSuccess }) {
 
             {/* Name & Gender - Only show on Register */}
             {!isLogin && (
-              <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-3">
                 <div className="relative">
                   <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                  <input
-                    type="text"
-                    value={firstName}
-                    onChange={(e) => { setFirstName(e.target.value); setError(''); }}
+                    <input
+                      type="text"
+                      value={firstName}
+                      onChange={(e) => { setFirstName(e.target.value); setError(''); }}
                     className="w-full pl-12 pr-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-pink-500/50 transition-all text-base"
                     placeholder={t('auth.yourName', 'Your Name')}
-                    style={{ fontSize: '16px' }}
-                    required
-                  />
-                </div>
+                      style={{ fontSize: '16px' }}
+                      required
+                    />
+                  </div>
                 <div className="relative">
                   <Users className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none z-10" />
                   <select
                     value={gender}
                     onChange={(e) => { setGender(e.target.value); setError(''); }}
                     className="w-full pl-12 pr-4 py-4 bg-slate-800/50 border-2 border-slate-700/50 rounded-xl text-white focus:outline-none focus:border-pink-500/50 transition-all text-base appearance-none cursor-pointer"
-                    style={{ fontSize: '16px' }}
-                    required
+                      style={{ fontSize: '16px' }}
+                      required
                   >
                     <option value="" disabled className="text-slate-500">{t('auth.selectGender', 'Gender')}</option>
                     <option value="male" className="bg-slate-800">{t('auth.male', 'Male')}</option>
@@ -707,19 +707,19 @@ export default function Auth({ onAuthSuccess }) {
             )}
 
             {/* Submit Button - Full Width */}
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl text-base shadow-lg transition-all duration-300"
-            >
-              {loading ? (
-                <div className="flex items-center justify-center gap-2">
-                  <div className="w-4 h-4 border-3 border-white/30 border-t-white rounded-full animate-spin"></div>
-                </div>
-              ) : (
-                <span>{isLogin ? ('🚀 ' + t('auth.login')) : ('✨ ' + t('auth.createAccount'))}</span>
-              )}
-            </Button>
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-purple-500 to-fuchsia-600 hover:from-purple-600 hover:to-fuchsia-700 text-white font-bold h-14 rounded-xl text-base shadow-lg transition-all duration-300"
+              >
+                {loading ? (
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-4 h-4 border-3 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  </div>
+                ) : (
+                  <span>{isLogin ? ('🚀 ' + t('auth.login')) : ('✨ ' + t('auth.createAccount'))}</span>
+                )}
+              </Button>
 
             {/* Apple Sign In Button */}
             <button
@@ -830,15 +830,25 @@ export default function Auth({ onAuthSuccess }) {
       {/* Welcome Modal - Shows after successful registration */}
       {showWelcomeModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <Card className="bg-slate-900/95 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20 max-w-md w-full animate-fade-in">
+          <Card className="bg-slate-900/95 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20 max-w-md w-full animate-fade-in relative">
+            {/* Close button */}
+            <button
+              onClick={() => {
+                setShowWelcomeModal(false);
+                if (pendingAuthData) {
+                  completeAuth(pendingAuthData);
+                }
+              }}
+              className="absolute top-4 right-4 w-8 h-8 bg-slate-700/80 hover:bg-slate-600 rounded-full flex items-center justify-center transition-colors"
+            >
+              <X className="w-5 h-5 text-slate-300" />
+            </button>
+            
             <div className="text-center">
               {/* Animated emoji */}
               <div className="relative mb-6">
                 <div className="w-24 h-24 bg-gradient-to-br from-pink-500 via-purple-500 to-fuchsia-600 rounded-full flex items-center justify-center mx-auto animate-bounce-slow">
                   <span className="text-5xl">🎉</span>
-                </div>
-                <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center animate-pulse">
-                  <span className="text-lg">✨</span>
                 </div>
               </div>
 

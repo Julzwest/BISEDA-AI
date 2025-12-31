@@ -12,7 +12,7 @@ export const SUBSCRIPTION_TIERS = {
     priceDisplayAlbanian: '€0',
     credits: 30, // REDUCED: 30 credits max (prevents any possible abuse)
     dailyLimit: 15, // REDUCED: Max 15 messages per day during trial
-    durationHours: 12, // 12-hour trial
+    durationHours: 12, // 12-hour trial (TESTING: change to 60 seconds below)
     maxCost: 0.0105, // Max €0.01 cost per trial user (30 × €0.00035)
     features: {
       chat: true,
@@ -150,24 +150,30 @@ export const getRemainingDailyCredits = (tierId, todayUsage) => {
   return Math.max(0, dailyLimit - todayUsage);
 };
 
-// Calculate remaining trial time (12 hours)
+// Calculate remaining trial time
+// 12 hours trial for new users
+const TRIAL_DURATION_MS = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
+
 export const getTrialTimeRemaining = (trialStartDate) => {
   if (!trialStartDate) return null;
   
-  const trialEnd = new Date(trialStartDate);
-  trialEnd.setHours(trialEnd.getHours() + 12); // 12-hour trial
+  const startTime = new Date(trialStartDate).getTime();
+  const trialEnd = startTime + TRIAL_DURATION_MS;
   
-  const now = new Date();
+  const now = Date.now();
   const remaining = trialEnd - now;
   
-  if (remaining <= 0) return { expired: true, hours: 0, minutes: 0 };
+  if (remaining <= 0) return { expired: true, hours: 0, minutes: 0, seconds: 0 };
   
-  const totalMinutes = Math.floor(remaining / (1000 * 60));
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
+  const totalSeconds = Math.floor(remaining / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
   
-  return { expired: false, hours, minutes };
+  return { expired: false, hours, minutes, seconds };
 };
+
+export const TRIAL_DURATION = TRIAL_DURATION_MS;
 
 // PROFIT CALCULATION (for reference):
 // GPT-4o-mini cost: ~€0.00035 per message

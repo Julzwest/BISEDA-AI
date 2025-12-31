@@ -89,9 +89,9 @@ function App() {
       setShowNewUserOnboarding(true);
     } else {
       // Show tutorial for returning users who haven't seen it
-      const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
-      if (!hasSeenOnboarding) {
-        setShowOnboarding(true);
+    const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
+    if (!hasSeenOnboarding) {
+      setShowOnboarding(true);
       }
     }
   };
@@ -185,20 +185,20 @@ function App() {
         <Onboarding onComplete={() => setShowNewUserOnboarding(false)} />
       )}
       
-      <Router>
-        {/* Scroll to top on route change */}
-        <ScrollToTop />
-        
+    <Router>
+      {/* Scroll to top on route change */}
+      <ScrollToTop />
+      
         {/* Tutorial for returning users */}
         {showOnboarding && !showNewUserOnboarding && (
-          <OnboardingTutorial 
-            onComplete={() => setShowOnboarding(false)} 
-            isGuest={isGuest}
-          />
-        )}
-        
-        <Layout onLogout={handleLogout}>
-          <Routes>
+        <OnboardingTutorial 
+          onComplete={() => setShowOnboarding(false)} 
+          isGuest={isGuest}
+        />
+      )}
+      
+      <Layout onLogout={handleLogout}>
+        <Routes>
           <Route path="/" element={<Navigate to="/copilot" replace />} />
           <Route path="/copilot" element={<HomeCoPilot />} />
           <Route path="/copilot/upload" element={<ChatUpload />} />
