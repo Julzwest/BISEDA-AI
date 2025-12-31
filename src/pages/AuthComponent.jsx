@@ -334,7 +334,7 @@ export default function Auth({ onAuthSuccess }) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
         {/* Language Switcher */}
-        <div className="fixed top-4 right-4 z-50">
+        <div className="fixed top-14 right-4 z-50">
           <LanguageSwitcher />
         </div>
         
@@ -521,8 +521,8 @@ export default function Auth({ onAuthSuccess }) {
 
   return (
     <div className="min-h-screen flex items-start justify-center p-4 pt-16 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      {/* Language Switcher - Fixed position */}
-      <div className="fixed top-4 right-4 z-50">
+      {/* Language Switcher - Fixed position (pushed down to avoid status bar) */}
+      <div className="fixed top-14 right-4 z-50">
         <LanguageSwitcher />
       </div>
       
