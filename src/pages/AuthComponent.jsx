@@ -1059,7 +1059,7 @@ export default function Auth({ onAuthSuccess }) {
                 className="text-slate-400 hover:text-white transition-colors text-sm disabled:opacity-50"
               >
                 {resendCooldown > 0 
-                  ? t('auth.resendIn', `Resend code in ${resendCooldown}s`)
+                  ? t('auth.resendIn', { seconds: resendCooldown, defaultValue: `Resend code in ${resendCooldown}s` })
                   : t('auth.resendCode', "Didn't receive code? Resend")}
               </button>
               
