@@ -17,8 +17,39 @@ export default function Layout({ children, onLogout }) {
   const location = useLocation();
   const currentPageName = location.pathname.split('/')[1]?.charAt(0).toUpperCase() + location.pathname.split('/')[1]?.slice(1) || 'Home';
   
-  // Trial expiration state
-  const [showTrialExpiredModal, setShowTrialExpiredModal] = useState(false);
+  // Trial expiration state - Check immediately on load
+  const checkIfTrialExpired = () => {
+    const subscriptionTier = localStorage.getItem('subscriptionTier') || localStorage.getItem('userSubscriptionTier');
+    const subscriptionData = localStorage.getItem('user_subscription');
+    const trialStartTime = localStorage.getItem('trialStartTime') || localStorage.getItem('trial_start_date');
+    
+    // Paid users are fine
+    const paidTiers = ['starter', 'pro', 'elite'];
+    if (paidTiers.includes(subscriptionTier)) return false;
+    
+    // Check subscription data
+    if (subscriptionData) {
+      try {
+        const parsed = JSON.parse(subscriptionData);
+        if (paidTiers.includes(parsed.tier)) return false;
+        if (parsed.tier === 'expired') return true;
+        if (parsed.credits <= 0) return true;
+      } catch (e) {}
+    }
+    
+    // Check trial time
+    if (trialStartTime) {
+      const startTime = typeof trialStartTime === 'string' && trialStartTime.includes('T') 
+        ? new Date(trialStartTime).getTime() 
+        : parseInt(trialStartTime);
+      const trialDuration = 12 * 60 * 60 * 1000;
+      if (Date.now() >= startTime + trialDuration) return true;
+    }
+    
+    return false;
+  };
+  
+  const [showTrialExpiredModal, setShowTrialExpiredModal] = useState(checkIfTrialExpired());
   
   // All users are now registered - no guest sessions
   
@@ -238,7 +269,10 @@ export default function Layout({ children, onLogout }) {
           zIndex: 9999,
           background: 'linear-gradient(to bottom, var(--bg-primary, rgba(15, 23, 42, 0.98)), var(--bg-primary, rgba(15, 23, 42, 0.95)))',
           backdropFilter: 'blur(12px)',
-          borderBottom: '1px solid var(--border-color, rgba(148, 163, 184, 0.1))'
+          borderBottom: '1px solid var(--border-color, rgba(148, 163, 184, 0.1))',
+          // Blur and disable when trial expired
+          filter: showTrialExpiredModal ? 'blur(8px)' : 'none',
+          pointerEvents: showTrialExpiredModal ? 'none' : 'auto'
         }}
       >
         <div className="h-14 px-4 flex items-center justify-between max-w-screen-xl mx-auto">
@@ -294,7 +328,15 @@ export default function Layout({ children, onLogout }) {
           width: '100%'
         }}
       >
-        <div style={{ overflowX: 'hidden', maxWidth: '100%', width: '100%' }}>
+        <div style={{ 
+          overflowX: 'hidden', 
+          maxWidth: '100%', 
+          width: '100%',
+          // Blur and disable interaction when trial expired
+          filter: showTrialExpiredModal ? 'blur(8px)' : 'none',
+          pointerEvents: showTrialExpiredModal ? 'none' : 'auto',
+          userSelect: showTrialExpiredModal ? 'none' : 'auto'
+        }}>
           {children}
         </div>
       </main>
@@ -309,7 +351,10 @@ export default function Layout({ children, onLogout }) {
         backdropFilter: 'blur(12px)',
         borderTop: '1px solid var(--border-color, rgba(148, 163, 184, 0.1))',
         zIndex: 9999,
-        paddingBottom: 'env(safe-area-inset-bottom, 0px)'
+        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+        // Blur and disable when trial expired
+        filter: showTrialExpiredModal ? 'blur(8px)' : 'none',
+        pointerEvents: showTrialExpiredModal ? 'none' : 'auto'
       }}>
         <div className="flex justify-around items-center h-16 px-2 max-w-screen-xl mx-auto">
           {navItems.map((item) => {
