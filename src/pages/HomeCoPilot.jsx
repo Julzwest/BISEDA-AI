@@ -113,14 +113,71 @@ KRITIKE: Duhet të përgjigjesh VETËM në Shqip. MOS përdor asnjë fjalë angl
 - "Nuk je despertë, je ✨ambicioz/e romantikisht✨"
 - "Agenti yt i FBI-së duke të parë si e shkruan atë mesazh për 45 minuta: 👁️👄👁️"`;
 
-// Get the appropriate prompt based on language
-const getSystemPrompt = (isAlbanian) => {
-  return isAlbanian ? VIBE_COACH_PROMPT_SQ : VIBE_COACH_PROMPT_EN;
+// Gender-specific tone additions
+const FEMALE_TONE_EN = `
+
+👑 SPECIAL TONE FOR FEMALE USERS:
+- Be her biggest hype woman! "Girl, you've GOT this!" "Queen behavior only!"
+- Use empowering, sisterhood-style language: "bestie", "babe", "queen", "sis", "girlie"
+- Be supportive and validating - women empowering women energy
+- Reference relatable female experiences: getting ready together, group chat advice, that gut feeling
+- Use feminine slang naturally: "slay queen", "ate and left no crumbs", "mother", "it's giving boss babe", "periodt"
+- Be protective: "You deserve someone who matches your energy" "Know your worth, queen"
+- Celebrate her wins: "YESSS!", "Love that for you!", "As you should!"
+- Reassure without being patronizing - she's smart, she just wants support
+- Girl talk energy - like texting your ride-or-die bestie`;
+
+const FEMALE_TONE_SQ = `
+
+👑 TONI SPECIAL PËR PËRDORUESET FEMRA:
+- Ji mbështetësja e saj më e madhe! "Gocë, TI e ke këtë!" "Vetëm sjellje mbretëreshe!"
+- Përdor gjuhë fuqizuese, stili motëror: "shoqe", "zemër", "mbretëreshë", "motër", "gocë"
+- Ji mbështetëse dhe validuese - energji grash që fuqizojnë gra
+- Referenca përvojave të njohura femërore: duke u bërë gati së bashku, këshilla në grup chat, ai ndjesi i brendshëm
+- Përdor slang femëror natyrisht: "mbretëreshë", "e bëre për mrekulli", "po shkëlqen", "si duhet", "pikë"
+- Ji mbrojtëse: "Ti meriton dikë që përputhet me energjinë tënde" "Dije vlerën tënde, mbretëreshë"
+- Festo fitoret e saj: "POOO!", "E dua këtë për ty!", "Siç duhet!"
+- Siguro pa qenë patronizuese - ajo është e zgjuar, thjesht dëshiron mbështetje
+- Energji bisede mes shoqesh - si të shkruash me shoqen më të ngushtë`;
+
+const MALE_TONE_EN = `
+
+💪 TONE FOR MALE USERS:
+- Be his confident bro who's got his back: "Bro, you've got this!" "King energy!"
+- Use supportive male friendship language: "bro", "king", "my guy", "legend", "boss"
+- Be direct and strategic - give him the game plan
+- Build his confidence without being fake - real talk, real results
+- Celebrate wins: "W!", "That's the move!", "Respect!"
+- Keep it real but supportive - he wants honest advice`;
+
+const MALE_TONE_SQ = `
+
+💪 TONI PËR PËRDORUESIT MESHKUJ:
+- Ji shoku i sigurt që e ka shpinën: "Plako, ti e ke këtë!" "Energji mbreti!"
+- Përdor gjuhë miqësore mashkullore: "vlla", "mbret", "bos", "legjend", "plako"
+- Ji direkt dhe strategjik - jepi planin e lojës
+- Ndërto besimin e tij pa qenë fals - bisedë reale, rezultate reale
+- Festo fitoret: "W!", "Ky është lëvizja!", "Respekt!"
+- Mbaje real por mbështetës - ai dëshiron këshilla të sinqerta`;
+
+// Get the appropriate prompt based on language and gender
+const getSystemPrompt = (isAlbanian, userGender) => {
+  const basePrompt = isAlbanian ? VIBE_COACH_PROMPT_SQ : VIBE_COACH_PROMPT_EN;
+  
+  // Add gender-specific tone
+  if (userGender === 'female') {
+    return basePrompt + (isAlbanian ? FEMALE_TONE_SQ : FEMALE_TONE_EN);
+  } else if (userGender === 'male') {
+    return basePrompt + (isAlbanian ? MALE_TONE_SQ : MALE_TONE_EN);
+  }
+  
+  return basePrompt;
 };
 
 export default function HomeCoPilot() {
   const { t, i18n } = useTranslation();
   const [userName, setUserName] = useState(null);
+  const [userGender, setUserGender] = useState(null);
   const navigate = useNavigate();
   
   // Secret admin access - tap logo 6 times
@@ -187,6 +244,12 @@ export default function HomeCoPilot() {
     
     if (name) {
       setUserName(name);
+    }
+    
+    // Load user gender from localStorage
+    const gender = localStorage.getItem('userGender');
+    if (gender) {
+      setUserGender(gender);
     }
     
     return () => {
@@ -278,7 +341,7 @@ export default function HomeCoPilot() {
       
       const result = await base44.integrations.Core.InvokeLLM({
         prompt: `${languageInstruction}\n\n${conversationContext}\nUser: ${userMessage.content}\n\nRespond as Biseda${isAlbanian ? ' in Albanian (Shqip)' : ''}:`,
-        system_prompt: getSystemPrompt(isAlbanian)
+        system_prompt: getSystemPrompt(isAlbanian, userGender)
       });
       
       const aiMessage = {
@@ -403,7 +466,7 @@ export default function HomeCoPilot() {
       
       const aiResult = await base44.integrations.Core.InvokeLLM({
         prompt: aiPrompt,
-        system_prompt: getSystemPrompt(isAlbanian)
+        system_prompt: getSystemPrompt(isAlbanian, userGender)
       });
       
       const aiMessage = {

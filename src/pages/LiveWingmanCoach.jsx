@@ -55,14 +55,56 @@ Kthe vetëm JSON:
   "vibe": "emoji"
 }`;
 
-// Get the appropriate prompt based on language
-const getWingmanPrompt = (isAlbanian) => {
-  return isAlbanian ? WINGMAN_PROMPT_SQ : WINGMAN_PROMPT_EN;
+// Gender-specific tone additions for Wingman
+const WINGMAN_FEMALE_TONE_EN = `
+
+👑 FOR FEMALE USERS - BE HER ULTIMATE HYPE BESTIE:
+- Supportive sisterhood energy: "Girl, you've got this!" "Queen move!"
+- Empowering language: "queen", "bestie", "sis", "babe"
+- Women supporting women vibes
+- "You're a catch, act like it!" "Know your worth!"`;
+
+const WINGMAN_FEMALE_TONE_SQ = `
+
+👑 PËR PËRDORUESET FEMRA - JI SHOQJA E SAJ MË E MIRË:
+- Energji mbështetëse motërore: "Gocë, ti e ke!" "Lëvizje mbretëreshe!"
+- Gjuhë fuqizuese: "mbretëreshë", "shoqe", "motër", "zemër"
+- Gra që mbështesin gra
+- "Ti je diamant, sillu si i tillë!" "Dije vlerën tënde!"`;
+
+const WINGMAN_MALE_TONE_EN = `
+
+💪 FOR MALE USERS - BE HIS CONFIDENT WINGMAN:
+- Bro energy: "King, you've got this!" "That's the move, bro!"
+- Direct and strategic advice
+- "Confidence is key!" "She's into you, go for it!"`;
+
+const WINGMAN_MALE_TONE_SQ = `
+
+💪 PËR PËRDORUESIT MESHKUJ - JI WINGMAN-I I TIJ I SIGURT:
+- Energji vëllazërore: "Mbret, ti e ke!" "Kjo është lëvizja, vlla!"
+- Këshilla direkte dhe strategjike
+- "Besimi është çelësi!" "Ajo është e interesuar, shko për të!"`;
+
+// Get the appropriate prompt based on language and user gender
+const getWingmanPrompt = (isAlbanian, userGender) => {
+  const basePrompt = isAlbanian ? WINGMAN_PROMPT_SQ : WINGMAN_PROMPT_EN;
+  
+  if (userGender === 'female') {
+    return basePrompt + (isAlbanian ? WINGMAN_FEMALE_TONE_SQ : WINGMAN_FEMALE_TONE_EN);
+  } else if (userGender === 'male') {
+    return basePrompt + (isAlbanian ? WINGMAN_MALE_TONE_SQ : WINGMAN_MALE_TONE_EN);
+  }
+  
+  return basePrompt;
 };
 
 export default function LiveWingmanCoach() {
   const { t, i18n } = useTranslation();
   const isAlbanian = i18n.language?.startsWith('sq');
+  
+  // Get user gender from localStorage
+  const userGender = localStorage.getItem('userGender') || null;
   
   const [response, setResponse] = useState(null);
   const [copied, setCopied] = useState(false);
@@ -210,7 +252,7 @@ Return JSON: recommendation, trySaying, bodyLanguage, backup, proTip, vibe`;
     try {
       const aiResponse = await base44.integrations.Core.InvokeLLM({
         prompt,
-        system_prompt: getWingmanPrompt(isAlbanian),
+        system_prompt: getWingmanPrompt(isAlbanian, userGender),
         response_type: 'json'
       });
 
@@ -279,7 +321,10 @@ Return JSON: recommendation, trySaying, bodyLanguage, backup, proTip, vibe`;
         <div className="flex gap-2">
           {/* I am */}
           <div className="flex-1 bg-slate-800/60 rounded-xl p-3 border border-slate-700/50">
-            <p className="text-sm font-bold text-white mb-2">{t('liveWingman.iAm', 'I am')}</p>
+            <p className="text-sm font-bold text-white mb-2">
+              {t('liveWingman.iAm', 'I am')}
+              <span className="text-slate-400 font-normal ml-1">: {genderOptions.find(g => g.id === myGender)?.label}</span>
+            </p>
             <div className="flex gap-1.5">
               {genderOptions.map((g) => (
                     <button
@@ -299,7 +344,10 @@ Return JSON: recommendation, trySaying, bodyLanguage, backup, proTip, vibe`;
 
           {/* Dating */}
           <div className="flex-1 bg-slate-800/60 rounded-xl p-3 border border-slate-700/50">
-            <p className="text-sm font-bold text-white mb-2">{t('liveWingman.dating', 'Dating')}</p>
+            <p className="text-sm font-bold text-white mb-2">
+              {t('liveWingman.dating', 'Dating')}
+              <span className="text-slate-400 font-normal ml-1">: {genderOptions.find(g => g.id === datingGender)?.label}</span>
+            </p>
             <div className="flex gap-1.5">
               {genderOptions.map((g) => (
               <button
