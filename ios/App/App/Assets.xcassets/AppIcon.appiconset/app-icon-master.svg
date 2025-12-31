@@ -56,7 +56,7 @@
   
   <!-- Chat bubble behind B - Purple gradient with black outline -->
   <g filter="url(#shadow)">
-    <!-- Black outline/border -->
+    <!-- White outline/border -->
     <path d="
       M 220 200 
       C 220 140, 300 100, 512 100
@@ -68,7 +68,7 @@
       L 360 680
       C 280 680, 220 640, 220 580
       Z
-    " fill="none" stroke="#1a1a2e" stroke-width="12"/>
+    " fill="none" stroke="white" stroke-width="12"/>
     <!-- Purple bubble fill -->
     <path d="
       M 220 200 
