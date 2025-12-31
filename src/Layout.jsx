@@ -206,7 +206,7 @@ export default function Layout({ children, onLogout }) {
           {/* Left side - Logo/Brand */}
           <div className="flex items-center">
             <Link to="/copilot" className="flex items-center gap-2">
-              <div className="relative w-10 h-10 bg-gradient-to-br from-indigo-950 via-purple-900 to-violet-700 rounded-xl flex items-center justify-center shadow-lg shadow-purple-900/50 overflow-hidden">
+              <div className="relative w-10 h-10 bg-gradient-to-br from-violet-600 via-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/40 overflow-hidden">
                 {/* Shine effect */}
                 <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent"></div>
                 {/* Chat bubble with B - Purple bubble, White B */}
