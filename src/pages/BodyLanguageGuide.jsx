@@ -1,10 +1,13 @@
 import React, { useState, useMemo } from 'react';
 import { ArrowLeft, Eye, Search, Heart, AlertTriangle, X, Sparkles, Lightbulb, Target, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { bodyLanguageDatabase, getRandomTip, getTipsForStage, getTipsForSituation } from '@/data/bodyLanguageDatabase';
 
 const BodyLanguageGuide = () => {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
+  const isAlbanian = i18n.language === 'sq';
   const [selectedCategory, setSelectedCategory] = useState('positive');
   const [selectedSignal, setSelectedSignal] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -14,20 +17,20 @@ const BodyLanguageGuide = () => {
 
   // Categories with fun styling
   const categories = [
-    { id: 'positive', label: 'Attraction', icon: '💚', color: 'emerald', emoji: '😍' },
-    { id: 'neutral', label: 'Uncertain', icon: '💛', color: 'amber', emoji: '🤔' },
-    { id: 'negative', label: 'Disinterest', icon: '❤️‍🩹', color: 'red', emoji: '😬' },
-    { id: 'deception', label: 'Lie Detector', icon: '🔍', color: 'cyan', emoji: '🕵️' },
+    { id: 'positive', label: t('bodyLanguage.attraction', 'Attraction'), icon: '💚', color: 'emerald', emoji: '😍' },
+    { id: 'neutral', label: t('bodyLanguage.uncertain', 'Uncertain'), icon: '💛', color: 'amber', emoji: '🤔' },
+    { id: 'negative', label: t('bodyLanguage.disinterest', 'Disinterest'), icon: '❤️‍🩹', color: 'red', emoji: '😬' },
+    { id: 'deception', label: t('bodyLanguage.lieDetector', 'Lie Detector'), icon: '🔍', color: 'cyan', emoji: '🕵️' },
   ];
 
   // Quick tip categories from the database
   const quickTipCategories = [
-    { id: 'eyeContact', label: 'Eye Contact', emoji: '👀' },
-    { id: 'touch', label: 'Touch', emoji: '✋' },
-    { id: 'posture', label: 'Posture', emoji: '🧍' },
-    { id: 'voice', label: 'Voice', emoji: '🗣️' },
-    { id: 'flirting', label: 'Flirting', emoji: '😏' },
-    { id: 'confidence', label: 'Confidence', emoji: '💪' },
+    { id: 'eyeContact', label: t('bodyLanguage.eyeContact', 'Eye Contact'), emoji: '👀' },
+    { id: 'touch', label: t('bodyLanguage.touch', 'Touch'), emoji: '✋' },
+    { id: 'posture', label: t('bodyLanguage.posture', 'Posture'), emoji: '🧍' },
+    { id: 'voice', label: t('bodyLanguage.voice', 'Voice'), emoji: '🗣️' },
+    { id: 'flirting', label: t('bodyLanguage.flirting', 'Flirting'), emoji: '😏' },
+    { id: 'confidence', label: t('bodyLanguage.confidence', 'Confidence'), emoji: '💪' },
   ];
 
   // Get random tips from the database
@@ -732,7 +735,7 @@ const BodyLanguageGuide = () => {
           className="p-2 -ml-2 mb-4 hover:bg-slate-800/50 rounded-xl transition-colors inline-flex items-center gap-2 text-slate-400"
           >
           <ArrowLeft className="w-5 h-5" />
-          <span className="text-sm">Back</span>
+          <span className="text-sm">{t('common.back', 'Back')}</span>
           </button>
 
         {/* Main header */}
@@ -750,21 +753,21 @@ const BodyLanguageGuide = () => {
           </div>
           <h1 className="text-3xl font-black mb-2">
             <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Read Their
+              {t('bodyLanguage.readTheir', 'Read Their')}
             </span>
             <br />
             <span className="bg-gradient-to-r from-pink-400 via-rose-400 to-red-400 bg-clip-text text-transparent">
-              Body Language! 🎯
+              {t('bodyLanguage.bodyLanguage', 'Body Language!')} 🎯
             </span>
             </h1>
           <p className="text-slate-400 text-sm">
-            Master the art of non-verbal communication ✨
+            {t('bodyLanguage.masterArt', 'Master the art of non-verbal communication')} ✨
           </p>
           
           {/* Stats badge */}
           <div className="inline-flex items-center gap-2 mt-3 px-4 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full border border-purple-500/30">
             <Sparkles className="w-4 h-4 text-purple-400" />
-            <span className="text-purple-300 text-sm font-bold">3,000+ Tips & Techniques</span>
+            <span className="text-purple-300 text-sm font-bold">{t('bodyLanguage.tipCount', '3,000+ Tips & Techniques')}</span>
           </div>
           </div>
         </div>
@@ -775,14 +778,14 @@ const BodyLanguageGuide = () => {
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Lightbulb className="w-5 h-5 text-yellow-400" />
-              <h2 className="text-white font-bold">Quick Tips</h2>
+              <h2 className="text-white font-bold">{t('bodyLanguage.quickTips', 'Quick Tips')}</h2>
             </div>
             <button 
               onClick={() => setRefreshTips(prev => prev + 1)}
               className="px-3 py-1.5 bg-purple-500/20 hover:bg-purple-500/30 rounded-lg text-xs font-bold text-purple-300 transition-all flex items-center gap-1"
             >
               <Zap className="w-3 h-3" />
-              New Tips
+              {t('bodyLanguage.newTips', 'New Tips')}
             </button>
           </div>
           <div className="space-y-2">
@@ -807,7 +810,7 @@ const BodyLanguageGuide = () => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
             <input
               type="text"
-              placeholder="🔍 Search body language signals..."
+              placeholder={t('bodyLanguage.searchPlaceholder', '🔍 Search body language signals...')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-slate-800/50 border border-slate-700/50 rounded-2xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20"
@@ -857,15 +860,15 @@ const BodyLanguageGuide = () => {
             </span>
             <div>
               <h3 className="text-white font-bold">
-                {selectedCategory === 'positive' ? "Signs They're Into You" : 
-                 selectedCategory === 'neutral' ? "Mixed Signals" :
-                 selectedCategory === 'deception' ? "Spotting Lies" : "Red Flags"}
+                {selectedCategory === 'positive' ? t('bodyLanguage.signsIntoYou', "Signs They're Into You") : 
+                 selectedCategory === 'neutral' ? t('bodyLanguage.mixedSignals', "Mixed Signals") :
+                 selectedCategory === 'deception' ? t('bodyLanguage.spottingLies', "Spotting Lies") : t('bodyLanguage.redFlags', "Red Flags")}
               </h3>
               <p className="text-sm text-slate-300">
-                {selectedCategory === 'positive' ? "These signals show genuine interest and attraction! 🔥" : 
-                 selectedCategory === 'neutral' ? "Could go either way - read the context carefully 🤔" :
-                 selectedCategory === 'deception' ? "Learn to spot when someone isn't being truthful 🕵️" : 
-                 "Warning signs they might not be interested 😬"}
+                {selectedCategory === 'positive' ? t('bodyLanguage.positiveDesc', "These signals show genuine interest and attraction!") + " 🔥" : 
+                 selectedCategory === 'neutral' ? t('bodyLanguage.neutralDesc', "Could go either way - read the context carefully") + " 🤔" :
+                 selectedCategory === 'deception' ? t('bodyLanguage.deceptionDesc', "Learn to spot when someone isn't being truthful") + " 🕵️" : 
+                 t('bodyLanguage.negativeDesc', "Warning signs they might not be interested") + " 😬"}
               </p>
             </div>
           </div>
@@ -911,7 +914,7 @@ const BodyLanguageGuide = () => {
                         ? 'bg-blue-500/30 text-blue-300 border border-blue-500/50'
                         : 'bg-slate-500/30 text-slate-300 border border-slate-500/50'
                   }`}>
-                    {signal.intensity === 'high' ? '🔥 Strong' : signal.intensity === 'medium' ? '✨ Medium' : '💫 Subtle'}
+                    {signal.intensity === 'high' ? '🔥 ' + t('bodyLanguage.strong', 'Strong') : signal.intensity === 'medium' ? '✨ ' + t('bodyLanguage.medium', 'Medium') : '💫 ' + t('bodyLanguage.subtle', 'Subtle')}
                   </span>
                 </div>
                 <p className="text-sm text-slate-400">{signal.shortDesc}</p>
@@ -938,9 +941,9 @@ const BodyLanguageGuide = () => {
               <Target className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h4 className="text-white font-bold text-sm">Pro Tip from the Database</h4>
+              <h4 className="text-white font-bold text-sm">{t('bodyLanguage.proTipDatabase', 'Pro Tip from the Database')}</h4>
               <p className="text-slate-300 text-xs mt-1">
-                {randomTips[0]?.tip || "Look for clusters of signals, not just one sign!"}
+                {randomTips[0]?.tip || t('bodyLanguage.clusterTip', "Look for clusters of signals, not just one sign!")}
               </p>
             </div>
           </div>
@@ -1003,7 +1006,7 @@ const BodyLanguageGuide = () => {
                       ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white'
                       : 'bg-gradient-to-r from-slate-600 to-slate-700 text-white'
                 }`}>
-                  {selectedSignal.intensity === 'high' ? '🔥 Strong Signal' : selectedSignal.intensity === 'medium' ? '✨ Moderate Signal' : '💫 Subtle Signal'}
+                  {selectedSignal.intensity === 'high' ? '🔥 ' + t('bodyLanguage.strongSignal', 'Strong Signal') : selectedSignal.intensity === 'medium' ? '✨ ' + t('bodyLanguage.moderateSignal', 'Moderate Signal') : '💫 ' + t('bodyLanguage.subtleSignal', 'Subtle Signal')}
                 </span>
               </div>
             </div>
@@ -1025,7 +1028,7 @@ const BodyLanguageGuide = () => {
                   selectedCategory === 'deception' ? 'text-cyan-400' : 'text-red-400'
               }`}>
                   <Heart className="w-4 h-4" />
-                  What It Means
+                  {t('bodyLanguage.whatItMeans', 'What It Means')}
               </h3>
                 <p className="text-slate-300 leading-relaxed">
                 {selectedSignal.meaning}
@@ -1037,7 +1040,7 @@ const BodyLanguageGuide = () => {
             <div className="mb-4">
               <div className="p-4 rounded-2xl bg-gradient-to-r from-violet-500/10 to-purple-500/10 border border-violet-500/30">
                 <h3 className="text-sm font-bold text-violet-400 mb-2 flex items-center gap-2">
-                  ⚡ What To Do
+                  ⚡ {t('bodyLanguage.whatToDo', 'What To Do')}
               </h3>
                 <p className="text-slate-300 leading-relaxed">
                 {selectedSignal.whatToDo}
@@ -1048,11 +1051,11 @@ const BodyLanguageGuide = () => {
             {/* Extra tip from database */}
             <div className="p-4 rounded-2xl bg-slate-800/50 border border-slate-700/50">
               <h3 className="text-sm font-bold text-pink-400 mb-2 flex items-center gap-2">
-                💡 Pro Tip
+                💡 {t('bodyLanguage.proTip', 'Pro Tip')}
               </h3>
               <p className="text-slate-400 text-sm">
                 {randomTips[Math.floor(Math.random() * randomTips.length)]?.tip || 
-                 "Always look for clusters of signals - one sign isn't enough to draw conclusions!"}
+                 t('bodyLanguage.defaultTip', "Always look for clusters of signals - one sign isn't enough to draw conclusions!")}
               </p>
             </div>
           </div>
