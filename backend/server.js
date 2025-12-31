@@ -855,13 +855,16 @@ async function findUserByEmailOrUsername(email, username) {
   }
 }
 
-// 📧 SEND VERIFICATION CODE - Send 6-digit code to email
+// 📧 SEND VERIFICATION CODE - Send 6-digit code to email (LANGUAGE AWARE)
 app.post('/api/auth/send-verification', async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, language } = req.body;
+    const isAlbanian = language === 'sq';
     
     if (!email) {
-      return res.status(400).json({ error: 'Email is required' });
+      return res.status(400).json({ 
+        error: isAlbanian ? 'Email është i detyrueshëm' : 'Email is required' 
+      });
     }
     
     const normalizedEmail = email.toLowerCase().trim();
@@ -869,7 +872,11 @@ app.post('/api/auth/send-verification', async (req, res) => {
     // Check if email already registered
     const existingUser = await UserAccountModel.findOne({ email: normalizedEmail });
     if (existingUser) {
-      return res.status(400).json({ error: 'Email already registered. Please login instead.' });
+      return res.status(400).json({ 
+        error: isAlbanian 
+          ? 'Ky email është regjistruar tashmë. Kyçu në vend të kësaj.'
+          : 'Email already registered. Please login instead.' 
+      });
     }
     
     // Generate verification code
@@ -879,7 +886,7 @@ app.post('/api/auth/send-verification', async (req, res) => {
     // Store code
     verificationCodes.set(normalizedEmail, { code, expiresAt, attempts: 0 });
     
-    console.log(`📧 Verification code for ${normalizedEmail}: ${code}`);
+    console.log(`📧 Verification code for ${normalizedEmail}: ${code} (lang: ${language})`);
     
     // Try to send email
     const transporter = createEmailTransporter();
@@ -889,17 +896,19 @@ app.post('/api/auth/send-verification', async (req, res) => {
         const mailOptions = {
           from: `"Biseda.ai" <${process.env.EMAIL_USER}>`,
           to: normalizedEmail,
-          subject: '🔐 Your Verification Code - Biseda.ai',
+          subject: isAlbanian 
+            ? '🔐 Kodi Juaj i Verifikimit - Biseda.ai'
+            : '🔐 Your Verification Code - Biseda.ai',
           html: `
             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); border-radius: 16px;">
               <div style="text-align: center; padding: 20px;">
-                <h1 style="color: white; margin-bottom: 10px;">Welcome to Biseda.ai! 💕</h1>
-                <p style="color: #c4b5fd; font-size: 16px;">Your verification code is:</p>
+                <h1 style="color: white; margin-bottom: 10px;">${isAlbanian ? 'Mirësevini në Biseda.ai! 💕' : 'Welcome to Biseda.ai! 💕'}</h1>
+                <p style="color: #c4b5fd; font-size: 16px;">${isAlbanian ? 'Kodi juaj i verifikimit është:' : 'Your verification code is:'}</p>
                 <div style="background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%); padding: 20px 40px; border-radius: 12px; margin: 20px 0; display: inline-block;">
                   <span style="font-size: 36px; font-weight: bold; color: white; letter-spacing: 8px;">${code}</span>
                 </div>
-                <p style="color: #a5b4fc; font-size: 14px;">This code expires in 10 minutes.</p>
-                <p style="color: #6b7280; font-size: 12px; margin-top: 20px;">If you didn't request this, please ignore this email.</p>
+                <p style="color: #a5b4fc; font-size: 14px;">${isAlbanian ? 'Ky kod skadon pas 10 minutash.' : 'This code expires in 10 minutes.'}</p>
+                <p style="color: #6b7280; font-size: 12px; margin-top: 20px;">${isAlbanian ? 'Nëse nuk e keni kërkuar këtë, injoroni këtë email.' : "If you didn't request this, please ignore this email."}</p>
               </div>
             </div>
           `
@@ -915,11 +924,18 @@ app.post('/api/auth/send-verification', async (req, res) => {
       console.log(`⚠️ Email not configured - Code logged above for testing`);
     }
     
-    res.json({ success: true, message: 'Verification code sent' });
+    res.json({ 
+      success: true, 
+      message: isAlbanian ? 'Kodi i verifikimit u dërgua' : 'Verification code sent' 
+    });
     
   } catch (error) {
     console.error('Send verification error:', error);
-    res.status(500).json({ error: 'Failed to send verification code' });
+    res.status(500).json({ 
+      error: req.body.language === 'sq' 
+        ? 'Dështoi dërgimi i kodit të verifikimit'
+        : 'Failed to send verification code' 
+    });
   }
 });
 
@@ -1139,8 +1155,8 @@ const passwordResetCodes = new Map();
 
 // Note: createEmailTransporter is defined earlier in the file
 
-// Send password reset email
-const sendResetEmail = async (toEmail, resetCode) => {
+// Send password reset email - LANGUAGE AWARE
+const sendResetEmail = async (toEmail, resetCode, language = 'en') => {
   const transporter = createEmailTransporter();
   
   if (!transporter) {
@@ -1148,35 +1164,39 @@ const sendResetEmail = async (toEmail, resetCode) => {
     return false;
   }
   
+  const isAlbanian = language === 'sq';
+  
   const mailOptions = {
     from: `"Biseda.ai" <${process.env.EMAIL_USER}>`,
     to: toEmail,
-    subject: '🔐 Kodi për Rivendosjen e Fjalëkalimit - Biseda.ai',
+    subject: isAlbanian 
+      ? '🔐 Kodi për Rivendosjen e Fjalëkalimit - Biseda.ai'
+      : '🔐 Password Reset Code - Biseda.ai',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
         <div style="text-align: center; margin-bottom: 30px;">
           <h1 style="color: #8B5CF6; margin: 0;">Biseda.ai</h1>
-          <p style="color: #64748B; margin-top: 5px;">AI Coach për Dating dhe Biseda</p>
+          <p style="color: #64748B; margin-top: 5px;">${isAlbanian ? 'AI Coach për Dating dhe Biseda' : 'AI Coach for Dating & Conversations'}</p>
         </div>
         
         <div style="background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%); border-radius: 16px; padding: 30px; text-align: center;">
-          <h2 style="color: #FFFFFF; margin-top: 0;">Rivendos Fjalëkalimin</h2>
-          <p style="color: #CBD5E1;">Kodi juaj i rivendosjes është:</p>
+          <h2 style="color: #FFFFFF; margin-top: 0;">${isAlbanian ? 'Rivendos Fjalëkalimin' : 'Reset Your Password'}</h2>
+          <p style="color: #CBD5E1;">${isAlbanian ? 'Kodi juaj i rivendosjes është:' : 'Your reset code is:'}</p>
           
           <div style="background: #0F172A; border-radius: 12px; padding: 20px; margin: 20px 0;">
             <span style="font-size: 32px; font-weight: bold; color: #A78BFA; letter-spacing: 8px;">${resetCode}</span>
           </div>
           
           <p style="color: #94A3B8; font-size: 14px;">
-            Ky kod skadon pas <strong>15 minutash</strong>.
+            ${isAlbanian ? 'Ky kod skadon pas <strong>15 minutash</strong>.' : 'This code expires in <strong>15 minutes</strong>.'}
           </p>
           <p style="color: #94A3B8; font-size: 14px;">
-            Nëse nuk e keni kërkuar këtë kod, injoroni këtë email.
+            ${isAlbanian ? 'Nëse nuk e keni kërkuar këtë kod, injoroni këtë email.' : "If you didn't request this code, please ignore this email."}
           </p>
         </div>
         
         <div style="text-align: center; margin-top: 30px; color: #64748B; font-size: 12px;">
-          <p>© 2024 Biseda.ai - Të gjitha të drejtat e rezervuara</p>
+          <p>${isAlbanian ? '© 2024 Biseda.ai - Të gjitha të drejtat e rezervuara' : '© 2024 Biseda.ai - All rights reserved'}</p>
         </div>
       </div>
     `
@@ -1192,13 +1212,16 @@ const sendResetEmail = async (toEmail, resetCode) => {
   }
 };
 
-// Request password reset - sends code to email
+// Request password reset - sends code to email (LANGUAGE AWARE)
 app.post('/api/auth/forgot-password', async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, language } = req.body;
+    const isAlbanian = language === 'sq';
     
     if (!email) {
-      return res.status(400).json({ error: 'Email është i detyrueshëm' });
+      return res.status(400).json({ 
+        error: isAlbanian ? 'Email është i detyrueshëm' : 'Email is required' 
+      });
     }
     
     // Find user by email in MongoDB
@@ -1208,7 +1231,9 @@ app.post('/api/auth/forgot-password', async (req, res) => {
       // Don't reveal if email exists or not for security
       return res.json({ 
         success: true, 
-        message: 'Nëse email ekziston, do të marrësh një kod rivendosjeje.' 
+        message: isAlbanian 
+          ? 'Nëse email ekziston, do të marrësh një kod rivendosjeje.'
+          : 'If this email exists, you will receive a reset code.'
       });
     }
     
@@ -1223,24 +1248,28 @@ app.post('/api/auth/forgot-password', async (req, res) => {
       odId: userAccount.odId
     });
     
-    // Try to send email
-    const emailSent = await sendResetEmail(email, resetCode);
+    // Try to send email WITH LANGUAGE
+    const emailSent = await sendResetEmail(email, resetCode, language || 'en');
     
     // Log the code for debugging
-    console.log(`🔐 Password reset code for ${email}: ${resetCode}`);
+    console.log(`🔐 Password reset code for ${email}: ${resetCode} (lang: ${language})`);
     
     res.json({ 
       success: true, 
-      message: emailSent 
-        ? 'Kodi i rivendosjes u dërgua në email.' 
-        : 'Kodi i rivendosjes u dërgua në email.',
+      message: isAlbanian 
+        ? 'Kodi i rivendosjes u dërgua në email.'
+        : 'Reset code sent to your email.',
       // Show code in dev mode if email not configured
       _devCode: (!emailSent || process.env.NODE_ENV !== 'production') ? resetCode : undefined
     });
     
   } catch (error) {
     console.error('Forgot password error:', error);
-    res.status(500).json({ error: 'Gabim në server. Provoni përsëri.' });
+    res.status(500).json({ 
+      error: req.body.language === 'sq' 
+        ? 'Gabim në server. Provoni përsëri.' 
+        : 'Server error. Please try again.'
+    });
   }
 });
 

@@ -222,7 +222,7 @@ export default function Auth({ onAuthSuccess }) {
       const response = await fetch(`${backendUrl}/api/auth/send-verification`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: emailAddress }),
+        body: JSON.stringify({ email: emailAddress, language: i18n.language }),
       });
       
       // If endpoint doesn't exist (404), show error - verification is REQUIRED
@@ -534,7 +534,7 @@ export default function Auth({ onAuthSuccess }) {
                     const response = await fetch(`${backendUrl}/api/auth/forgot-password`, {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ email: resetEmail.trim() }),
+                      body: JSON.stringify({ email: resetEmail.trim(), language: i18n.language }),
                     });
                     const data = await response.json();
                     if (response.ok) {
