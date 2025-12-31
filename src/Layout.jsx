@@ -206,20 +206,12 @@ export default function Layout({ children, onLogout }) {
           {/* Left side - Logo/Brand */}
           <div className="flex items-center">
             <Link to="/copilot" className="flex items-center gap-2">
-              <div className="relative w-10 h-10 bg-gradient-to-br from-violet-600 via-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/40 overflow-hidden">
-                {/* Shine effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent"></div>
-                {/* Chat bubble with B - Purple bubble, White B, White outline */}
-                <div className="relative w-7 h-6 bg-gradient-to-br from-violet-600 to-purple-500 rounded-md flex items-center justify-center shadow-inner ring-2 ring-white/80">
-                  <span className="text-white font-black text-base drop-shadow-sm">B</span>
+              <div className="relative w-10 h-10 bg-gradient-to-br from-violet-500 via-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/40 overflow-hidden">
+                {/* Purple chat bubble with white outline */}
+                <div className="relative w-7 h-7 bg-gradient-to-br from-violet-600 to-purple-400 rounded-lg flex items-center justify-center ring-2 ring-white/90">
+                  <span className="text-white font-black text-lg">B</span>
                   {/* Bubble tail */}
-                  <div className="absolute -bottom-1 left-1 w-2 h-2 bg-gradient-to-br from-violet-500 to-purple-500 transform rotate-45"></div>
-                  {/* Shine */}
-                  <div className="absolute top-0 left-0 right-0 h-2 bg-white/25 rounded-t-md"></div>
-                </div>
-                {/* Mini chat icon - White */}
-                <div className="absolute -top-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center shadow-sm">
-                  <span className="text-[8px]">💬</span>
+                  <div className="absolute -bottom-1 left-1.5 w-2 h-2 bg-purple-500 transform rotate-45"></div>
                 </div>
               </div>
               <span className="font-bold text-white text-base">Biseda<span className="text-purple-400">.ai</span></span>
