@@ -206,13 +206,13 @@ export default function Layout({ children, onLogout }) {
           {/* Left side - Logo/Brand */}
           <div className="flex items-center">
             <Link to="/copilot" className="flex items-center gap-2">
-              <div className="relative w-10 h-10 bg-gradient-to-br from-violet-500 via-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/40 overflow-hidden">
-                {/* Purple chat bubble with white outline */}
-                <div className="relative w-7 h-7 bg-gradient-to-br from-violet-600 to-purple-400 rounded-lg flex items-center justify-center ring-2 ring-white/90">
-                  <span className="text-white font-black text-lg">B</span>
-                  {/* Bubble tail */}
-                  <div className="absolute -bottom-1 left-1.5 w-2 h-2 bg-purple-500 transform rotate-45"></div>
-                </div>
+              <div className="relative w-10 h-10 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/40 overflow-hidden">
+                {/* Animated background effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent"></div>
+                {/* Speech bubble icon */}
+                <MessageCircle className="w-6 h-6 text-white relative z-10" fill="currentColor" strokeWidth={1.5} />
+                {/* Small sparkle effect */}
+                <Sparkles className="w-3 h-3 text-yellow-300 absolute top-1 right-1 animate-pulse" />
               </div>
               <span className="font-bold text-white text-base">Biseda<span className="text-purple-400">.ai</span></span>
             </Link>
