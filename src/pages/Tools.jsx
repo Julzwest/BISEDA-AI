@@ -164,28 +164,7 @@ export default function Tools() {
             })}
           </div>
 
-          {/* Pro Upgrade Card */}
-          {!hasProOrElite() && (
-            <div className="mt-8">
-              <Link to="/profile" className="block">
-                <div className="bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-purple-500/10 border-2 border-purple-500/30 rounded-2xl p-5 hover:border-purple-500/50 transition-all">
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/30">
-                      <Crown className="w-7 h-7 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-bold text-white text-lg mb-0.5 flex items-center gap-2">
-                        {t('tools.unlockAll', 'Unlock All Tools')}
-                        <Sparkles className="w-4 h-4 text-purple-400" />
-                      </h3>
-                      <p className="text-slate-400 text-sm">{t('tools.upgradeForAccess', 'Upgrade to Pro for full access')}</p>
-                    </div>
-                    <ArrowRight className="w-5 h-5 text-purple-400" />
-                  </div>
-                </div>
-              </Link>
-            </div>
-          )}
+          {/* Pro Upgrade Card - REMOVED */}
 
           {/* Bottom Quote */}
           <div className="mt-10 text-center">

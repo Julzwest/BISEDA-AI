@@ -65,14 +65,10 @@ function App() {
       setIsGuest(guestStatus === 'true');
       
       // Check if should show onboarding for new users
-      const onboardingComplete = localStorage.getItem('onboardingComplete');
-      const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
-      
-      if (!onboardingComplete) {
-        setShowNewUserOnboarding(true);
-      } else if (!hasSeenOnboarding) {
-        setShowOnboarding(true);
-      }
+      // Onboarding disabled - using welcome modal in AuthComponent instead
+      // Mark as complete to ensure old onboarding never shows
+      localStorage.setItem('onboardingComplete', 'true');
+      localStorage.setItem('hasSeenOnboarding', 'true');
     }
     
     setIsCheckingAuth(false);
@@ -84,16 +80,9 @@ function App() {
     setIsGuest(user?.isGuest || false);
     
     // Show new user onboarding
-    const onboardingComplete = localStorage.getItem('onboardingComplete');
-    if (!onboardingComplete) {
-      setShowNewUserOnboarding(true);
-    } else {
-      // Show tutorial for returning users who haven't seen it
-    const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
-    if (!hasSeenOnboarding) {
-      setShowOnboarding(true);
-      }
-    }
+    // Mark onboarding as complete - we use welcome modal in AuthComponent instead
+    localStorage.setItem('onboardingComplete', 'true');
+    localStorage.setItem('hasSeenOnboarding', 'true');
   };
 
   const handleLogout = () => {
@@ -180,22 +169,22 @@ function App() {
       {/* Offline Banner - shows when no internet */}
       <OfflineBanner />
       
-      {/* New User Onboarding - Full screen experience */}
-      {showNewUserOnboarding && (
+      {/* New User Onboarding - DISABLED - using welcome modal in AuthComponent instead */}
+      {/* {showNewUserOnboarding && (
         <Onboarding onComplete={() => setShowNewUserOnboarding(false)} />
-      )}
+      )} */}
       
     <Router>
       {/* Scroll to top on route change */}
       <ScrollToTop />
       
-        {/* Tutorial for returning users */}
-        {showOnboarding && !showNewUserOnboarding && (
+        {/* Tutorial for returning users - DISABLED */}
+        {/* {showOnboarding && !showNewUserOnboarding && (
         <OnboardingTutorial 
           onComplete={() => setShowOnboarding(false)} 
           isGuest={isGuest}
         />
-      )}
+      )} */}
       
       <Layout onLogout={handleLogout}>
         <Routes>
