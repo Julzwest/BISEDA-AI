@@ -470,8 +470,7 @@ export default function HomeCoPilot() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl blur-md opacity-60"></div>
-                  <div className="relative w-12 h-12 bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500 rounded-xl flex items-center justify-center">
+                  <div className="relative w-12 h-12 bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/30">
                     <Heart className="w-6 h-6 text-white" fill="white" />
                   </div>
                 </div>
@@ -753,8 +752,7 @@ export default function HomeCoPilot() {
               {/* Main Content */}
               <div className="flex items-center gap-4 mb-4">
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl blur-lg opacity-60"></div>
-                  <div className="relative w-16 h-16 bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-all">
+                  <div className="relative w-16 h-16 bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-500/40 group-hover:scale-110 transition-all">
                     <Heart className="w-8 h-8 text-white" fill="white" />
                   </div>
                 </div>

@@ -222,7 +222,7 @@ export default function Layout({ children, onLogout }) {
                   <span className="text-[8px]">💬</span>
                 </div>
               </div>
-              <span className="font-bold text-white text-lg hidden sm:inline">Biseda<span className="text-purple-400">.ai</span></span>
+              <span className="font-bold text-white text-base">Biseda<span className="text-purple-400">.ai</span></span>
             </Link>
           </div>
           

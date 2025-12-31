@@ -52,7 +52,7 @@ export default function Tools() {
       description: t('tools.giftsDesc', 'Find the perfect gift for any occasion'),
       color: 'from-rose-500 to-red-600',
       route: '/gifts',
-      requiresPro: true,
+      requiresPro: false,
       emoji: '🎁'
     },
     {
