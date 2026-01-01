@@ -863,8 +863,8 @@ export default function Admin() {
                 { name: `🎁 ${t('admin.freeTrial')}`, key: 'free_trial', color: 'emerald', price: `24h` },
                 { name: 'Free', key: 'free', color: 'slate', price: `€0${t('admin.perMonth')}` },
                 { name: `⭐ ${t('admin.starter')}`, key: 'starter', color: 'blue', price: `€6.99${t('admin.perMonth')}` },
-                { name: `💎 ${t('admin.pro')}`, key: 'pro', color: 'purple', price: `€12.99${t('admin.perMonth')}` },
-                { name: `👑 ${t('admin.elite')}`, key: 'elite', color: 'amber', price: `€19.99${t('admin.perMonth')}` },
+                { name: `💎 ${t('admin.pro')}`, key: 'pro', color: 'purple', price: `€9.99${t('admin.perMonth')}` },
+                { name: `👑 ${t('admin.elite')}`, key: 'elite', color: 'amber', price: `€14.99${t('admin.perMonth')}` },
               ].map((tier, i) => (
                 <div key={i} className={`bg-${tier.color}-500/10 border border-${tier.color}-500/30 p-4 rounded-xl text-center`}>
                   <p className={`text-${tier.color}-300 text-sm mb-1`}>{tier.name}</p>

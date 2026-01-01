@@ -32,9 +32,9 @@ export const SUBSCRIPTION_TIERS = {
     id: 'starter',
     name: 'Starter',
     nameAlbanian: 'Fillues',
-    price: 3.99,
-    priceDisplay: '€3.99',
-    priceDisplayAlbanian: '€3.99/muaj',
+    price: 4.99,
+    priceDisplay: '€4.99',
+    priceDisplayAlbanian: '€4.99/muaj',
     credits: 200,
     dailyLimit: 15, // Prevents heavy usage spikes
     features: {
@@ -55,9 +55,9 @@ export const SUBSCRIPTION_TIERS = {
     id: 'pro',
     name: 'Pro',
     nameAlbanian: 'Pro',
-    price: 7.99,
-    priceDisplay: '€7.99',
-    priceDisplayAlbanian: '€7.99/muaj',
+    price: 9.99,
+    priceDisplay: '€9.99',
+    priceDisplayAlbanian: '€9.99/muaj',
     credits: 500,
     dailyLimit: 30, // Generous daily allowance
     features: {
@@ -80,9 +80,9 @@ export const SUBSCRIPTION_TIERS = {
     id: 'elite',
     name: 'Elite',
     nameAlbanian: 'Elitë',
-    price: 12.99,
-    priceDisplay: '€12.99',
-    priceDisplayAlbanian: '€12.99/muaj',
+    price: 14.99,
+    priceDisplay: '€14.99',
+    priceDisplayAlbanian: '€14.99/muaj',
     credits: 1000,
     dailyLimit: 50, // Power user daily limit
     features: {

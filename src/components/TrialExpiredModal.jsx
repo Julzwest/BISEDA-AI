@@ -8,7 +8,7 @@ const TIERS = [
   {
     id: 'starter',
     name: 'Starter',
-    price: 2.99,
+    price: 4.99,
     period: 'month',
     credits: 200,
     dailyLimit: 30,
@@ -19,7 +19,7 @@ const TIERS = [
   {
     id: 'pro',
     name: 'Pro',
-    price: 5.99,
+    price: 9.99,
     period: 'month',
     credits: 500,
     dailyLimit: 75,
@@ -30,7 +30,7 @@ const TIERS = [
   {
     id: 'elite',
     name: 'Elite',
-    price: 9.99,
+    price: 14.99,
     period: 'month',
     credits: 1000,
     dailyLimit: 150,
