@@ -35,37 +35,32 @@ Return JSON only:
 }`;
 
 // ALBANIAN Wingman System Prompt
-const WINGMAN_PROMPT_SQ = `Ti je shoku im shqiptar që më ndihmon në takim. Flet shqip si gjuhë amtare, i rritur në Shqipëri.
+const WINGMAN_PROMPT_SQ = `Ti je shoku im nga Tirana. Flet shqip perfekt.
 
-⚠️ RREGULLA ABSOLUTE:
-1. VETËM shqip e pastër - asnjë anglisht
-2. Gramatikë 100% e saktë
-3. Fjali të shkurtra dhe të qarta
-4. Jo markdown, jo yje
+⚠️ RREGULLA GRAMATIKORE:
+1. "do të" jo "do" vetëm (p.sh. "do të shkojë")
+2. "ti" jo "ju" kur flet me një person
+3. "ji" jo "të jesh" (p.sh. "ji vetvetja")
+4. "nëse ajo të pëlqen" jo "nëse e pëlqen ty"
 
-📝 SHEMBUJ FJALISH TË SAKTA:
-- "Buzëqesh dhe shihe në sy" (jo fraza të çuditshme)
-- "Thuaji: Ti je shumë interesante" (fjali e thjeshtë)
-- "Afrohuni pak më shumë" (këshillë konkrete)
+❌ MOS THUAJ:
+- "do merret" → thuaj "do të merret"
+- "të jesh vetvetja" → thuaj "ji vetvetja"
+- "për ju" → thuaj "për ty"
 
-⚡ FORMATI JSON:
+✅ SHEMBUJ:
+- "Buzëqesh dhe shihe në sy."
+- "Thuaji: Më pëlqen biseda me ty."
+- "Ji vetvetja dhe relaksohu."
+
+⚡ KTHE VETËM JSON:
 {
-  "recommendation": "1 fjali këshillë e qartë në shqip",
-  "trySaying": "Fjali e thjeshtë që mund ta thuash",
-  "bodyLanguage": "Një veprim konkret",
-  "backup": "Plan B i thjeshtë",
-  "proTip": "3-5 fjalë",
+  "recommendation": "Fjali e shkurtër këshillë",
+  "trySaying": "Fjali e thjeshtë për të thënë",
+  "bodyLanguage": "Veprim konkret",
+  "backup": "Plan B",
+  "proTip": "3 fjalë max",
   "vibe": "emoji"
-}
-
-SHEMBULL:
-{
-  "recommendation": "Afrohuni pak dhe tregoji që je i interesuar",
-  "trySaying": "Më pëlqen shumë kjo bisedë me ty",
-  "bodyLanguage": "Buzëqesh dhe mbaje kontaktin me sy",
-  "backup": "Fol për diçka që e keni të përbashkët",
-  "proTip": "Ji vetvetja",
-  "vibe": "😊"
 }`;
 
 // Gender-specific tone additions for Wingman
@@ -273,7 +268,7 @@ Return JSON: recommendation, trySaying, bodyLanguage, backup, proTip, vibe`;
       if (typeof aiResponse === 'string') {
         const match = aiResponse.match(/\{[\s\S]*\}/);
         if (match) parsed = JSON.parse(match[0]);
-      } else {
+          } else {
         parsed = aiResponse;
       }
       
@@ -326,8 +321,8 @@ Return JSON: recommendation, trySaying, bodyLanguage, backup, proTip, vibe`;
             <h1 className="text-xl font-bold text-white">{t('liveWingman.title', 'Live Wingman')} ⚡</h1>
             <p className="text-sm text-white/80">{t('liveWingman.subtitle', 'Real-time dating advice')}</p>
           </div>
-        </div>
-      </div>
+            </div>
+          </div>
 
       {/* ========== SECTION 1: WHO ========== */}
       <div className="px-5 mb-5">
@@ -340,7 +335,7 @@ Return JSON: recommendation, trySaying, bodyLanguage, backup, proTip, vibe`;
             </p>
             <div className="flex gap-1.5">
               {genderOptions.map((g) => (
-                    <button
+              <button
                   key={g.id}
                   onClick={() => setMyGender(g.id)}
                   className={`flex-1 py-2.5 rounded-xl transition-all text-center ${
@@ -375,10 +370,10 @@ Return JSON: recommendation, trySaying, bodyLanguage, backup, proTip, vibe`;
                   <span className="text-2xl">{g.emoji}</span>
                     </button>
                   ))}
-            </div>
-              </div>
+                </div>
             </div>
           </div>
+        </div>
 
       {/* ========== SECTION 2: DATE STAGE ========== */}
       <div className="px-5 mb-5">
@@ -411,16 +406,16 @@ Return JSON: recommendation, trySaying, bodyLanguage, backup, proTip, vibe`;
           {t('liveWingman.whereAreYou', 'Location')}
         </p>
         <div className="relative">
-          <button 
+              <button
             onClick={() => scrollVenue(-1)}
             className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-7 h-7 bg-slate-800 border border-slate-700 rounded-full flex items-center justify-center text-white shadow-lg"
-          >
+              >
             <ChevronLeft className="w-4 h-4" />
-          </button>
+              </button>
           
           <div ref={venueScrollRef} className="flex gap-2 overflow-x-auto no-scrollbar px-8 py-1">
             {venueOptions.map((venue) => (
-              <button
+                  <button
                 key={venue.id}
                 onClick={() => { setDateVenue(venue.id); setResponse(null); }}
                 className={`flex-shrink-0 flex flex-col items-center gap-1 p-2.5 rounded-xl transition-all ${
@@ -447,7 +442,7 @@ Return JSON: recommendation, trySaying, bodyLanguage, backup, proTip, vibe`;
           </div>
 
       {/* ========== SECTION 4: ACTIONS ========== */}
-      <div className="px-5 mb-5">
+        <div className="px-5 mb-5">
         <p className="text-sm uppercase tracking-[0.15em] text-slate-400 text-center mb-3 font-semibold">
           {t('liveWingman.whatDoYouNeed', 'Quick Actions')}
         </p>
@@ -463,16 +458,16 @@ Return JSON: recommendation, trySaying, bodyLanguage, backup, proTip, vibe`;
               <span className="text-sm font-bold text-white">{action.label}</span>
                 </button>
           ))}
-        </div>
+          </div>
         </div>
 
       {/* ========== SECTION 5: ASK ANYTHING ========== */}
-      <div className="px-5 mb-5">
-        <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
+        <div className="px-5 mb-5">
+          <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-4">
           <p className="text-sm uppercase tracking-[0.15em] text-slate-400 text-center mb-3 font-semibold">
             {t('liveWingman.askAnything', 'Ask Anything')}
           </p>
-          <div className="flex gap-2">
+            <div className="flex gap-2">
               <input
                 type="text"
                 value={customQuestion}
@@ -493,13 +488,13 @@ Return JSON: recommendation, trySaying, bodyLanguage, backup, proTip, vibe`;
         </div>
 
       {/* ========== LOADING ========== */}
-      {isLoading && (
+        {isLoading && (
         <div ref={responseRef} className="px-5 mb-5">
           <div className="bg-gradient-to-br from-purple-900/40 to-pink-900/40 border border-purple-500/30 rounded-2xl p-6 text-center">
             <div className="text-4xl mb-2 animate-bounce">🧠</div>
             <p className="text-white font-semibold text-sm">{t('liveWingman.loading.readingRoom', 'Reading the room...')}</p>
-          </div>
-          </div>
+                  </div>
+                  </div>
         )}
 
       {/* ========== RESPONSE ========== */}
@@ -511,9 +506,9 @@ Return JSON: recommendation, trySaying, bodyLanguage, backup, proTip, vibe`;
               <div className="flex items-center gap-2">
                 <span className="text-2xl">{response.vibe || '🔥'}</span>
                 <span className="text-white font-bold text-sm">{t('liveWingman.response.hereIsThePlan', "Here's the play")}</span>
-              </div>
+                </div>
               {response.isAI && <span className="text-xs text-emerald-400 bg-emerald-500/20 px-2 py-0.5 rounded-full font-bold">🟢 AI</span>}
-              </div>
+                </div>
 
             <div className="p-4 space-y-3">
               {/* Main */}
@@ -525,12 +520,12 @@ Return JSON: recommendation, trySaying, bodyLanguage, backup, proTip, vibe`;
                   <div>
                     <p className="text-xs text-emerald-400 uppercase mb-1 font-bold">💬 Say this</p>
                     <p className="text-emerald-200 text-sm font-medium">"{response.trySaying}"</p>
-                  </div>
+              </div>
                   <button onClick={() => copyToClipboard(response.trySaying)} className="text-emerald-400 p-1.5 hover:bg-emerald-500/20 rounded-lg">
                     {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                   </button>
-                </div>
-              </div>
+            </div>
+          </div>
 
               {/* Body language */}
               {response.bodyLanguage && (
@@ -545,27 +540,27 @@ Return JSON: recommendation, trySaying, bodyLanguage, backup, proTip, vibe`;
                 <div className="flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 rounded-xl p-2.5">
                   <span>💎</span>
                   <p className="text-amber-200 text-xs font-medium">{response.proTip}</p>
-                </div>
+              </div>
               )}
 
               {/* Retry */}
-              <button
+                  <button
                 onClick={() => generateResponse(response.actionType || 'advice')}
                 disabled={isLoading}
                 className="w-full py-2.5 bg-slate-700/50 hover:bg-slate-700 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all"
-              >
+                  >
                 <RefreshCw className="w-4 h-4" />
                 {t('liveWingman.response.tryAnother', 'Try another')}
-              </button>
-            </div>
-            </div>
+                  </button>
+                </div>
+              </div>
           </div>
         )}
 
       {/* ========== MORE + EXIT ========== */}
       <div className="px-5 mb-5 space-y-3">
         {/* More moves */}
-        <div>
+              <div>
           <p className="text-sm uppercase tracking-[0.15em] text-slate-400 text-center mb-3 font-semibold">
             {t('liveWingman.moreMoves', 'More Options')}
           </p>
@@ -576,7 +571,7 @@ Return JSON: recommendation, trySaying, bodyLanguage, backup, proTip, vibe`;
               { id: 'story', emoji: '📖', label: t('liveWingman.moreActions.story', 'Story') },
               { id: 'rescue', emoji: '🆘', label: t('liveWingman.moreActions.rescue', 'Save it') },
             ].map((action) => (
-              <button
+                  <button
                 key={action.id}
                 onClick={() => generateResponse(action.label)}
                 disabled={isLoading}
@@ -584,10 +579,10 @@ Return JSON: recommendation, trySaying, bodyLanguage, backup, proTip, vibe`;
               >
                 <span className="text-2xl block mb-1">{action.emoji}</span>
                 <span className="text-sm font-bold text-white">{action.label}</span>
-              </button>
+                  </button>
             ))}
-          </div>
-        </div>
+                </div>
+              </div>
 
         {/* Exit Strategy - ALARMING RED */}
         <div className="bg-gradient-to-r from-red-600 to-red-500 rounded-2xl p-4 shadow-lg shadow-red-500/40">
@@ -598,12 +593,12 @@ Return JSON: recommendation, trySaying, bodyLanguage, backup, proTip, vibe`;
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
                 <span className="text-2xl">🚨</span>
-              </div>
+                </div>
               <div className="text-left">
                 <p className="text-white font-bold text-base">{t('liveWingman.exitStrategy.title', 'Exit Strategy')}</p>
                 <p className="text-white text-sm">{t('liveWingman.exitStrategy.subtitle', 'Need to escape? Tap here')}</p>
-              </div>
             </div>
+          </div>
             <ChevronRight className={`w-6 h-6 text-white transition-transform ${showExitStrategy ? 'rotate-90' : ''}`} />
           </button>
           
@@ -620,15 +615,15 @@ Return JSON: recommendation, trySaying, bodyLanguage, backup, proTip, vibe`;
                   <span className="text-sm text-white font-bold">{excuse.label}</span>
                 </button>
               ))}
-          </div>
+              </div>
           )}
-        </div>
-      </div>
+              </div>
+            </div>
 
       {/* Footer */}
       <div className="px-5 text-center">
         <p className="text-white/50 text-xs">💝 {t('liveWingman.consent', 'Always respect boundaries')}</p>
-      </div>
+          </div>
 
       {/* Subscription Modal */}
       <SubscriptionModal 
