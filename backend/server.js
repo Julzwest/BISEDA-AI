@@ -1132,7 +1132,10 @@ app.post('/api/auth/login', async (req, res) => {
       success: true,
       user: {
         odId: userAccount.odId,
+        userId: userAccount.odId,
         username: userAccount.username,
+        firstName: userAccount.firstName,
+        lastName: userAccount.lastName,
         email: userAccount.email,
         phoneNumber: userAccount.phoneNumber,
         createdAt: userAccount.createdAt,
@@ -1648,6 +1651,8 @@ app.put('/api/user/profile', async (req, res) => {
     const userId = getUserId(req);
     const { firstName, lastName, name } = req.body;
     
+    console.log(`📝 Profile update request for user: ${userId}`, { firstName, lastName, name });
+    
     if (!firstName && !name) {
       return res.status(400).json({ error: 'Name is required' });
     }
@@ -1668,12 +1673,16 @@ app.put('/api/user/profile', async (req, res) => {
       updateData.lastName = lastName.trim();
     }
     
+    console.log(`📝 Updating MongoDB with:`, updateData);
+    
     // Update in MongoDB
     const updatedUser = await UserAccountModel.findOneAndUpdate(
       { odId: userId },
       { $set: updateData },
       { new: true }
     );
+    
+    console.log(`📝 MongoDB update result:`, updatedUser ? `Success - ${updatedUser.firstName}` : 'User not found');
     
     if (!updatedUser) {
       return res.status(404).json({ error: 'User not found' });
