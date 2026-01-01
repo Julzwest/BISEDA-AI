@@ -1642,6 +1642,69 @@ app.get('/api/user/saved', (req, res) => {
   }
 });
 
+// Update user profile (name, etc.)
+app.put('/api/user/profile', async (req, res) => {
+  try {
+    const userId = getUserId(req);
+    const { firstName, lastName, name } = req.body;
+    
+    if (!firstName && !name) {
+      return res.status(400).json({ error: 'Name is required' });
+    }
+    
+    // Update in MongoDB
+    const updateData = {};
+    if (firstName) {
+      updateData.firstName = firstName.trim();
+    } else if (name) {
+      // If single 'name' field is provided, split or use as firstName
+      const nameParts = name.trim().split(' ');
+      updateData.firstName = nameParts[0];
+      if (nameParts.length > 1) {
+        updateData.lastName = nameParts.slice(1).join(' ');
+      }
+    }
+    if (lastName) {
+      updateData.lastName = lastName.trim();
+    }
+    
+    // Update in MongoDB
+    const updatedUser = await UserAccountModel.findOneAndUpdate(
+      { odId: userId },
+      { $set: updateData },
+      { new: true }
+    );
+    
+    if (!updatedUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    // Also update in-memory cache
+    const user = getUser(userId);
+    if (user) {
+      user.firstName = updateData.firstName || user.firstName;
+      user.lastName = updateData.lastName || user.lastName;
+      saveUser(user);
+    }
+    
+    console.log(`✅ User profile updated: ${userId} -> ${updateData.firstName} ${updateData.lastName || ''}`);
+    
+    res.json({
+      success: true,
+      user: {
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+        email: updatedUser.email
+      },
+      message: 'Profile updated successfully'
+    });
+    
+  } catch (error) {
+    console.error('Update profile error:', error);
+    res.status(500).json({ error: 'Failed to update profile' });
+  }
+});
+
 // Save an item
 app.post('/api/user/saved', (req, res) => {
   try {

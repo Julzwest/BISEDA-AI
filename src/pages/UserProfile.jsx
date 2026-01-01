@@ -388,11 +388,40 @@ export default function UserProfile({ onLogout }) {
                       autoFocus
                     />
                     <button
-                      onClick={() => {
+                      onClick={async () => {
                         if (editedName.trim()) {
-                          localStorage.setItem('userName', editedName.trim());
-                          setIsEditingName(false);
-                          window.location.reload();
+                          try {
+                            // Save to backend first
+                            const response = await fetch(`${backendUrl}/api/user/profile`, {
+                              method: 'PUT',
+                              headers: { 
+                                'Content-Type': 'application/json',
+                                'x-user-id': userId 
+                              },
+                              body: JSON.stringify({ name: editedName.trim() })
+                            });
+                            
+                            if (response.ok) {
+                              // Only update localStorage after successful backend save
+                              localStorage.setItem('userName', editedName.trim());
+                              setNameSaved(true);
+                              setIsEditingName(false);
+                              setTimeout(() => setNameSaved(false), 2000);
+                              window.location.reload();
+                            } else {
+                              console.error('Failed to save name to backend');
+                              // Still save locally as fallback
+                              localStorage.setItem('userName', editedName.trim());
+                              setIsEditingName(false);
+                              window.location.reload();
+                            }
+                          } catch (error) {
+                            console.error('Error saving name:', error);
+                            // Save locally as fallback
+                            localStorage.setItem('userName', editedName.trim());
+                            setIsEditingName(false);
+                            window.location.reload();
+                          }
                         }
                       }}
                       className="p-1.5 bg-green-500 rounded-lg"

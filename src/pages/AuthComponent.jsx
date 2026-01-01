@@ -383,34 +383,37 @@ export default function Auth({ onAuthSuccess }) {
       return;
     }
     
-    // 🛡️ Validate email provider for ALL users (login and registration)
-    const emailValidation = isValidEmailProvider(email.trim());
-    if (!emailValidation.valid) {
-      if (emailValidation.reason === 'format') {
-        setError(t('authErrors.invalidEmailFormat', 'Please enter a valid email address (e.g., name@gmail.com)'));
-      } else if (emailValidation.reason === 'disposable') {
-        setError(t('trial.disposableEmail', 'Please use a valid email address. Temporary emails are not allowed.'));
-      } else {
-        setError(t('authErrors.invalidEmailProvider', 'Please use a valid email provider (Gmail, Outlook, Yahoo, iCloud, etc.)'));
-      }
-      return;
-    }
-    
-    // 🛡️ BULLETPROOF: Check if device already used trial (ONE-TIME ONLY)
-    if (!isLogin) {
-      const trialUsedForever = localStorage.getItem('trial_used_forever');
-      if (trialUsedForever) {
-        setError(t('trial.alreadyUsed', 'This device has already used the free trial. Please choose a subscription plan to continue.'));
-        return;
-      }
-    }
-    
     if (!password || password.length < 6) {
       setError(t('authErrors.passwordLength'));
       return;
     }
 
+    // 🚀 Show loading immediately for faster perceived speed
     setLoading(true);
+    
+    // 🛡️ Validate email provider for REGISTRATION only (login is validated by backend)
+    if (!isLogin) {
+      const emailValidation = isValidEmailProvider(email.trim());
+      if (!emailValidation.valid) {
+        setLoading(false);
+        if (emailValidation.reason === 'format') {
+          setError(t('authErrors.invalidEmailFormat', 'Please enter a valid email address (e.g., name@gmail.com)'));
+        } else if (emailValidation.reason === 'disposable') {
+          setError(t('trial.disposableEmail', 'Please use a valid email address. Temporary emails are not allowed.'));
+        } else {
+          setError(t('authErrors.invalidEmailProvider', 'Please use a valid email provider (Gmail, Outlook, Yahoo, iCloud, etc.)'));
+        }
+        return;
+      }
+      
+      // 🛡️ BULLETPROOF: Check if device already used trial (ONE-TIME ONLY)
+      const trialUsedForever = localStorage.getItem('trial_used_forever');
+      if (trialUsedForever) {
+        setLoading(false);
+        setError(t('trial.alreadyUsed', 'This device has already used the free trial. Please choose a subscription plan to continue.'));
+        return;
+      }
+    }
 
     try {
       // 📧 For REGISTRATION: Send verification code first
@@ -457,30 +460,24 @@ export default function Auth({ onAuthSuccess }) {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.removeItem('userId');
-        localStorage.removeItem('userEmail');
-        localStorage.removeItem('userName');
-        localStorage.removeItem('userCountry');
-        localStorage.removeItem('isAuthenticated');
-        localStorage.removeItem('isGuest');
-        localStorage.removeItem('guestSession');
-        localStorage.removeItem('guestId');
-        localStorage.removeItem('conversationHistory');
-
         const userId = data.user.odId || data.user.userId;
         const userName = data.user.firstName
           ? `${data.user.firstName} ${data.user.lastName || ''}`.trim()
           : data.user.username || email.split('@')[0];
 
+        // 🚀 Set all localStorage in batch for speed
         localStorage.setItem('userId', userId);
         localStorage.setItem('userEmail', data.user.email);
         localStorage.setItem('userName', userName);
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('userCountry', data.user.country || 'AL');
+        
+        // Clear any guest data
+        localStorage.removeItem('isGuest');
+        localStorage.removeItem('guestSession');
+        localStorage.removeItem('guestId');
 
-        console.log('✅ Login successful:', { userId, userName, email: data.user.email });
-
-        // For login, proceed directly to app
+        // 🚀 Immediately proceed to app - no delays
         if (onAuthSuccess) {
           onAuthSuccess({
             userId,
@@ -490,13 +487,13 @@ export default function Auth({ onAuthSuccess }) {
           });
         }
       } else {
+        setLoading(false);
         setError(data.error || t('authErrors.somethingWrong'));
       }
     } catch (err) {
       console.error('Auth error:', err);
-      setError(t('authErrors.connectionError'));
-    } finally {
       setLoading(false);
+      setError(t('authErrors.connectionError'));
     }
   };
 
