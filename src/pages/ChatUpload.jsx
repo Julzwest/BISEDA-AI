@@ -159,9 +159,9 @@ export default function ChatUpload() {
   };
 
   return (
-    <div className="w-full min-h-screen pb-24">
+    <div className="w-full min-h-screen pb-4">
       {/* Header */}
-      <div className="px-4 pt-6 pb-4">
+      <div className="px-4 pt-2 pb-4">
         <button 
           onClick={() => navigate('/copilot')}
           className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-4"

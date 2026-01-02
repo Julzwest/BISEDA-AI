@@ -170,7 +170,7 @@ export default function Home() {
   return (
     <div className="w-full overflow-x-hidden" key={i18n.language}>
       {/* Hero Section */}
-      <div className="px-4 pt-6 pb-6 w-full max-w-full">
+      <div className="px-4 pt-2 pb-6 w-full max-w-full">
         <div className="text-center mb-6">
           {/* Logo - Speech bubbles representing conversation */}
           {/* Secret: Tap 6 times to access admin dashboard */}
@@ -263,7 +263,7 @@ export default function Home() {
       </div>
 
       {/* Features */}
-      <div className="px-6 pb-24">
+      <div className="px-6 pb-4">
         <h2 className="text-2xl font-bold mb-4 text-white flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-purple-400" />
           {t('home.getStarted')}

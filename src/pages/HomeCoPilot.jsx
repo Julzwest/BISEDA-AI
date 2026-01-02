@@ -747,7 +747,7 @@ export default function HomeCoPilot() {
 
   // Main Homepage
   return (
-    <div className="w-full min-h-screen overflow-x-hidden relative" key={i18n.language}>
+    <div className="w-full min-h-screen overflow-x-hidden relative -mt-4" key={i18n.language}>
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 -left-20 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
@@ -763,10 +763,10 @@ export default function HomeCoPilot() {
         <span className="absolute top-72 right-6 text-2xl animate-bounce opacity-50" style={{ animationDuration: '3.5s', animationDelay: '0.3s' }}>🔥</span>
       </div>
 
-      <div className="relative z-10 px-5 pt-8 pb-20 w-full max-w-full">
+      <div className="relative z-10 px-5 pt-0 pb-4 w-full max-w-full">
         
         {/* Logo + Branding */}
-        <div className="text-center mb-6">
+        <div className="text-center mb-4">
           <div 
             className="inline-block mb-4 relative cursor-pointer select-none"
             onClick={handleLogoTap}

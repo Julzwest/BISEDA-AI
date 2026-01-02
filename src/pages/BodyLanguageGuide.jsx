@@ -721,9 +721,9 @@ const BodyLanguageGuide = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-950/10 to-black text-white pb-24">
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-purple-950/10 to-black text-white pb-4">
       {/* Fun Header */}
-      <div className="px-5 pt-6 pb-4 relative">
+      <div className="px-5 pt-2 pb-4 relative">
         {/* Floating decorations */}
         <div className="absolute top-4 right-4 text-2xl animate-bounce opacity-50">👀</div>
         <div className="absolute top-8 right-12 text-xl animate-bounce opacity-40" style={{ animationDelay: '0.3s' }}>✨</div>

@@ -228,7 +228,7 @@ export default function Journal() {
   };
   
   return (
-    <div className="min-h-screen p-4 pb-24">
+    <div className="min-h-screen p-4 pb-4">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <button 

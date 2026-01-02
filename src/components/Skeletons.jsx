@@ -109,7 +109,7 @@ export function StatsGridSkeleton() {
 // Full page loading skeleton
 export function PageSkeleton() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950 pt-16 pb-24 px-4">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950 pt-16 pb-4 px-4">
       <div className="max-w-md mx-auto space-y-6">
         {/* Title */}
         <div className="text-center mb-8">

@@ -78,7 +78,7 @@ export default function Tools() {
   ];
 
   return (
-    <div className="w-full min-h-screen pb-24 relative overflow-hidden">
+    <div className="w-full min-h-screen pb-4 relative overflow-hidden -mt-4">
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 -left-20 w-60 h-60 bg-slate-500/10 rounded-full blur-3xl animate-pulse"></div>
@@ -95,7 +95,7 @@ export default function Tools() {
 
       <div className="relative z-10">
         {/* Header */}
-        <div className="px-5 pt-8 pb-6">
+        <div className="px-5 pt-0 pb-6">
           <div className="flex items-center gap-4 mb-2">
             {/* Icon with glow */}
             <div className="relative">

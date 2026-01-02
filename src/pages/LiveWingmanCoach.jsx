@@ -314,10 +314,10 @@ Return JSON: recommendation, trySaying, bodyLanguage, backup, proTip, vibe`;
   const currentStage = dateStages.find(s => s.id === dateStage);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-purple-950/10 to-slate-950 pb-32">
+    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-purple-950/10 to-slate-950 pb-4 -mt-4">
       
       {/* ========== HEADER ========== */}
-      <div className="px-5 pt-6 pb-3">
+      <div className="px-5 pt-0 pb-3">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-amber-500 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/30">
             <Zap className="w-6 h-6 text-white" />

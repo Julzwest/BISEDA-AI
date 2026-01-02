@@ -304,7 +304,7 @@ export default function Layout({ children, onLogout }) {
           pointerEvents: showTrialExpiredModal ? 'none' : 'auto'
         }}
       >
-        <div className="h-14 px-4 flex items-center justify-between max-w-screen-xl mx-auto">
+        <div className="h-11 px-4 flex items-center justify-between max-w-screen-xl mx-auto">
           {/* Left side - Logo/Brand */}
           <div className="flex items-center">
             <Link to="/copilot" className="flex items-center gap-2">
@@ -348,8 +348,8 @@ export default function Layout({ children, onLogout }) {
         id="main-content"
         className="w-full max-w-full"
         style={{ 
-          paddingTop: 'calc(56px + env(safe-area-inset-top, 0px))', 
-          paddingBottom: '90px', 
+          paddingTop: 'calc(44px + env(safe-area-inset-top, 0px))', 
+          paddingBottom: '75px', 
           minHeight: '100vh',
           overflowX: 'hidden',
           overflowY: 'auto',

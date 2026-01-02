@@ -55,7 +55,7 @@ export default function ProgressTracking() {
   const maxActivity = Math.max(...weeklyActivity, 1);
 
   return (
-    <div className="px-4 pt-20 pb-32 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950 min-h-screen">
+    <div className="px-4 pt-20 pb-4 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950 min-h-screen">
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-2">

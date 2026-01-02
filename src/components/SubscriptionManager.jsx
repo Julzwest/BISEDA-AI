@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { 
-  Crown, Check, Zap, Star, Sparkles, X, Clock, ChevronRight
+  Crown, Check, Zap, Star, Sparkles, X, Clock, ChevronRight, RotateCcw
 } from 'lucide-react';
 import { getBackendUrl } from '@/utils/getBackendUrl';
+
+// Apple IAP Product IDs - for future use when products are set up in App Store Connect
+const PRODUCT_IDS = {
+  starter: 'com.biseda.starter.monthly',
+  pro: 'com.biseda.pro.monthly',
+  elite: 'com.biseda.elite.monthly'
+};
 
 // Subscription tier configuration
 export const SUBSCRIPTION_TIERS = {
@@ -114,8 +121,23 @@ export default function SubscriptionManager({ isOpen, onClose, currentTier, onTi
   const { t } = useTranslation();
   const [selectedTier, setSelectedTier] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isRestoring, setIsRestoring] = useState(false);
 
   const currentTierConfig = SUBSCRIPTION_TIERS[currentTier] || SUBSCRIPTION_TIERS.trial;
+
+  // Restore purchases - opens App Store subscriptions
+  const handleRestorePurchases = async () => {
+    setIsRestoring(true);
+    try {
+      // Open App Store subscriptions page for restore
+      window.location.href = 'itms-apps://apps.apple.com/account/subscriptions';
+    } catch (error) {
+      console.error('Restore failed:', error);
+      alert(t('subscription.restoreFailed', 'Failed to restore purchases. Please try again.'));
+    } finally {
+      setIsRestoring(false);
+    }
+  };
 
   const handleSubscribe = async (tierId) => {
     if (tierId === currentTier) return;
@@ -124,7 +146,8 @@ export default function SubscriptionManager({ isOpen, onClose, currentTier, onTi
     setSelectedTier(tierId);
 
     try {
-      // TODO: Integrate with Apple StoreKit 2 for actual purchase
+      // TODO: Integrate with Apple StoreKit when products are set up in App Store Connect
+      // For now, simulate subscription update
       console.log(`💳 Processing subscription to ${tierId}...`);
       
       await new Promise(resolve => setTimeout(resolve, 1500));
@@ -303,6 +326,27 @@ export default function SubscriptionManager({ isOpen, onClose, currentTier, onTi
               ))}
             </div>
           </div>
+        </div>
+
+        {/* Restore Purchases Button */}
+        <div className="px-4 pb-2">
+          <button
+            onClick={handleRestorePurchases}
+            disabled={isRestoring}
+            className="w-full py-3 text-purple-400 hover:text-purple-300 text-sm font-medium flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+          >
+            {isRestoring ? (
+              <>
+                <div className="w-4 h-4 border-2 border-purple-400 border-t-transparent rounded-full animate-spin" />
+                {t('subscription.restoring', 'Restoring...')}
+              </>
+            ) : (
+              <>
+                <RotateCcw className="w-4 h-4" />
+                {t('subscription.restorePurchases', 'Restore Purchases')}
+              </>
+            )}
+          </button>
         </div>
 
         {/* Cancel/Manage Link */}
