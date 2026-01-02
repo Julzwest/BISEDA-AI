@@ -984,7 +984,9 @@
       "bodyLanguage": "Dekoder Gjuhe Trupi",
       "bodyLanguageDesc": "Mëso çfarë do të thonë vërtet gjestet e tyre",
       "dateRehearsals": "Praktiko Bisedat",
-      "dateRehearsalsDesc": "Provo skenarë para takimit të vërtetë"
+      "dateRehearsalsDesc": "Provo skenarë para takimit të vërtetë",
+      "dateSpots": "Vende & Evente për Takime",
+      "dateSpotsDesc": "Gjej vendet perfekte për takimet tua"
     },
     "testimonial": "Ky app më shpëtoi jetën e dating. Mora 3 takime në një javë!",
     "testimonialAuthor": "Aleksi, 26",
@@ -1016,6 +1018,7 @@
   "liveWingman": {
     "title": "Live Wingman",
     "subtitle": "Këshilla dating në kohë reale",
+    "placeholder": "A duhet ta puth?",
     "style": "Stili",
     "iAm": "Unë jam",
     "dating": "Po dal me",

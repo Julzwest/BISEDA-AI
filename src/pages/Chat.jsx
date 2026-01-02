@@ -788,7 +788,7 @@ Do NOT give generic advice - reference the SPECIFIC conversation they showed you
   };
 
   return (
-    <div className="flex flex-col px-4 pt-2 pb-4 w-full max-w-full overflow-x-hidden" style={{ minHeight: 'calc(100vh - 60px)' }}>
+    <div className="flex flex-col px-4 pt-4 pb-4 w-full max-w-full overflow-x-hidden" style={{ minHeight: 'calc(100vh - 60px)' }}>
       {/* Chat History Sidebar */}
       {showHistory && (
         <div className="fixed inset-0 z-[100] bg-black/70 backdrop-blur-sm animate-fadeIn" onClick={() => setShowHistory(false)}>

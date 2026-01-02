@@ -234,7 +234,7 @@ export default function ChatAnalysis() {
   return (
     <div className="w-full min-h-screen pb-4">
       {/* Header */}
-      <div className="px-4 pt-2 pb-4">
+      <div className="px-4 pt-4 pb-4">
         <button 
           onClick={() => navigate('/copilot/upload')}
           className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-4"

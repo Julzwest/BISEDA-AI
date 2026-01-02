@@ -797,7 +797,7 @@ No other text, ONLY JSON.`;
   };
 
   return (
-    <div className="px-4 pt-0 pb-4 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950 w-full max-w-full overflow-x-hidden -mt-4">
+    <div className="px-4 pt-4 pb-4 bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950 w-full max-w-full overflow-x-hidden">
       {/* Header - Professional Style matching Rehearsal */}
       <div className="mb-6 text-center relative">
         <div className="inline-block mb-4">

@@ -190,7 +190,8 @@ export default function Admin() {
     
     setLoadingConversations(true);
     try {
-      const response = await fetch(`${backendUrl}/api/admin/conversations?limit=100`, {
+      // Fetch more conversations (500) to see all user messages
+      const response = await fetch(`${backendUrl}/api/admin/conversations?limit=500`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (response.ok) {
@@ -260,7 +261,7 @@ export default function Admin() {
   // Login Screen
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-950 via-purple-950/30 to-slate-950">
+      <div className="fixed inset-0 flex items-center justify-center p-4 bg-gradient-to-br from-slate-950 via-purple-950/30 to-slate-950 z-50">
         <Card className="bg-slate-900/90 border-purple-500/30 backdrop-blur-xl p-8 rounded-3xl shadow-2xl shadow-purple-500/20 max-w-md w-full">
           <div className="text-center mb-8">
             <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-purple-500/30">
@@ -905,11 +906,32 @@ export default function Admin() {
               <MessagesSquare className="w-5 h-5 text-cyan-400" />
               {selectedUser ? t('admin.conversationsOf', { name: selectedUser.firstName || selectedUser.email }) : t('admin.allConversations')}
             </h2>
-            {selectedUser && (
-              <Button onClick={() => { setSelectedUser(null); fetchConversations(); }} className="bg-slate-600 hover:bg-slate-500 text-white text-xs">
-                <X className="w-4 h-4 mr-1" /> {t('admin.clearFilter')}
+            <div className="flex gap-2">
+              <Button onClick={fetchConversations} disabled={loadingConversations} className="bg-cyan-600 hover:bg-cyan-500 text-white text-xs">
+                <RefreshCw className={`w-4 h-4 mr-1 ${loadingConversations ? 'animate-spin' : ''}`} /> Refresh
               </Button>
-            )}
+              {selectedUser && (
+                <Button onClick={() => { setSelectedUser(null); fetchConversations(); }} className="bg-slate-600 hover:bg-slate-500 text-white text-xs">
+                  <X className="w-4 h-4 mr-1" /> {t('admin.clearFilter')}
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {/* Summary Stats */}
+          <div className="grid grid-cols-3 gap-3 mb-4">
+            <div className="bg-blue-500/10 border border-blue-500/30 p-3 rounded-xl text-center">
+              <p className="text-blue-300 text-xs mb-1">Total Conversations</p>
+              <p className="text-white text-xl font-bold">{conversations.length}</p>
+            </div>
+            <div className="bg-purple-500/10 border border-purple-500/30 p-3 rounded-xl text-center">
+              <p className="text-purple-300 text-xs mb-1">Total Messages</p>
+              <p className="text-white text-xl font-bold">{conversations.reduce((sum, c) => sum + (c.messageCount || c.messages?.length || 0), 0)}</p>
+            </div>
+            <div className="bg-pink-500/10 border border-pink-500/30 p-3 rounded-xl text-center">
+              <p className="text-pink-300 text-xs mb-1">With Screenshots</p>
+              <p className="text-white text-xl font-bold">{conversations.filter(c => c.messages?.some(m => m.hasImages)).length}</p>
+            </div>
           </div>
           
           {loadingConversations ? (
@@ -919,53 +941,69 @@ export default function Admin() {
             </div>
           ) : conversations.length > 0 ? (
             <div className="space-y-3 max-h-[600px] overflow-y-auto">
-              {conversations.map((conv, i) => (
-                <div 
-                  key={conv._id || i} 
-                  className="p-4 bg-slate-700/30 rounded-xl border border-slate-600/30 hover:border-cyan-500/30 cursor-pointer transition-all"
-                  onClick={() => { setSelectedConversation(conv); setShowConversationModal(true); }}
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                          {(conv.userName?.[0] || conv.userEmail?.[0] || '?').toUpperCase()}
+              {conversations.map((conv, i) => {
+                const hasScreenshots = conv.messages?.some(m => m.hasImages);
+                const screenshotCount = conv.messages?.filter(m => m.hasImages).length || 0;
+                
+                return (
+                  <div 
+                    key={conv._id || i} 
+                    className={`p-4 bg-slate-700/30 rounded-xl border transition-all cursor-pointer ${
+                      hasScreenshots 
+                        ? 'border-pink-500/40 hover:border-pink-400/60' 
+                        : 'border-slate-600/30 hover:border-cyan-500/30'
+                    }`}
+                    onClick={() => { setSelectedConversation(conv); setShowConversationModal(true); }}
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                            {(conv.userName?.[0] || conv.userEmail?.[0] || '?').toUpperCase()}
+                          </div>
+                          <div>
+                            <p className="text-white font-medium text-sm">{conv.userName || 'Unknown'}</p>
+                            <p className="text-slate-500 text-xs">{conv.userEmail}</p>
+                          </div>
+                          <div className="flex gap-1 ml-auto">
+                            {hasScreenshots && (
+                              <span className="px-2 py-0.5 bg-pink-500/20 text-pink-300 rounded-lg text-xs font-semibold flex items-center gap-1">
+                                <Image className="w-3 h-3" /> {screenshotCount} foto
+                              </span>
+                            )}
+                            <span className={`px-2 py-0.5 rounded-lg text-xs font-semibold ${
+                              conv.topic === 'Dating' ? 'bg-pink-500/20 text-pink-300' :
+                              conv.topic === 'Messaging' ? 'bg-blue-500/20 text-blue-300' :
+                              conv.topic === 'Gifts' ? 'bg-rose-500/20 text-rose-300' :
+                              conv.topic === 'Tips' ? 'bg-amber-500/20 text-amber-300' :
+                              'bg-slate-500/20 text-slate-300'
+                            }`}>
+                              {conv.topic}
+                            </span>
+                          </div>
                         </div>
-                        <div>
-                          <p className="text-white font-medium text-sm">{conv.userName || 'Unknown'}</p>
-                          <p className="text-slate-500 text-xs">{conv.userEmail}</p>
+                        
+                        {/* Preview of last message */}
+                        <div className="bg-slate-800/50 p-2 rounded-lg mb-2">
+                          <p className="text-slate-300 text-xs line-clamp-2">
+                            {conv.messages?.[conv.messages.length - 1]?.content?.substring(0, 150) || 'No messages'}...
+                          </p>
                         </div>
-                        <span className={`ml-auto px-2 py-0.5 rounded-lg text-xs font-semibold ${
-                          conv.topic === 'Dating' ? 'bg-pink-500/20 text-pink-300' :
-                          conv.topic === 'Messaging' ? 'bg-blue-500/20 text-blue-300' :
-                          conv.topic === 'Gifts' ? 'bg-rose-500/20 text-rose-300' :
-                          conv.topic === 'Tips' ? 'bg-amber-500/20 text-amber-300' :
-                          'bg-slate-500/20 text-slate-300'
-                        }`}>
-                          {conv.topic}
-                        </span>
+                        
+                        <div className="flex items-center gap-4 text-xs text-slate-500">
+                          <span className="flex items-center gap-1">
+                            <MessageSquare className="w-3 h-3" /> {conv.messageCount || conv.messages?.length || 0} {t('admin.messages')}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Clock className="w-3 h-3" /> {conv.lastMessageAt ? new Date(conv.lastMessageAt).toLocaleString('sq-AL') : 'N/A'}
+                          </span>
+                        </div>
                       </div>
-                      
-                      {/* Preview of last message */}
-                      <div className="bg-slate-800/50 p-2 rounded-lg mb-2">
-                        <p className="text-slate-300 text-xs line-clamp-2">
-                          {conv.messages?.[conv.messages.length - 1]?.content?.substring(0, 150) || 'No messages'}...
-                        </p>
-                      </div>
-                      
-                      <div className="flex items-center gap-4 text-xs text-slate-500">
-                        <span className="flex items-center gap-1">
-                          <MessageSquare className="w-3 h-3" /> {conv.messageCount || conv.messages?.length || 0} {t('admin.messages')}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-3 h-3" /> {conv.lastMessageAt ? new Date(conv.lastMessageAt).toLocaleString('sq-AL') : 'N/A'}
-                        </span>
-                      </div>
+                      <ChevronRight className="w-5 h-5 text-slate-500" />
                     </div>
-                    <ChevronRight className="w-5 h-5 text-slate-500" />
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           ) : (
             <div className="text-center py-12">
@@ -1270,7 +1308,7 @@ export default function Admin() {
       {/* Conversation Detail Modal */}
       {showConversationModal && selectedConversation && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
-          <Card className="bg-slate-900 border-slate-700 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col">
+          <Card className="bg-slate-900 border-slate-700 rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col">
             {/* Header */}
             <div className="p-4 border-b border-slate-700 flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -1280,6 +1318,15 @@ export default function Admin() {
                 <div>
                   <h2 className="text-white font-bold">{selectedConversation.userName || 'Unknown'}</h2>
                   <p className="text-slate-400 text-xs">{selectedConversation.userEmail} • {selectedConversation.topic}</p>
+                </div>
+                {/* Stats badges */}
+                <div className="flex gap-2 ml-4">
+                  <span className="px-2 py-1 bg-blue-500/20 text-blue-300 rounded-lg text-xs">
+                    {selectedConversation.messages?.length || 0} mesazhe
+                  </span>
+                  <span className="px-2 py-1 bg-pink-500/20 text-pink-300 rounded-lg text-xs">
+                    {selectedConversation.messages?.filter(m => m.hasImages).length || 0} foto
+                  </span>
                 </div>
               </div>
               <button onClick={() => { setShowConversationModal(false); setSelectedConversation(null); }} className="text-slate-400 hover:text-white">
@@ -1291,7 +1338,7 @@ export default function Admin() {
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {selectedConversation.messages?.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[80%] p-3 rounded-2xl ${
+                  <div className={`max-w-[85%] p-3 rounded-2xl ${
                     msg.role === 'user' 
                       ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-br-md' 
                       : 'bg-slate-700 text-slate-200 rounded-bl-md'
@@ -1305,8 +1352,33 @@ export default function Admin() {
                       <span className="text-xs opacity-75">
                         {msg.role === 'user' ? t('admin.user') : t('admin.aiCoach')}
                       </span>
-                      {msg.hasImages && <Image className="w-3 h-3" />}
+                      {msg.hasImages && (
+                        <span className="flex items-center gap-1 px-1.5 py-0.5 bg-white/20 rounded text-xs">
+                          <Image className="w-3 h-3" /> {msg.imageUrls?.length || 1}
+                        </span>
+                      )}
                     </div>
+                    
+                    {/* Display images if present */}
+                    {msg.imageUrls && msg.imageUrls.length > 0 && (
+                      <div className="mb-2 grid grid-cols-2 gap-2">
+                        {msg.imageUrls.map((url, imgIdx) => (
+                          <div key={imgIdx} className="relative group">
+                            <img 
+                              src={url} 
+                              alt={`Screenshot ${imgIdx + 1}`}
+                              className="rounded-lg max-h-48 w-full object-cover border border-white/20 cursor-pointer hover:opacity-90 transition-opacity"
+                              onClick={() => window.open(url, '_blank')}
+                            />
+                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                              <span className="text-white text-xs">Click to enlarge</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    
+                    {/* Message content */}
                     <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                     <p className="text-xs opacity-50 mt-1 text-right">
                       {msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString('sq-AL') : ''}

@@ -170,7 +170,7 @@ export default function Home() {
   return (
     <div className="w-full overflow-x-hidden" key={i18n.language}>
       {/* Hero Section */}
-      <div className="px-4 pt-2 pb-6 w-full max-w-full">
+      <div className="px-4 pt-4 pb-6 w-full max-w-full">
         <div className="text-center mb-6">
           {/* Logo - Speech bubbles representing conversation */}
           {/* Secret: Tap 6 times to access admin dashboard */}

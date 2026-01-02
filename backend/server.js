@@ -46,9 +46,19 @@ const userAccountSchema = new mongoose.Schema({
   googleId: { type: String, sparse: true, unique: true },
   isVerified: { type: Boolean, default: false },
   isBlocked: { type: Boolean, default: false },
+  trialUsed: { type: Boolean, default: false }, // Track if user has already used their trial
+  subscriptionTier: { type: String, default: 'free' }, // free, starter, pro, elite
   createdAt: { type: Date, default: Date.now },
   lastLogin: { type: Date, default: Date.now }
 });
+
+// Schema to track emails that have used trials (even after account deletion)
+const trialUsedEmailSchema = new mongoose.Schema({
+  email: { type: String, required: true, unique: true, lowercase: true, trim: true },
+  usedAt: { type: Date, default: Date.now }
+});
+
+const TrialUsedEmailModel = mongoose.model('TrialUsedEmail', trialUsedEmailSchema);
 
 const UserAccountModel = mongoose.model('UserAccount', userAccountSchema);
 
@@ -60,7 +70,8 @@ const conversationSchema = new mongoose.Schema({
     role: { type: String, enum: ['user', 'assistant'], required: true },
     content: { type: String, required: true },
     timestamp: { type: Date, default: Date.now },
-    hasImages: { type: Boolean, default: false }
+    hasImages: { type: Boolean, default: false },
+    imageUrls: [{ type: String }] // Store actual image URLs for admin viewing
   }],
   startedAt: { type: Date, default: Date.now },
   lastMessageAt: { type: Date, default: Date.now },
@@ -700,7 +711,8 @@ app.post('/api/chat', rateLimit, checkSubscriptionLimits, async (req, res) => {
         role: 'user',
         content: prompt,
         timestamp: new Date(),
-        hasImages: fileUrls && fileUrls.length > 0
+        hasImages: fileUrls && fileUrls.length > 0,
+        imageUrls: fileUrls || []
       });
       
       // Add AI response
@@ -1026,6 +1038,14 @@ app.post('/api/auth/register', async (req, res) => {
       });
     }
     
+    // Check if this email has previously used a trial (even if account was deleted)
+    const trialUsedBefore = await TrialUsedEmailModel.findOne({ email: normalizedEmail });
+    const hasUsedTrial = !!trialUsedBefore;
+    
+    if (hasUsedTrial) {
+      console.log(`⚠️ Email ${normalizedEmail} has previously used a trial. Marking as trial used.`);
+    }
+    
     // Create new user account with unique ID
     const odId = appleId || `user-${Date.now()}-${Math.random().toString(36).substring(7)}`;
     const newUser = new UserAccountModel({
@@ -1039,7 +1059,9 @@ app.post('/api/auth/register', async (req, res) => {
       password: password || null, // In production, hash this!
       appleId: appleId || null,
       country: country || 'AL',
-      isVerified: false // Email verification required
+      isVerified: false, // Email verification required
+      trialUsed: hasUsedTrial, // If they used trial before, mark it
+      subscriptionTier: 'free'
     });
     
     // Save to MongoDB
@@ -1063,9 +1085,12 @@ app.post('/api/auth/register', async (req, res) => {
         email: newUser.email,
         phoneNumber: newUser.phoneNumber,
         createdAt: newUser.createdAt,
-        country: newUser.country
+        country: newUser.country,
+        trialUsed: newUser.trialUsed,
+        subscriptionTier: newUser.subscriptionTier
       },
-      message: 'Registration successful'
+      message: 'Registration successful',
+      trialUsed: hasUsedTrial // Tell frontend if they need to subscribe immediately
     });
     
   } catch (error) {
@@ -1139,9 +1164,13 @@ app.post('/api/auth/login', async (req, res) => {
         email: userAccount.email,
         phoneNumber: userAccount.phoneNumber,
         createdAt: userAccount.createdAt,
-        country: userAccount.country
+        country: userAccount.country,
+        trialUsed: userAccount.trialUsed || false,
+        subscriptionTier: userAccount.subscriptionTier || 'free'
       },
-      message: 'Login successful'
+      message: 'Login successful',
+      trialUsed: userAccount.trialUsed || false,
+      subscriptionTier: userAccount.subscriptionTier || 'free'
     });
     
   } catch (error) {
@@ -1150,6 +1179,41 @@ app.post('/api/auth/login', async (req, res) => {
       error: 'Login failed',
       message: error.message 
     });
+  }
+});
+
+// Mark trial as used - call when trial expires
+app.post('/api/auth/mark-trial-used', async (req, res) => {
+  try {
+    const { email, userId } = req.body;
+    
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+    
+    const normalizedEmail = email.toLowerCase().trim();
+    
+    // Add to trial used emails list (persistent record even if account is deleted)
+    await TrialUsedEmailModel.findOneAndUpdate(
+      { email: normalizedEmail },
+      { email: normalizedEmail, usedAt: new Date() },
+      { upsert: true, new: true }
+    );
+    
+    // Also update the user account if exists
+    if (userId) {
+      await UserAccountModel.updateOne(
+        { odId: userId },
+        { trialUsed: true }
+      );
+    }
+    
+    console.log(`⏰ Trial marked as used for: ${normalizedEmail}`);
+    
+    res.json({ success: true, message: 'Trial marked as used' });
+  } catch (error) {
+    console.error('Mark trial used error:', error);
+    res.status(500).json({ error: 'Failed to mark trial as used' });
   }
 });
 

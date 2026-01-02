@@ -472,7 +472,7 @@ Now generate 6 gift ideas for ${genderText} who likes: "${partnerInterests}"`;
 
 
   return (
-    <div className="px-4 pt-2 pb-4 bg-gradient-to-b from-slate-950 via-rose-950/10 to-slate-950">
+    <div className="px-4 pt-4 pb-4 bg-gradient-to-b from-slate-950 via-rose-950/10 to-slate-950">
       {/* Header - Professional Style */}
       <div className="mb-6 text-center relative">
         <div className="inline-block mb-4">

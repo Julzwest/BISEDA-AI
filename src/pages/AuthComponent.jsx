@@ -152,6 +152,15 @@ export default function Auth({ onAuthSuccess }) {
             localStorage.setItem('isAuthenticated', 'true');
             localStorage.setItem('userCountry', data.user.country || 'AL');
             
+            // Check if user has already used their trial (returning user)
+            if (data.trialUsed || data.user.trialUsed) {
+              localStorage.setItem('trial_used_forever', 'true');
+              localStorage.setItem('trialExpired', 'true');
+            }
+            if (data.subscriptionTier || data.user.subscriptionTier) {
+              localStorage.setItem('subscriptionTier', data.subscriptionTier || data.user.subscriptionTier);
+            }
+            
             if (onAuthSuccess) {
               onAuthSuccess({
                 userId: data.user.odId || data.user.userId,
@@ -330,9 +339,18 @@ export default function Auth({ onAuthSuccess }) {
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('userCountry', data.user.country || 'AL');
         
-        // Start trial
-        localStorage.setItem('trialStartTime', Date.now().toString());
-        localStorage.setItem('subscriptionTier', 'trial');
+        // Check if user has already used their trial before (returning user who deleted account)
+        if (data.trialUsed) {
+          // They've used their trial before - mark as expired, must subscribe
+          localStorage.setItem('trial_used_forever', 'true');
+          localStorage.setItem('trialExpired', 'true');
+          localStorage.setItem('subscriptionTier', 'free');
+          console.log('⚠️ Returning user - trial already used, must subscribe');
+        } else {
+          // New user - start trial
+          localStorage.setItem('trialStartTime', Date.now().toString());
+          localStorage.setItem('subscriptionTier', 'trial');
+        }
         
         // Register device
         const deviceId = getDeviceId();
@@ -406,13 +424,8 @@ export default function Auth({ onAuthSuccess }) {
         return;
       }
       
-      // 🛡️ BULLETPROOF: Check if device already used trial (ONE-TIME ONLY)
-      const trialUsedForever = localStorage.getItem('trial_used_forever');
-      if (trialUsedForever) {
-        setLoading(false);
-        setError(t('trial.alreadyUsed', 'This device has already used the free trial. Please choose a subscription plan to continue.'));
-        return;
-      }
+      // Note: We allow registration even if trial was used before
+      // The backend will track this and user will see subscription popup after login
     }
 
     try {
@@ -471,6 +484,15 @@ export default function Auth({ onAuthSuccess }) {
         localStorage.setItem('userName', userName);
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('userCountry', data.user.country || 'AL');
+        
+        // Check if user has already used their trial (returning user who deleted account)
+        if (data.trialUsed || data.user.trialUsed) {
+          localStorage.setItem('trial_used_forever', 'true');
+          localStorage.setItem('trialExpired', 'true');
+        }
+        if (data.subscriptionTier || data.user.subscriptionTier) {
+          localStorage.setItem('subscriptionTier', data.subscriptionTier || data.user.subscriptionTier);
+        }
         
         // Clear any guest data
         localStorage.removeItem('isGuest');
@@ -884,7 +906,7 @@ export default function Auth({ onAuthSuccess }) {
                     <div className="w-4 h-4 border-3 border-white/30 border-t-white rounded-full animate-spin"></div>
                   </div>
                 ) : (
-                  <span>{isLogin ? ('🚀 ' + t('auth.login')) : ('✨ ' + t('auth.createAccount'))}</span>
+                  <span>{isLogin ? t('auth.login') : t('auth.createAccount')}</span>
                 )}
               </Button>
 

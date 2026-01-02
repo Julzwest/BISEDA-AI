@@ -148,7 +148,7 @@ Be FUN, ENERGETIC, and SUPPORTIVE! Use casual, friendly language. ${langInstruct
   };
 
   return (
-    <div className="px-4 pt-2 pb-4 w-full max-w-full overflow-x-hidden">
+    <div className="px-4 pt-4 pb-4 w-full max-w-full overflow-x-hidden">
       {/* Back Button */}
       <button 
         onClick={() => navigate('/')} 

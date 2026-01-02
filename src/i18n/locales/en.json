@@ -985,7 +985,9 @@
       "bodyLanguage": "Body Language Decoder",
       "bodyLanguageDesc": "Learn what their gestures & signals really mean",
       "dateRehearsals": "Practice Conversations",
-      "dateRehearsalsDesc": "Rehearse scenarios before the real thing"
+      "dateRehearsalsDesc": "Rehearse scenarios before the real thing",
+      "dateSpots": "Date Spots & Events",
+      "dateSpotsDesc": "Find perfect places for your dates"
     },
     "testimonial": "This app literally saved my dating life. Got 3 dates in one week!",
     "testimonialAuthor": "Alex, 26",
@@ -1017,6 +1019,7 @@
   "liveWingman": {
     "title": "Live Wingman",
     "subtitle": "Real-time dating tips",
+    "placeholder": "Should I go for the kiss?",
     "style": "Style",
     "iAm": "I am",
     "dating": "Dating",

@@ -321,7 +321,7 @@ export default function UserProfile({ onLogout }) {
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-pink-500/30 to-purple-500/30 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2"></div>
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-3xl transform -translate-x-1/2 translate-y-1/2"></div>
         
-        <div className="relative px-5 pt-2 pb-8">
+        <div className="relative px-5 pt-4 pb-8">
           {/* Top Actions */}
           <div className="flex justify-between items-center mb-6">
             {localStorage.getItem('adminImpersonating') === 'true' && (

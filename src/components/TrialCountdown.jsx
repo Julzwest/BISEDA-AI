@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { Clock, Crown } from 'lucide-react';
 import SubscriptionModal from './SubscriptionModal';
@@ -97,11 +98,12 @@ export default function TrialCountdown() {
           <span>{t('trial.expired', 'Trial Ended')}</span>
         </button>
         
-        {showSubscriptionModal && (
+        {showSubscriptionModal && createPortal(
           <SubscriptionModal 
             isOpen={showSubscriptionModal}
             onClose={() => setShowSubscriptionModal(false)}
-          />
+          />,
+          document.body
         )}
       </>
     );
@@ -134,11 +136,12 @@ export default function TrialCountdown() {
         </span>
       </button>
       
-      {showSubscriptionModal && (
+      {showSubscriptionModal && createPortal(
         <SubscriptionModal 
           isOpen={showSubscriptionModal}
           onClose={() => setShowSubscriptionModal(false)}
-        />
+        />,
+        document.body
       )}
     </>
   );

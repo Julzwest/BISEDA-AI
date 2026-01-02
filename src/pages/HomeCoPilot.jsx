@@ -19,7 +19,8 @@ import {
   Zap,
   X,
   Image as ImageIcon,
-  Upload
+  Upload,
+  MapPin
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { base44 } from '@/api/base44Client';
@@ -747,7 +748,7 @@ export default function HomeCoPilot() {
 
   // Main Homepage
   return (
-    <div className="w-full min-h-screen overflow-x-hidden relative -mt-4" key={i18n.language}>
+    <div className="w-full min-h-screen overflow-x-hidden relative" key={i18n.language}>
       {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 -left-20 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
@@ -763,10 +764,10 @@ export default function HomeCoPilot() {
         <span className="absolute top-72 right-6 text-2xl animate-bounce opacity-50" style={{ animationDuration: '3.5s', animationDelay: '0.3s' }}>🔥</span>
       </div>
 
-      <div className="relative z-10 px-5 pt-0 pb-4 w-full max-w-full">
+      <div className="relative z-10 px-5 pt-4 pb-4 w-full max-w-full">
         
         {/* Logo + Branding */}
-        <div className="text-center mb-4">
+        <div className="text-center mb-4 mt-2">
           <div 
             className="inline-block mb-4 relative cursor-pointer select-none"
             onClick={handleLogoTap}
@@ -888,7 +889,10 @@ export default function HomeCoPilot() {
           
           <div className="space-y-3">
             {/* Smart Chat Analysis */}
-            <div className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50 hover:border-purple-500/30 transition-colors">
+            <div 
+              onClick={() => navigate('/copilot/upload')}
+              className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50 hover:border-purple-500/30 transition-colors cursor-pointer active:scale-[0.98]"
+            >
               <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-purple-500/20">
                 <Camera className="w-5 h-5 text-white" />
               </div>
@@ -900,7 +904,10 @@ export default function HomeCoPilot() {
             </div>
             
             {/* AI Understands Context */}
-            <div className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50 hover:border-cyan-500/30 transition-colors">
+            <div 
+              onClick={() => navigate('/copilot/upload')}
+              className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50 hover:border-cyan-500/30 transition-colors cursor-pointer active:scale-[0.98]"
+            >
               <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-cyan-500/20">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
@@ -912,7 +919,10 @@ export default function HomeCoPilot() {
             </div>
             
             {/* Live Wingman */}
-            <div className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50 hover:border-amber-500/30 transition-colors">
+            <div 
+              onClick={() => navigate('/wingman')}
+              className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50 hover:border-amber-500/30 transition-colors cursor-pointer active:scale-[0.98]"
+            >
               <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-amber-500/20">
                 <Zap className="w-5 h-5 text-white" />
               </div>
@@ -924,7 +934,10 @@ export default function HomeCoPilot() {
             </div>
             
             {/* Body Language Decoder */}
-            <div className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50 hover:border-rose-500/30 transition-colors">
+            <div 
+              onClick={() => navigate('/bodylanguage')}
+              className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50 hover:border-rose-500/30 transition-colors cursor-pointer active:scale-[0.98]"
+            >
               <div className="w-10 h-10 bg-gradient-to-br from-rose-500 to-pink-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-rose-500/20">
                 <Heart className="w-5 h-5 text-white" />
               </div>
@@ -935,8 +948,11 @@ export default function HomeCoPilot() {
               <span className="text-2xl">👀</span>
             </div>
             
-            {/* Practice Conversations */}
-            <div className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50 hover:border-emerald-500/30 transition-colors">
+            {/* Practice Conversations / Date Rehearsals */}
+            <div 
+              onClick={() => navigate('/rehearsal')}
+              className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50 hover:border-emerald-500/30 transition-colors cursor-pointer active:scale-[0.98]"
+            >
               <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
                 <MessageSquare className="w-5 h-5 text-white" />
               </div>
@@ -945,6 +961,21 @@ export default function HomeCoPilot() {
                 <p className="text-slate-400 text-xs">{t('homepage.steps.dateRehearsalsDesc')}</p>
               </div>
               <span className="text-2xl">🎭</span>
+            </div>
+            
+            {/* Date Spots & Events */}
+            <div 
+              onClick={() => navigate('/explore')}
+              className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-2xl border border-slate-700/50 hover:border-indigo-500/30 transition-colors cursor-pointer active:scale-[0.98]"
+            >
+              <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-violet-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-indigo-500/20">
+                <MapPin className="w-5 h-5 text-white" />
+              </div>
+              <div className="flex-1">
+                <h4 className="text-white font-semibold text-sm">{t('homepage.steps.dateSpots', 'Date Spots & Events')}</h4>
+                <p className="text-slate-400 text-xs">{t('homepage.steps.dateSpotsDesc', 'Find perfect places for your dates')}</p>
+              </div>
+              <span className="text-2xl">📍</span>
             </div>
           </div>
         </div>

@@ -1371,7 +1371,7 @@ ${langInstruction}`;
     return (
       <>
         <UpgradeModal />
-        <div className="px-5 pt-0 pb-4 w-full max-w-full overflow-x-hidden relative">
+        <div className="px-5 pt-4 pb-4 w-full max-w-full overflow-x-hidden relative">
           {/* Animated Background */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute top-20 -left-20 w-60 h-60 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
@@ -1401,7 +1401,7 @@ ${langInstruction}`;
   // Scenario Selection Screen
   if (!scenario) {
     return (
-      <div className="px-5 pt-0 pb-4 w-full max-w-full overflow-x-hidden relative">
+      <div className="px-5 pt-4 pb-4 w-full max-w-full overflow-x-hidden relative">
         {/* Animated Background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-10 -right-20 w-60 h-60 bg-violet-500/15 rounded-full blur-3xl animate-pulse"></div>

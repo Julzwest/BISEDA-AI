@@ -83,7 +83,7 @@ export default function SubscriptionModal({ isOpen, onClose, onSuccess }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto">
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto" style={{ zIndex: 99999 }}>
       <Card ref={modalRef} className="bg-slate-900 border-purple-500/30 backdrop-blur-xl rounded-3xl shadow-2xl shadow-purple-500/20 max-w-lg w-full max-h-[95vh] overflow-y-auto relative">
         {/* Close Button */}
         <button

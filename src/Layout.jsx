@@ -22,10 +22,14 @@ export default function Layout({ children, onLogout }) {
     const subscriptionTier = localStorage.getItem('subscriptionTier') || localStorage.getItem('userSubscriptionTier');
     const subscriptionData = localStorage.getItem('user_subscription');
     const trialStartTime = localStorage.getItem('trialStartTime') || localStorage.getItem('trial_start_date');
+    const trialUsedForever = localStorage.getItem('trial_used_forever');
     
     // Paid users are fine
     const paidTiers = ['starter', 'pro', 'elite'];
     if (paidTiers.includes(subscriptionTier)) return false;
+    
+    // If user has already used their trial before (from backend), block immediately
+    if (trialUsedForever === 'true') return true;
     
     // Check subscription data
     if (subscriptionData) {
@@ -60,6 +64,7 @@ export default function Layout({ children, onLogout }) {
       const subscriptionTier = localStorage.getItem('subscriptionTier') || localStorage.getItem('userSubscriptionTier');
       const subscriptionData = localStorage.getItem('user_subscription');
       const trialStartTime = localStorage.getItem('trialStartTime') || localStorage.getItem('trial_start_date');
+      const trialUsedForever = localStorage.getItem('trial_used_forever');
       
       // Parse subscription data if exists
       let parsedSub = null;
@@ -76,6 +81,12 @@ export default function Layout({ children, onLogout }) {
       
       if (hasPaidSubscription) {
         setShowTrialExpiredModal(false);
+        return;
+      }
+      
+      // 🛡️ If user has already used their trial before (returning user), ALWAYS show modal
+      if (trialUsedForever === 'true') {
+        setShowTrialExpiredModal(true);
         return;
       }
       
@@ -96,11 +107,14 @@ export default function Layout({ children, onLogout }) {
         if (Date.now() >= endTime) {
           // Mark as expired in all storage locations
           localStorage.setItem('trialExpired', 'true');
+          localStorage.setItem('trial_used_forever', 'true');
           if (parsedSub) {
             parsedSub.tier = 'expired';
             parsedSub.credits = 0;
             localStorage.setItem('user_subscription', JSON.stringify(parsedSub));
           }
+          // Mark trial as used on backend (so they can't re-register for a new trial)
+          markTrialUsedOnBackend();
           setShowTrialExpiredModal(true);
           return;
         }
@@ -110,8 +124,30 @@ export default function Layout({ children, onLogout }) {
       if (parsedSub && parsedSub.credits <= 0 && parsedSub.tier === 'free_trial') {
         parsedSub.tier = 'expired';
         localStorage.setItem('user_subscription', JSON.stringify(parsedSub));
+        localStorage.setItem('trial_used_forever', 'true');
+        // Mark trial as used on backend
+        markTrialUsedOnBackend();
         setShowTrialExpiredModal(true);
         return;
+      }
+    };
+    
+    // Function to mark trial as used on backend
+    const markTrialUsedOnBackend = async () => {
+      const userEmail = localStorage.getItem('userEmail');
+      const userId = localStorage.getItem('userId');
+      if (!userEmail) return;
+      
+      try {
+        const backendUrl = getBackendUrl();
+        await fetch(`${backendUrl}/api/auth/mark-trial-used`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: userEmail, userId })
+        });
+        console.log('✅ Trial marked as used on backend for:', userEmail);
+      } catch (error) {
+        console.error('Failed to mark trial as used on backend:', error);
       }
     };
     
@@ -249,6 +285,7 @@ export default function Layout({ children, onLogout }) {
           z-index: 9998;
         }
         
+        
         /* Modern nav styling */
         .nav-item {
           position: relative;
@@ -287,24 +324,41 @@ export default function Layout({ children, onLogout }) {
       {/* Cover for safe area at bottom */}
       <div className="bottom-safe-area"></div>
       
-      {/* Fixed Top Header Bar */}
+      {/* Fixed Top Header Bar - transparent/see-through */}
       <header 
         style={{ 
           position: 'fixed', 
           top: 0, 
           left: 0, 
           right: 0, 
-          paddingTop: 'env(safe-area-inset-top, 0px)',
           zIndex: 9999,
-          background: 'linear-gradient(to bottom, var(--bg-primary, rgba(15, 23, 42, 0.98)), var(--bg-primary, rgba(15, 23, 42, 0.95)))',
-          backdropFilter: 'blur(12px)',
-          borderBottom: '1px solid var(--border-color, rgba(148, 163, 184, 0.1))',
+          background: 'transparent',
           // Blur and disable when trial expired
           filter: showTrialExpiredModal ? 'blur(8px)' : 'none',
           pointerEvents: showTrialExpiredModal ? 'none' : 'auto'
         }}
       >
-        <div className="h-11 px-4 flex items-center justify-between max-w-screen-xl mx-auto">
+        {/* Overscroll cover - ONLY visible above screen during overscroll */}
+        <div 
+          style={{
+            position: 'absolute',
+            top: '-200px',
+            left: 0,
+            right: 0,
+            height: '200px',
+            background: '#0f172a',
+            pointerEvents: 'none'
+          }}
+        />
+        {/* Safe area spacer - transparent, just for spacing */}
+        <div style={{ height: 'env(safe-area-inset-top, 0px)' }} />
+        <div 
+          className="h-11 px-4 flex items-center justify-between max-w-screen-xl mx-auto relative"
+          style={{
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)'
+          }}
+        >
           {/* Left side - Logo/Brand */}
           <div className="flex items-center">
             <Link to="/copilot" className="flex items-center gap-2">
@@ -329,10 +383,10 @@ export default function Layout({ children, onLogout }) {
           <div className="flex items-center gap-2">
             <Link 
               to="/profile"
-              className={`p-2 rounded-xl transition-all ${
+              className={`flex items-center justify-center w-10 h-10 rounded-xl transition-all ${
                 currentPageName === 'Profile' 
-                  ? 'bg-purple-500/20 text-purple-400' 
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  ? 'bg-purple-500/20 text-purple-400 border border-purple-500/50' 
+                  : 'bg-slate-800/90 border border-slate-700/60 text-slate-400 hover:text-white hover:bg-slate-700/90 hover:border-purple-500/50'
               }`}
             >
               <User className="w-5 h-5" />
@@ -376,8 +430,7 @@ export default function Layout({ children, onLogout }) {
         bottom: 0, 
         left: 0, 
         right: 0, 
-        background: 'linear-gradient(to top, var(--bg-primary, rgba(15, 23, 42, 0.98)), var(--bg-primary, rgba(15, 23, 42, 0.95)))',
-        backdropFilter: 'blur(12px)',
+        background: '#0f172a',
         borderTop: '1px solid var(--border-color, rgba(148, 163, 184, 0.1))',
         zIndex: 9999,
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
@@ -385,6 +438,18 @@ export default function Layout({ children, onLogout }) {
         filter: showTrialExpiredModal ? 'blur(8px)' : 'none',
         pointerEvents: showTrialExpiredModal ? 'none' : 'auto'
       }}>
+        {/* Overscroll cover - extends below screen to prevent gap when pulling up */}
+        <div 
+          style={{
+            position: 'absolute',
+            bottom: '-100px',
+            left: 0,
+            right: 0,
+            height: 'calc(100px + env(safe-area-inset-bottom, 0px))',
+            background: '#0f172a',
+            pointerEvents: 'none'
+          }}
+        />
         <div className="flex justify-around items-center h-16 px-2 max-w-screen-xl mx-auto">
           {navItems.map((item) => {
             const Icon = item.icon;

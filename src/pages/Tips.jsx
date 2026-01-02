@@ -415,7 +415,7 @@ Now write 10 COMPLETELY new messages:`
   };
 
   return (
-    <div className="px-4 pt-2 pb-4 w-full max-w-full overflow-x-hidden">
+    <div className="px-4 pt-4 pb-4 w-full max-w-full overflow-x-hidden">
       {/* Header - Centered like other pages */}
       <div className="mb-6 text-center">
         <div className="inline-block mb-3">
