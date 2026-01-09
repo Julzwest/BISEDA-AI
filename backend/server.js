@@ -47,6 +47,7 @@ const userAccountSchema = new mongoose.Schema({
   isVerified: { type: Boolean, default: false },
   isBlocked: { type: Boolean, default: false },
   trialUsed: { type: Boolean, default: false }, // Track if user has already used their trial
+  trialStartTime: { type: Number }, // Timestamp when trial started (persists across logins)
   subscriptionTier: { type: String, default: 'free' }, // free, starter, pro, elite
   createdAt: { type: Date, default: Date.now },
   lastLogin: { type: Date, default: Date.now }
@@ -1048,6 +1049,8 @@ app.post('/api/auth/register', async (req, res) => {
     
     // Create new user account with unique ID
     const odId = appleId || `user-${Date.now()}-${Math.random().toString(36).substring(7)}`;
+    // Set trialStartTime only for NEW users who haven't used trial before
+    const trialStartTime = hasUsedTrial ? null : Date.now();
     const newUser = new UserAccountModel({
       odId,
       username: normalizedUsername,
@@ -1061,6 +1064,7 @@ app.post('/api/auth/register', async (req, res) => {
       country: country || 'AL',
       isVerified: false, // Email verification required
       trialUsed: hasUsedTrial, // If they used trial before, mark it
+      trialStartTime: trialStartTime, // Store trial start time
       subscriptionTier: 'free'
     });
     
@@ -1087,10 +1091,12 @@ app.post('/api/auth/register', async (req, res) => {
         createdAt: newUser.createdAt,
         country: newUser.country,
         trialUsed: newUser.trialUsed,
+        trialStartTime: newUser.trialStartTime, // Return trial start time
         subscriptionTier: newUser.subscriptionTier
       },
       message: 'Registration successful',
-      trialUsed: hasUsedTrial // Tell frontend if they need to subscribe immediately
+      trialUsed: hasUsedTrial, // Tell frontend if they need to subscribe immediately
+      trialStartTime: newUser.trialStartTime // Return trial start time
     });
     
   } catch (error) {
@@ -1166,10 +1172,12 @@ app.post('/api/auth/login', async (req, res) => {
         createdAt: userAccount.createdAt,
         country: userAccount.country,
         trialUsed: userAccount.trialUsed || false,
+        trialStartTime: userAccount.trialStartTime || null, // Return trial start time
         subscriptionTier: userAccount.subscriptionTier || 'free'
       },
       message: 'Login successful',
       trialUsed: userAccount.trialUsed || false,
+      trialStartTime: userAccount.trialStartTime || null, // Return trial start time
       subscriptionTier: userAccount.subscriptionTier || 'free'
     });
     
@@ -2358,14 +2366,35 @@ app.put('/api/admin/update-user-tier', checkAdminAuth, async (req, res) => {
     // Determine subscription status and expiration
     const isPaidTier = ['starter', 'pro', 'elite', 'premium'].includes(tier);
     const subscriptionStatus = isPaidTier ? 'active' : (tier === 'free_trial' ? 'active' : 'inactive');
-    const subscriptionExpiresAt = isPaidTier ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) : null; // 1 year for paid
+    const subscriptionExpiresAt = isPaidTier ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) : null;
+    
+    // Credits based on tier
+    const TIER_CREDITS = {
+      'free': 0,
+      'free_trial': 50,
+      'starter': 200,
+      'pro': 500,
+      'elite': 999999,
+      'premium': 999999
+    };
+    
+    const TIER_DAILY_LIMITS = {
+      'free': 0,
+      'free_trial': 20,
+      'starter': 15,
+      'pro': 30,
+      'elite': 999999,
+      'premium': 999999
+    };
+    
+    const newCredits = TIER_CREDITS[tier] || 50;
+    const newDailyLimit = TIER_DAILY_LIMITS[tier] || 10;
     
     // UPDATE MONGODB FIRST (persistent storage)
     let mongoUser = await UserAccountModel.findOne({ odId });
     const oldTier = mongoUser?.subscriptionTier || 'free_trial';
     
     if (mongoUser) {
-      // Update existing user in MongoDB
       await UserAccountModel.updateOne(
         { odId },
         {
@@ -2373,11 +2402,15 @@ app.put('/api/admin/update-user-tier', checkAdminAuth, async (req, res) => {
             subscriptionTier: tier,
             subscriptionStatus: subscriptionStatus,
             subscriptionExpiresAt: subscriptionExpiresAt,
+            credits: newCredits,
+            dailyCreditsUsed: 0,
+            dailyLimit: newDailyLimit,
+            creditResetDate: new Date().toDateString(),
             updatedAt: new Date()
           }
         }
       );
-      console.log(`💾 MongoDB: Updated user ${odId} tier: ${oldTier} → ${tier}`);
+      console.log(`💾 MongoDB: Updated user ${odId} tier: ${oldTier} → ${tier}, credits: ${newCredits}`);
     } else {
       console.log(`⚠️  User ${odId} not found in MongoDB, updating in-memory only`);
     }
@@ -2387,8 +2420,10 @@ app.put('/api/admin/update-user-tier', checkAdminAuth, async (req, res) => {
     user.subscriptionTier = tier;
     user.subscriptionStatus = subscriptionStatus;
     user.subscriptionExpiresAt = subscriptionExpiresAt;
+    user.credits = newCredits;
+    user.dailyCreditsUsed = 0;
+    user.dailyLimit = newDailyLimit;
     
-    // Reset screenshot counter if upgrading to paid
     if (isPaidTier) {
       user.screenshotAnalyses.monthlyUsed = 0;
       user.screenshotAnalyses.currentMonth = new Date().getMonth();
@@ -2396,7 +2431,7 @@ app.put('/api/admin/update-user-tier', checkAdminAuth, async (req, res) => {
     }
     
     saveUser(user);
-    console.log(`⚡ In-Memory: Updated user ${odId} tier: ${oldTier} → ${tier}`);
+    console.log(`⚡ In-Memory: Updated user ${odId} tier: ${oldTier} → ${tier}, credits: ${newCredits}`);
     
     res.json({
       success: true,
@@ -2404,6 +2439,8 @@ app.put('/api/admin/update-user-tier', checkAdminAuth, async (req, res) => {
       odId,
       oldTier,
       newTier: tier,
+      credits: newCredits,
+      dailyLimit: newDailyLimit,
       status: subscriptionStatus,
       expiresAt: subscriptionExpiresAt,
       updatedBoth: mongoUser ? 'MongoDB + In-Memory' : 'In-Memory Only'
@@ -2429,14 +2466,37 @@ app.put('/api/admin/users/:odId/update-tier', checkAdminAuth, async (req, res) =
       return res.status(400).json({ error: 'Invalid tier. Must be one of: ' + validTiers.join(', ') });
     }
     
-    // Determine subscription status and expiration
+    // Determine subscription status, expiration, and CREDITS based on tier
     const isPaidTier = ['starter', 'pro', 'elite', 'premium'].includes(tier);
     const subscriptionStatus = isPaidTier ? 'active' : (tier === 'free_trial' ? 'active' : 'inactive');
     const subscriptionExpiresAt = isPaidTier ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) : null;
     
+    // Credits based on tier
+    const TIER_CREDITS = {
+      'free': 0,
+      'free_trial': 50,
+      'starter': 200,
+      'pro': 500,
+      'elite': 999999, // Unlimited
+      'premium': 999999
+    };
+    
+    const TIER_DAILY_LIMITS = {
+      'free': 0,
+      'free_trial': 20,
+      'starter': 15,
+      'pro': 30,
+      'elite': 999999, // Unlimited
+      'premium': 999999
+    };
+    
+    const newCredits = TIER_CREDITS[tier] || 50;
+    const newDailyLimit = TIER_DAILY_LIMITS[tier] || 10;
+    
     // UPDATE MONGODB FIRST
     let mongoUser = await UserAccountModel.findOne({ odId });
     const oldTier = mongoUser?.subscriptionTier || 'free_trial';
+    const oldCredits = mongoUser?.credits || 0;
     
     if (mongoUser) {
       await UserAccountModel.updateOne(
@@ -2446,11 +2506,15 @@ app.put('/api/admin/users/:odId/update-tier', checkAdminAuth, async (req, res) =
             subscriptionTier: tier,
             subscriptionStatus: subscriptionStatus,
             subscriptionExpiresAt: subscriptionExpiresAt,
+            credits: newCredits,
+            dailyCreditsUsed: 0, // Reset daily usage
+            dailyLimit: newDailyLimit,
+            creditResetDate: new Date().toDateString(),
             updatedAt: new Date()
           }
         }
       );
-      console.log(`💾 MongoDB: Updated user ${odId} tier: ${oldTier} → ${tier}`);
+      console.log(`💾 MongoDB: Updated user ${odId} tier: ${oldTier} → ${tier}, credits: ${oldCredits} → ${newCredits}`);
     }
     
     // UPDATE IN-MEMORY USER
@@ -2458,6 +2522,9 @@ app.put('/api/admin/users/:odId/update-tier', checkAdminAuth, async (req, res) =
     user.subscriptionTier = tier;
     user.subscriptionStatus = subscriptionStatus;
     user.subscriptionExpiresAt = subscriptionExpiresAt;
+    user.credits = newCredits;
+    user.dailyCreditsUsed = 0;
+    user.dailyLimit = newDailyLimit;
     
     if (isPaidTier) {
       user.screenshotAnalyses.monthlyUsed = 0;
@@ -2466,13 +2533,15 @@ app.put('/api/admin/users/:odId/update-tier', checkAdminAuth, async (req, res) =
     }
     
     saveUser(user);
-    console.log(`⚡ Updated user ${odId} tier: ${oldTier} → ${tier}`);
+    console.log(`⚡ Updated user ${odId} tier: ${oldTier} → ${tier}, credits: ${newCredits}`);
     
     res.json({
       success: true,
       message: `User tier updated from ${oldTier} to ${tier}`,
       oldTier,
-      newTier: tier
+      newTier: tier,
+      credits: newCredits,
+      dailyLimit: newDailyLimit
     });
   } catch (error) {
     console.error('Update user tier error:', error);
