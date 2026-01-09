@@ -4,8 +4,9 @@ import {
   TrendingUp, Award, Target, Zap, Calendar, MessageSquare, Heart, Star, Trophy, Flame,
   User, Crown, Shield, LogOut, Bookmark, Settings, MapPin, Globe, Check, CreditCard, Trash2,
   AlertTriangle, Download, Mail, HelpCircle, FileText, XCircle, X, Sparkles, ChevronRight,
-  Edit3, Gift, Clock, ArrowUpRight, Gem, Rocket, Medal
+  Edit3, Gift, Clock, ArrowUpRight, Gem, Rocket, Medal, Bell, BellOff
 } from 'lucide-react';
+import { areNotificationsEnabled, setNotificationsEnabled, getRandomTip } from '@/utils/pushNotifications';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -13,16 +14,23 @@ import { getLocalizedCountryName, getCountryByCode, countries } from '@/config/c
 import { getBackendUrl } from '@/utils/getBackendUrl';
 import { getFavorites, removeVenueFavorite, removeDateIdeaFavorite, removeTipFavorite, removeGiftFavorite } from '@/utils/favorites';
 import SubscriptionModal from '@/components/SubscriptionModal';
-import SubscriptionManager, { 
-  SUBSCRIPTION_TIERS, 
-  getRemainingCredits, 
-  getDailyRemainingCredits 
-} from '@/components/SubscriptionManager';
+import SubscriptionManager, { SUBSCRIPTION_TIERS } from '@/components/SubscriptionManager';
 import { getProfile, saveProfile, defaultProfile } from '@/utils/profileMemory';
+import { useLiveCredits } from '@/hooks/useLiveCredits';
+import { useLiveStats } from '@/hooks/useLiveStats';
 import { getWeeklyActivity, getAllStats, getWeekDayLabels } from '@/utils/activityTracker';
+import { useToast } from '@/components/Toast';
 
 export default function UserProfile({ onLogout }) {
   const { t, i18n } = useTranslation();
+  const toast = useToast();
+  
+  // LIVE credits tracking - updates in real-time!
+  const liveCredits = useLiveCredits();
+  
+  // LIVE stats tracking - updates in real-time!
+  const liveStats = useLiveStats();
+  
   const [stats, setStats] = useState({
     totalMessages: 0,
     messagesThisWeek: 0,
@@ -51,6 +59,11 @@ export default function UserProfile({ onLogout }) {
   const [editedName, setEditedName] = useState(localStorage.getItem('userName') || '');
   const [nameSaved, setNameSaved] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
+  const [notificationsEnabled, setNotificationsEnabledState] = useState(() => areNotificationsEnabled());
+  const [emergencyHelpEnabled, setEmergencyHelpEnabled] = useState(() => {
+    const stored = localStorage.getItem('biseda_emergency_help_enabled');
+    return stored === null ? true : stored === 'true'; // Default to ON
+  });
   const [cancelReason, setCancelReason] = useState('');
   const [cancelFeedback, setCancelFeedback] = useState('');
   const [cancelSubmitted, setCancelSubmitted] = useState(false);
@@ -66,9 +79,39 @@ export default function UserProfile({ onLogout }) {
   const userName = localStorage.getItem('userName') || 'User';
   const userEmail = localStorage.getItem('userEmail') || '';
 
+  // Sync subscription tier from backend
+  const syncSubscriptionFromBackend = async () => {
+    try {
+      const odId = localStorage.getItem('odId') || localStorage.getItem('userId');
+      if (!odId) return;
+      
+      const response = await fetch(`${backendUrl}/api/user/sync-subscription`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ odId })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        if (data.subscriptionTier) {
+          localStorage.setItem('subscriptionTier', data.subscriptionTier);
+          localStorage.setItem('userSubscriptionTier', data.subscriptionTier);
+          setCurrentSubscriptionTier(data.subscriptionTier);
+          console.log(`🔄 Synced subscription: ${data.subscriptionTier}`);
+        }
+        if (data.credits !== undefined) {
+          localStorage.setItem('remainingCredits', data.credits.toString());
+        }
+      }
+    } catch (error) {
+      console.error('Failed to sync subscription:', error);
+    }
+  };
+
   useEffect(() => {
     fetchData();
     trackUserActivity();
+    syncSubscriptionFromBackend(); // Sync tier from backend on load
     
     const storedProfile = getProfile();
     setCopilotProfile(storedProfile);
@@ -156,7 +199,7 @@ export default function UserProfile({ onLogout }) {
 
   const handleCancellationRequest = async () => {
     if (!cancelReason) {
-      alert('Please select a reason for cancellation');
+      toast.warning('Please select a reason for cancellation');
       return;
     }
 
@@ -207,7 +250,7 @@ export default function UserProfile({ onLogout }) {
 
   const handleAccountDeletion = async () => {
     if (deleteConfirmText.toLowerCase() !== 'delete my account') {
-      alert('Please type exactly: delete my account');
+      toast.warning('Please type exactly: delete my account');
       return;
     }
 
@@ -225,13 +268,13 @@ export default function UserProfile({ onLogout }) {
       });
 
       if (response.ok) {
-        alert('Account deletion request submitted.');
+        toast.success('Account deletion request submitted.');
         setShowDeleteModal(false);
         setTimeout(() => { if (onLogout) onLogout(); }, 2000);
       }
     } catch (error) {
       console.error('Error submitting account deletion:', error);
-      alert('Failed to submit deletion request. Contact support@biseda.ai');
+      toast.error('Failed to submit deletion request. Contact support@biseda.ai');
     }
   };
 
@@ -252,7 +295,7 @@ export default function UserProfile({ onLogout }) {
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
-      alert('Your data has been exported successfully!');
+      toast.success('Your data has been exported successfully!');
     } catch (error) {
       console.error('Error exporting data:', error);
     }
@@ -460,17 +503,27 @@ export default function UserProfile({ onLogout }) {
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl p-3">
                 <div className="flex items-baseline gap-1">
-                  <span className="text-3xl font-bold text-white">{getRemainingCredits()}</span>
-                  <span className="text-white/50 text-sm">/ {tierConfig?.credits || 50}</span>
+                  <span className="text-3xl font-bold text-white">{liveCredits.total}</span>
+                  <span className="text-white/50 text-sm">/ {liveCredits.totalMax}</span>
                 </div>
                 <p className="text-purple-200 text-xs mt-1">{t('subscription.totalCredits', 'Total')}</p>
+                {/* Live indicator */}
+                <div className="flex items-center gap-1 mt-1">
+                  <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
+                  <span className="text-[10px] text-green-400/70">Live</span>
+                </div>
               </div>
               <div className="bg-gradient-to-br from-pink-500/20 to-purple-500/20 rounded-xl p-3">
                 <div className="flex items-baseline gap-1">
-                  <span className="text-3xl font-bold text-white">{getDailyRemainingCredits()}</span>
-                  <span className="text-white/50 text-sm">/ {tierConfig?.dailyLimit || 20}</span>
+                  <span className="text-3xl font-bold text-white">{liveCredits.daily}</span>
+                  <span className="text-white/50 text-sm">/ {liveCredits.dailyMax}</span>
                 </div>
                 <p className="text-pink-200 text-xs mt-1">{t('subscription.dailyLeft', 'Today')}</p>
+                {/* Live indicator */}
+                <div className="flex items-center gap-1 mt-1">
+                  <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
+                  <span className="text-[10px] text-green-400/70">Live</span>
+                </div>
               </div>
             </div>
           </div>
@@ -508,13 +561,13 @@ export default function UserProfile({ onLogout }) {
         {/* OVERVIEW TAB */}
         {activeSection === 'overview' && (
           <>
-            {/* Stats Grid */}
+            {/* Stats Grid - LIVE UPDATES */}
             <div className="grid grid-cols-2 gap-3">
               {[
-                { label: t('userProfile.totalMessages', 'Messages'), value: usage?.dailyUsage?.messages || stats.totalMessages, icon: MessageSquare, gradient: 'from-purple-500 to-pink-500' },
-                { label: t('userProfile.thisWeek', 'This Week'), value: stats.messagesThisWeek, icon: Zap, gradient: 'from-blue-500 to-cyan-500' },
-                { label: t('userProfile.rehearsals', 'Rehearsals'), value: stats.rehearsalsSessions, icon: Target, gradient: 'from-orange-500 to-red-500' },
-                { label: t('userProfile.level', 'Level'), value: stats.level, icon: Star, gradient: 'from-amber-500 to-yellow-500' }
+                { label: t('userProfile.totalMessages', 'Messages'), value: liveStats.totalMessages, icon: MessageSquare, gradient: 'from-purple-500 to-pink-500' },
+                { label: t('userProfile.thisWeek', 'This Week'), value: liveStats.messagesThisWeek, icon: Zap, gradient: 'from-blue-500 to-cyan-500' },
+                { label: t('userProfile.rehearsals', 'Rehearsals'), value: liveStats.rehearsals, icon: Target, gradient: 'from-orange-500 to-red-500' },
+                { label: t('userProfile.level', 'Level'), value: liveStats.level, icon: Star, gradient: 'from-amber-500 to-yellow-500' }
               ].map((stat, i) => (
                 <div key={i} className="bg-slate-900/60 backdrop-blur-sm rounded-2xl border border-slate-800/50 p-4 relative overflow-hidden group hover:border-slate-700/50 transition-all">
                   <div className={`absolute top-0 right-0 w-20 h-20 bg-gradient-to-br ${stat.gradient} opacity-10 rounded-full transform translate-x-6 -translate-y-6 group-hover:opacity-20 transition-opacity`}></div>
@@ -522,12 +575,15 @@ export default function UserProfile({ onLogout }) {
                     <stat.icon className="w-5 h-5 text-white" />
                   </div>
                   <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
-                  <div className="text-xs text-slate-400">{stat.label}</div>
+                  <div className="text-xs text-slate-400 flex items-center gap-1">
+                    {stat.label}
+                    <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
+                  </div>
                 </div>
               ))}
             </div>
 
-            {/* Weekly Activity Chart */}
+            {/* Weekly Activity Chart - LIVE */}
             <div className="bg-slate-900/60 backdrop-blur-sm rounded-2xl border border-slate-800/50 p-5">
               <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-2">
@@ -538,14 +594,18 @@ export default function UserProfile({ onLogout }) {
                 </div>
                 <div className="flex items-center gap-1 text-orange-400 text-sm font-semibold">
                   <Flame className="w-4 h-4" />
-                  <span>{stats.currentStreak} {t('userProfile.dayStreak', 'day streak')}</span>
+                  <span>{liveStats.currentStreak} {t('userProfile.dayStreak', 'day streak')}</span>
+                  <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse ml-1"></div>
                 </div>
               </div>
               
               <div className="flex items-end justify-between gap-2 h-36">
-                {weeklyActivity.map((activity, i) => {
+                {(liveStats.weeklyActivity || [0,0,0,0,0,0,0]).map((activity, i) => {
+                  const maxActivity = Math.max(...(liveStats.weeklyActivity || [1]), 1);
                   const height = Math.max((activity / maxActivity) * 100, 8);
-                  const isToday = i === new Date().getDay();
+                  const dayIndex = new Date().getDay();
+                  const todayIndex = dayIndex === 0 ? 6 : dayIndex - 1;
+                  const isToday = i === todayIndex;
                   return (
                     <div key={i} className="flex-1 flex flex-col items-center gap-2">
                       <div className="relative w-full flex items-end justify-center" style={{ height: '100%' }}>
@@ -842,21 +902,22 @@ export default function UserProfile({ onLogout }) {
                 <div>
                   <label className="text-sm text-slate-300 mb-2 block font-medium">{t('userProfile.commStyle', 'Communication Style')}</label>
                   <div className="grid grid-cols-2 gap-2">
-                    {['Direct', 'Playful', 'Calm', 'Romantic'].map((style) => (
+                    {[
+                      { id: 'Direct', emoji: '🎯', label: t('userProfile.styleDirect', 'Direct') },
+                      { id: 'Playful', emoji: '😄', label: t('userProfile.stylePlayful', 'Playful') },
+                      { id: 'Calm', emoji: '🧘', label: t('userProfile.styleCalm', 'Calm') },
+                      { id: 'Romantic', emoji: '💕', label: t('userProfile.styleRomantic', 'Romantic') }
+                    ].map((style) => (
                       <button
-                        key={style}
-                        onClick={() => setCopilotProfile(prev => ({ ...prev, communicationStyle: style }))}
+                        key={style.id}
+                        onClick={() => setCopilotProfile(prev => ({ ...prev, communicationStyle: style.id }))}
                         className={`px-4 py-3 rounded-xl text-sm font-medium transition-all ${
-                          copilotProfile.communicationStyle === style
+                          copilotProfile.communicationStyle === style.id
                             ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
                             : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
                         }`}
                       >
-                        {style === 'Direct' && '🎯 '}
-                        {style === 'Playful' && '😄 '}
-                        {style === 'Calm' && '🧘 '}
-                        {style === 'Romantic' && '💕 '}
-                        {style}
+                        {style.emoji} {style.label}
                       </button>
                     ))}
                   </div>
@@ -865,20 +926,21 @@ export default function UserProfile({ onLogout }) {
                 <div>
                   <label className="text-sm text-slate-300 mb-2 block font-medium">{t('userProfile.datingGoal', 'Dating Goal')}</label>
                   <div className="grid grid-cols-3 gap-2">
-                    {['Casual', 'Serious', 'Unsure'].map((goal) => (
+                    {[
+                      { id: 'Casual', emoji: '🎉', label: t('userProfile.goalCasual', 'Casual') },
+                      { id: 'Serious', emoji: '💍', label: t('userProfile.goalSerious', 'Serious') },
+                      { id: 'Unsure', emoji: '🤔', label: t('userProfile.goalUnsure', 'Unsure') }
+                    ].map((goal) => (
                       <button
-                        key={goal}
-                        onClick={() => setCopilotProfile(prev => ({ ...prev, datingGoal: goal }))}
+                        key={goal.id}
+                        onClick={() => setCopilotProfile(prev => ({ ...prev, datingGoal: goal.id }))}
                         className={`px-4 py-3 rounded-xl text-sm font-medium transition-all ${
-                          copilotProfile.datingGoal === goal
+                          copilotProfile.datingGoal === goal.id
                             ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg'
                             : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
                         }`}
                       >
-                        {goal === 'Casual' && '🎉 '}
-                        {goal === 'Serious' && '💍 '}
-                        {goal === 'Unsure' && '🤔 '}
-                        {goal}
+                        {goal.emoji} {goal.label}
                       </button>
                     ))}
                   </div>
@@ -902,6 +964,91 @@ export default function UserProfile({ onLogout }) {
                   )}
                 </button>
               </div>
+            </div>
+
+            {/* Notifications */}
+            <div className="bg-slate-900/60 rounded-2xl border border-slate-800/50 p-5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                    notificationsEnabled 
+                      ? 'bg-gradient-to-br from-amber-500 to-orange-500' 
+                      : 'bg-slate-700'
+                  }`}>
+                    {notificationsEnabled ? (
+                      <Bell className="w-5 h-5 text-white" />
+                    ) : (
+                      <BellOff className="w-5 h-5 text-slate-400" />
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="text-white font-bold">{t('userProfile.notifications', 'Daily Tips')}</h3>
+                    <p className="text-slate-400 text-sm">{t('userProfile.notificationsDesc', 'Get daily dating advice')}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={async () => {
+                    const newState = !notificationsEnabled;
+                    const success = await setNotificationsEnabled(newState);
+                    if (success || !newState) {
+                      setNotificationsEnabledState(newState);
+                    }
+                  }}
+                  className={`w-14 h-8 rounded-full transition-all relative ${
+                    notificationsEnabled ? 'bg-amber-500' : 'bg-slate-600'
+                  }`}
+                >
+                  <div className={`w-6 h-6 bg-white rounded-full absolute top-1 transition-all ${
+                    notificationsEnabled ? 'right-1' : 'left-1'
+                  }`} />
+                </button>
+              </div>
+              
+              {notificationsEnabled && (
+                <div className="mt-4 p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl">
+                  <p className="text-amber-300 text-xs font-medium mb-1">{t('userProfile.todaysTip', "💡 Today's Tip:")}</p>
+                  <p className="text-amber-200/80 text-xs">{getRandomTip()}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Emergency Help Toggle */}
+            <div className="bg-slate-900/60 rounded-2xl border border-slate-800/50 p-5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                    emergencyHelpEnabled 
+                      ? 'bg-gradient-to-br from-red-500 to-orange-500' 
+                      : 'bg-slate-700'
+                  }`}>
+                    <span className="text-xl">{emergencyHelpEnabled ? '🚨' : '🔇'}</span>
+                  </div>
+                  <div>
+                    <h3 className="text-white font-bold">{t('userProfile.emergencyHelp', 'Emergency Help Buttons')}</h3>
+                    <p className="text-slate-400 text-sm">{t('userProfile.emergencyHelpDesc', 'Show quick rescue buttons on Wingman')}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => {
+                    const newState = !emergencyHelpEnabled;
+                    setEmergencyHelpEnabled(newState);
+                    localStorage.setItem('biseda_emergency_help_enabled', newState.toString());
+                  }}
+                  className={`w-14 h-8 rounded-full transition-all relative ${
+                    emergencyHelpEnabled ? 'bg-red-500' : 'bg-slate-600'
+                  }`}
+                >
+                  <div className={`w-6 h-6 bg-white rounded-full absolute top-1 transition-all ${
+                    emergencyHelpEnabled ? 'right-1' : 'left-1'
+                  }`} />
+                </button>
+              </div>
+              
+              {emergencyHelpEnabled && (
+                <div className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-xl">
+                  <p className="text-red-300 text-xs">🆘 {t('userProfile.emergencyHelpTip', 'Quick rescue buttons will appear on the Live Wingman page for awkward moments!')}</p>
+                </div>
+              )}
             </div>
 
             {/* Privacy & Data */}

@@ -1786,6 +1786,46 @@ app.put('/api/user/profile', async (req, res) => {
   }
 });
 
+// Sync user subscription from database (for when admin updates tier)
+app.post('/api/user/sync-subscription', async (req, res) => {
+  try {
+    const { odId } = req.body;
+    
+    if (!odId) {
+      return res.status(400).json({ error: 'odId is required' });
+    }
+    
+    // Check MongoDB first
+    const mongoUser = await UserAccountModel.findOne({ odId });
+    
+    if (mongoUser) {
+      console.log(`🔄 Syncing subscription for ${odId}: ${mongoUser.subscriptionTier}`);
+      res.json({
+        success: true,
+        subscriptionTier: mongoUser.subscriptionTier || 'free_trial',
+        subscriptionStatus: mongoUser.subscriptionStatus || 'active',
+        credits: mongoUser.credits || 50,
+        dailyLimit: mongoUser.dailyLimit || 20,
+        dailyCreditsUsed: mongoUser.dailyCreditsUsed || 0
+      });
+    } else {
+      // Check in-memory
+      const user = getUser(odId);
+      res.json({
+        success: true,
+        subscriptionTier: user.subscriptionTier || 'free_trial',
+        subscriptionStatus: user.subscriptionStatus || 'active',
+        credits: user.credits || 50,
+        dailyLimit: user.dailyLimit || 20,
+        dailyCreditsUsed: user.dailyCreditsUsed || 0
+      });
+    }
+  } catch (error) {
+    console.error('Sync subscription error:', error);
+    res.status(500).json({ error: 'Failed to sync subscription' });
+  }
+});
+
 // Save an item
 app.post('/api/user/saved', (req, res) => {
   try {
